@@ -16,7 +16,8 @@ StateManager::StateManager(TextureManager *tM, SoundManager *sM)
 
 StateManager::~StateManager()
 {
-	
+	for (auto state_kv : states)
+		delete state_kv.second;
 }
 
 
