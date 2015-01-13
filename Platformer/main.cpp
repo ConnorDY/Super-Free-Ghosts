@@ -29,7 +29,7 @@ int main()
 	loadRes(textureManager, soundManager);
 
 	// Create State Manager
-	StateManager *stateManager = new StateManager(textureManager, soundManager);
+	StateManager stateManager(textureManager, soundManager);
 	
 	// Create Window
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Super Free Ghosts", sf::Style::Close | sf::Style::Titlebar);
@@ -39,11 +39,11 @@ int main()
 	while (window.isOpen())
 	{
 		// Update State
-		stateManager->update(window);
+		stateManager.update(window);
 
 		// Draw the State
 		window.clear();
-		stateManager->draw(window);
+		stateManager.draw(window);
 		window.display();
 	}
 
