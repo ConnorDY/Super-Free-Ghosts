@@ -1,16 +1,13 @@
 #include "projectile.h"
 
-Projectile::Projectile(float xx, float yy, int dir, TextureManager &textureManager)
+Projectile::Projectile(float x, float y, int dir, TextureManager &textureManager)
+	: Object(
+			Object::Type::Projectile,
+			x, y, 60, 12,
+			0.8 * dir, 0,
+			false, false
+	  )
 {
-	setX(xx);
-	setY(yy);
-	setDX((float)dir / 1.25f);
-	
-	setWidth(60.0f);
-	setHeight(12.0f);
-	setSolid(false);
-	setType(Object::Type::Projectile);
-
 	rectangle.setSize(sf::Vector2f(getWidth(), getHeight()));
 	rectangle.setScale(sf::Vector2f((float)dir, 1.0f));
 

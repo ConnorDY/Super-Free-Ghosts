@@ -12,15 +12,14 @@ class Block : public Object
 		sf::RectangleShape rectangle;
 		void updateSize();
 	public:
-		Block();
-		Block(float xx, float yy, float sWidth, float sHeight);
-		
+		explicit Block(float x = -128, float y = -128, float width = 32, float height = 32);
+
 		// Mutators
-		void setWidth(float sWidth);
-		void setHeight(float sHeight);
+		virtual void setWidth(float sWidth);
+		virtual void setHeight(float sHeight);
 
 		// Actions
-		void draw(sf::RenderWindow &window);
+		virtual void draw(sf::RenderWindow &window);
 };
 
 #endif

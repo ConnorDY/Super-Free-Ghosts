@@ -1,8 +1,8 @@
 #include "level01_state.h"
 
-Level01_State::Level01_State(StateManager *sM, TextureManager &textureManager)
+Level01_State::Level01_State(StateManager &sM, TextureManager &textureManager)
+	: State(sM)
 {
-	setStateManager(sM);
 	start(textureManager);
 }
 

@@ -1,17 +1,14 @@
 #include "object.h"
 
-Object::Object()
+Object::Object(Type type, float x, float y, float width, float height, float dx, float dy, bool solid, bool gravity, float maxFallSpeed)
+	: x(x), y(y),
+	  dx(dx), dy(dy),
+	  width(width), height(height),
+	  maxFallSpeed(maxFallSpeed),
+	  solid(solid),
+	  del(false),
+	  gravity(gravity)
 {
-	x = 0.0f;
-	y = 0.0f;
-	dx = 0.0f;
-	dy = 0.0f;
-	width = 0.0f;
-	height = 0.0f;
-	maxFallSpeed = 0.0f;
-	solid = false;
-	del = false;
-	gravity = false;
 }
 
 Object::~Object()

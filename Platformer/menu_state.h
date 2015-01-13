@@ -13,12 +13,12 @@ class Menu_State : public State
 		std::vector<std::string> menuOptions;
 		sf::Music music;
 	public:
-		Menu_State(StateManager *sM, TextureManager &textureManager);
-		~Menu_State();
+		Menu_State(StateManager &sM, TextureManager &textureManager);
+		virtual ~Menu_State();
 
 		// Actions
-		void draw(sf::RenderWindow &window);
-		void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler);
+		virtual void draw(sf::RenderWindow &window);
+		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler);
 };
 
 #endif

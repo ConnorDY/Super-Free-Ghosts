@@ -15,13 +15,13 @@ class State;
 class StateManager
 {
 	private:
+		TextureManager &textureManager;
+		SoundManager &soundManager;
 		InputHandler inputHandler;
-		TextureManager *textureManager;
-		SoundManager *soundManager;
 		std::map<std::string, State*> states;
 		std::string currentState;
 	public:
-		StateManager(TextureManager *tM, SoundManager *sM);
+		StateManager(TextureManager &tM, SoundManager &sM);
 		~StateManager();
 
 		// Actions

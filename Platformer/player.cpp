@@ -210,7 +210,7 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager 
 
 //double total_time = 0.0;
 
-void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View *view, TextureManager &textureManager, SoundManager &soundManager, std::vector<Object*> objects)
+void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view, TextureManager &textureManager, SoundManager &soundManager, std::vector<Object*> objects)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 	//total_time += mstime;
@@ -269,14 +269,14 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View *view
 	// Update view
 	float vx = x;
 	float vy = y;
-	float vw = view->getSize().x;
-	float vh = view->getSize().y;
+	float vw = view.getSize().x;
+	float vh = view.getSize().y;
 
 	if (vx < vw / 2.0f) vx = vw / 2.0f;
 	if (vy < vh / 2.0f) vy = vh / 2.0f;
 
-	view->setCenter(vx, vh / 2.0f);
-	window.setView(*view);
+	view.setCenter(vx, vh / 2.0f);
+	window.setView(view);
 
 	// Jump and Throw Timers
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= 0.2f) midJump = false;

@@ -1,20 +1,11 @@
 #include "block.h"
 
-Block::Block()
+Block::Block(float x, float y, float width, float height)
+	: Object(
+			Object::Type::Block,
+			x, y, width, height
+	  )
 {
-	Block(-128.0f, -128.0f, 32.0f, 32.0f);
-}
-
-Block::Block(float xx, float yy, float sWidth, float sHeight)
-{
-	setX(xx);
-	setY(yy);
-	
-	setWidth(sWidth);
-	setHeight(sHeight);
-	setSolid(true);
-	setType(Object::Type::Block);
-
 	updateSize();
 }
 

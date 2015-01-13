@@ -12,22 +12,21 @@
 class State
 {
 	private:
-		StateManager *stateManager;
+		StateManager &stateManager;
 		sf::View view;
 		sf::Clock clock;
 	public:
-		State();
+		explicit State(StateManager &sm);
 		virtual ~State();
 
 		// Mutators
 		void setView(sf::View v);
-		void setStateManager(StateManager *sM);
 
 		// Accessors
-		sf::View* getView();
-		sf::Clock* getClock();
+		sf::View& getView();
+		sf::Clock& getClock();
 		float getViewX();
-		StateManager* getStateManager();
+		StateManager& getStateManager();
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);

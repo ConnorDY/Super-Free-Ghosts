@@ -12,7 +12,7 @@ class Projectile : public Object
 		sf::Sprite sprite;
 		std::vector<sf::IntRect> weapons;
 	public:
-		Projectile(float xx, float yy, int dir, TextureManager &textureManager);
+		Projectile(float x, float y, int dir, TextureManager &textureManager);
 		virtual ~Projectile();
 
 		// Actions

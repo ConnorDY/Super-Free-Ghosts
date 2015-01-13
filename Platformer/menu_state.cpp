@@ -1,9 +1,9 @@
 #include "menu_state.h"
 
-Menu_State::Menu_State(StateManager *sM, TextureManager &textureManager)
+Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager)
+	: State(sM)
 {
-	setStateManager(sM);
-	getStateManager()->setState("level01");
+	sM.setState("level01");
 }
 
 Menu_State::~Menu_State()

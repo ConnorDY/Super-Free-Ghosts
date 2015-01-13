@@ -16,7 +16,14 @@ class Object
 			Projectile
 		};
 
-		Object();
+		explicit Object(
+				Type type = Type::Obj,
+				float x = 0, float y = 0,
+				float width = 0, float height = 0,
+				float dx = 0, float dy = 0,
+				bool solid = true, bool gravity = true,
+				float maxFallSpeed = 0
+		);
 		virtual ~Object();
 
 		// Mutators
@@ -24,8 +31,8 @@ class Object
 		void setY(float yy);
 		void setDX(float dxx);
 		void setDY(float dyy);
-		void setWidth(float w);
-		void setHeight(float h);
+		virtual void setWidth(float w);
+		virtual void setHeight(float h);
 		void setSolid(bool s);
 		void setDelete(bool d);
 		void setType(Object::Type t);
