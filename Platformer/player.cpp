@@ -1,38 +1,25 @@
 #include "player.h"
 
-Player::Player(TextureManager &textureManager, float xx, float yy)
+#define PLAYER_WIDTH  56
+#define PLAYER_HEIGHT 74
+Player::Player(TextureManager &textureManager, float x, float y)
+	: Object(
+			Object::Type::Obj,
+			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
+			0, 0,     // dx, dy
+			true,     // solid
+			0.00235,  // Gravity
+			0.5       // Fall speed
+	  ),
+	  rectangle(sf::Vector2f((PLAYER_WIDTH / 2.0) - 8.0, PLAYER_HEIGHT / 2.0)),
+	  texture("arthur1"),
+	  moveSpeed(0.22), jumpSpeed(0.8)
 {
-	// Settings
-	jumped = false;
-	midJump = false;
-	midThrow = false;
-	flipped = false;
-	crouching = false;
-	jumps = 0;
-	throwTime = 0;
-
-	width = 56.0f;
-	height = 74.0f;
-
-	float adj = 10.0f;
-	moveSpeed = 2.2f / adj;
-	jumpSpeed = 8.00f / adj;
-	gravity = 0.235f / (adj * adj);
-	maxFallSpeed = 5.0f / adj;
-
-	x = xx;
-	y = yy;
-
-	dx = 0.0f;
-	dy = 0.0f;
-
 	// Box
-	rectangle.setSize(sf::Vector2f((width / 2.0f) - 8.0f, height / 2.0f));
 	rectangle.setOrigin(10.0f, 37.0f);
 	rectangle.setScale(sf::Vector2f(2.0f, 2.0f));
 
 	// Sprite
-	texture = "arthur1";
 	sprite.setTexture(textureManager.getRef(texture));
 	sprite.setOrigin(14.0f, 37.0f);
 	sprite.setScale(sf::Vector2f(2.0f, 2.0f));
@@ -78,24 +65,16 @@ Player::Player(TextureManager &textureManager, float xx, float yy)
 
 
 /* Mutators */
-void Player::setX(float xx) { x = xx; }
-void Player::setY(float yy) { y = yy; }
-void Player::setDX(float dxx) { dx = dxx; }
-void Player::setDY(float dyy) { dy = dyy; }
 void Player::setCrouching(bool c)
 {
 	crouching = c;
 
-	if (dy != 0.0f || jumped) crouching = false;
+	if (getDY() != 0.0f || jumped) crouching = false;
 }
 
 
 /* Accessors */
-float Player::getX() { return x; }
-float Player::getY() { return y; }
-float Player::getDX() { return dx; }
-float Player::getDY() { return dy; }
-int Player::getDir()
+int Player::getDir() const
 {
 	int dir = 1;
 
@@ -104,14 +83,9 @@ int Player::getDir()
 	return dir;
 }
 
-sf::FloatRect Player::getRect()
+bool Player::placeFree(float x, float y, std::vector<Object*> const objects) const
 {
-	return sf::FloatRect(x, y, width, height);
-}
-
-bool Player::placeFree(float xx, float yy, std::vector<Object*> const objects) const
-{
-	sf::FloatRect temp_rect(xx - (sprite.getOrigin().x * sprite.getScale().x), yy - (sprite.getOrigin().y * sprite.getScale().y), width, height);
+	sf::FloatRect temp_rect(x - (sprite.getOrigin().x * sprite.getScale().x), y - (sprite.getOrigin().y * sprite.getScale().y), getWidth(), getHeight());
 
 	return std::none_of(objects.begin(), objects.end(), [&](Object* const &elem)
 	{
@@ -126,7 +100,7 @@ void Player::draw(sf::RenderWindow &window)
 	if (DEBUG_MODE)
 	{
 		rectangle.setScale(sprite.getScale());
-		rectangle.setPosition(roundf(x), roundf(y));
+		rectangle.setPosition(roundf(getX()), roundf(getY()));
 	}
 	
 	int sign_scalex;
@@ -135,18 +109,18 @@ void Player::draw(sf::RenderWindow &window)
 
 	if (jumped)
 	{
-		if (dx == 0.0f)
+		if (getDX() == 0.0f)
 		{
-			if (midThrow && jumps == 2) sprite.setPosition(roundf(x) - (6.0f * (float)sign_scalex), roundf(y));
-			else if (midJump) sprite.setPosition(roundf(x) - (6.0f * (float)sign_scalex), roundf(y));
-			else if (midThrow) sprite.setPosition(roundf(x), roundf(y));
-			else sprite.setPosition(roundf(x) - (10.0f * (float)sign_scalex), roundf(y));
+			if (midThrow && jumps == 2) sprite.setPosition(roundf(getX()) - (6.0f * (float)sign_scalex), roundf(getY()));
+			else if (midJump) sprite.setPosition(roundf(getX()) - (6.0f * (float)sign_scalex), roundf(getY()));
+			else if (midThrow) sprite.setPosition(roundf(getX()), roundf(getY()));
+			else sprite.setPosition(roundf(getX()) - (10.0f * (float)sign_scalex), roundf(getY()));
 		}
-		else if (midThrow) sprite.setPosition(roundf(x), roundf(y));			
-		else sprite.setPosition(roundf(x) - (5.0f * (float)sign_scalex), roundf(y));
+		else if (midThrow) sprite.setPosition(roundf(getX()), roundf(getY()));
+		else sprite.setPosition(roundf(getX()) - (5.0f * (float)sign_scalex), roundf(getY()));
 	}
-	else if (crouching) sprite.setPosition(roundf(x), roundf(y) + 12.0f);
-	else sprite.setPosition(roundf(x), roundf(y));
+	else if (crouching) sprite.setPosition(roundf(getX()), roundf(getY()) + 12.0f);
+	else sprite.setPosition(roundf(getX()), roundf(getY()));
 
 	if (DEBUG_MODE) window.draw(rectangle);
 	window.draw(sprite);
@@ -154,8 +128,8 @@ void Player::draw(sf::RenderWindow &window)
 
 void Player::move(int dir)
 {
-	if (dy == 0.0f && !jumped) setDX((float)dir * moveSpeed);
-	if (dir != 0) sprite.setScale(sf::Vector2f(2.0f * (float)dir, 2.0f));
+	if (getDY() == 0 && !jumped) setDX(dir * moveSpeed);
+	if (dir != 0) sprite.setScale(sf::Vector2f(2 * dir, 2));
 }
 
 void Player::jump(int dir, SoundManager &soundManager)
@@ -201,7 +175,7 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager 
 			adjy = 24.0f;
 		}
 
-		Projectile* weapon = new Projectile(x + adjx, y - (35.0f * 2.0f) + adjy, dir, textureManager);
+		Projectile* weapon = new Projectile(getX() + adjx, getY() - (35.0f * 2.0f) + adjy, dir, textureManager);
 		objects.push_back(weapon);
 
 		soundManager.playSound("throw");
@@ -210,17 +184,17 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager 
 
 //double total_time = 0.0;
 
-void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view, TextureManager &textureManager, SoundManager &soundManager, std::vector<Object*> objects)
+void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view, TextureManager &textureManager, SoundManager &soundManager, std::vector<Object*> const objects)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 	//total_time += mstime;
 	//printf("Total Time: %4.3f\n", (float)total_time);
 
 	// Gravity
-	if (placeFree(x, y + 1, objects)) dy += gravity * (float)mstime;
-	else if (dy > 0.0f)
+	if (placeFree(getX(), getY() + 1, objects)) setDY(getDY() + getGravity() * (float)mstime);
+	else if (getDY() > 0.0f)
 	{
-		dy = 0.0f;
+		setDY(0);
 
 		if (jumped)
 		{
@@ -231,44 +205,44 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view
 
 		soundManager.playSound("land");
 	}
-	else if (dy < 0 && !placeFree(x, y - 1, objects))
+	else if (getDY() < 0 && !placeFree(getX(), getY() - 1, objects))
 	{
-		dy = 0; // Hitting head on the ceiling
+		setDY(0); // Hitting head on the ceiling
 		// TODO play sound?
 	}
 
 	//if (dy > maxFallSpeed) dy = maxFallSpeed;
 
 	// Update Y
-	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
+	for (float i = fabs(getDY()) * (float)mstime; i > 0; i--)
 	{
-		float j = copysign(i, dy);
-		if (placeFree(x, y + j, objects))
+		float j = copysign(i, getDY());
+		if (placeFree(getX(), getY() + j, objects))
 		{
-			y += j;
+			setY(getY() + j);
 			break;
 		}
 	}
 
 	// Update X
-	if ((dy == 0.0f && !midThrow && !crouching) || jumped)
+	if ((getDY() == 0.0f && !midThrow && !crouching) || jumped)
 	{
-		for (float i = fabs(dx) * (float)mstime; i > 0; i--)
+		for (float i = fabs(getDX()) * (float)mstime; i > 0; i--)
 		{
-			float j = copysign(i, dx);
-			if (placeFree(x + j, y, objects))
+			float j = copysign(i, getDX());
+			if (placeFree(getX() + j, getY(), objects))
 			{
-				x += j;
+				setX(getX() + j);
 				break;
 			}
 		}
 	}
 
-	if (x < sprite.getOrigin().x * 2.0f) x = sprite.getOrigin().x * 2.0f;
+	if (getX() < sprite.getOrigin().x * 2.0f) setX(sprite.getOrigin().x * 2.0f);
 
 	// Update view
-	float vx = x;
-	float vy = y;
+	float vx = getX();
+	float vy = getY();
 	float vw = view.getSize().x;
 	float vh = view.getSize().y;
 
@@ -293,8 +267,8 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view
 		if (jumps < 2) setAnimation("throw");
 		else setAnimation("throwi");
 	}
-	else if (dy > 0.0f && !jumped) setAnimation("still"); // Falling
-	else if (dx != 0.0f)
+	else if (getDY() > 0.0f && !jumped) setAnimation("still"); // Falling
+	else if (getDX() != 0.0f)
 	{
 		if (jumped)
 		{

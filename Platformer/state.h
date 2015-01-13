@@ -24,12 +24,11 @@ class State
 
 		// Accessors
 		sf::View& getView();
-		sf::Clock& getClock();
-		float getViewX();
-		StateManager& getStateManager();
+		sf::Clock const& getClock() const;
+		float getViewX() const;
 
 		// Actions
-		virtual void draw(sf::RenderWindow &window);
+		virtual void draw(sf::RenderWindow &window) const;
 		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler);
 		sf::Time restartClock();
 };

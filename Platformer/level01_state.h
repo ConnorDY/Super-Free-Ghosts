@@ -25,7 +25,7 @@ class Level01_State : public State
 		void start(TextureManager &textureManager);
 		void end();
 		void reset(TextureManager &textureManager);
-		void draw(sf::RenderWindow &window);
+		void draw(sf::RenderWindow &window) const;
 		void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler);
 };
 
