@@ -46,7 +46,7 @@ class Object
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
-		void update(sf::Time deltaTime, std::vector<Object*> objects);
+		virtual void update(sf::Time deltaTime, std::vector<Object*> objects);
 	private:
 		sf::Sprite sprite;
 		float x, y, dx, dy, width, height, maxFallSpeed;

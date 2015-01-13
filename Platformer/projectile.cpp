@@ -23,6 +23,10 @@ Projectile::Projectile(float xx, float yy, int dir, TextureManager &textureManag
 	sprite.setTextureRect(weapons[0]);
 }
 
+Projectile::~Projectile()
+{
+}
+
 
 /* Actions */
 void Projectile::draw(sf::RenderWindow &window)

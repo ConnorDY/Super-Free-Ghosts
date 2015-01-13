@@ -13,10 +13,12 @@ class Projectile : public Object
 		std::vector<sf::IntRect> weapons;
 	public:
 		Projectile(float xx, float yy, int dir, TextureManager &textureManager);
+		virtual ~Projectile();
 
 		// Actions
-		void draw(sf::RenderWindow &window);
-		void update(sf::Time deltaTime, float viewx, std::vector<Object*> objects);
+		virtual void draw(sf::RenderWindow &window);
+		// TODO: Doesn't override (can we put viewx in object? does this need viewx?)
+		virtual void update(sf::Time deltaTime, float viewx, std::vector<Object*> objects);
 };
 
 #endif
