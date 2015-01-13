@@ -5,6 +5,7 @@
 #include <iostream>
 #include "texture_manager.h"
 #include "sound_manager.h"
+#include "input_handler.h"
 #include "globals.h"
 
 class State
@@ -25,7 +26,7 @@ class State
 
 		// Actions
 		void draw(sf::RenderWindow &window);
-		void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager);
+		void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler);
 		sf::Time restartClock();
 };
 

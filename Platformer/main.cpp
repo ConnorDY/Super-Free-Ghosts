@@ -31,6 +31,9 @@ int main()
 	SoundManager soundManager;
 	loadRes(textureManager, soundManager);
 
+	// Create Input Handler
+	InputHandler inputHandler;
+
 	// Load Level01
 	Level01_State* state = new Level01_State(textureManager);
 	
@@ -42,7 +45,7 @@ int main()
 	while (window.isOpen())
 	{
 		// Update State
-		state->update(window, textureManager, soundManager);
+		state->update(window, textureManager, soundManager, inputHandler);
 
 		// Draw the State
 		window.clear();

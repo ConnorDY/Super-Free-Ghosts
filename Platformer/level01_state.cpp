@@ -90,7 +90,7 @@ void Level01_State::draw(sf::RenderWindow &window)
 	}
 }
 
-void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager)
+void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
 {
 	sf::Time deltaTime = restartClock();
 
@@ -98,15 +98,10 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	if (player->getY() > WINDOW_HEIGHT + 74.0f) reset(textureManager);
 
 	/* Input */
-
-	// Horizontal movement
-	int moveH = sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-	player->move(moveH);
-
-	// Crouching
-	player->setCrouching(sf::Keyboard::isKeyPressed(sf::Keyboard::Down));
-
 	sf::Event event;
+
+	int moveH = inputHandler.checkInput("right") - inputHandler.checkInput("left"); // Horizontal Movement
+	bool crouching = inputHandler.checkInput("down"); // Crouching
 
 	while (window.pollEvent(event))
 	{
@@ -118,32 +113,17 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 			case sf::Event::Closed:
 				window.close();
 				break;
-
-			case sf::Event::KeyPressed:
-				switch (event.key.code)
-				{
-					default:
-						break;
-
-					case sf::Keyboard::Up:
-						player->jump(moveH, soundManager);
-						break;
-
-					case sf::Keyboard::Z:
-						player->throwWeapon(objects, player->getDir(), textureManager, soundManager);
-						break;
-
-					case sf::Keyboard::Escape:
-						reset(textureManager);
-						break;
-
-					case sf::Keyboard::E:
-						player->changeTexture(textureManager, "arthur0");
-						break;
-				}
-				break;
 		}
+
+		if (inputHandler.checkInput("exit", event)) reset(textureManager); // Reset Level
+		if (inputHandler.checkInput("jump", event)) player->jump(moveH, soundManager); // Jumping
+		if (inputHandler.checkInput("throw", event)) player->throwWeapon(objects, player->getDir(), textureManager, soundManager); // Throw Weapon
+
+		if (inputHandler.checkInput("debug0", event)) player->changeTexture(textureManager, "arthur0");
 	}
+
+	player->move(moveH);
+	player->setCrouching(crouching);
 
 
 	/* Update Stuff */

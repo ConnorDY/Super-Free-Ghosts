@@ -75,6 +75,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="block.cpp" />
+    <ClCompile Include="input_handler.cpp" />
     <ClCompile Include="level01_state.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
@@ -87,6 +88,7 @@
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="globals.h" />
+    <ClInclude Include="input_handler.h" />
     <ClInclude Include="level01_state.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="player.h" />

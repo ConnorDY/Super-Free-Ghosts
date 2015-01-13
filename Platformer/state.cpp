@@ -25,7 +25,7 @@ void State::draw(sf::RenderWindow &window)
 
 }
 
-void State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager)
+void State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
 {
 
 }
