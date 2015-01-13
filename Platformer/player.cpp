@@ -12,8 +12,10 @@ Player::Player(TextureManager &textureManager, float x, float y)
 			0.5       // Fall speed
 	  ),
 	  rectangle(sf::Vector2f((PLAYER_WIDTH / 2.0) - 8.0, PLAYER_HEIGHT / 2.0)),
-	  texture("arthur1"),
-	  moveSpeed(0.22), jumpSpeed(0.8)
+	  animation("still"), texture("arthur1"),
+	  moveSpeed(0.22), jumpSpeed(0.8), frame(0), throwTime(0),
+	  jumps(0),
+	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false)
 {
 	// Box
 	rectangle.setOrigin(10.0f, 37.0f);
@@ -25,42 +27,39 @@ Player::Player(TextureManager &textureManager, float x, float y)
 	sprite.setScale(sf::Vector2f(2.0f, 2.0f));
 
 	// Animations
-	animations["still"].push_back(sf::IntRect(7, 3, 24, 37));
+	animations["still"].emplace_back(7, 3, 24, 37);
 
-	animations["crouch"].push_back(sf::IntRect(-2, 122, 33, 35));
+	animations["crouch"].emplace_back(-2, 122, 33, 35);
 
-	animations["jumpu"].push_back(sf::IntRect(0, 45, 38, 37));
-	animations["jumpu2"].push_back(sf::IntRect(34, 45, 38, 37));
+	animations["jumpu"].emplace_back(0, 45, 38, 37);
+	animations["jumpu2"].emplace_back(34, 45, 38, 37);
 
-	animations["jumps"].push_back(sf::IntRect(78, 45, 36, 37));
-	animations["jumps2"].push_back(sf::IntRect(120, 45, 36, 37));
+	animations["jumps"].emplace_back(78, 45, 36, 37);
+	animations["jumps2"].emplace_back(120, 45, 36, 37);
 
-	animations["jumpi"].push_back(sf::IntRect(152, 45, 28, 37));
+	animations["jumpi"].emplace_back(152, 45, 28, 37);
 	
-	animations["run"].push_back(sf::IntRect(34, 3, 28, 37));
-	animations["run"].push_back(sf::IntRect(151, 3, 28, 37));
-	animations["run"].push_back(sf::IntRect(64, 3, 28, 37));
-	animations["run"].push_back(sf::IntRect(92, 3, 28, 37));
-	animations["run"].push_back(sf::IntRect(184, 3, 28, 37));
-	animations["run"].push_back(sf::IntRect(118, 3, 28, 37));
+	animations["run"].emplace_back(34, 3, 28, 37);
+	animations["run"].emplace_back(151, 3, 28, 37);
+	animations["run"].emplace_back(64, 3, 28, 37);
+	animations["run"].emplace_back(92, 3, 28, 37);
+	animations["run"].emplace_back(184, 3, 28, 37);
+	animations["run"].emplace_back(118, 3, 28, 37);
 
-	animations["throw"].push_back(sf::IntRect(3, 83, 28, 37));
-	animations["throw"].push_back(sf::IntRect(33, 82, 36, 37));
+	animations["throw"].emplace_back(3, 83, 28, 37);
+	animations["throw"].emplace_back(33, 82, 36, 37);
 
 	animations["throwi"].push_back(animations.at("throw")[0]);
 	animations["throwi"].push_back(animations.at("throw")[1]);
 	animations["throwi"].push_back(animations.at("jumpi")[0]);
 	animations["throwi"].push_back(animations.at("jumpi")[0]);
-	animations["throwi"].push_back(sf::IntRect(178, 45, 26, 37));
-	animations["throwi"].push_back(sf::IntRect(178, 45, 26, 37));
-	animations["throwi"].push_back(sf::IntRect(202, 45, 26, 37));
-	animations["throwi"].push_back(sf::IntRect(202, 45, 26, 37));
+	animations["throwi"].emplace_back(178, 45, 26, 37);
+	animations["throwi"].emplace_back(178, 45, 26, 37);
+	animations["throwi"].emplace_back(202, 45, 26, 37);
+	animations["throwi"].emplace_back(202, 45, 26, 37);
 
-	animations["throwc"].push_back(sf::IntRect(28, 122, 33, 35));
-	animations["throwc"].push_back(sf::IntRect(59, 122, 38, 35));
-
-	animation = "still";
-	frame = 0;
+	animations["throwc"].emplace_back(28, 122, 33, 35);
+	animations["throwc"].emplace_back(59, 122, 38, 35);
 }
 
 
