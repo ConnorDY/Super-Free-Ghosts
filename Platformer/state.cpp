@@ -25,16 +25,6 @@ float State::getViewX() const
 
 
 // Actions
-void State::draw(sf::RenderWindow &window) const
-{
-
-}
-
-void State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
-{
-
-}
-
 sf::Time State::restartClock()
 {
 	return clock.restart();

@@ -28,8 +28,8 @@ class State
 		float getViewX() const;
 
 		// Actions
-		virtual void draw(sf::RenderWindow &window) const;
-		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler);
+		virtual void draw(sf::RenderWindow &window) = 0;
+		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler) = 0;
 		sf::Time restartClock();
 };
 

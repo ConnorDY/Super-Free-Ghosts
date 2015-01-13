@@ -65,7 +65,7 @@ void Level01_State::reset(TextureManager &textureManager)
 	start(textureManager);
 }
 
-void Level01_State::draw(sf::RenderWindow &window) const
+void Level01_State::draw(sf::RenderWindow &window)
 {
 	player->draw(window);
 
