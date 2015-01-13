@@ -1,6 +1,6 @@
 CXX=g++
-LIBS=-lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system
-CPPFLAGS=-Wall
+LIBS=-lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system -Wall -Wextra -pedantic
+CPPFLAGS=-Wall -Wextra -pedantic
 CXXFLAGS=-std=c++11
 OBJS=state_manager.o texture_manager.o sound_manager.o input_handler.o object.o projectile.o player.o block.o state.o menu_state.o level01_state.o main.o
 OUTPUT=platformer
