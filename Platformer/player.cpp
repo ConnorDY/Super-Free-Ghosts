@@ -240,6 +240,7 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view
 
 	if (getX() < sprite.getOrigin().x * 2.0f) setX(sprite.getOrigin().x * 2.0f);
 
+	// TODO: Game Maker takes another victim
 	// Update view
 	float vx = getX();
 	float vy = getY();

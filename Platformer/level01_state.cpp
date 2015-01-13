@@ -114,16 +114,21 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	/* Update Stuff */
 
 	// Update objects and player
+	// TODO: Resolve by overriding virtually
 	player->update(deltaTime, window, getView(), textureManager, soundManager, objects);
 
+	auto iter = objects.begin();
 	auto end = objects.end();
-	for (auto iter = objects.begin(); iter != end; iter++)
+	while (iter != end)
 	{
 		if ((*iter)->shouldDelete())
 		{
-			objects.erase(iter);
+			delete *iter;
+			iter = objects.erase(iter);
+			continue;
 		}
-		else switch ((*iter)->getType())
+
+		switch ((*iter)->getType())
 		{
 			default:
 				(*iter)->update(deltaTime, objects);
@@ -134,6 +139,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 				((Projectile*)*iter)->update(deltaTime, getViewX(), objects);
 				break;
 		}
+		iter++;
 	}
 
 	std::cout << "Time: " << (deltaTime.asMicroseconds() / 1000.0) << std::endl;
