@@ -15,9 +15,6 @@ Level01_State::~Level01_State()
 // Actions
 void Level01_State::start(TextureManager &textureManager)
 {
-	// Reserve space in objects vector
-	objects.reserve(256);
-
 	// Ready Music
 	if (music.openFromFile("res/01.ogg"))
 	{
