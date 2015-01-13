@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <map>
 #include <string>
+#include <memory>
 
 #include "globals.h"
 #include "input_handler.h"
@@ -18,8 +19,7 @@ class StateManager
 		TextureManager &textureManager;
 		SoundManager &soundManager;
 		InputHandler inputHandler;
-		std::map<std::string, State*> states;
-		std::string currentState;
+		std::unique_ptr<State> currentState;
 	public:
 		StateManager(TextureManager &tM, SoundManager &sM);
 		~StateManager();
@@ -27,9 +27,7 @@ class StateManager
 		// Actions
 		void draw(sf::RenderWindow &window);
 		void update(sf::RenderWindow &window);
-		void loadState(std::string state);
-		void unloadState(std::string state);
-		void setState(std::string state);
+		void setState(std::unique_ptr<State> state);
 };
 
 #endif

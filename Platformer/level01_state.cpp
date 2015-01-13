@@ -1,4 +1,5 @@
 #include "level01_state.h"
+#include "menu_state.h"
 
 Level01_State::Level01_State(StateManager &sM, TextureManager &textureManager)
 	: State(sM)
@@ -103,7 +104,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 		if (inputHandler.checkInput("exit", event))
 		{
-			getStateManager().setState("menu");
+			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
 			exit = true;
 		}
 		else
