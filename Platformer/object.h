@@ -17,6 +17,7 @@ class Object
 		};
 
 		Object();
+		virtual ~Object();
 
 		// Mutators
 		void setX(float xx);

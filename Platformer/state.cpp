@@ -5,6 +5,11 @@ State::State()
 	
 }
 
+State::~State()
+{
+
+}
+
 
 // Mutators
 void State::setView(sf::View v) { view = v; }

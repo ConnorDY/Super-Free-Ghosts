@@ -17,6 +17,7 @@ class State
 		sf::Clock clock;
 	public:
 		State();
+		virtual ~State();
 
 		// Mutators
 		void setView(sf::View v);

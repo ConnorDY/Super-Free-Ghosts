@@ -14,6 +14,11 @@ Object::Object()
 	gravity = false;
 }
 
+Object::~Object()
+{
+
+}
+
 
 /* Mutators */
 void Object::setX(float xx) { x = xx; }
