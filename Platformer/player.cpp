@@ -111,7 +111,7 @@ sf::FloatRect Player::getRect()
 
 bool Player::placeFree(float xx, float yy, std::vector<Object*> const objects) const
 {
-	sf::FloatRect temp_rect(xx - (sprite.getOrigin().x * sprite.getScale().y), yy - (sprite.getOrigin().y * sprite.getScale().y), width, height);
+	sf::FloatRect temp_rect(xx - (sprite.getOrigin().x * sprite.getScale().x), yy - (sprite.getOrigin().y * sprite.getScale().y), width, height);
 
 	return std::none_of(objects.begin(), objects.end(), [&](Object* const &elem)
 	{
