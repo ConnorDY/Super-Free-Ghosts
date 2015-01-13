@@ -125,6 +125,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 		{
 			delete *iter;
 			iter = objects.erase(iter);
+			end = objects.end();
 			continue;
 		}
 
