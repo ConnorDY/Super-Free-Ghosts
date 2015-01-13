@@ -26,6 +26,7 @@ Menu_State::~Menu_State()
 /* Actions */
 void Menu_State::draw(sf::RenderWindow &window)
 {
+	window.setView(window.getDefaultView());
 	sprLogo.setPosition(sf::Vector2f(402.0f, 80.0f));
 	window.draw(sprLogo);
 
