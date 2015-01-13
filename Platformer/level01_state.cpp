@@ -68,10 +68,10 @@ void Level01_State::reset(TextureManager &textureManager)
 void Level01_State::draw(sf::RenderWindow &window)
 {
 	player->draw(window);
-	
-	for (unsigned int i = 0; i < objects.size(); i++)
+
+	for (auto object : objects)
 	{
-		objects[i]->draw(window);
+		object->draw(window);
 	}
 }
 
@@ -116,21 +116,22 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	// Update objects and player
 	player->update(deltaTime, window, getView(), textureManager, soundManager, objects);
 
-	for (unsigned int i = 0; i < objects.size(); i++)
+	auto end = objects.end();
+	for (auto iter = objects.begin(); iter != end; iter++)
 	{
-		if (objects[i]->shouldDelete())
+		if ((*iter)->shouldDelete())
 		{
-			objects.erase(objects.begin() + i);
-			i--;
+			objects.erase(iter);
 		}
-		else switch (objects[i]->getType())
+		else switch ((*iter)->getType())
 		{
 			default:
-				objects[i]->update(deltaTime, objects);
+				(*iter)->update(deltaTime, objects);
 				break;
 
+			// TODO: Resolve by overriding virtually
 			case Object::Type::Projectile:
-				((Projectile*)objects[i])->update(deltaTime, getViewX(), objects);
+				((Projectile*)*iter)->update(deltaTime, getViewX(), objects);
 				break;
 		}
 	}
