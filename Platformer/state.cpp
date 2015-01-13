@@ -8,6 +8,7 @@ State::State()
 
 // Mutators
 void State::setView(sf::View v) { view = v; }
+void State::setStateManager(StateManager *sM) { stateManager = sM; }
 
 
 // Accesors
@@ -17,6 +18,7 @@ float State::getViewX()
 {
 	return view.getCenter().x - (WINDOW_WIDTH / 2.0f);
 }
+StateManager* State::getStateManager() { return stateManager; }
 
 
 // Actions

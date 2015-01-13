@@ -78,11 +78,13 @@
     <ClCompile Include="input_handler.cpp" />
     <ClCompile Include="level01_state.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu_state.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="projectile.cpp" />
     <ClCompile Include="sound_manager.cpp" />
     <ClCompile Include="state.cpp" />
+    <ClCompile Include="state_manager.cpp" />
     <ClCompile Include="texture_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -90,11 +92,13 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="input_handler.h" />
     <ClInclude Include="level01_state.h" />
+    <ClInclude Include="menu_state.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="projectile.h" />
     <ClInclude Include="sound_manager.h" />
     <ClInclude Include="state.h" />
+    <ClInclude Include="state_manager.h" />
     <ClInclude Include="texture_manager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

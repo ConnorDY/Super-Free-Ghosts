@@ -12,9 +12,10 @@ class Object
 		enum class Type
 		{
 			Obj,
-            Block,
-            Projectile
-        };
+			Block,
+			Projectile
+		};
+
 		Object();
 
 		// Mutators
@@ -26,7 +27,7 @@ class Object
 		void setHeight(float h);
 		void setSolid(bool s);
 		void setDelete(bool d);
-		void setType(Type t);
+		void setType(Object::Type t);
 
 		// Accessors
 		float getX();
@@ -43,9 +44,8 @@ class Object
 		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
 
 		// Actions
-		void draw(sf::RenderWindow &window);
+		virtual void draw(sf::RenderWindow &window);
 		void update(sf::Time deltaTime, std::vector<Object*> objects);
-
 	private:
 		sf::Sprite sprite;
 		float x, y, dx, dy, width, height, maxFallSpeed;

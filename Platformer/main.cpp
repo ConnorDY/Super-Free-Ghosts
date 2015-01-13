@@ -4,10 +4,7 @@
 #include "globals.h"
 #include "texture_manager.h"
 #include "sound_manager.h"
-#include "level01_state.h"
-#include "projectile.h"
-#include "player.h"
-#include "block.h"
+#include "state_manager.h"
 
 
 /* Load Game's Resources */
@@ -31,29 +28,24 @@ int main()
 	SoundManager soundManager;
 	loadRes(textureManager, soundManager);
 
-	// Create Input Handler
-	InputHandler inputHandler;
-
-	// Load Level01
-	Level01_State* state = new Level01_State(textureManager);
+	// Create State Manager
+	StateManager *stateManager = new StateManager(&textureManager, &soundManager);
 	
 	// Create Window
-	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Platformer", sf::Style::Close | sf::Style::Titlebar);
+	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Super Free Ghosts", sf::Style::Close | sf::Style::Titlebar);
 	//window.setVerticalSyncEnabled(true);
 
 	// Game Loop
 	while (window.isOpen())
 	{
 		// Update State
-		state->update(window, textureManager, soundManager, inputHandler);
+		stateManager->update(window);
 
 		// Draw the State
 		window.clear();
-		state->draw(window);
+		stateManager->draw(window);
 		window.display();
 	}
-
-	delete state;
 
 	// Exit
 	return 0;

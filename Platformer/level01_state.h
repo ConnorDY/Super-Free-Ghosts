@@ -18,7 +18,7 @@ class Level01_State : public State
 		std::vector<Object*> objects;
 		sf::Music music;
 	public:
-		Level01_State(TextureManager &textureManager);
+		Level01_State(StateManager *sM, TextureManager &textureManager);
 		~Level01_State();
 
 		// Actions

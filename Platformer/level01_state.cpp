@@ -1,7 +1,8 @@
 #include "level01_state.h"
 
-Level01_State::Level01_State(TextureManager &textureManager)
+Level01_State::Level01_State(StateManager *sM, TextureManager &textureManager)
 {
+	setStateManager(sM);
 	start(textureManager);
 }
 
@@ -73,20 +74,7 @@ void Level01_State::draw(sf::RenderWindow &window)
 	
 	for (unsigned int i = 0; i < objects.size(); i++)
 	{
-		switch (objects[i]->getType())
-		{
-			default:
-				objects[i]->draw(window);
-				break;
-
-			case Object::Type::Block:
-				((Block*)objects[i])->draw(window);
-				break;
-
-			case Object::Type::Projectile:
-				((Projectile*)objects[i])->draw(window);
-				break;
-		}
+		objects[i]->draw(window);
 	}
 }
 
