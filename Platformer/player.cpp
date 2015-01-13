@@ -4,14 +4,14 @@
 #define PLAYER_HEIGHT 74
 Player::Player(TextureManager &textureManager, float x, float y)
 	: Object(
-	Object::Type::Obj,
-	x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
-	0.0f, 0.0f,     // dx, dy
-	true,     // solid
-	0.00235f,  // Gravity
-	0.5f       // Fall speed
-	),
-	rectangle(sf::Vector2f((PLAYER_WIDTH / 2.0f) - 8.0f, PLAYER_HEIGHT / 2.0f)),
+			Object::Type::Obj,
+			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
+			0.0f, 0.0f,     // dx, dy
+			true,           // solid
+			0.00235f,       // Gravity
+			0.5f            // Fall speed
+	  ),
+	  rectangle(sf::Vector2f((PLAYER_WIDTH / 2.0f) - 8.0f, PLAYER_HEIGHT / 2.0f)),
 	  animation("still"), texture("arthur1"),
 	  moveSpeed(0.22f), jumpSpeed(0.8f), frame(0.0f), throwTime(0.0f),
 	  jumps(0),
