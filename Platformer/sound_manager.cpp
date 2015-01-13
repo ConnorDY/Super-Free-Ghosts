@@ -11,13 +11,11 @@ SoundManager::~SoundManager()
 	{
 		delete it.second;
 	}
-	sounds.clear();
 
 	for (auto const &it : buffers)
 	{
 		delete it.second;
 	}
-	buffers.clear();
 }
 
 
