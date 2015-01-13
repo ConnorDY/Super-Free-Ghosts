@@ -4,7 +4,7 @@ Projectile::Projectile(float xx, float yy, int dir, TextureManager &textureManag
 {
 	setX(xx);
 	setY(yy);
-	setDX((float)dir / 1.25);
+	setDX((float)dir / 1.25f);
 	
 	setWidth(60.0f);
 	setHeight(12.0f);

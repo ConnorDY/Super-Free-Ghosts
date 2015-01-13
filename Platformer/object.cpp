@@ -68,13 +68,13 @@ void Object::update(sf::Time deltaTime, std::vector<Object*> objects)
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 
 	// Gravity
-	if (placeFree(x, y + 1, objects)) dy += gravity * mstime;
+	if (placeFree(x, y + 1, objects)) dy += gravity * (float)mstime;
 	else if (dy > 0.0f) dy = 0.0f;
 
 	//if (dy > maxFallSpeed) dy = maxFallSpeed;
 
 	// Update Y
-	for (float i = fabs(dy) * mstime; i > 0; i--)
+	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
 	{
 		float j = copysign(i, dy);
 		if (placeFree(x, y + j, objects))
@@ -85,7 +85,7 @@ void Object::update(sf::Time deltaTime, std::vector<Object*> objects)
 	}
 
 	// Update X
-	for (float i = fabs(dx) * mstime; i > 0; i--)
+	for (float i = fabs(dx) * (float)mstime; i > 0; i--)
 	{
 		float j = copysign(i, dx);
 		if (placeFree(x + j, y, objects))
