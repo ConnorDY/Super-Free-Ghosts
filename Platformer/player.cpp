@@ -4,16 +4,16 @@
 #define PLAYER_HEIGHT 74
 Player::Player(TextureManager &textureManager, float x, float y)
 	: Object(
-			Object::Type::Obj,
-			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
-			0, 0,     // dx, dy
-			true,     // solid
-			0.00235,  // Gravity
-			0.5       // Fall speed
-	  ),
-	  rectangle(sf::Vector2f((PLAYER_WIDTH / 2.0) - 8.0, PLAYER_HEIGHT / 2.0)),
+	Object::Type::Obj,
+	x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
+	0.0f, 0.0f,     // dx, dy
+	true,     // solid
+	0.00235f,  // Gravity
+	0.5f       // Fall speed
+	),
+	rectangle(sf::Vector2f((PLAYER_WIDTH / 2.0f) - 8.0f, PLAYER_HEIGHT / 2.0f)),
 	  animation("still"), texture("arthur1"),
-	  moveSpeed(0.22), jumpSpeed(0.8), frame(0), throwTime(0),
+	  moveSpeed(0.22f), jumpSpeed(0.8f), frame(0.0f), throwTime(0.0f),
 	  jumps(0),
 	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false)
 {
@@ -84,7 +84,7 @@ int Player::getDir() const
 
 bool Player::placeFree(float x, float y, std::vector<Object*> const objects) const
 {
-	sf::FloatRect temp_rect(x - (sprite.getOrigin().x * sprite.getScale().x), y - (sprite.getOrigin().y * sprite.getScale().y), getWidth(), getHeight());
+	sf::FloatRect temp_rect(x - (sprite.getOrigin().x * fabs(sprite.getScale().x)), y - (sprite.getOrigin().y * fabs(sprite.getScale().y)), getWidth(), getHeight());
 
 	return std::none_of(objects.begin(), objects.end(), [&](Object* const &elem)
 	{
@@ -128,7 +128,7 @@ void Player::draw(sf::RenderWindow &window)
 void Player::move(int dir)
 {
 	if (getDY() == 0 && !jumped) setDX(dir * moveSpeed);
-	if (dir != 0) sprite.setScale(sf::Vector2f(2 * dir, 2));
+	if (dir != 0) sprite.setScale(sf::Vector2f(2.0f * dir, 2.0f));
 }
 
 void Player::jump(int dir, SoundManager &soundManager)

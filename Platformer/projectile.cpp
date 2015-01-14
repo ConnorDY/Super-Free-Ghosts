@@ -4,7 +4,7 @@ Projectile::Projectile(float x, float y, int dir, TextureManager &textureManager
 	: Object(
 			Object::Type::Projectile,
 			x, y, 60, 12,
-			0.8 * dir, 0,
+			0.8f * dir, 0,
 			false, false
 	  )
 {
