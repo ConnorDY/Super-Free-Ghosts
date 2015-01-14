@@ -11,7 +11,8 @@ class Menu_State : public State
 {
 	private:
 		std::vector<std::string> menuOptions;
-		sf::Music music;
+		sf::Sprite sprLogo;
+		sf::Font fnt;
 	public:
 		Menu_State(StateManager &sM, TextureManager &textureManager);
 		virtual ~Menu_State();
