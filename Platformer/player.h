@@ -25,8 +25,10 @@ class Player : public Object
 		float moveSpeed, jumpSpeed, frame, throwTime;
 		int jumps;
 		bool jumped, midJump, midThrow, flipped, crouching;
-		void updateAnimation(sf::Time deltaTime);
 		sf::Clock jumpTimer, throwTimer;
+
+		// Actions
+		void updateAnimation(sf::Time deltaTime);
 	public:
 		Player(TextureManager &textureManager, float x, float y);
 

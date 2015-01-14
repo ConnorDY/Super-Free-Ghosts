@@ -9,6 +9,7 @@
 #include "object.h"
 #include "player.h"
 #include "projectile.h"
+#include "zombie.h"
 #include "block.h"
 
 class Level01_State : public State

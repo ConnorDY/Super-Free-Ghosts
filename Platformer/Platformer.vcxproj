@@ -86,6 +86,7 @@
     <ClCompile Include="state.cpp" />
     <ClCompile Include="state_manager.cpp" />
     <ClCompile Include="texture_manager.cpp" />
+    <ClCompile Include="zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
@@ -100,6 +101,7 @@
     <ClInclude Include="state.h" />
     <ClInclude Include="state_manager.h" />
     <ClInclude Include="texture_manager.h" />
+    <ClInclude Include="zombie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

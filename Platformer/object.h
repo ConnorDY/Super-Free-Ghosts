@@ -13,7 +13,8 @@ class Object
 		{
 			Obj,
 			Block,
-			Projectile
+			Projectile,
+			Zombie
 		};
 
 		explicit Object(
@@ -51,7 +52,7 @@ class Object
 		bool shouldDelete() const;
 		Type getType() const;
 
-		sf::FloatRect getRect() const;
+		virtual sf::FloatRect getRect() const;
 		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
 
 		// Actions

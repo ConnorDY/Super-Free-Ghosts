@@ -46,6 +46,9 @@ void Level01_State::start(TextureManager &textureManager)
 	object = new Block(textureManager, 1632.0f, 504.0f, 512.0f, 96.0f);
 	objects.push_back(object);
 
+	object = new Zombie(textureManager, 256.0f, 300.0f);
+	objects.push_back(object);
+
 	// Create player
 	player = new Player(textureManager, 30.0f, 468.0f);
 	
@@ -144,6 +147,10 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 			// TODO: Resolve by overriding virtually
 			case Object::Type::Projectile:
 				((Projectile*)*iter)->update(deltaTime, getViewX(), objects);
+				break;
+
+			case Object::Type::Zombie:
+				((Zombie*)*iter)->update(deltaTime, objects);
 				break;
 		}
 		iter++;
