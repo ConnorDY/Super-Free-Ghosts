@@ -106,13 +106,11 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
 			return;
 		}
-		else
-		{
-			if (inputHandler.checkInput("up", event)) player->jump(moveH, soundManager); // Jumping
-			if (inputHandler.checkInput("action", event)) player->throwWeapon(objects, player->getDir(), textureManager, soundManager); // Throw Weapon
 
-			if (inputHandler.checkInput("debug0", event)) player->changeTexture(textureManager, "arthur0");
-		}
+		if (inputHandler.checkInput("up", event)) player->jump(moveH, soundManager); // Jumping
+		if (inputHandler.checkInput("action", event)) player->throwWeapon(objects, player->getDir(), textureManager, soundManager); // Throw Weapon
+
+		if (inputHandler.checkInput("debug0", event)) player->changeTexture(textureManager, "arthur0");
 	}
 
 	player->move(moveH);
