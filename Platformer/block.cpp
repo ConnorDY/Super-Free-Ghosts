@@ -39,7 +39,7 @@ void Block::draw(sf::RenderWindow &window)
 		window.draw(sprite);
 
 		// Ground underneath
-		for (float j = 0; getY() + 38.0f + j < WINDOW_HEIGHT; j++)
+		for (float j = 0; getY() + 38.0f + j < getY() + getHeight(); j++)
 		{
 			sprite.setTextureRect(sf::IntRect(0, 38, 16, 16));
 			sprite.setOrigin(sf::Vector2f(0.0f, 0.0f));

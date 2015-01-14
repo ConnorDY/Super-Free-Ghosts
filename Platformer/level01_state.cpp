@@ -25,13 +25,13 @@ void Level01_State::start(TextureManager &textureManager)
 	}
 
 	// Create Objects
-	Object *object = new Block(textureManager, 0.0f, 568.0f, 640.0f, 32.0f);
+	Object *object = new Block(textureManager, 0.0f, 568.0f, 256.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Block(textureManager, 256.0f, 536.0f, 256.0f, 32.0f);
+	object = new Block(textureManager, 256.0f, 536.0f, 256.0f, 64.0f);
 	objects.push_back(object);
 
-	object = new Block(textureManager, 512.0f, 504.0f, 128.0f, 64.0f);
+	object = new Block(textureManager, 512.0f, 504.0f, 128.0f, 96.0f);
 	objects.push_back(object);
 
 	object = new Block(textureManager, 768.0f, 568.0f, 256.0f, 32.0f);
