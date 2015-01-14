@@ -85,7 +85,6 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 	/* Input */
 	sf::Event event;
-	bool exit = false;
 
 	int moveH = inputHandler.checkInput("right") - inputHandler.checkInput("left"); // Horizontal Movement
 	bool crouching = inputHandler.checkInput("down"); // Crouching
@@ -105,7 +104,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 		if (inputHandler.checkInput("exit", event))
 		{
 			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
-			exit = true;
+			return;
 		}
 		else
 		{
@@ -116,43 +115,40 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 		}
 	}
 
-	if (!exit)
+	player->move(moveH);
+	player->setCrouching(crouching);
+
+
+	/* Update Stuff */
+
+	// Update objects and player
+	// TODO: Resolve by overriding virtually
+	player->update(deltaTime, window, getView(), textureManager, soundManager, objects);
+
+	auto iter = objects.begin();
+	auto end = objects.end();
+	while (iter != end)
 	{
-		player->move(moveH);
-		player->setCrouching(crouching);
-
-
-		/* Update Stuff */
-
-		// Update objects and player
-		// TODO: Resolve by overriding virtually
-		player->update(deltaTime, window, getView(), textureManager, soundManager, objects);
-
-		auto iter = objects.begin();
-		auto end = objects.end();
-		while (iter != end)
+		if ((*iter)->shouldDelete())
 		{
-			if ((*iter)->shouldDelete())
-			{
-				delete *iter;
-				iter = objects.erase(iter);
-				end = objects.end();
-				continue;
-			}
-
-			switch ((*iter)->getType())
-			{
-			default:
-				(*iter)->update(deltaTime, objects);
-				break;
-
-				// TODO: Resolve by overriding virtually
-			case Object::Type::Projectile:
-				((Projectile*)*iter)->update(deltaTime, getViewX(), objects);
-				break;
-			}
-			iter++;
+			delete *iter;
+			iter = objects.erase(iter);
+			end = objects.end();
+			continue;
 		}
+
+		switch ((*iter)->getType())
+		{
+		default:
+			(*iter)->update(deltaTime, objects);
+			break;
+
+			// TODO: Resolve by overriding virtually
+		case Object::Type::Projectile:
+			((Projectile*)*iter)->update(deltaTime, getViewX(), objects);
+			break;
+		}
+		iter++;
 	}
 	std::cout << "Time: " << (deltaTime.asMicroseconds() / 1000.0) << std::endl;
 }
