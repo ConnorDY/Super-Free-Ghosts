@@ -78,19 +78,19 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 			break;
 		}
 
-		if (inputHandler.checkInput("up", event))
+		if (inputHandler.checkInput(InputHandler::Input::Up, event))
 		{
 			if (currentOption == 0) currentOption = menuOptions.size() - 1;
 			else currentOption--;
 		}
 
-		if (inputHandler.checkInput("down", event))
+		if (inputHandler.checkInput(InputHandler::Input::Down, event))
 		{
 			if (currentOption == menuOptions.size() - 1) currentOption = 0;
 			else currentOption++;
 		}
 
-		if (inputHandler.checkInput("action", event))
+		if (inputHandler.checkInput(InputHandler::Input::Action, event))
 		{
 			switch (currentOption)
 			{

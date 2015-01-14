@@ -7,6 +7,18 @@
 
 class InputHandler
 {
+	public:
+		enum Input
+		{
+			Left, Right, Up, Down,
+			Action, Exit, Debug0
+		};
+
+		InputHandler();
+
+		// Actions
+		bool checkInput(Input i, sf::Event e);
+		bool checkInput(Input i);
 	private:
 		enum InputType
 		{
@@ -22,13 +34,7 @@ class InputHandler
 			sf::Mouse::Button mouseButton;
 		};
 
-		std::map<std::string, InputKeys*> Keys;
-	public:
-		InputHandler();
-
-		// Actions
-		bool checkInput(std::string k, sf::Event e);
-		bool checkInput(std::string k);
+		InputKeys *Inputs[7];
 };
 
 #endif

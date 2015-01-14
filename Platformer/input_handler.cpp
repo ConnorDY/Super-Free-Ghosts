@@ -7,42 +7,42 @@ InputHandler::InputHandler()
 	key->inputType = Key;
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Left;
-	Keys["left"] = key;
+	Inputs[Input::Left] = key;
 
 	// Right
 	key = new InputKeys();
 	key->inputType = Key;
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Right;
-	Keys["right"] = key;
+	Inputs[Input::Right] = key;
 
 	// Down
 	key = new InputKeys();
 	key->inputType = Key;
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Down;
-	Keys["down"] = key;
+	Inputs[Input::Down] = key;
 
 	// Jump/Up
 	key = new InputKeys();
 	key->inputType = Key;
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Up;
-	Keys["up"] = key;
+	Inputs[Input::Up] = key;
 
 	// Throw Weapon
 	key = new InputKeys();
 	key->inputType = Key;
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Z;
-	Keys["action"] = key;
+	Inputs[Input::Action] = key;
 
 	// Exit
 	key = new InputKeys();
 	key->inputType = Key;
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Escape;
-	Keys["exit"] = key;
+	Inputs[Input::Exit] = key;
 
 
 	/* Debug */
@@ -52,28 +52,28 @@ InputHandler::InputHandler()
 	key->inputType = Key;
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::E;
-	Keys["debug0"] = key;
+	Inputs[Input::Debug0] = key;
 }
 
 
 /* Actions */
-bool InputHandler::checkInput(std::string k, sf::Event e)
+bool InputHandler::checkInput(Input i, sf::Event e)
 {
 	// Mouse event
-	if (Keys.at(k)->inputType == MouseInput &&
-		Keys.at(k)->eventType == e.type &&
-		Keys.at(k)->mouseButton == e.mouseButton.button) return true;
+	if (Inputs[i]->inputType == MouseInput &&
+		Inputs[i]->eventType == e.type &&
+		Inputs[i]->mouseButton == e.mouseButton.button) return true;
 	// KeyPress event
-	else if (Keys.at(k)->inputType == Key &&
-		Keys.at(k)->eventType == e.type &&
-		Keys.at(k)->keyCode == e.key.code) return true;
+	else if (Inputs[i]->inputType == Key &&
+		Inputs[i]->eventType == e.type &&
+		Inputs[i]->keyCode == e.key.code) return true;
 	else return false;
 }
 
-bool InputHandler::checkInput(std::string k)
+bool InputHandler::checkInput(Input i)
 {
 	// KeyHeld event
-	if (Keys.at(k)->inputType == Key &&
-		sf::Keyboard::isKeyPressed(Keys.at(k)->keyCode)) return true;
+	if (Inputs[i]->inputType == Key &&
+		sf::Keyboard::isKeyPressed(Inputs[i]->keyCode)) return true;
 	else return false;
 }

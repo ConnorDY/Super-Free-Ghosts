@@ -86,8 +86,8 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	/* Input */
 	sf::Event event;
 
-	int moveH = inputHandler.checkInput("right") - inputHandler.checkInput("left"); // Horizontal Movement
-	bool crouching = inputHandler.checkInput("down"); // Crouching
+	int moveH = inputHandler.checkInput(InputHandler::Input::Right) - inputHandler.checkInput(InputHandler::Input::Left); // Horizontal Movement
+	bool crouching = inputHandler.checkInput(InputHandler::Input::Down); // Crouching
 
 	while (window.pollEvent(event))
 	{
@@ -101,16 +101,16 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 				break;
 		}
 
-		if (inputHandler.checkInput("exit", event))
+		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
 			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
 			return;
 		}
 
-		if (inputHandler.checkInput("up", event)) player->jump(moveH, soundManager); // Jumping
-		if (inputHandler.checkInput("action", event)) player->throwWeapon(objects, player->getDir(), textureManager, soundManager); // Throw Weapon
+		if (inputHandler.checkInput(InputHandler::Input::Up, event)) player->jump(moveH, soundManager); // Jumping
+		if (inputHandler.checkInput(InputHandler::Input::Action, event)) player->throwWeapon(objects, player->getDir(), textureManager, soundManager); // Throw Weapon
 
-		if (inputHandler.checkInput("debug0", event)) player->changeTexture(textureManager, "arthur0");
+		if (inputHandler.checkInput(InputHandler::Input::Debug0, event)) player->changeTexture(textureManager, "arthur0");
 	}
 
 	player->move(moveH);
@@ -137,16 +137,17 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 		switch ((*iter)->getType())
 		{
-		default:
-			(*iter)->update(deltaTime, objects);
-			break;
+			default:
+				(*iter)->update(deltaTime, objects);
+				break;
 
 			// TODO: Resolve by overriding virtually
-		case Object::Type::Projectile:
-			((Projectile*)*iter)->update(deltaTime, getViewX(), objects);
-			break;
+			case Object::Type::Projectile:
+				((Projectile*)*iter)->update(deltaTime, getViewX(), objects);
+				break;
 		}
 		iter++;
 	}
+
 	std::cout << "Time: " << (deltaTime.asMicroseconds() / 1000.0) << std::endl;
 }
