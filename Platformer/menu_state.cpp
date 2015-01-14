@@ -53,5 +53,23 @@ void Menu_State::draw(sf::RenderWindow &window)
 
 void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
 {
+	restartClock();
 
+	// Get Input
+	sf::Event event;
+
+	while (window.pollEvent(event))
+	{
+		switch (event.type)
+		{
+		default:
+			break;
+
+		case sf::Event::Closed:
+			window.close();
+			break;
+		}
+
+		if (inputHandler.checkInput("throw", event)) getStateManager().setState("level01"); // Load Level 01
+	}
 }

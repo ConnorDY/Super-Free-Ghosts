@@ -84,6 +84,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 	/* Input */
 	sf::Event event;
+	bool exit = false;
 
 	int moveH = inputHandler.checkInput("right") - inputHandler.checkInput("left"); // Horizontal Movement
 	bool crouching = inputHandler.checkInput("down"); // Crouching
@@ -100,48 +101,57 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 				break;
 		}
 
-		if (inputHandler.checkInput("exit", event)) reset(textureManager); // Reset Level
-		if (inputHandler.checkInput("jump", event)) player->jump(moveH, soundManager); // Jumping
-		if (inputHandler.checkInput("throw", event)) player->throwWeapon(objects, player->getDir(), textureManager, soundManager); // Throw Weapon
+		if (inputHandler.checkInput("exit", event))
+		{
+			getStateManager().setState("menu");
+			exit = true;
+		}
+		else
+		{
+			if (inputHandler.checkInput("jump", event)) player->jump(moveH, soundManager); // Jumping
+			if (inputHandler.checkInput("throw", event)) player->throwWeapon(objects, player->getDir(), textureManager, soundManager); // Throw Weapon
 
-		if (inputHandler.checkInput("debug0", event)) player->changeTexture(textureManager, "arthur0");
+			if (inputHandler.checkInput("debug0", event)) player->changeTexture(textureManager, "arthur0");
+		}
 	}
 
-	player->move(moveH);
-	player->setCrouching(crouching);
-
-
-	/* Update Stuff */
-
-	// Update objects and player
-	// TODO: Resolve by overriding virtually
-	player->update(deltaTime, window, getView(), textureManager, soundManager, objects);
-
-	auto iter = objects.begin();
-	auto end = objects.end();
-	while (iter != end)
+	if (!exit)
 	{
-		if ((*iter)->shouldDelete())
-		{
-			delete *iter;
-			iter = objects.erase(iter);
-			end = objects.end();
-			continue;
-		}
+		player->move(moveH);
+		player->setCrouching(crouching);
 
-		switch ((*iter)->getType())
+
+		/* Update Stuff */
+
+		// Update objects and player
+		// TODO: Resolve by overriding virtually
+		player->update(deltaTime, window, getView(), textureManager, soundManager, objects);
+
+		auto iter = objects.begin();
+		auto end = objects.end();
+		while (iter != end)
 		{
+			if ((*iter)->shouldDelete())
+			{
+				delete *iter;
+				iter = objects.erase(iter);
+				end = objects.end();
+				continue;
+			}
+
+			switch ((*iter)->getType())
+			{
 			default:
 				(*iter)->update(deltaTime, objects);
 				break;
 
-			// TODO: Resolve by overriding virtually
+				// TODO: Resolve by overriding virtually
 			case Object::Type::Projectile:
 				((Projectile*)*iter)->update(deltaTime, getViewX(), objects);
 				break;
+			}
+			iter++;
 		}
-		iter++;
 	}
-
 	std::cout << "Time: " << (deltaTime.asMicroseconds() / 1000.0) << std::endl;
 }

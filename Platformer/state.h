@@ -26,6 +26,7 @@ class State
 		sf::View& getView();
 		sf::Clock const& getClock() const;
 		float getViewX() const;
+		StateManager& getStateManager();
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window) = 0;
