@@ -10,8 +10,7 @@ class InputHandler
 	private:
 		enum InputType
 		{
-			KeyPress,
-			KeyHeld,
+			Key,
 			MouseInput,
 			JoystickInput
 		};

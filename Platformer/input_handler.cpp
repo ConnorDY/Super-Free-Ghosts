@@ -4,39 +4,42 @@ InputHandler::InputHandler()
 {
 	// Left
 	InputKeys *key = new InputKeys();
-	key->inputType = KeyHeld;
+	key->inputType = Key;
+	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Left;
 	Keys["left"] = key;
 
 	// Right
 	key = new InputKeys();
-	key->inputType = KeyHeld;
+	key->inputType = Key;
+	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Right;
 	Keys["right"] = key;
 
 	// Down
 	key = new InputKeys();
-	key->inputType = KeyHeld;
+	key->inputType = Key;
+	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Down;
 	Keys["down"] = key;
 
 	// Jump/Up
 	key = new InputKeys();
-	key->inputType = KeyPress;
+	key->inputType = Key;
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Up;
-	Keys["jump"] = key;
+	Keys["up"] = key;
 
 	// Throw Weapon
 	key = new InputKeys();
-	key->inputType = KeyPress;
+	key->inputType = Key;
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Z;
-	Keys["throw"] = key;
+	Keys["action"] = key;
 
 	// Exit
 	key = new InputKeys();
-	key->inputType = KeyPress;
+	key->inputType = Key;
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Escape;
 	Keys["exit"] = key;
@@ -46,7 +49,7 @@ InputHandler::InputHandler()
 
 	// Change Arthur's Texture
 	key = new InputKeys();
-	key->inputType = KeyPress;
+	key->inputType = Key;
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::E;
 	Keys["debug0"] = key;
@@ -61,7 +64,7 @@ bool InputHandler::checkInput(std::string k, sf::Event e)
 		Keys.at(k)->eventType == e.type &&
 		Keys.at(k)->mouseButton == e.mouseButton.button) return true;
 	// KeyPress event
-	else if (Keys.at(k)->inputType == KeyPress &&
+	else if (Keys.at(k)->inputType == Key &&
 		Keys.at(k)->eventType == e.type &&
 		Keys.at(k)->keyCode == e.key.code) return true;
 	else return false;
@@ -70,7 +73,7 @@ bool InputHandler::checkInput(std::string k, sf::Event e)
 bool InputHandler::checkInput(std::string k)
 {
 	// KeyHeld event
-	if (Keys.at(k)->inputType == KeyHeld &&
+	if (Keys.at(k)->inputType == Key &&
 		sf::Keyboard::isKeyPressed(Keys.at(k)->keyCode)) return true;
 	else return false;
 }

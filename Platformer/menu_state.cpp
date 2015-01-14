@@ -14,6 +14,9 @@ Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager)
 
 	// Menu Options
 	menuOptions.push_back("Start");
+	menuOptions.push_back("Exit");
+
+	currentOption = 0;
 }
 
 Menu_State::~Menu_State()
@@ -31,13 +34,17 @@ void Menu_State::draw(sf::RenderWindow &window)
 
 	float xx = 400.0f, yy = 360.0f;
 
-	for (std::string s : menuOptions)
+	for (unsigned int i = 0; i < menuOptions.size(); i++)
 	{
 		// Create text
 		sf::Text text;
 		text.setFont(fnt);
 		text.setCharacterSize(18);
-		text.setString(s);
+		text.setString(menuOptions.at(i));
+
+		// Text colour
+		if (currentOption == i) text.setColor(sf::Color::Yellow);
+		else text.setColor(sf::Color::White);
 
 		// Center text
 		sf::FloatRect textRect = text.getLocalBounds();
@@ -45,6 +52,7 @@ void Menu_State::draw(sf::RenderWindow &window)
 
 		// Set position
 		text.setPosition(sf::Vector2f(round(xx), round(yy)));
+		yy += 32;
 
 		// Draw text
 		window.draw(text);
@@ -70,6 +78,35 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 			break;
 		}
 
-		if (inputHandler.checkInput("throw", event)) getStateManager().setState(std::unique_ptr<State>(new Level01_State(getStateManager(), textureManager))); // Load Level 01
+		if (inputHandler.checkInput("up", event))
+		{
+			if (currentOption == 0) currentOption = menuOptions.size() - 1;
+			else currentOption--;
+		}
+
+		if (inputHandler.checkInput("down", event))
+		{
+			if (currentOption == menuOptions.size() - 1) currentOption = 0;
+			else currentOption++;
+		}
+
+		if (inputHandler.checkInput("action", event))
+		{
+			switch (currentOption)
+			{
+				default:
+					break;
+
+				// Load Level 01
+				case 0:
+					getStateManager().setState(std::unique_ptr<State>(new Level01_State(getStateManager(), textureManager)));
+					break;
+
+				// Exit
+				case 1:
+					std::exit(0);
+					break;
+			}
+		}
 	}
 }
