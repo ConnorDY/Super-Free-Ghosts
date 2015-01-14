@@ -37,5 +37,5 @@ void SoundManager::loadSound(const std::string &name, const std::string &filenam
 
 void SoundManager::playSound(const std::string &sound)
 {
-	this->sounds.at(sound)->play();
+	if (sounds.find(sound) != sounds.end()) this->sounds.at(sound)->play();
 }

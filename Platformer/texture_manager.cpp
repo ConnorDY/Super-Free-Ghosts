@@ -26,5 +26,6 @@ void TextureManager::loadTexture(const std::string &name, const std::string &fil
 
 sf::Texture& TextureManager::getRef(const std::string &texture)
 {
-	return this->textures.at(texture);
+	if (textures.find(texture) != textures.end()) return this->textures.at(texture);
+	else return sf::Texture();
 }
