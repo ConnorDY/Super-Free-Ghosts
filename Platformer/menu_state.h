@@ -13,7 +13,7 @@ class Menu_State : public State
 		std::vector<std::string> menuOptions;
 		sf::Sprite sprLogo;
 		sf::Font fnt;
-		unsigned int currentOption;
+		unsigned int currentOption = 0;
 	public:
 		Menu_State(StateManager &sM, TextureManager &textureManager);
 		virtual ~Menu_State();

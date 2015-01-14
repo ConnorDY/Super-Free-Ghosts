@@ -13,6 +13,7 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 	textureManager.loadTexture("arthur0", "res/arthur0.png");
 	textureManager.loadTexture("arthur1", "res/arthur1.png");
 	textureManager.loadTexture("weapons", "res/weapons.png");
+	textureManager.loadTexture("tiles", "res/tiles.png");
 	textureManager.loadTexture("logo", "res/logo.png");
 
 	soundManager.loadSound("jump", "res/jump.wav");

@@ -25,25 +25,25 @@ void Level01_State::start(TextureManager &textureManager)
 	}
 
 	// Create Objects
-	Object *object = new Block(0.0f, 568.0f, 640.0f, 32.0f);
+	Object *object = new Block(textureManager, 0.0f, 568.0f, 640.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Block(256.0f, 536.0f, 256.0f, 32.0f);
+	object = new Block(textureManager, 256.0f, 536.0f, 256.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Block(512.0f, 504.0f, 128.0f, 64.0f);
+	object = new Block(textureManager, 512.0f, 504.0f, 128.0f, 64.0f);
 	objects.push_back(object);
 
-	object = new Block(768.0f, 568.0f, 256.0f, 32.0f);
+	object = new Block(textureManager, 768.0f, 568.0f, 256.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Block(1152.0f, 568.0f, 64.0f, 32.0f);
+	object = new Block(textureManager, 1152.0f, 568.0f, 64.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Block(1472.0f, 568.0f, 64.0f, 32.0f);
+	object = new Block(textureManager, 1472.0f, 568.0f, 64.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Block(1632.0f, 504.0f, 512.0f, 96.0f);
+	object = new Block(textureManager, 1632.0f, 504.0f, 512.0f, 96.0f);
 	objects.push_back(object);
 
 	// Create player
@@ -68,12 +68,12 @@ void Level01_State::reset(TextureManager &textureManager)
 
 void Level01_State::draw(sf::RenderWindow &window)
 {
-	player->draw(window);
-
 	for (auto object : objects)
 	{
 		object->draw(window);
 	}
+
+	player->draw(window);
 }
 
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)

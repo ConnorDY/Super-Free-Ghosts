@@ -15,8 +15,6 @@ Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager)
 	// Menu Options
 	menuOptions.push_back("Start");
 	menuOptions.push_back("Exit");
-
-	currentOption = 0;
 }
 
 Menu_State::~Menu_State()
@@ -90,7 +88,7 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 			else currentOption++;
 		}
 
-		if (inputHandler.checkInput(InputHandler::Input::Action, event))
+		if (inputHandler.checkInput(InputHandler::Input::Action, event) || inputHandler.checkInput(InputHandler::Input::Start, event))
 		{
 			switch (currentOption)
 			{
