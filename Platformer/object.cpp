@@ -26,6 +26,7 @@ void Object::setDY(float dyy) { dy = dyy; }
 void Object::setWidth(float w) { width = w; }
 void Object::setHeight(float h) { height = h; }
 void Object::setGravity(float g) { gravity = g; }
+void Object::setMaxFallSpeed(float s) { maxFallSpeed = s; }
 void Object::setSolid(bool s) { solid = s; }
 void Object::setDelete(bool d) { del = d; }
 void Object::setType(Object::Type t) { _type = t; }
@@ -39,6 +40,7 @@ float Object::getDY() const { return dy; }
 float Object::getWidth() const { return width; }
 float Object::getHeight() const { return height; }
 float Object::getGravity() const { return gravity; }
+float Object::getMaxFallSpeed() const { return maxFallSpeed; }
 bool Object::isSolid() const { return solid; }
 bool Object::shouldDelete() const { return del; }
 Object::Type Object::getType() const { return _type; }
@@ -76,7 +78,7 @@ void Object::update(sf::Time deltaTime, std::vector<Object*> const objects)
 	if (placeFree(x, y + 1, objects)) dy += gravity * (float)mstime;
 	else if (dy > 0.0f) dy = 0.0f;
 
-	//if (dy > maxFallSpeed) dy = maxFallSpeed;
+	if (dy > maxFallSpeed) dy = maxFallSpeed;
 
 	// Update Y
 	for (float i = fabs(dy) * (float)mstime; i > 0; i--)

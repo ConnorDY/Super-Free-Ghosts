@@ -37,6 +37,7 @@ class Object
 		virtual void setWidth(float w);
 		virtual void setHeight(float h);
 		void setGravity(float g);
+		void setMaxFallSpeed(float s);
 		void setSolid(bool s);
 		void setDelete(bool d);
 		void setType(Object::Type t);
@@ -49,6 +50,7 @@ class Object
 		float getWidth() const;
 		float getHeight() const;
 		float getGravity() const;
+		float getMaxFallSpeed() const;
 		bool isSolid() const;
 		bool shouldDelete() const;
 		Type getType() const;

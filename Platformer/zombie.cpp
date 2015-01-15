@@ -65,12 +65,10 @@ void Zombie::draw(sf::RenderWindow &window)
 
 void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 {
-	if (inCasket) setDY(0); // Can't fall while in the casket
+	if (inCasket) setMaxFallSpeed(0); else setMaxFallSpeed(0.5);
 	if (!placeFree(getX(), getY() + 1, objects) && getDX() == 0) setDX(-0.075f); // Hit the ground
 
 	Object::update(deltaTime, objects);
-
-	if (inCasket) setY(getY() - getDY()); // TODO: not this
 
 	if (!placeFree(getX() + getDX(), getY(), objects) || getX() <= 0.0f)
 	{
