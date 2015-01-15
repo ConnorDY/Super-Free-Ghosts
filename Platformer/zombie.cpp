@@ -70,6 +70,8 @@ void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 
 	Object::update(deltaTime, objects);
 
+	if (inCasket) setY(getY() - getDY()); // TODO: not this
+
 	if (!placeFree(getX() + getDX(), getY(), objects) || getX() <= 0.0f)
 	{
 		// Turn around
