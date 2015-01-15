@@ -14,7 +14,7 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
 	animation("walk"),
 	moveSpeed(0.22f), frame(0.0f),
-	inCasket(false)
+	inCasket(false), turning(false)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef("zombie"));
@@ -69,11 +69,20 @@ void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 
 	if (!placeFree(getX() + getDX(), getY(), objects) || getX() <= 0.0f)
 	{
+		// Turn around
 		setDX(-getDX());
 		sprite.setScale(sf::Vector2f(2.0f * getDir(), 2.0f));
+		turning = true;
+		turnTimer.restart();
 	}
 
+	// Timers
+	if (turning && turnTimer.getElapsedTime().asSeconds() >= 0.1) turning = false;
+
 	// Animations
+	if (turning) setAnimation("turn");
+	else setAnimation("walk");
+
 	updateAnimation(deltaTime);
 }
 
