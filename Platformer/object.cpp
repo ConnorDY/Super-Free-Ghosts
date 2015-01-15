@@ -57,7 +57,7 @@ bool Object::placeFree(float xx, float yy, std::vector<Object*> const objects) c
 
 	return std::none_of(objects.begin(), objects.end(), [&](Object* const &elem)
 	{
-		return elem->isSolid() && temp_rect.intersects(elem->getRect());
+		return this != elem && elem->isSolid() && temp_rect.intersects(elem->getRect());
 	});
 }
 
