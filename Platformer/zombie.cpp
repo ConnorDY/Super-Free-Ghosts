@@ -6,15 +6,15 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	: Object(
 			Object::Type::Zombie,
 			x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
-			-0.075f, 0.0f,     // dx, dy
+			0.0f, 0.0f,     // dx, dy
 			false,           // solid
 			0.00185f,       // Gravity
 			0.5f            // Fall speed
 	),
 	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
-	animation("walk"),
+	animation("casket"),
 	moveSpeed(0.22f), frame(0.0f),
-	inCasket(false), turning(false)
+	inCasket(true), turning(false)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef("zombie"));
@@ -59,12 +59,15 @@ void Zombie::draw(sf::RenderWindow &window)
 		window.draw(rectangle);
 	}
 
-	sprite.setPosition(sf::Vector2f(roundf(getX() + (sprite.getOrigin().x * 2.0f)), roundf(getY() + (sprite.getOrigin().y * 2.0f))));
+	sprite.setPosition(sf::Vector2f(roundf(getX() + (sprite.getOrigin().x * 2.0f)) - (12.0f * inCasket), roundf(getY() + (sprite.getOrigin().y * 2.0f) + (2.0f * inCasket))));
 	window.draw(sprite);
 }
 
 void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 {
+	if (inCasket) setDY(0); // Can't fall while in the casket
+	if (!placeFree(getX(), getY() + 1, objects) && getDX() == 0) setDX(-0.075f); // Hit the ground
+
 	Object::update(deltaTime, objects);
 
 	if (!placeFree(getX() + getDX(), getY(), objects) || getX() <= 0.0f)
@@ -78,9 +81,12 @@ void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 
 	// Timers
 	if (turning && turnTimer.getElapsedTime().asSeconds() >= 0.1) turning = false;
+	if (inCasket && casketTimer.getElapsedTime().asSeconds() >= 0.7) inCasket = false;
 
 	// Animations
-	if (turning) setAnimation("turn");
+	if (inCasket) setAnimation("casket");
+	else if (placeFree(getX(), getY() + 1, objects) && getDX() == 0.0f) setAnimation("fall");
+	else if (turning) setAnimation("turn");
 	else setAnimation("walk");
 
 	updateAnimation(deltaTime);
