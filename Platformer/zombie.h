@@ -33,8 +33,6 @@ class Zombie : public Object
 
 		// Accesors
 		int getDir() const;
-		sf::FloatRect getRect();
-		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);

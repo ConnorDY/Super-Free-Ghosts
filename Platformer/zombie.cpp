@@ -11,15 +11,11 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	0.00235f,       // Gravity
 	0.5f            // Fall speed
 	),
-	rectangle(sf::Vector2f((ZOMBIE_WIDTH / 2.0f) - 8.0f, ZOMBIE_HEIGHT / 2.0f)),
+	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
 	animation("casket"),
 	moveSpeed(0.22f), frame(0.0f),
 	inCasket(false)
 {
-	// Box
-	rectangle.setOrigin(11.0f, 40.0f);
-	rectangle.setScale(sf::Vector2f(2.0f, 2.0f));
-
 	// Sprite
 	sprite.setTexture(textureManager.getRef("zombie"));
 	sprite.setOrigin(11.0f, 40.0f);
@@ -45,21 +41,6 @@ int Zombie::getDir() const
 	return dir;
 }
 
-sf::FloatRect Zombie::getRect()
-{
-	return sf::FloatRect(getX() - (sprite.getOrigin().x * fabs(sprite.getScale().x)), getY() - (sprite.getOrigin().y * fabs(sprite.getScale().y)), getWidth(), getHeight());
-}
-
-bool Zombie::placeFree(float x, float y, std::vector<Object*> const objects) const
-{
-	sf::FloatRect temp_rect(x - (sprite.getOrigin().x * fabs(sprite.getScale().x)), y - (sprite.getOrigin().y * fabs(sprite.getScale().y)), getWidth(), getHeight());
-
-	return std::none_of(objects.begin(), objects.end(), [&](Object* const &elem)
-	{
-		return elem->isSolid() && temp_rect.intersects(elem->getRect());
-	});
-}
-
 
 /* Actions */
 void Zombie::draw(sf::RenderWindow &window)
@@ -67,7 +48,7 @@ void Zombie::draw(sf::RenderWindow &window)
 	rectangle.setPosition(sf::Vector2f(getX(), getY()));
 	window.draw(rectangle);
 
-	sprite.setPosition(sf::Vector2f(getX(), getY()));
+	sprite.setPosition(sf::Vector2f(roundf(getX() + (sprite.getOrigin().x * 2.0f)), roundf(getY() + (sprite.getOrigin().y * 2.0f))));
 	window.draw(sprite);
 }
 

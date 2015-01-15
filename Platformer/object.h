@@ -52,7 +52,7 @@ class Object
 		bool shouldDelete() const;
 		Type getType() const;
 
-		virtual sf::FloatRect getRect() const;
+		sf::FloatRect getRect() const;
 		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
 
 		// Actions

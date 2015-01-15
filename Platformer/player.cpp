@@ -11,16 +11,12 @@ Player::Player(TextureManager &textureManager, float x, float y)
 			0.00185f,       // Gravity
 			0.5f            // Fall speed
 	  ),
-	  rectangle(sf::Vector2f((PLAYER_WIDTH / 2.0f), PLAYER_HEIGHT / 2.0f)),
+	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
 	  animation("still"), texture("arthur1"),
 	  moveSpeed(0.2f), jumpSpeed(0.6f), frame(0.0f), throwTime(0.0f),
 	  jumps(0),
 	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false)
 {
-	// Box
-	//rectangle.setOrigin(10.0f, 37.0f);
-	rectangle.setScale(sf::Vector2f(2.0f, 2.0f));
-
 	// Sprite
 	sprite.setTexture(textureManager.getRef(texture));
 	sprite.setOrigin(14.0f, 37.0f);
