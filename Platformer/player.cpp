@@ -4,10 +4,10 @@
 #define PLAYER_HEIGHT 74
 Player::Player(TextureManager &textureManager, float x, float y)
 	: Object(
-			Object::Type::Obj,
+			Object::Type::Player,
 			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
 			0.0f, 0.0f,     // dx, dy
-			true,           // solid
+			false,           // solid
 			0.00185f,       // Gravity
 			0.5f            // Fall speed
 	  ),

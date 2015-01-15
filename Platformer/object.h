@@ -14,7 +14,8 @@ class Object
 			Obj,
 			Block,
 			Projectile,
-			Zombie
+			Zombie,
+			Player
 		};
 
 		explicit Object(

@@ -51,6 +51,7 @@ void Level01_State::start(TextureManager &textureManager)
 
 	// Create player
 	player = new Player(textureManager, 30.0f, 468.0f);
+	objects.push_back(player);
 	
 	// Create the view
 	setView(sf::View(sf::Vector2f((float)WINDOW_WIDTH / 2.0f, (float)WINDOW_HEIGHT / 2.0f), sf::Vector2f((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT)));
@@ -58,7 +59,6 @@ void Level01_State::start(TextureManager &textureManager)
 
 void Level01_State::end()
 {
-	delete player;
 	for (Object* i : objects) delete i;
 	objects.clear();
 }
@@ -75,8 +75,6 @@ void Level01_State::draw(sf::RenderWindow &window)
 	{
 		object->draw(window);
 	}
-
-	player->draw(window);
 }
 
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
@@ -124,7 +122,6 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 	// Update objects and player
 	// TODO: Resolve by overriding virtually
-	player->update(deltaTime, window, getView(), textureManager, soundManager, objects);
 
 	auto iter = objects.begin();
 	auto end = objects.end();
@@ -151,6 +148,10 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 			case Object::Type::Zombie:
 				((Zombie*)*iter)->update(deltaTime, objects);
+				break;
+
+			case Object::Type::Player:
+				((Player*)*iter)->update(deltaTime, window, getView(), textureManager, soundManager, objects);
 				break;
 		}
 		iter++;

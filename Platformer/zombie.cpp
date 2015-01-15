@@ -7,7 +7,7 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 			Object::Type::Zombie,
 			x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
 			-0.075f, 0.0f,     // dx, dy
-			true,           // solid
+			false,           // solid
 			0.00185f,       // Gravity
 			0.5f            // Fall speed
 	),
@@ -66,6 +66,12 @@ void Zombie::draw(sf::RenderWindow &window)
 void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 {
 	Object::update(deltaTime, objects);
+
+	if (!placeFree(getX() + getDX(), getY(), objects) || getX() <= 0.0f)
+	{
+		setDX(-getDX());
+		sprite.setScale(sf::Vector2f(2.0f * getDir(), 2.0f));
+	}
 
 	// Animations
 	updateAnimation(deltaTime);
