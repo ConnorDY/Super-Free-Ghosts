@@ -4,6 +4,9 @@
 *.o
 *.obj
 
+# Dependency tracking
+*.d
+
 # Precompiled Headers
 *.gch
 *.pch
