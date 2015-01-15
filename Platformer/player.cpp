@@ -121,6 +121,7 @@ void Player::jump(int dir, SoundManager &soundManager)
 {
 	if (jumps < 2)
 	{
+		if (jumps == 0 && getDY() != 0.0f) return;
 		if (jumps == 1)
 		{
 			setAnimation("jumpi");
