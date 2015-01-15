@@ -65,33 +65,7 @@ void Zombie::draw(sf::RenderWindow &window)
 
 void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 {
-	double mstime = deltaTime.asMicroseconds() / 1000.0;
-
-	// Gravity
-	if (placeFree(getX(), getY() + 1, objects)) setDY(getDY() + getGravity() * (float)mstime);
-	else if (getDY() > 0.0f) setDY(0);
-
-	// Update Y
-	for (float i = fabs(getDY()) * (float)mstime; i > 0; i--)
-	{
-		float j = copysign(i, getDY());
-		if (placeFree(getX(), getY() + j, objects))
-		{
-			setY(getY() + j);
-			break;
-		}
-	}
-
-	// Update X
-	for (float i = fabs(getDX()) * (float)mstime; i > 0; i--)
-	{
-		float j = copysign(i, getDX());
-		if (placeFree(getX() + j, getY(), objects))
-		{
-			setX(getX() + j);
-			break;
-		}
-	}
+	Object::update(deltaTime, objects);
 
 	// Animations
 	updateAnimation(deltaTime);
