@@ -18,29 +18,7 @@ Object::~Object()
 }
 
 
-/* Mutators */
-void Object::setX(float xx) { x = xx; }
-void Object::setY(float yy) { y = yy; }
-void Object::setDX(float dxx) { dx = dxx; }
-void Object::setDY(float dyy) { dy = dyy; }
-void Object::setWidth(float w) { width = w; }
-void Object::setHeight(float h) { height = h; }
-void Object::setGravity(float g) { gravity = g; }
-void Object::setMaxFallSpeed(float s) { maxFallSpeed = s; }
-void Object::setSolid(bool s) { solid = s; }
-void Object::setDelete(bool d) { del = d; }
-void Object::setType(Object::Type t) { _type = t; }
-
-
 /* Accessors */
-float Object::getX() const { return x; }
-float Object::getY() const { return y; }
-float Object::getDX() const { return dx; }
-float Object::getDY() const { return dy; }
-float Object::getWidth() const { return width; }
-float Object::getHeight() const { return height; }
-float Object::getGravity() const { return gravity; }
-float Object::getMaxFallSpeed() const { return maxFallSpeed; }
 bool Object::isSolid() const { return solid; }
 bool Object::shouldDelete() const { return del; }
 Object::Type Object::getType() const { return _type; }
@@ -65,11 +43,6 @@ bool Object::placeFree(float xx, float yy, std::vector<Object*> const objects) c
 
 
 /* Actions */
-void Object::draw(sf::RenderWindow &window)
-{
-	
-}
-
 void Object::update(sf::Time deltaTime, std::vector<Object*> const objects)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;

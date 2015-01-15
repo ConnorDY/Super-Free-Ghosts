@@ -36,7 +36,7 @@ class Zombie : public Object
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
-		void update(sf::Time deltaTime, std::vector<Object*> const objects);
+		virtual void update(sf::Time deltaTime, std::vector<Object*> const objects);
 };
 
 #endif

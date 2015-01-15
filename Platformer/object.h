@@ -29,28 +29,7 @@ class Object
 		);
 		virtual ~Object();
 
-		// Mutators
-		void setX(float xx);
-		void setY(float yy);
-		void setDX(float dxx);
-		void setDY(float dyy);
-		virtual void setWidth(float w);
-		virtual void setHeight(float h);
-		void setGravity(float g);
-		void setMaxFallSpeed(float s);
-		void setSolid(bool s);
-		void setDelete(bool d);
-		void setType(Object::Type t);
-
 		// Accessors
-		float getX() const;
-		float getY() const;
-		float getDX() const;
-		float getDY() const;
-		float getWidth() const;
-		float getHeight() const;
-		float getGravity() const;
-		float getMaxFallSpeed() const;
 		bool isSolid() const;
 		bool shouldDelete() const;
 		Type getType() const;
@@ -59,13 +38,13 @@ class Object
 		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
 
 		// Actions
-		virtual void draw(sf::RenderWindow &window);
+		virtual void draw(sf::RenderWindow &window) = 0;
 		virtual void update(sf::Time deltaTime, std::vector<Object*> const objects);
-	private:
+	protected:
 		sf::Sprite sprite;
 		float x, y, dx, dy, width, height, gravity, maxFallSpeed;
 		bool solid, del;
-		Type _type;
+		Type const _type;
 };
 
 #endif

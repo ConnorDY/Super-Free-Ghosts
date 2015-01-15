@@ -8,7 +8,7 @@ Projectile::Projectile(float x, float y, int dir, TextureManager &textureManager
 			false, false
 	  )
 {
-	rectangle.setSize(sf::Vector2f(getWidth(), getHeight()));
+	rectangle.setSize(sf::Vector2f(width, height));
 	rectangle.setScale(sf::Vector2f((float)dir, 1.0f));
 
 	// Sprite
@@ -28,10 +28,10 @@ Projectile::~Projectile()
 /* Actions */
 void Projectile::draw(sf::RenderWindow &window)
 {
-	//rectangle.setPosition(roundf(getX()), roundf(getY()));
+	//rectangle.setPosition(roundf(x), roundf(y));
 	//window.draw(rectangle);
 
-	sprite.setPosition(roundf(getX()), roundf(getY()));
+	sprite.setPosition(roundf(x), roundf(y));
 	window.draw(sprite);
 }
 
@@ -42,13 +42,13 @@ void Projectile::update(sf::Time deltaTime, float viewx, std::vector<Object*> ob
 	// Determine the direction the projectile is moving in
 	float sign_x = 0, sign_y = 0;
 
-	if (getDX() > 0.0f) sign_x = 1.0f;
-	else if (getDX() < 0.0f) sign_x = -1.0f;
+	if (dx > 0.0f) sign_x = 1.0f;
+	else if (dx < 0.0f) sign_x = -1.0f;
 
-	if (getDY() > 0.0f) sign_y = 1.0f;
-	else if (getDY() < 0.0f) sign_y = 1.0f;
+	if (dy > 0.0f) sign_y = 1.0f;
+	else if (dy < 0.0f) sign_y = 1.0f;
 
 	// Destroy projectile if it hits a solid object or leaves the room
-	if (!placeFree(getX() + sign_x, getY() + sign_y, objects)) setDelete(true);
-	else if (getX() < viewx - 100.0f || getX() > viewx + WINDOW_WIDTH + 100.0f) setDelete(true);
+	if (!placeFree(x + sign_x, y + sign_y, objects)) del = true;
+	else if (x < viewx - 100.0f || x > viewx + WINDOW_WIDTH + 100.0f) del = true;
 }

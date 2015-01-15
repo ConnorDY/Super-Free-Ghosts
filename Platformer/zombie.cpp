@@ -55,25 +55,25 @@ void Zombie::draw(sf::RenderWindow &window)
 {
 	if (DEBUG_MODE)
 	{
-		rectangle.setPosition(sf::Vector2f(getX(), getY()));
+		rectangle.setPosition(sf::Vector2f(x, y));
 		window.draw(rectangle);
 	}
 
-	sprite.setPosition(sf::Vector2f(roundf(getX() + (sprite.getOrigin().x * 2.0f)) - (12.0f * inCasket), roundf(getY() + (sprite.getOrigin().y * 2.0f) + (2.0f * inCasket))));
+	sprite.setPosition(sf::Vector2f(roundf(x + (sprite.getOrigin().x * 2.0f)) - (12.0f * inCasket), roundf(y + (sprite.getOrigin().y * 2.0f) + (2.0f * inCasket))));
 	window.draw(sprite);
 }
 
 void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 {
-	if (inCasket) setMaxFallSpeed(0); else setMaxFallSpeed(0.5);
-	if (!placeFree(getX(), getY() + 1, objects) && getDX() == 0) setDX(-0.075f); // Hit the ground
+	if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.5;
+	if (!placeFree(x, y + 1, objects) && dx == 0) dx = -0.075f; // Hit the ground
 
 	Object::update(deltaTime, objects);
 
-	if (!placeFree(getX() + getDX(), getY(), objects) || getX() <= 0.0f)
+	if (!placeFree(x + dx, y, objects) || x <= 0.0f)
 	{
 		// Turn around
-		setDX(-getDX());
+		dx = -dx;
 		sprite.setScale(sf::Vector2f(2.0f * getDir(), 2.0f));
 		turning = true;
 		turnTimer.restart();
@@ -85,7 +85,7 @@ void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 
 	// Animations
 	if (inCasket) setAnimation("casket");
-	else if (placeFree(getX(), getY() + 1, objects) && getDX() == 0.0f) setAnimation("fall");
+	else if (placeFree(x, y + 1, objects) && dx == 0.0f) setAnimation("fall");
 	else if (turning) setAnimation("turn");
 	else setAnimation("walk");
 

@@ -9,7 +9,6 @@ class Projectile : public Object
 {
 	private:
 		sf::RectangleShape rectangle;
-		sf::Sprite sprite;
 		std::vector<sf::IntRect> weapons;
 	public:
 		Projectile(float x, float y, int dir, TextureManager &textureManager);

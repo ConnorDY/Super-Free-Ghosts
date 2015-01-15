@@ -64,7 +64,7 @@ void Player::setCrouching(bool c)
 {
 	crouching = c;
 
-	if (getDY() != 0.0f || jumped) crouching = false;
+	if (dy != 0.0f || jumped) crouching = false;
 }
 
 
@@ -82,7 +82,7 @@ int Player::getDir() const
 /* Actions */
 void Player::draw(sf::RenderWindow &window)
 {
-	if (DEBUG_MODE) rectangle.setPosition(roundf(getX()), roundf(getY()));
+	if (DEBUG_MODE) rectangle.setPosition(roundf(x), roundf(y));
 	
 	int sign_scalex;
 	if (sprite.getScale().x >= 0.0f) sign_scalex = 1;
@@ -92,7 +92,7 @@ void Player::draw(sf::RenderWindow &window)
 
 	if (jumped)
 	{
-		if (getDX() == 0.0f)
+		if (dx == 0.0f)
 		{
 			if (midThrow && jumps == 2) adjx = -6.0f;
 			else if (midJump) adjx = -6.0f;
@@ -105,7 +105,7 @@ void Player::draw(sf::RenderWindow &window)
 	else if (crouching) { adjx = -6.0f; adjy = 12.0f; }
 	else adjx = 0.0f;
 
-	sprite.setPosition(roundf(getX() + (sprite.getOrigin().x * 2.0f)) + (adjx * (float)sign_scalex), roundf(getY() + (sprite.getOrigin().y * 2.0f)) + adjy);
+	sprite.setPosition(roundf(x + (sprite.getOrigin().x * 2.0f)) + (adjx * (float)sign_scalex), roundf(y + (sprite.getOrigin().y * 2.0f)) + adjy);
 
 	if (DEBUG_MODE) window.draw(rectangle);
 	window.draw(sprite);
@@ -113,7 +113,7 @@ void Player::draw(sf::RenderWindow &window)
 
 void Player::move(int dir)
 {
-	if (getDY() == 0 && !jumped) setDX(dir * moveSpeed);
+	if (dy == 0 && !jumped) dx = dir * moveSpeed;
 	if (dir != 0) sprite.setScale(sf::Vector2f(2.0f * dir, 2.0f));
 }
 
@@ -121,7 +121,7 @@ void Player::jump(int dir, SoundManager &soundManager)
 {
 	if (jumps < 2)
 	{
-		if (jumps == 0 && getDY() != 0.0f) return;
+		if (jumps == 0 && dy != 0.0f) return;
 		if (jumps == 1)
 		{
 			setAnimation("jumpi");
@@ -129,8 +129,8 @@ void Player::jump(int dir, SoundManager &soundManager)
 			jumpTimer.restart();
 		}
 
-		setDY(-jumpSpeed);
-		setDX(dir * moveSpeed);
+		dy = -jumpSpeed;
+		dx = dir * moveSpeed;
 
 		jumped = true;
 		jumps++;
@@ -161,7 +161,7 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager 
 			adjy = 24.0f;
 		}
 
-		Projectile* weapon = new Projectile(getX() + (sprite.getOrigin().x * 2.0f) + adjx, getY() + (sprite.getOrigin().y * 2.0f) - (35.0f * 2.0f) + adjy, dir, textureManager);
+		Projectile* weapon = new Projectile(x + (sprite.getOrigin().x * 2.0f) + adjx, y + (sprite.getOrigin().y * 2.0f) - (35.0f * 2.0f) + adjy, dir, textureManager);
 		objects.push_back(weapon);
 
 		soundManager.playSound("throw");
@@ -179,10 +179,10 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view
 	}
 
 	// Gravity
-	if (placeFree(getX(), getY() + 1, objects)) setDY(getDY() + getGravity() * (float)mstime);
-	else if (getDY() > 0.0f)
+	if (placeFree(x, y + 1, objects)) dy += gravity * mstime;
+	else if (dy > 0.0f)
 	{
-		setDY(0);
+		dy = 0;
 
 		if (jumped)
 		{
@@ -193,45 +193,45 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view
 
 		soundManager.playSound("land");
 	}
-	else if (getDY() < 0 && !placeFree(getX(), getY() - 1, objects))
+	else if (dy < 0 && !placeFree(x, y - 1, objects))
 	{
-		setDY(0); // Hitting head on the ceiling
+		dy = 0; // Hitting head on the ceiling
 		// TODO play sound?
 	}
 
 	//if (dy > maxFallSpeed) dy = maxFallSpeed;
 
 	// Update Y
-	for (float i = fabs(getDY()) * (float)mstime; i > 0; i--)
+	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
 	{
-		float j = copysign(i, getDY());
-		if (placeFree(getX(), getY() + j, objects))
+		float j = copysign(i, dy);
+		if (placeFree(x, y + j, objects))
 		{
-			setY(getY() + j);
+			y += j;
 			break;
 		}
 	}
 
 	// Update X
-	if ((getDY() == 0.0f && !midThrow && !crouching) || jumped)
+	if ((dy == 0.0f && !midThrow && !crouching) || jumped)
 	{
-		for (float i = fabs(getDX()) * (float)mstime; i > 0; i--)
+		for (float i = fabs(dx) * (float)mstime; i > 0; i--)
 		{
-			float j = copysign(i, getDX());
-			if (placeFree(getX() + j, getY(), objects))
+			float j = copysign(i, dx);
+			if (placeFree(x + j, y, objects))
 			{
-				setX(getX() + j);
+				x += j;
 				break;
 			}
 		}
 	}
 
-	if (getX() < 0.0f) setX(0.0f);
+	if (x < 0.0f) x = 0.0f;
 
 	// TODO: Game Maker takes another victim
 	// Update view
-	float vx = getX();
-	float vy = getY();
+	float vx = x;
+	float vy = y;
 	float vw = view.getSize().x;
 	float vh = view.getSize().y;
 
@@ -256,8 +256,8 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view
 		if (jumps < 2) setAnimation("throw");
 		else setAnimation("throwi");
 	}
-	else if (getDY() > 0.0f && !jumped) setAnimation("still"); // Falling
-	else if (getDX() != 0.0f)
+	else if (dy > 0.0f && !jumped) setAnimation("still"); // Falling
+	else if (dx != 0.0f)
 	{
 		if (jumped)
 		{

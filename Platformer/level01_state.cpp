@@ -82,7 +82,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	sf::Time deltaTime = restartClock();
 
 	/* Restart Level if Player is Outside of the Room */
-	if (player->getY() > WINDOW_HEIGHT + 74.0f) reset(textureManager);
+	if (player->getRect().top > WINDOW_HEIGHT + 74.0f) reset(textureManager);
 
 	/* Input */
 	sf::Event event;
@@ -118,11 +118,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	player->setCrouching(crouching);
 
 
-	/* Update Stuff */
-
 	// Update objects and player
-	// TODO: Resolve by overriding virtually
-
 	auto iter = objects.begin();
 	auto end = objects.end();
 	while (iter != end)
@@ -146,10 +142,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 				((Projectile*)*iter)->update(deltaTime, getViewX(), objects);
 				break;
 
-			case Object::Type::Zombie:
-				((Zombie*)*iter)->update(deltaTime, objects);
-				break;
-
+			// TODO: Resolve by overriding virtually
 			case Object::Type::Player:
 				((Player*)*iter)->update(deltaTime, window, getView(), textureManager, soundManager, objects);
 				break;
