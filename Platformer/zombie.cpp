@@ -1,18 +1,18 @@
 #include "zombie.h"
 
-#define ZOMBIE_WIDTH  46
+#define ZOMBIE_WIDTH  54
 #define ZOMBIE_HEIGHT 80
 Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	: Object(
-	Object::Type::Zombie,
-	x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
-	0.0f, 0.0f,     // dx, dy
-	true,           // solid
-	0.00235f,       // Gravity
-	0.5f            // Fall speed
+			Object::Type::Zombie,
+			x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
+			0.0f, 0.0f,     // dx, dy
+			true,           // solid
+			0.00185f,       // Gravity
+			0.5f            // Fall speed
 	),
 	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
-	animation("casket"),
+	animation("walk"),
 	moveSpeed(0.22f), frame(0.0f),
 	inCasket(false)
 {
@@ -28,6 +28,14 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	animations["casket"].emplace_back(105, 0, 35, 48);
 	animations["casket"].emplace_back(140, 0, 35, 48);
 	animations["casket"].emplace_back(175, 0, 35, 48);
+
+	animations["fall"].emplace_back(0, 50, 27, 40);
+	animations["turn"].emplace_back(28, 50, 27, 40);
+
+	animations["walk"].emplace_back(56, 50, 28, 40);
+	animations["walk"].emplace_back(84, 50, 28, 40);
+	animations["walk"].push_back(animations.at("walk")[0]);
+	animations["walk"].emplace_back(112, 50, 28, 40);
 }
 
 
@@ -45,8 +53,11 @@ int Zombie::getDir() const
 /* Actions */
 void Zombie::draw(sf::RenderWindow &window)
 {
-	rectangle.setPosition(sf::Vector2f(getX(), getY()));
-	window.draw(rectangle);
+	if (DEBUG_MODE)
+	{
+		rectangle.setPosition(sf::Vector2f(getX(), getY()));
+		window.draw(rectangle);
+	}
 
 	sprite.setPosition(sf::Vector2f(roundf(getX() + (sprite.getOrigin().x * 2.0f)), roundf(getY() + (sprite.getOrigin().y * 2.0f))));
 	window.draw(sprite);
@@ -54,6 +65,35 @@ void Zombie::draw(sf::RenderWindow &window)
 
 void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 {
+	double mstime = deltaTime.asMicroseconds() / 1000.0;
+
+	// Gravity
+	if (placeFree(getX(), getY() + 1, objects)) setDY(getDY() + getGravity() * (float)mstime);
+	else if (getDY() > 0.0f) setDY(0);
+
+	// Update Y
+	for (float i = fabs(getDY()) * (float)mstime; i > 0; i--)
+	{
+		float j = copysign(i, getDY());
+		if (placeFree(getX(), getY() + j, objects))
+		{
+			setY(getY() + j);
+			break;
+		}
+	}
+
+	// Update X
+	for (float i = fabs(getDX()) * (float)mstime; i > 0; i--)
+	{
+		float j = copysign(i, getDX());
+		if (placeFree(getX() + j, getY(), objects))
+		{
+			setX(getX() + j);
+			break;
+		}
+	}
+
+	// Animations
 	updateAnimation(deltaTime);
 }
 
@@ -75,7 +115,7 @@ void Zombie::updateAnimation(sf::Time deltaTime)
 	// Adjust frame
 	if (frames > 1)
 	{
-		float speed = 60.0f / 5.2f;
+		float speed = 60.0f / 10.0f;
 
 		if (frame < (float)frames) frame += deltaTime.asSeconds() * speed;
 
