@@ -46,7 +46,7 @@ void Level01_State::start(TextureManager &textureManager)
 	object = new Block(textureManager, 1632.0f, 504.0f, 512.0f, 96.0f);
 	objects.push_back(object);
 
-	object = new Zombie(textureManager, 256.0f, 300.0f);
+	object = new Zombie(textureManager, 540.0f, 300.0f);
 	objects.push_back(object);
 
 	// Create player

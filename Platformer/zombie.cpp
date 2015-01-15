@@ -6,7 +6,7 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	: Object(
 			Object::Type::Zombie,
 			x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
-			0.0f, 0.0f,     // dx, dy
+			-0.075f, 0.0f,     // dx, dy
 			true,           // solid
 			0.00185f,       // Gravity
 			0.5f            // Fall speed
