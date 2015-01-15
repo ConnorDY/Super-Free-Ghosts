@@ -52,7 +52,7 @@ bool Object::placeFree(float xx, float yy, std::vector<Object*> const objects) c
 {
 	float adj = 0.0f;
 
-	if (dx < 0.0f) adj = -width;
+	if (_type == Type::Projectile && dx < 0.0f) adj = -width;
 	sf::FloatRect temp_rect(xx + adj, yy, width, height);
 
 	return std::none_of(objects.begin(), objects.end(), [&](Object* const &elem)

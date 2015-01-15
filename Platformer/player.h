@@ -26,6 +26,7 @@ class Player : public Object
 		int jumps;
 		bool jumped, midJump, midThrow, flipped, crouching;
 		sf::Clock jumpTimer, throwTimer;
+		double total_time = 0.0;
 
 		// Actions
 		void updateAnimation(sf::Time deltaTime);
@@ -37,8 +38,6 @@ class Player : public Object
 		
 		// Accesors
 		int getDir() const;
-
-		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);

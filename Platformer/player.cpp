@@ -8,17 +8,17 @@ Player::Player(TextureManager &textureManager, float x, float y)
 			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
 			0.0f, 0.0f,     // dx, dy
 			true,           // solid
-			0.00235f,       // Gravity
+			0.00185f,       // Gravity
 			0.5f            // Fall speed
 	  ),
-	  rectangle(sf::Vector2f((PLAYER_WIDTH / 2.0f) - 8.0f, PLAYER_HEIGHT / 2.0f)),
+	  rectangle(sf::Vector2f((PLAYER_WIDTH / 2.0f), PLAYER_HEIGHT / 2.0f)),
 	  animation("still"), texture("arthur1"),
-	  moveSpeed(0.22f), jumpSpeed(0.8f), frame(0.0f), throwTime(0.0f),
+	  moveSpeed(0.2f), jumpSpeed(0.6f), frame(0.0f), throwTime(0.0f),
 	  jumps(0),
 	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false)
 {
 	// Box
-	rectangle.setOrigin(10.0f, 37.0f);
+	//rectangle.setOrigin(10.0f, 37.0f);
 	rectangle.setScale(sf::Vector2f(2.0f, 2.0f));
 
 	// Sprite
@@ -82,44 +82,34 @@ int Player::getDir() const
 	return dir;
 }
 
-bool Player::placeFree(float x, float y, std::vector<Object*> const objects) const
-{
-	sf::FloatRect temp_rect(x - (sprite.getOrigin().x * fabs(sprite.getScale().x)), y - (sprite.getOrigin().y * fabs(sprite.getScale().y)), getWidth(), getHeight());
-
-	return std::none_of(objects.begin(), objects.end(), [&](Object* const &elem)
-	{
-		return elem->isSolid() && temp_rect.intersects(elem->getRect());
-	});
-}
-
 
 /* Actions */
 void Player::draw(sf::RenderWindow &window)
 {
-	if (DEBUG_MODE)
-	{
-		rectangle.setScale(sprite.getScale());
-		rectangle.setPosition(roundf(getX()), roundf(getY()));
-	}
+	if (DEBUG_MODE) rectangle.setPosition(roundf(getX()), roundf(getY()));
 	
 	int sign_scalex;
 	if (sprite.getScale().x >= 0.0f) sign_scalex = 1;
 	else sign_scalex = -1;
 
+	float adjx = 0.0f, adjy = 0.0f;
+
 	if (jumped)
 	{
 		if (getDX() == 0.0f)
 		{
-			if (midThrow && jumps == 2) sprite.setPosition(roundf(getX()) - (6.0f * (float)sign_scalex), roundf(getY()));
-			else if (midJump) sprite.setPosition(roundf(getX()) - (6.0f * (float)sign_scalex), roundf(getY()));
-			else if (midThrow) sprite.setPosition(roundf(getX()), roundf(getY()));
-			else sprite.setPosition(roundf(getX()) - (10.0f * (float)sign_scalex), roundf(getY()));
+			if (midThrow && jumps == 2) adjx = -6.0f;
+			else if (midJump) adjx = -6.0f;
+			else if (midThrow) adjx = 0.0f;
+			else adjx = -10.0f;
 		}
-		else if (midThrow) sprite.setPosition(roundf(getX()), roundf(getY()));
-		else sprite.setPosition(roundf(getX()) - (5.0f * (float)sign_scalex), roundf(getY()));
+		else if (midThrow) adjx = 0.0f;
+		else adjx = -5.0f;
 	}
-	else if (crouching) sprite.setPosition(roundf(getX()), roundf(getY()) + 12.0f);
-	else sprite.setPosition(roundf(getX()), roundf(getY()));
+	else if (crouching) { adjx = -6.0f; adjy = 12.0f; }
+	else adjx = 0.0f;
+
+	sprite.setPosition(roundf(getX() + (sprite.getOrigin().x * 2.0f)) + (adjx * (float)sign_scalex), roundf(getY() + (sprite.getOrigin().y * 2.0f)) + adjy);
 
 	if (DEBUG_MODE) window.draw(rectangle);
 	window.draw(sprite);
@@ -167,27 +157,29 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager 
 			flipped = true;
 		}
 
-		float adjx = -(float)getDir() * 20.0f, adjy = 0.0f;
+		float adjx = -(float)getDir() * 16.0f, adjy = 0.0f;
 		if (crouching)
 		{
 			adjx = -(float)getDir() * 8.0f;
 			adjy = 24.0f;
 		}
 
-		Projectile* weapon = new Projectile(getX() + adjx, getY() - (35.0f * 2.0f) + adjy, dir, textureManager);
+		Projectile* weapon = new Projectile(getX() + (sprite.getOrigin().x * 2.0f) + adjx, getY() + (sprite.getOrigin().y * 2.0f) - (35.0f * 2.0f) + adjy, dir, textureManager);
 		objects.push_back(weapon);
 
 		soundManager.playSound("throw");
 	}
 }
 
-//double total_time = 0.0;
-
 void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view, TextureManager &textureManager, SoundManager &soundManager, std::vector<Object*> const objects)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
-	//total_time += mstime;
-	//printf("Total Time: %4.3f\n", (float)total_time);
+	
+	if (DEBUG_MODE)
+	{
+		total_time += mstime;
+		printf("Total Time: %4.3f\n", (float)total_time);
+	}
 
 	// Gravity
 	if (placeFree(getX(), getY() + 1, objects)) setDY(getDY() + getGravity() * (float)mstime);
@@ -237,7 +229,7 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view
 		}
 	}
 
-	if (getX() < sprite.getOrigin().x * 2.0f) setX(sprite.getOrigin().x * 2.0f);
+	if (getX() < 0.0f) setX(0.0f);
 
 	// TODO: Game Maker takes another victim
 	// Update view
