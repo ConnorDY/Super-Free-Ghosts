@@ -8,12 +8,12 @@ Player::Player(TextureManager &textureManager, float x, float y)
 			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
 			0.0f, 0.0f,     // dx, dy
 			false,           // solid
-			0.00185f,       // Gravity
-			0.5f            // Fall speed
+			0.0014f,       // Gravity
+			0.4f            // Fall speed
 	  ),
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
 	  animation("still"), texture("arthur1"),
-	  moveSpeed(0.2f), jumpSpeed(0.6f), frame(0.0f), throwTime(0.0f),
+	  moveSpeed(0.19f), jumpSpeed(0.5f), frame(0.0f), throwTime(0.0f),
 	  jumps(0),
 	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false)
 {
