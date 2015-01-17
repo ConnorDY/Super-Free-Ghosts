@@ -168,7 +168,7 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager 
 	}
 }
 
-void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view, TextureManager &textureManager, SoundManager &soundManager, std::vector<Object*> const objects)
+void Player::update(sf::Time deltaTime, sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, std::vector<Object*> const objects)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 	
@@ -199,8 +199,6 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view
 		// TODO play sound?
 	}
 
-	//if (dy > maxFallSpeed) dy = maxFallSpeed;
-
 	// Update Y
 	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
 	{
@@ -227,19 +225,6 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view
 	}
 
 	if (x < 0.0f) x = 0.0f;
-
-	// TODO: Game Maker takes another victim
-	// Update view
-	float vx = x;
-	float vy = y;
-	float vw = view.getSize().x;
-	float vh = view.getSize().y;
-
-	if (vx < vw / 2.0f) vx = vw / 2.0f;
-	if (vy < vh / 2.0f) vy = vh / 2.0f;
-
-	view.setCenter(vx, vh / 2.0f);
-	window.setView(view);
 
 	// Jump and Throw Timers
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= 0.2f) midJump = false;

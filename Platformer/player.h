@@ -44,7 +44,7 @@ class Player : public Object
 		void jump(int dir, SoundManager &soundManager);
 		void throwWeapon(std::vector<Object*> &objects, int dir, TextureManager &textureManager, SoundManager &soundManager);
 		void move(int dir);
-		void update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view, TextureManager &textureManager, SoundManager &soundManager, std::vector<Object*> const objects);
+		void update(sf::Time deltaTime, sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, std::vector<Object*> const objects);
 		void setAnimation(std::string name);
 		void changeTexture(TextureManager &textureManager, std::string tex);
 };

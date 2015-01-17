@@ -35,6 +35,9 @@ class Object
 		bool getOutsideView() const;
 		Type getType() const;
 
+		float getX() const;
+		float getY() const;
+
 		sf::FloatRect getRect() const;
 		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
 		Object* placeEmpty(float xx, float yy, std::vector<Object*> const objects) const;

@@ -153,11 +153,24 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 			// TODO: Resolve by overriding virtually
 			case Object::Type::Player:
-				((Player*)*iter)->update(deltaTime, window, getView(), textureManager, soundManager, objects);
+				((Player*)*iter)->update(deltaTime, window, textureManager, soundManager, objects);
 				break;
 		}
 		iter++;
 	}
 
+	// Update view
+	float vx = player->getX();
+	float vy = player->getY();
+	float vw = getView().getSize().x;
+	float vh = getView().getSize().y;
+
+	if (vx < vw / 2.0f) vx = vw / 2.0f;
+	if (vy < vh / 2.0f) vy = vh / 2.0f;
+
+	getView().setCenter(vx, vh / 2.0f);
+	window.setView(getView());
+
+	// Output time it took to render this frame
 	std::cout << "Time: " << (deltaTime.asMicroseconds() / 1000.0) << std::endl;
 }

@@ -24,6 +24,9 @@ bool Object::shouldDelete() const { return del; }
 bool Object::getOutsideView() const { return outsideView; }
 Object::Type Object::getType() const { return _type; }
 
+float Object::getX() const { return x; }
+float Object::getY() const { return y; }
+
 sf::FloatRect Object::getRect() const
 {
 	return sf::FloatRect(x, y, width, height);
