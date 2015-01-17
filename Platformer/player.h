@@ -40,6 +40,7 @@ class Player : public Object
 		int getDir() const;
 
 		// Actions
+		float roundc(double n);
 		virtual void draw(sf::RenderWindow &window);
 		void jump(int dir, SoundManager &soundManager);
 		void throwWeapon(std::vector<Object*> &objects, int dir, TextureManager &textureManager, SoundManager &soundManager);

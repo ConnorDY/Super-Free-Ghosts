@@ -1,25 +1,24 @@
 #include "zombie.h"
 
-#define ZOMBIE_WIDTH  54
-#define ZOMBIE_HEIGHT 80
+#define ZOMBIE_WIDTH  27
+#define ZOMBIE_HEIGHT 40
 Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	: Object(
 			Object::Type::Zombie,
 			x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
 			0.0f, 0.0f,     // dx, dy
 			false,           // solid
-			0.00185f,       // Gravity
-			0.5f            // Fall speed
+			0.00185f / 2.0f,       // Gravity
+			0.25f            // Fall speed
 	),
 	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
 	animation("casket"),
-	moveSpeed(0.22f), frame(0.0f),
+	moveSpeed(0.22f / 2.0f), frame(0.0f),
 	inCasket(true), turning(false)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef("zombie"));
 	sprite.setOrigin(11.0f, 40.0f);
-	sprite.setScale(sf::Vector2f(2.0f, 2.0f));
 
 	// Animations
 	animations["casket"].emplace_back(0, 0, 35, 48);
@@ -59,25 +58,25 @@ void Zombie::draw(sf::RenderWindow &window)
 		window.draw(rectangle);
 	}
 
-	sprite.setPosition(sf::Vector2f(roundf(x + (sprite.getOrigin().x * 2.0f)) - (12.0f * inCasket), roundf(y + (sprite.getOrigin().y * 2.0f) + (2.0f * inCasket))));
+	sprite.setPosition(sf::Vector2f(roundf(x + sprite.getOrigin().x) - (6.0f * inCasket), roundf(y + sprite.getOrigin().y + inCasket)));
 	window.draw(sprite);
 }
 
 void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 {
-	if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.5;
-	if (!placeFree(x, y + 1, objects) && dx == 0) dx = -0.075f; // Hit the ground
+	if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.25;
+	if (!placeFree(x, y + 1, objects) && dx == 0) dx = -0.075f / 2.0f; // Hit the ground
 
 	Object::update(deltaTime, objects);
 
 	float adj = ZOMBIE_WIDTH;
 	if (dx < 0) adj *= -1;
 
-	if (!placeFree(x + dx, y, objects) || x <= 0.0f || (placeFree(x + adj, y + 33, objects) && !placeFree(x, y + 1, objects)))
+	if (!placeFree(x + dx, y, objects) || x <= 0.0f || (placeFree(x + adj, y + 17, objects) && !placeFree(x, y + 1, objects)))
 	{
 		// Turn around
 		dx = -dx;
-		sprite.setScale(sf::Vector2f(2.0f * getDir(), 2.0f));
+		sprite.setScale(sf::Vector2f(1.0f * getDir(), 1.0f));
 		turning = true;
 		turnTimer.restart();
 	}

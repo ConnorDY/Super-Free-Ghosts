@@ -18,6 +18,7 @@ class Level01_State : public State
 		Player *player;
 		std::vector<Object*> objects;
 		sf::Music music;
+		sf::Sprite scanlines;
 	public:
 		Level01_State(StateManager &sM, TextureManager &textureManager);
 		virtual ~Level01_State();

@@ -22,6 +22,10 @@ float State::getViewX() const
 {
 	return view.getCenter().x - (WINDOW_WIDTH / 2.0f);
 }
+float State::getViewY() const
+{
+	return view.getCenter().y - (WINDOW_HEIGHT / 2.0f);
+}
 StateManager& State::getStateManager()
 {
 	return stateManager;

@@ -5,6 +5,7 @@ Level01_State::Level01_State(StateManager &sM, TextureManager &textureManager)
 	: State(sM)
 {
 	start(textureManager);
+	scanlines.setTexture(textureManager.getRef("scanlines"));
 }
 
 Level01_State::~Level01_State()
@@ -81,6 +82,9 @@ void Level01_State::draw(sf::RenderWindow &window)
 	{
 		object->draw(window);
 	}
+
+	//scanlines.setPosition(sf::Vector2f(getViewX(), getViewY()));
+	//window.draw(scanlines);
 }
 
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
@@ -88,7 +92,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	sf::Time deltaTime = restartClock();
 
 	/* Restart Level if Player is Outside of the Room */
-	if (player->getRect().top > WINDOW_HEIGHT + 74.0f) reset(textureManager);
+	if (player->getRect().top > WINDOW_HEIGHT) reset(textureManager);
 
 	/* Input */
 	sf::Event event;
@@ -160,8 +164,8 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	}
 
 	// Update view
-	float vx = player->getX();
-	float vy = player->getY();
+	float vx = player->getRect().left;
+	float vy = player->getRect().top;
 	float vw = getView().getSize().x;
 	float vh = getView().getSize().y;
 

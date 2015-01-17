@@ -1,26 +1,25 @@
 #include "player.h"
 
-#define PLAYER_WIDTH  56
-#define PLAYER_HEIGHT 74
+#define PLAYER_WIDTH  23
+#define PLAYER_HEIGHT 37
 Player::Player(TextureManager &textureManager, float x, float y)
 	: Object(
 			Object::Type::Player,
 			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
 			0.0f, 0.0f,     // dx, dy
 			false,           // solid
-			0.0014f,       // Gravity
-			0.4f            // Fall speed
+			0.0014f / 2.0f,       // Gravity
+			0.2f            // Fall speed
 	  ),
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
 	  animation("still"), texture("arthur1"),
-	  moveSpeed(0.19f), jumpSpeed(0.5f), frame(0.0f), throwTime(0.0f),
+	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0),
 	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef(texture));
 	sprite.setOrigin(14.0f, 37.0f);
-	sprite.setScale(sf::Vector2f(2.0f, 2.0f));
 
 	// Animations
 	animations["still"].emplace_back(7, 3, 24, 37);
@@ -80,6 +79,11 @@ int Player::getDir() const
 
 
 /* Actions */
+float Player::roundc(double n)
+{
+	return n; //round(round(round(n) / 2) * 2);
+}
+
 void Player::draw(sf::RenderWindow &window)
 {
 	if (DEBUG_MODE) rectangle.setPosition(roundf(x), roundf(y));
@@ -94,18 +98,18 @@ void Player::draw(sf::RenderWindow &window)
 	{
 		if (dx == 0.0f)
 		{
-			if (midThrow && jumps == 2) adjx = -6.0f;
-			else if (midJump) adjx = -6.0f;
+			if (midThrow && jumps == 2) adjx = -3.0f;
+			else if (midJump) adjx = -3.0f;
 			else if (midThrow) adjx = 0.0f;
-			else adjx = -10.0f;
+			else adjx = -3.0f;
 		}
 		else if (midThrow) adjx = 0.0f;
-		else adjx = -5.0f;
+		else adjx = -3.0f;
 	}
-	else if (crouching) { adjx = -6.0f; adjy = 12.0f; }
+	else if (crouching) { adjx = -3.0f; adjy = 6.0f; }
 	else adjx = 0.0f;
 
-	sprite.setPosition(roundf(x + (sprite.getOrigin().x * 2.0f)) + (adjx * (float)sign_scalex), roundf(y + (sprite.getOrigin().y * 2.0f)) + adjy);
+	sprite.setPosition(roundc(x + sprite.getOrigin().x + (adjx * (float)sign_scalex)), roundc(y + sprite.getOrigin().y + adjy));
 
 	if (DEBUG_MODE) window.draw(rectangle);
 	window.draw(sprite);
@@ -114,7 +118,7 @@ void Player::draw(sf::RenderWindow &window)
 void Player::move(int dir)
 {
 	if (dy == 0 && !jumped) dx = dir * moveSpeed;
-	if (dir != 0) sprite.setScale(sf::Vector2f(2.0f * dir, 2.0f));
+	if (dir != 0) sprite.setScale(sf::Vector2f(dir, 1.0f));
 }
 
 void Player::jump(int dir, SoundManager &soundManager)
@@ -154,14 +158,14 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager 
 			flipped = true;
 		}
 
-		float adjx = -(float)getDir() * 16.0f, adjy = 0.0f;
+		float adjx = -(float)getDir() * 8.0f, adjy = 0.0f;
 		if (crouching)
 		{
-			adjx = -(float)getDir() * 8.0f;
-			adjy = 24.0f;
+			adjx = -(float)getDir() * 4.0f;
+			adjy = 12.0f;
 		}
 
-		Projectile* weapon = new Projectile(x + (sprite.getOrigin().x * 2.0f) + adjx, y + (sprite.getOrigin().y * 2.0f) - (35.0f * 2.0f) + adjy, dir, textureManager);
+		Projectile* weapon = new Projectile(x + sprite.getOrigin().x + adjx, y + sprite.getOrigin().y - 35.0f + adjy, dir, textureManager);
 		objects.push_back(weapon);
 
 		soundManager.playSound("throw");

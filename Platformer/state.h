@@ -26,6 +26,7 @@ class State
 		sf::View& getView();
 		sf::Clock const& getClock() const;
 		float getViewX() const;
+		float getViewY() const;
 		StateManager& getStateManager();
 
 		// Actions
