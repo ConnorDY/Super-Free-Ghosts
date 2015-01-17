@@ -61,7 +61,8 @@ void Level01_State::start(TextureManager &textureManager)
 	objects.push_back(player);
 	
 	// Create the view
-	setView(sf::View(sf::Vector2f((float)WINDOW_WIDTH / 2.0f, (float)WINDOW_HEIGHT / 2.0f), sf::Vector2f((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT)));
+	sf::View temp = sf::View(sf::Vector2f((float)VIEW_WIDTH / 2.0f, (float)VIEW_HEIGHT / 2.0f), sf::Vector2f((float)VIEW_WIDTH, (float)VIEW_HEIGHT));
+	setView(temp);
 }
 
 void Level01_State::end()
