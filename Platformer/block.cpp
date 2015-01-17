@@ -19,7 +19,7 @@ void Block::draw(sf::RenderWindow &window)
 		// Top of ground with grass
 		sprite.setTextureRect(sf::IntRect(0, 0, 16, 38));
 		sprite.setOrigin(sf::Vector2f(0.0f, 13.0f));
-		sprite.setPosition(roundf(x) + (i * 16.0f), roundf(y));
+		sprite.setPosition(x + (i * 16.0f), y);
 		window.draw(sprite);
 
 		// Ground underneath
@@ -27,14 +27,14 @@ void Block::draw(sf::RenderWindow &window)
 		{
 			sprite.setTextureRect(sf::IntRect(0, 38, 16, 16));
 			sprite.setOrigin(sf::Vector2f(0.0f, 0.0f));
-			sprite.setPosition(roundf(x) + (i * 16.0f), roundf(y) + 19.0f + (j * 16.0f));
+			sprite.setPosition(x + (i * 16.0f), y + 19.0f + (j * 16.0f));
 			window.draw(sprite);
 		}
 	}
 
 	if (DEBUG_MODE)
 	{
-		rectangle.setPosition(roundf(x), roundf(y));
+		rectangle.setPosition(x, y);
 		window.draw(rectangle);
 	}
 }

@@ -6,11 +6,11 @@ Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager)
 {
 	// Set up logo sprite
 	sprLogo.setTexture(textureManager.getRef("logo"));
-	sprLogo.setScale(sf::Vector2f(2.0f, 2.0f));
 	sprLogo.setOrigin(sf::Vector2f(102.f, 0.0f));
 
 	// Load Font
-	if (!fnt.loadFromFile("res/pixelmix.ttf")) std::cout << "Failed to load menu font!" << std::endl;
+	if (!fnt.loadFromFile("res/Tewi-normal-11.bdf")) std::cout << "Failed to load menu font!" << std::endl;
+	const_cast<sf::Texture&>(fnt.getTexture(11)).setSmooth(false);
 
 	// Menu Options
 	menuOptions.push_back("Start");
@@ -26,18 +26,20 @@ Menu_State::~Menu_State()
 /* Actions */
 void Menu_State::draw(sf::RenderWindow &window)
 {
-	window.setView(window.getDefaultView());
-	sprLogo.setPosition(sf::Vector2f(402.0f, 80.0f));
+	sf::View temp = sf::View(sf::Vector2f((float)VIEW_WIDTH / 2.0f, (float)VIEW_HEIGHT / 2.0f), sf::Vector2f((float)VIEW_WIDTH, (float)VIEW_HEIGHT));
+	window.setView(temp);
+
+	sprLogo.setPosition(sf::Vector2f(201.0f, 40.0f));
 	window.draw(sprLogo);
 
-	float xx = 400.0f, yy = 360.0f;
+	float xx = 200.0f, yy = 180.0f;
 
 	for (unsigned int i = 0; i < menuOptions.size(); i++)
 	{
 		// Create text
 		sf::Text text;
 		text.setFont(fnt);
-		text.setCharacterSize(18);
+		text.setCharacterSize(11);
 		text.setString(menuOptions.at(i));
 
 		// Text colour
@@ -50,7 +52,7 @@ void Menu_State::draw(sf::RenderWindow &window)
 
 		// Set position
 		text.setPosition(sf::Vector2f(round(xx), round(yy)));
-		yy += 32;
+		yy += 16;
 
 		// Draw text
 		window.draw(text);

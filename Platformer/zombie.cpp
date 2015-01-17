@@ -58,7 +58,7 @@ void Zombie::draw(sf::RenderWindow &window)
 		window.draw(rectangle);
 	}
 
-	sprite.setPosition(sf::Vector2f(roundf(x + sprite.getOrigin().x) - (6.0f * inCasket), roundf(y + sprite.getOrigin().y + inCasket)));
+	sprite.setPosition(sf::Vector2f(x + sprite.getOrigin().x - (6.0f * inCasket), y + sprite.getOrigin().y + inCasket));
 	window.draw(sprite);
 }
 

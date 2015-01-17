@@ -79,11 +79,6 @@ int Player::getDir() const
 
 
 /* Actions */
-float Player::roundc(double n)
-{
-	return n; //round(round(round(n) / 2) * 2);
-}
-
 void Player::draw(sf::RenderWindow &window)
 {
 	if (DEBUG_MODE) rectangle.setPosition(roundf(x), roundf(y));
@@ -109,7 +104,7 @@ void Player::draw(sf::RenderWindow &window)
 	else if (crouching) { adjx = -3.0f; adjy = 6.0f; }
 	else adjx = 0.0f;
 
-	sprite.setPosition(roundc(x + sprite.getOrigin().x + (adjx * (float)sign_scalex)), roundc(y + sprite.getOrigin().y + adjy));
+	sprite.setPosition(x + sprite.getOrigin().x + (adjx * (float)sign_scalex), y + sprite.getOrigin().y + adjy);
 
 	if (DEBUG_MODE) window.draw(rectangle);
 	window.draw(sprite);
@@ -118,7 +113,7 @@ void Player::draw(sf::RenderWindow &window)
 void Player::move(int dir)
 {
 	if (dy == 0 && !jumped) dx = dir * moveSpeed;
-	if (dir != 0) sprite.setScale(sf::Vector2f(dir, 1.0f));
+	if (dir != 0) sprite.setScale(sf::Vector2f((float)dir, 1.0f));
 }
 
 void Player::jump(int dir, SoundManager &soundManager)

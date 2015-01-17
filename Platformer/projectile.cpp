@@ -30,11 +30,11 @@ void Projectile::draw(sf::RenderWindow &window)
 {
 	if (DEBUG_MODE)
 	{
-		rectangle.setPosition(roundf(x), roundf(y));
+		rectangle.setPosition(x, y);
 		window.draw(rectangle);
 	}
 
-	sprite.setPosition(roundf(x), roundf(y));
+	sprite.setPosition(x, y);
 	window.draw(sprite);
 }
 
