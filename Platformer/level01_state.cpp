@@ -93,7 +93,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	sf::Time deltaTime = restartClock();
 
 	/* Restart Level if Player is Outside of the Room */
-	if (player->getRect().top > WINDOW_HEIGHT) reset(textureManager);
+	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager);
 
 	/* Input */
 	sf::Event event;
