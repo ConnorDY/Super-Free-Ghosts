@@ -15,6 +15,6 @@ $(OUTPUT): $(OBJS)
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) -o $@ $< -MMD -MQ $@
 
 clean:
-	rm -f $(OBJS) $(OUTPUT)
+	rm -f $(OBJS) $(OUTPUT) $(OBJS:.o=.d)
 
 -include *.d
