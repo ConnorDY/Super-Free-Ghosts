@@ -20,11 +20,11 @@ sf::View& State::getView() { return view; }
 sf::Clock const& State::getClock() const { return clock; }
 float State::getViewX() const
 {
-	return view.getCenter().x - (WINDOW_WIDTH / 2.0f);
+	return view.getCenter().x - (VIEW_WIDTH / 2.0f);
 }
 float State::getViewY() const
 {
-	return view.getCenter().y - (WINDOW_HEIGHT / 2.0f);
+	return view.getCenter().y - (VIEW_HEIGHT / 2.0f);
 }
 StateManager& State::getStateManager()
 {
