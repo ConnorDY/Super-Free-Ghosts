@@ -26,38 +26,38 @@ void Level01_State::start(TextureManager &textureManager)
 	}
 
 	// Create Objects
-	Object *object = new Block(textureManager, 0.0f, 568.0f, 256.0f, 32.0f);
+	Object *object = new Block(textureManager, 0.0f, 284.0f, 128.0f, 16.0f);
 	objects.push_back(object);
 
-	object = new Block(textureManager, 256.0f, 536.0f, 256.0f, 64.0f);
+	object = new Block(textureManager, 128.0f, 268.0f, 128.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Block(textureManager, 512.0f, 504.0f, 128.0f, 96.0f);
+	object = new Block(textureManager, 256.0f, 252.0f, 64.0f, 48.0f);
 	objects.push_back(object);
 
-	object = new Block(textureManager, 768.0f, 568.0f, 256.0f, 32.0f);
+	object = new Block(textureManager, 384.0f, 284.0f, 128.0f, 16.0f);
 	objects.push_back(object);
 
-	object = new Block(textureManager, 1152.0f, 568.0f, 64.0f, 32.0f);
+	object = new Block(textureManager, 576.0f, 284.0f, 32.0f, 16.0f);
 	objects.push_back(object);
 
-	object = new Block(textureManager, 1472.0f, 568.0f, 64.0f, 32.0f);
+	object = new Block(textureManager, 736.0f, 284.0f, 32.0f, 16.0f);
 	objects.push_back(object);
 
-	object = new Block(textureManager, 1632.0f, 504.0f, 512.0f, 96.0f);
+	object = new Block(textureManager, 816.0f, 252.0f, 256.0f, 48.0f);
 	objects.push_back(object);
 
-	object = new Zombie(textureManager, 540.0f, 64.0f);
+	object = new Zombie(textureManager, 270.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Zombie(textureManager, 810.0f, 64.0f);
+	object = new Zombie(textureManager, 405.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Zombie(textureManager, 1700.0f, 64.0f);
+	object = new Zombie(textureManager, 850.0f, 32.0f);
 	objects.push_back(object);
 
 	// Create player
-	player = new Player(textureManager, 30.0f, 468.0f);
+	player = new Player(textureManager, 15.0f, 234.0f);
 	objects.push_back(player);
 	
 	// Create the view
