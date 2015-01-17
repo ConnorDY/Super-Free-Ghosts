@@ -32,6 +32,7 @@ class Object
 		// Accessors
 		bool isSolid() const;
 		bool shouldDelete() const;
+		bool getOutsideView() const;
 		Type getType() const;
 
 		sf::FloatRect getRect() const;
@@ -41,10 +42,12 @@ class Object
 		// Actions
 		virtual void draw(sf::RenderWindow &window) = 0;
 		virtual void update(sf::Time deltaTime, std::vector<Object*> const objects);
+		void setDelete();
+		void setDelete(int i);
 	protected:
 		sf::Sprite sprite;
 		float x, y, dx, dy, width, height, gravity, maxFallSpeed;
-		bool solid, del;
+		bool solid, del, outsideView = false;
 		Type const _type;
 };
 

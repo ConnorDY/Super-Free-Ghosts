@@ -179,7 +179,7 @@ void Player::update(sf::Time deltaTime, sf::RenderWindow &window, sf::View &view
 	}
 
 	// Gravity
-	if (placeFree(x, y + 1, objects)) dy += gravity * mstime;
+	if (placeFree(x, y + 1, objects)) dy += gravity * (float)mstime;
 	else if (dy > 0.0f)
 	{
 		dy = 0;

@@ -21,6 +21,7 @@ Object::~Object()
 /* Accessors */
 bool Object::isSolid() const { return solid; }
 bool Object::shouldDelete() const { return del; }
+bool Object::getOutsideView() const { return outsideView; }
 Object::Type Object::getType() const { return _type; }
 
 sf::FloatRect Object::getRect() const
@@ -90,4 +91,15 @@ void Object::update(sf::Time deltaTime, std::vector<Object*> const objects)
 			break;
 		}
 	}
+}
+
+void Object::setDelete()
+{
+	del = true;
+}
+
+void Object::setDelete(int i)
+{
+	del = true;
+	outsideView = true;
 }

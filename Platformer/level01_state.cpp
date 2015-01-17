@@ -49,6 +49,12 @@ void Level01_State::start(TextureManager &textureManager)
 	object = new Zombie(textureManager, 540.0f, 64.0f);
 	objects.push_back(object);
 
+	object = new Zombie(textureManager, 810.0f, 64.0f);
+	objects.push_back(object);
+
+	object = new Zombie(textureManager, 1700.0f, 64.0f);
+	objects.push_back(object);
+
 	// Create player
 	player = new Player(textureManager, 30.0f, 468.0f);
 	objects.push_back(player);
@@ -125,6 +131,9 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	{
 		if ((*iter)->shouldDelete())
 		{
+			if ((*iter)->getType() == Object::Type::Zombie) soundManager.playSound("enemy_die");
+			else if ((*iter)->getType() == Object::Type::Projectile && !(*iter)->getOutsideView()) soundManager.playSound("hit");
+
 			delete *iter;
 			iter = objects.erase(iter);
 			end = objects.end();

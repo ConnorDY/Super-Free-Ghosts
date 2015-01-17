@@ -70,7 +70,10 @@ void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 
 	Object::update(deltaTime, objects);
 
-	if (!placeFree(x + dx, y, objects) || x <= 0.0f)
+	float adj = ZOMBIE_WIDTH;
+	if (dx < 0) adj *= -1;
+
+	if (!placeFree(x + dx, y, objects) || x <= 0.0f || (placeFree(x + adj, y + 33, objects) && !placeFree(x, y + 1, objects)))
 	{
 		// Turn around
 		dx = -dx;

@@ -20,6 +20,8 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 	soundManager.loadSound("jump", "res/jump.wav");
 	soundManager.loadSound("land", "res/land.wav");
 	soundManager.loadSound("throw", "res/throw.wav");
+	soundManager.loadSound("hit", "res/hit.wav");
+	soundManager.loadSound("enemy_die", "res/enemy_die.wav");
 }
 
 

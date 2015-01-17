@@ -49,6 +49,14 @@ void Projectile::update(sf::Time deltaTime, float viewx, std::vector<Object*> ob
 	else if (dy < 0.0f) sign_y = 1.0f;
 
 	// Destroy projectile if it hits a solid object or leaves the room
-	if (!placeFree(x + sign_x, y + sign_y, objects)) del = true;
-	else if (x < viewx - 100.0f || x > viewx + WINDOW_WIDTH + 100.0f) del = true;
+	if (!placeFree(x + sign_x, y + sign_y, objects)) setDelete();
+	else if (x < viewx - 100.0f || x > viewx + WINDOW_WIDTH + 100.0f) setDelete(1);
+
+	// Destroy projectile if it hits an enemy and destroy the enemy
+	Object* col = placeEmpty(x, y, objects);
+	if (col != NULL && col->getType() == Object::Type::Zombie)
+	{
+		col->setDelete();
+		this->setDelete();
+	}
 }
