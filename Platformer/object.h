@@ -36,6 +36,7 @@ class Object
 
 		sf::FloatRect getRect() const;
 		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
+		Object* placeEmpty(float xx, float yy, std::vector<Object*> const objects) const;
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window) = 0;

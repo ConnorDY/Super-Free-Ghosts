@@ -41,6 +41,22 @@ bool Object::placeFree(float xx, float yy, std::vector<Object*> const objects) c
 	});
 }
 
+Object* Object::placeEmpty(float xx, float yy, std::vector<Object*> const objects) const
+{
+	float adj = 0.0f;
+
+	if (_type == Type::Projectile && dx < 0.0f) adj = -width;
+	sf::FloatRect temp_rect(xx + adj, yy, width, height);
+
+	for (unsigned int i = 0; i < objects.size(); i++)
+	{
+		Object* elem = objects.at(i);
+		if (this != elem && !elem->isSolid() && temp_rect.intersects(elem->getRect())) return elem;
+	}
+
+	return NULL;
+}
+
 
 /* Actions */
 void Object::update(sf::Time deltaTime, std::vector<Object*> const objects)
