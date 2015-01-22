@@ -59,6 +59,18 @@ Object* Object::placeEmpty(float xx, float yy, std::vector<Object*> const object
 }
 
 
+/* Mutators*/
+void Object::setX(float xx)
+{
+	x = xx;
+}
+
+void Object::setY(float yy)
+{
+	y = yy;
+}
+
+
 /* Actions */
 void Object::update(sf::Time deltaTime, std::vector<Object*> const objects)
 {

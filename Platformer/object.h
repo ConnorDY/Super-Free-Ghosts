@@ -39,6 +39,10 @@ class Object
 		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
 		Object* placeEmpty(float xx, float yy, std::vector<Object*> const objects) const;
 
+		// Mutators
+		void setX(float xx);
+		void setY(float yy);
+
 		// Actions
 		virtual void draw(sf::RenderWindow &window) = 0;
 		virtual void update(sf::Time deltaTime, std::vector<Object*> const objects);

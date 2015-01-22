@@ -2,6 +2,7 @@
 #define GLOBALS_H
 
 #define DEBUG_MODE false
+#define VSYNC_ON false
 
 #define VIEW_WIDTH 400
 #define VIEW_HEIGHT 300

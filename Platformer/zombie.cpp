@@ -4,24 +4,25 @@
 #define ZOMBIE_HEIGHT 40
 Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	: Object(
-			Object::Type::Zombie,
-			x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
-			0.0f, 0.0f,     // dx, dy
-			false,           // solid
-			0.00185f / 2.0f,       // Gravity
-			0.25f            // Fall speed
+	Object::Type::Zombie,
+	x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
+	0.0f, 0.0f,     // dx, dy
+	false,           // solid
+	0.00185f / 2.0f,       // Gravity
+	0.25f            // Fall speed
 	),
 	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
-	animation("casket"),
-	moveSpeed(0.22f / 2.0f), frame(0.0f),
-	inCasket(true), turning(false)
+	animation("appear"),
+	moveSpeed(0.22f / 2.0f), frame(0.0f), spawnX(x), spawnY(y), angle(0),
+	inCasket(true), turning(false), opening(false)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef("zombie"));
 	sprite.setOrigin(11.0f, 40.0f);
 
 	// Animations
-	animations["casket"].emplace_back(0, 0, 35, 48);
+	animations["appear"].emplace_back(0, 0, 35, 48);
+
 	animations["casket"].emplace_back(35, 0, 35, 48);
 	animations["casket"].emplace_back(70, 0, 35, 48);
 	animations["casket"].emplace_back(105, 0, 35, 48);
@@ -81,12 +82,33 @@ void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
 		turnTimer.restart();
 	}
 
+	// Rotating
+	if (inCasket)
+	{
+		setX(spawnX + (6.0f * cos(angle)));
+		setY(spawnY + (6.0f * sin(angle)));
+
+		angle += deltaTime.asMicroseconds() / 220000.0f;
+	}
+
 	// Timers
 	if (turning && turnTimer.getElapsedTime().asSeconds() >= 0.1) turning = false;
-	if (inCasket && casketTimer.getElapsedTime().asSeconds() >= 0.7) inCasket = false;
+
+	if (inCasket && !opening && casketTimer.getElapsedTime().asSeconds() >= 3)
+	{
+		openTimer.restart();
+		opening = true;
+	}
+
+	if (opening && openTimer.getElapsedTime().asSeconds() >= 0.7)
+	{
+		inCasket = false;
+		opening = false;
+	}
 
 	// Animations
-	if (inCasket) setAnimation("casket");
+	if (opening) setAnimation("casket");
+	else if (inCasket) setAnimation("appear");
 	else if (placeFree(x, y + 1, objects) && dx == 0.0f) setAnimation("fall");
 	else if (turning) setAnimation("turn");
 	else setAnimation("walk");

@@ -40,7 +40,7 @@ int main()
 	
 	// Create Window
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Super Free Ghosts", sf::Style::Close | sf::Style::Titlebar);
-	//window.setVerticalSyncEnabled(true);
+	window.setVerticalSyncEnabled(VSYNC_ON);
 
 	// Game Loop
 	while (window.isOpen())
