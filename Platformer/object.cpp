@@ -39,7 +39,7 @@ bool Object::placeFree(float xx, float yy, std::vector<Object*> const objects) c
 	});
 }
 
-Object* Object::placeEmpty(float xx, float yy, std::vector<Object*> const objects) const
+Object* Object::nonsolidCollision(float xx, float yy, std::vector<Object*> const objects) const
 {
 	sf::FloatRect temp_rect(xx, yy, width, height);
 

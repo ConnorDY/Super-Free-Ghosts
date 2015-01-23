@@ -12,7 +12,7 @@ class Projectile : public Object
 		std::vector<sf::IntRect> weapons;
 
 		bool placeFree_adj(float x, float y, std::vector<Object*> const objects) const;
-		Object* placeEmpty_adj(float x, float y, std::vector<Object*> const objects) const;
+		Object* nonsolidCollision_adj(float x, float y, std::vector<Object*> const objects) const;
 	public:
 		Projectile(float x, float y, int dir, TextureManager &textureManager);
 		virtual ~Projectile();

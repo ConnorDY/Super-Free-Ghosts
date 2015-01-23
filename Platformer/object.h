@@ -37,7 +37,7 @@ class Object
 
 		sf::FloatRect getRect() const;
 		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
-		Object* placeEmpty(float xx, float yy, std::vector<Object*> const objects) const;
+		Object* nonsolidCollision(float xx, float yy, std::vector<Object*> const objects) const;
 
 		// Mutators
 		void setX(float xx);

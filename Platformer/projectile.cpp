@@ -43,8 +43,8 @@ bool Projectile::placeFree_adj(float x, float y, std::vector<Object*> const obje
 	return placeFree(x + (dx < 0 ? -width : 0), y, objects);
 }
 
-Object* Projectile::placeEmpty_adj(float x, float y, std::vector<Object*> const objects) const {
-	return placeEmpty(x + (dx < 0 ? -width : 0), y, objects);
+Object* Projectile::nonsolidCollision_adj(float x, float y, std::vector<Object*> const objects) const {
+	return nonsolidCollision(x + (dx < 0 ? -width : 0), y, objects);
 }
 
 void Projectile::update(sf::Time deltaTime, float viewx, std::vector<Object*> objects)
@@ -65,7 +65,7 @@ void Projectile::update(sf::Time deltaTime, float viewx, std::vector<Object*> ob
 	else if (x < viewx - 30.0f || x > viewx + WINDOW_WIDTH + 30.0f) setDelete(1);
 
 	// Destroy projectile if it hits an enemy and destroy the enemy
-	Object* col = placeEmpty_adj(x, y, objects);
+	Object* col = nonsolidCollision_adj(x, y, objects);
 	if (col != NULL && col->getType() == Object::Type::Zombie)
 	{
 		col->setDelete();
