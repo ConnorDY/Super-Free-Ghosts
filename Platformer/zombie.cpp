@@ -13,7 +13,7 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
 	animation("appear"),
 	moveSpeed(0.22f / 2.0f), frame(0.0f), spawnX(x), spawnY(y), angle(0),
-	inCasket(true), turning(false), opening(false)
+	inCasket(true), opening(false), turning(false)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef("zombie"));
