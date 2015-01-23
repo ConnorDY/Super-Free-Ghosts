@@ -13,6 +13,7 @@ class SoundManager
 	public:
 		SoundManager();
 		~SoundManager();
+		SoundManager(SoundManager const &that) = delete;
 
 		// Actions
 		void loadSound(const std::string &name, const std::string &filename);
