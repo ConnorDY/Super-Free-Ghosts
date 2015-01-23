@@ -63,13 +63,14 @@ void Zombie::draw(sf::RenderWindow &window)
 	window.draw(sprite);
 }
 
-void Zombie::update(sf::Time deltaTime, std::vector<Object*> const objects)
+void Zombie::update(sf::Time deltaTime, Room const &room)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
+	auto const objects = room.getObjects();
 	if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.25;
 	if (!placeFree(x, y + 1, objects) && dx == 0) dx = -0.075f / 2.0f; // Hit the ground
 
-	Object::update(deltaTime, objects);
+	Object::update(deltaTime, room);
 
 	float adj = ZOMBIE_WIDTH;
 	if (dx < 0) adj *= -1;

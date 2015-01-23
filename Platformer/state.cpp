@@ -16,6 +16,7 @@ void State::setView(sf::View v) { view = v; }
 
 
 // Accesors
+sf::View const& State::getView() const { return view; }
 sf::View& State::getView() { return view; }
 sf::Clock const& State::getClock() const { return clock; }
 float State::getViewX() const

@@ -23,6 +23,7 @@ class State
 		void setView(sf::View v);
 
 		// Accessors
+		sf::View const& getView() const;
 		sf::View& getView();
 		sf::Clock const& getClock() const;
 		float getViewX() const;

@@ -65,11 +65,12 @@ void Object::setY(float yy)
 
 
 /* Actions */
-void Object::update(sf::Time deltaTime, std::vector<Object*> const objects)
+void Object::update(sf::Time deltaTime, Room const &room)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 
 	// Gravity
+	auto const objects = room.getObjects();
 	if (placeFree(x, y + 1, objects)) dy += gravity * (float)mstime;
 	else if (dy > 0.0f) dy = 0.0f;
 

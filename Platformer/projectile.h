@@ -19,8 +19,7 @@ class Projectile : public Object
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
-		// TODO: Doesn't override (can we put viewx in object? does this need viewx?)
-		virtual void update(sf::Time deltaTime, float viewx, std::vector<Object*> objects);
+		virtual void update(sf::Time deltaTime, Room const &room);
 };
 
 #endif

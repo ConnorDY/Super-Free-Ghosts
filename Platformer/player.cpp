@@ -167,15 +167,18 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager 
 	}
 }
 
-void Player::update(sf::Time deltaTime, SoundManager &soundManager, std::vector<Object*> const objects)
+void Player::update(sf::Time deltaTime, Room const &room)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
-	
+
 	if (DEBUG_MODE)
 	{
 		total_time += mstime;
 		printf("Total Time: %4.3f\n", (float)total_time);
 	}
+
+	auto const objects = room.getObjects();
+	auto& soundManager = room.getSoundManager();
 
 	// Gravity
 	if (placeFree(x, y + 1, objects)) dy += gravity * (float)mstime;

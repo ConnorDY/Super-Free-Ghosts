@@ -99,7 +99,7 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 
 				// Load Level 01
 				case 0:
-					getStateManager().setState(std::unique_ptr<State>(new Level01_State(getStateManager(), textureManager)));
+					getStateManager().setState(std::unique_ptr<State>(new Level01_State(getStateManager(), soundManager, textureManager)));
 					break;
 
 				// Exit

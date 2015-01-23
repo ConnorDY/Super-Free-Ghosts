@@ -47,9 +47,11 @@ Object* Projectile::nonsolidCollision_adj(float x, float y, std::vector<Object*>
 	return nonsolidCollision(x + (dx < 0 ? -width : 0), y, objects);
 }
 
-void Projectile::update(sf::Time deltaTime, float viewx, std::vector<Object*> objects)
+void Projectile::update(sf::Time deltaTime, Room const &room)
 {
-	Object::update(deltaTime, objects);
+	Object::update(deltaTime, room);
+
+	auto const objects = room.getObjects();
 
 	// Determine the direction the projectile is moving in
 	float sign_x = 0, sign_y = 0;
@@ -61,8 +63,15 @@ void Projectile::update(sf::Time deltaTime, float viewx, std::vector<Object*> ob
 	else if (dy < 0.0f) sign_y = 1.0f;
 
 	// Destroy projectile if it hits a solid object or leaves the room
+	auto view = room.getView();
+	auto view_center = view.getCenter();
+	auto view_size = view.getSize();
+
+	float view_left = view_center.x - view_size.x/2;
+	float view_right = view_center.x + view_size.x/2;
+
 	if (!placeFree_adj(x + sign_x, y + sign_y, objects)) setDelete();
-	else if (x < viewx - 30.0f || x > viewx + WINDOW_WIDTH + 30.0f) setDelete(1);
+	else if (x < view_left - 30.0f || x > view_right + 30.0f) setDelete(1);
 
 	// Destroy projectile if it hits an enemy and destroy the enemy
 	Object* col = nonsolidCollision_adj(x, y, objects);

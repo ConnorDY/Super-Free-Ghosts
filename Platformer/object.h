@@ -5,6 +5,7 @@
 #include <vector>
 #include "globals.h"
 #include "texture_manager.h"
+#include "room.h"
 
 class Object
 {
@@ -45,7 +46,7 @@ class Object
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window) = 0;
-		virtual void update(sf::Time deltaTime, std::vector<Object*> const objects);
+		virtual void update(sf::Time deltaTime, Room const &room);
 		void setDelete();
 		void setDelete(int i);
 	protected:

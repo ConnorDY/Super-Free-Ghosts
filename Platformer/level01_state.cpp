@@ -1,8 +1,8 @@
 #include "level01_state.h"
 #include "menu_state.h"
 
-Level01_State::Level01_State(StateManager &sM, TextureManager &textureManager)
-	: Room(sM)
+Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager)
+	: Room(sM, som)
 {
 	start(textureManager);
 	scanlines.setTexture(textureManager.getRef("scanlines"));
