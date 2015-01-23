@@ -10,6 +10,9 @@ class Projectile : public Object
 	private:
 		sf::RectangleShape rectangle;
 		std::vector<sf::IntRect> weapons;
+
+		bool placeFree_adj(float x, float y, std::vector<Object*> const objects) const;
+		Object* placeEmpty_adj(float x, float y, std::vector<Object*> const objects) const;
 	public:
 		Projectile(float x, float y, int dir, TextureManager &textureManager);
 		virtual ~Projectile();

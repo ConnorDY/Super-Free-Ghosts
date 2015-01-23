@@ -31,10 +31,7 @@ sf::FloatRect Object::getRect() const
 
 bool Object::placeFree(float xx, float yy, std::vector<Object*> const objects) const
 {
-	float adj = 0.0f;
-
-	if (_type == Type::Projectile && dx < 0.0f) adj = -width;
-	sf::FloatRect temp_rect(xx + adj, yy, width, height);
+	sf::FloatRect temp_rect(xx, yy, width, height);
 
 	return std::none_of(objects.begin(), objects.end(), [&](Object* const &elem)
 	{
@@ -44,10 +41,7 @@ bool Object::placeFree(float xx, float yy, std::vector<Object*> const objects) c
 
 Object* Object::placeEmpty(float xx, float yy, std::vector<Object*> const objects) const
 {
-	float adj = 0.0f;
-
-	if (_type == Type::Projectile && dx < 0.0f) adj = -width;
-	sf::FloatRect temp_rect(xx + adj, yy, width, height);
+	sf::FloatRect temp_rect(xx, yy, width, height);
 
 	auto collision = std::find_if(objects.begin(), objects.end(), [&](Object* const &elem)
 	{
