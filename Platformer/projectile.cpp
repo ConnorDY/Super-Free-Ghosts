@@ -67,6 +67,7 @@ void Projectile::update(sf::Time deltaTime, Room const &room)
 	// Determine the direction the projectile is moving in
 	float sign_x = 0, sign_y = 0;
 
+	// TODO: clean up
 	if (dx > 0.0f) sign_x = 1.0f;
 	else if (dx < 0.0f) sign_x = -1.0f;
 
