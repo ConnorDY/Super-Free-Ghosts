@@ -1,6 +1,4 @@
 #include "room.h"
-#include "player.h" // TODO remove
-#include "projectile.h" // TODO remove
 
 Room::Room(StateManager &stm, SoundManager &som) : State(stm), soundManager(som)
 {

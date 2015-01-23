@@ -5,6 +5,7 @@
 #include <vector>
 #include "globals.h"
 #include "texture_manager.h"
+class Room;
 #include "room.h"
 
 class Object

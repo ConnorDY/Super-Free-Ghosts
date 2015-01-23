@@ -1,9 +1,10 @@
 #ifndef ROOM_H
 #define ROOM_H
 
-#include "state.h"
-
 class Object;
+
+#include "state.h"
+#include "object.h"
 
 class Room : public State {
 	private:
