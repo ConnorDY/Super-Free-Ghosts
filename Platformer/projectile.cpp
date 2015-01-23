@@ -47,6 +47,17 @@ Object* Projectile::nonsolidCollision_adj(float x, float y, std::vector<Object*>
 	return nonsolidCollision(x + (dx < 0 ? -width : 0), y, objects);
 }
 
+bool Projectile::isOutsideView(Room const &room) const
+{
+	auto view = room.getView();
+	auto view_center = view.getCenter();
+	auto view_size = view.getSize();
+
+	float view_left = view_center.x - view_size.x/2;
+	float view_right = view_center.x + view_size.x/2;
+	return x < view_left - 30.0f || x > view_right + 30.0f;
+}
+
 void Projectile::update(sf::Time deltaTime, Room const &room)
 {
 	Object::update(deltaTime, room);
@@ -63,21 +74,20 @@ void Projectile::update(sf::Time deltaTime, Room const &room)
 	else if (dy < 0.0f) sign_y = 1.0f;
 
 	// Destroy projectile if it hits a solid object or leaves the room
-	auto view = room.getView();
-	auto view_center = view.getCenter();
-	auto view_size = view.getSize();
-
-	float view_left = view_center.x - view_size.x/2;
-	float view_right = view_center.x + view_size.x/2;
-
-	if (!placeFree_adj(x + sign_x, y + sign_y, objects)) setDelete();
-	else if (x < view_left - 30.0f || x > view_right + 30.0f) setDelete(1);
+	if (!placeFree_adj(x + sign_x, y + sign_y, objects)) kill(room);
+	else if (isOutsideView(room)) kill(room);
 
 	// Destroy projectile if it hits an enemy and destroy the enemy
 	Object* col = nonsolidCollision_adj(x, y, objects);
 	if (col != NULL && col->getType() == Object::Type::Zombie)
 	{
-		col->setDelete();
-		this->setDelete();
+		col->kill(room);
+		this->kill(room);
 	}
+}
+
+void Projectile::onDeath(Room const &room)
+{
+	if (!isOutsideView(room))
+		room.getSoundManager().playSound("hit");
 }

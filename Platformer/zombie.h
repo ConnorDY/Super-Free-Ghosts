@@ -37,6 +37,7 @@ class Zombie : public Object
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
 		virtual void update(sf::Time deltaTime, Room const &room);
+		virtual void onDeath(Room const &room);
 };
 
 #endif

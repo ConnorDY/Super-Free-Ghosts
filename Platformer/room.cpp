@@ -70,9 +70,6 @@ void Room::update(sf::RenderWindow &window, TextureManager &textureManager, Soun
 	{
 		if ((*iter)->shouldDelete())
 		{
-			if ((*iter)->getType() == Object::Type::Zombie) soundManager.playSound("enemy_die");
-			else if ((*iter)->getType() == Object::Type::Projectile && !(*iter)->getOutsideView()) soundManager.playSound("hit");
-
 			delete *iter;
 			iter = objects.erase(iter);
 			end = objects.end();
