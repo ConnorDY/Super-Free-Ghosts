@@ -74,8 +74,7 @@ void Projectile::update(sf::Time deltaTime, Room const &room)
 	else if (dy < 0.0f) sign_y = 1.0f;
 
 	// Destroy projectile if it hits a solid object or leaves the room
-	if (!placeFree_adj(x + sign_x, y + sign_y, objects)) kill(room);
-	else if (isOutsideView(room)) kill(room);
+	if (!placeFree_adj(x + sign_x, y + sign_y, objects) || isOutsideView(room)) kill(room);
 
 	// Destroy projectile if it hits an enemy and destroy the enemy
 	Object* col = nonsolidCollision_adj(x, y, objects);
