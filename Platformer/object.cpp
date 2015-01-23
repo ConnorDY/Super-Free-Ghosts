@@ -49,13 +49,12 @@ Object* Object::placeEmpty(float xx, float yy, std::vector<Object*> const object
 	if (_type == Type::Projectile && dx < 0.0f) adj = -width;
 	sf::FloatRect temp_rect(xx + adj, yy, width, height);
 
-	for (unsigned int i = 0; i < objects.size(); i++)
+	auto collision = std::find_if(objects.begin(), objects.end(), [&](Object* const &elem)
 	{
-		Object* elem = objects.at(i);
-		if (this != elem && !elem->isSolid() && temp_rect.intersects(elem->getRect())) return elem;
-	}
-
-	return NULL;
+		return this != elem && !elem->isSolid() && temp_rect.intersects(elem->getRect());
+	});
+	if (collision == objects.end()) return NULL;
+	else return *collision;
 }
 
 
