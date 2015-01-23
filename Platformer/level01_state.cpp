@@ -2,7 +2,7 @@
 #include "menu_state.h"
 
 Level01_State::Level01_State(StateManager &sM, TextureManager &textureManager)
-	: State(sM)
+	: Room(sM)
 {
 	start(textureManager);
 	scanlines.setTexture(textureManager.getRef("scanlines"));
@@ -10,7 +10,6 @@ Level01_State::Level01_State(StateManager &sM, TextureManager &textureManager)
 
 Level01_State::~Level01_State()
 {
-	end();
 }
 
 
@@ -59,30 +58,12 @@ void Level01_State::start(TextureManager &textureManager)
 	// Create player
 	player = new Player(textureManager, 15.0f, 234.0f);
 	objects.push_back(player);
-	
-	// Create the view
-	sf::View temp = sf::View(sf::Vector2f((float)VIEW_WIDTH / 2.0f, (float)VIEW_HEIGHT / 2.0f), sf::Vector2f((float)VIEW_WIDTH, (float)VIEW_HEIGHT));
-	setView(temp);
-}
-
-void Level01_State::end()
-{
-	for (Object* i : objects) delete i;
-	objects.clear();
-}
-
-void Level01_State::reset(TextureManager &textureManager)
-{
-	end();
-	start(textureManager);
+	view_follow = player;
 }
 
 void Level01_State::draw(sf::RenderWindow &window)
 {
-	for (auto object : objects)
-	{
-		object->draw(window);
-	}
+	Room::draw(window);
 
 	//scanlines.setPosition(sf::Vector2f(getViewX(), getViewY()));
 	//window.draw(scanlines);
@@ -90,8 +71,6 @@ void Level01_State::draw(sf::RenderWindow &window)
 
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
 {
-	sf::Time deltaTime = restartClock();
-
 	/* Restart Level if Player is Outside of the Room */
 	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager);
 
@@ -128,54 +107,5 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	player->move(moveH);
 	player->setCrouching(crouching);
 
-
-	// Update objects and player
-	auto iter = objects.begin();
-	auto end = objects.end();
-	while (iter != end)
-	{
-		if ((*iter)->shouldDelete())
-		{
-			if ((*iter)->getType() == Object::Type::Zombie) soundManager.playSound("enemy_die");
-			else if ((*iter)->getType() == Object::Type::Projectile && !(*iter)->getOutsideView()) soundManager.playSound("hit");
-
-			delete *iter;
-			iter = objects.erase(iter);
-			end = objects.end();
-			continue;
-		}
-
-		switch ((*iter)->getType())
-		{
-			default:
-				(*iter)->update(deltaTime, objects);
-				break;
-
-			// TODO: Resolve by overriding virtually
-			case Object::Type::Projectile:
-				((Projectile*)*iter)->update(deltaTime, getViewX(), objects);
-				break;
-
-			// TODO: Resolve by overriding virtually
-			case Object::Type::Player:
-				((Player*)*iter)->update(deltaTime, window, textureManager, soundManager, objects);
-				break;
-		}
-		iter++;
-	}
-
-	// Update view
-	float vx = player->getRect().left;
-	float vy = player->getRect().top;
-	float vw = getView().getSize().x;
-	float vh = getView().getSize().y;
-
-	if (vx < vw / 2.0f) vx = vw / 2.0f;
-	if (vy < vh / 2.0f) vy = vh / 2.0f;
-
-	getView().setCenter(vx, vh / 2.0f);
-	window.setView(getView());
-
-	// Output time it took to render this frame
-	std::cout << "Time: " << (deltaTime.asMicroseconds() / 1000.0) << std::endl;
+	Room::update(window, textureManager, soundManager, inputHandler);
 }

@@ -5,18 +5,16 @@
 #include <vector>
 
 #include "globals.h"
-#include "state.h"
-#include "object.h"
 #include "player.h"
 #include "projectile.h"
 #include "zombie.h"
 #include "block.h"
+#include "room.h"
 
-class Level01_State : public State
+class Level01_State : public Room
 {
 	private:
 		Player *player;
-		std::vector<Object*> objects;
 		sf::Music music;
 		sf::Sprite scanlines;
 	public:
@@ -25,8 +23,6 @@ class Level01_State : public State
 
 		// Actions
 		void start(TextureManager &textureManager);
-		void end();
-		void reset(TextureManager &textureManager);
 		virtual void draw(sf::RenderWindow &window);
 		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler);
 };

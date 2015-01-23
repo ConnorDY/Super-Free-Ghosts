@@ -167,7 +167,7 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager 
 	}
 }
 
-void Player::update(sf::Time deltaTime, sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, std::vector<Object*> const objects)
+void Player::update(sf::Time deltaTime, SoundManager &soundManager, std::vector<Object*> const objects)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 	
