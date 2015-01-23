@@ -1,8 +1,8 @@
 #include "projectile.h"
+#include "zombie.h"
 
 Projectile::Projectile(float x, float y, int dir, TextureManager &textureManager)
 	: Object(
-			Object::Type::Projectile,
 			x, y, 30, 7,
 			0.4f * dir, 0,
 			false, false
@@ -79,7 +79,7 @@ void Projectile::update(sf::Time deltaTime, Room const &room)
 
 	// Destroy projectile if it hits an enemy and destroy the enemy
 	Object* col = nonsolidCollision_adj(x, y, objects);
-	if (col != NULL && col->getType() == Object::Type::Zombie)
+	if (dynamic_cast<Zombie*>(col) != NULL)
 	{
 		col->kill(room);
 		this->kill(room);

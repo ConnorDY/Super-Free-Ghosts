@@ -10,17 +10,7 @@
 class Object
 {
 	public:
-		enum class Type
-		{
-			Obj,
-			Block,
-			Projectile,
-			Zombie,
-			Player
-		};
-
 		explicit Object(
-				Type type = Type::Obj,
 				float x = 0, float y = 0,
 				float width = 0, float height = 0,
 				float dx = 0, float dy = 0,
@@ -33,7 +23,6 @@ class Object
 		// Accessors
 		bool isSolid() const;
 		bool shouldDelete() const;
-		Type getType() const;
 
 		sf::FloatRect getRect() const;
 		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
@@ -52,7 +41,6 @@ class Object
 		sf::Sprite sprite;
 		float x, y, dx, dy, width, height, gravity, maxFallSpeed;
 		bool solid, del;
-		Type const _type;
 };
 
 #endif

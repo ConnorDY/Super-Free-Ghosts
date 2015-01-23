@@ -4,12 +4,11 @@
 #define ZOMBIE_HEIGHT 40
 Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	: Object(
-	Object::Type::Zombie,
-	x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
-	0.0f, 0.0f,     // dx, dy
-	false,           // solid
-	0.00185f / 2.0f,       // Gravity
-	0.25f            // Fall speed
+		x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
+		0.0f, 0.0f,     // dx, dy
+		false,           // solid
+		0.00185f / 2.0f,       // Gravity
+		0.25f            // Fall speed
 	),
 	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
 	animation("appear"),

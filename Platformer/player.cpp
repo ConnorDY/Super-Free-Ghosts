@@ -4,7 +4,6 @@
 #define PLAYER_HEIGHT 37
 Player::Player(TextureManager &textureManager, float x, float y)
 	: Object(
-			Object::Type::Player,
 			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
 			0.0f, 0.0f,     // dx, dy
 			false,           // solid

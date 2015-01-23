@@ -2,7 +2,6 @@
 
 Block::Block(TextureManager &textureManager, float x, float y, float width, float height)
 	: Object(
-			Object::Type::Block,
 			x, y, width, height
 	  ),
 	  rectangle(sf::Vector2f(width, height))

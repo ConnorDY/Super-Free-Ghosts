@@ -1,14 +1,13 @@
 #include "object.h"
 
-Object::Object(Type type, float x, float y, float width, float height, float dx, float dy, bool solid, float gravity, float maxFallSpeed)
+Object::Object(float x, float y, float width, float height, float dx, float dy, bool solid, float gravity, float maxFallSpeed)
 	: x(x), y(y),
 	  dx(dx), dy(dy),
 	  width(width), height(height),
 	  gravity(gravity),
 	  maxFallSpeed(maxFallSpeed),
 	  solid(solid),
-	  del(false),
-	  _type(type)
+	  del(false)
 {
 }
 
@@ -21,7 +20,6 @@ Object::~Object()
 /* Accessors */
 bool Object::isSolid() const { return solid; }
 bool Object::shouldDelete() const { return del; }
-Object::Type Object::getType() const { return _type; }
 
 sf::FloatRect Object::getRect() const
 {
