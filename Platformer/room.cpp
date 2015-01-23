@@ -57,7 +57,7 @@ void Room::draw(sf::RenderWindow &window)
 		object->draw(window);
 }
 
-void Room::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
+void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandler&)
 {
 	deltaTime = restartClock();
 

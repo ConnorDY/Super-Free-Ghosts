@@ -8,7 +8,7 @@
 
 
 /* Load Game's Resources */
-void loadRes(TextureManager &textureManager, SoundManager &soundManager, sf::Shader *shader)
+void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 {
 	textureManager.loadTexture("arthur0", "res/arthur0.png");
 	textureManager.loadTexture("arthur1", "res/arthur1.png");
@@ -32,8 +32,6 @@ int main()
 	// Load Textures and Sounds and Shaders
 	TextureManager textureManager;
 	SoundManager soundManager;
-	sf::Shader* shader = new sf::Shader();
-	loadRes(textureManager, soundManager, shader);
 
 	// Create State Manager
 	StateManager stateManager(textureManager, soundManager);

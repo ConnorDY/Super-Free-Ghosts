@@ -102,6 +102,6 @@ void Object::kill(Room const &room)
 	del = true;
 }
 
-void Object::onDeath(Room const &room)
+void Object::onDeath(Room const&)
 {
 }
