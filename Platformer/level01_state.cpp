@@ -2,10 +2,30 @@
 #include "menu_state.h"
 
 Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager)
-	: Room(sM, som)
+	: Room(sM, som, textureManager)
 {
 	start(textureManager);
 	scanlines.setTexture(textureManager.getRef("scanlines"));
+
+	heightmap = {
+		10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+		11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
+		12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+		13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
+		14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
+		15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+		16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+		17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
+		18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
+		19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19,
+		20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+		21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21,
+		22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22,
+		10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+		10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+		60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60,
+		10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+	};
 }
 
 Level01_State::~Level01_State()
@@ -25,7 +45,7 @@ void Level01_State::start(TextureManager &textureManager)
 	}
 
 	// Create Objects
-	Object *object = new Block(textureManager, 0.0f, 284.0f, 128.0f, 16.0f);
+	Object *object /*= new Block(textureManager, 0.0f, 284.0f, 128.0f, 16.0f);
 	objects.push_back(object);
 
 	object = new Block(textureManager, 128.0f, 268.0f, 128.0f, 32.0f);
@@ -46,7 +66,7 @@ void Level01_State::start(TextureManager &textureManager)
 	object = new Block(textureManager, 816.0f, 252.0f, 256.0f, 48.0f);
 	objects.push_back(object);
 
-	object = new Zombie(textureManager, 270.0f, 32.0f);
+	object */= new Zombie(textureManager, 270.0f, 32.0f);
 	objects.push_back(object);
 
 	object = new Zombie(textureManager, 405.0f, 32.0f);

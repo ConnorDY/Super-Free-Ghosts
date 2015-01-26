@@ -1,13 +1,52 @@
 #include "room.h"
+#include <algorithm>
 
-Room::Room(StateManager &stm, SoundManager &som) : State(stm), soundManager(som)
+Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm)
+	: State(stm), soundManager(som),
+	  width(VIEW_WIDTH), height(VIEW_HEIGHT) //TODO temp values!!
 {
 	setView(sf::View(sf::Vector2f(VIEW_WIDTH / 2.0, VIEW_HEIGHT / 2.0), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT)));
+	dirtSprite.setTexture(tm.getRef("tiles"));
 }
 
 Room::~Room()
 {
 	end();
+}
+
+void Room::drawHeightMap(sf::RenderWindow &window)
+{
+	auto &view = window.getView();
+	auto &center = view.getCenter(), &size = view.getSize();
+	int viewLeft = floor(center.x - size.x / 2);
+	int viewRight = ceil(center.x + size.x / 2);
+	int heightmapStart = std::max<int>(0, viewLeft);
+	int heightmapEnd = std::min<int>(heightmap.size(), viewRight);
+	int spriteWidth = dirtSprite.getTexture()->getSize().x;
+	int spriteColumn = heightmapStart % spriteWidth;
+	for (int i = heightmapStart; i < heightmapEnd; i++)
+	{
+		int height = heightmap[i];
+		int y = this->height - height;
+		// Top of ground with grass
+		dirtSprite.setTextureRect(sf::IntRect(spriteColumn, 0, 1, 38));
+		dirtSprite.setOrigin(sf::Vector2f(0.0f, 13.0f));
+		dirtSprite.setPosition(i, y);
+		window.draw(dirtSprite);
+
+		// Ground underneath
+		dirtSprite.setTextureRect(sf::IntRect(spriteColumn, 38, 1, 16));
+		dirtSprite.setOrigin(sf::Vector2f(0.0f, 0.0f));
+		for (float j = 19; j < height; j += 16)
+		{
+			dirtSprite.setPosition(i, y + j);
+			window.draw(dirtSprite);
+		}
+
+		spriteColumn++;
+		if (spriteColumn == spriteWidth)
+			spriteColumn = 0;
+	}
 }
 
 SoundManager& Room::getSoundManager() const
@@ -35,6 +74,7 @@ void Room::reset(TextureManager &textureManager)
 
 void Room::draw(sf::RenderWindow &window)
 {
+	drawHeightMap(window);
 	if (view_follow)
 	{
 		// Update view

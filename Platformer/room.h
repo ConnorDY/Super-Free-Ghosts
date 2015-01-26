@@ -9,14 +9,18 @@ class Object;
 class Room : public State {
 	private:
 		SoundManager &soundManager;   // Sound manager for use by objects in this room
-
-		void drawHeightMap(sf::RenderWindow &window);
 	protected:
 		std::vector<Object*> objects; // Objects present in this room
 		Object *view_follow;          // The object to follow around with the camera
 		sf::Time deltaTime;           // The time delta between the most recent update() and the previous
+		int const width, height;      // The width and height of the room
+		sf::Sprite dirtSprite;        // The sprite to paint the heightmap with
+		std::vector<int> heightmap;   // Height map. Index = x-value, value = y-value (from 0 = bottom)
+		                              // However, 0 will be non-colliding for simplicity's sake
+
+		void drawHeightMap(sf::RenderWindow &window);
 	public:
-		explicit Room(StateManager &stm, SoundManager &som);
+		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm);
 		virtual ~Room();
 
 		SoundManager& getSoundManager() const;
