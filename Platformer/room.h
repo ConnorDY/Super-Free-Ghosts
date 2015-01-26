@@ -9,6 +9,8 @@ class Object;
 class Room : public State {
 	private:
 		SoundManager &soundManager;   // Sound manager for use by objects in this room
+
+		void drawHeightMap(sf::RenderWindow &window);
 	protected:
 		std::vector<Object*> objects; // Objects present in this room
 		Object *view_follow;          // The object to follow around with the camera
