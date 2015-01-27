@@ -78,6 +78,11 @@ bool Room::heightmapIntersects(sf::FloatRect const &rect) const
 	return height - maxHeight <= rect.top + rect.height;
 }
 
+bool Room::exceedsHorizontalBounds(sf::FloatRect const &rect) const
+{
+	return rect.left < 0 || rect.left + rect.width >= width;
+}
+
 SoundManager& Room::getSoundManager() const
 {
 	return soundManager;

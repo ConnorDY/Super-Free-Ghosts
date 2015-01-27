@@ -31,6 +31,7 @@ bool Object::placeFree(float xx, float yy, Room const &room) const
 	sf::FloatRect temp_rect(xx, yy, width, height);
 
 	if (room.heightmapIntersects(temp_rect)) return false;
+	if (room.exceedsHorizontalBounds(temp_rect)) return false;
 
 	auto const &objects = room.getObjects();
 	return std::none_of(objects.begin(), objects.end(), [&](Object* const &elem)

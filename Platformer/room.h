@@ -25,6 +25,7 @@ class Room : public State {
 		virtual ~Room();
 
 		bool heightmapIntersects(sf::FloatRect const &rect) const;
+		bool exceedsHorizontalBounds(sf::FloatRect const &rect) const;
 		SoundManager& getSoundManager() const;
 		std::vector<Object*> const getObjects() const;
 		virtual void start(TextureManager &textureManager) = 0;
