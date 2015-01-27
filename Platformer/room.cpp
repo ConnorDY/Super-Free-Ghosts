@@ -41,21 +41,23 @@ void Room::drawHeightMap(sf::RenderWindow &window)
 	for (int i = heightmapStart; i < heightmapEnd; i++)
 	{
 		int height = heightmap[i];
-		if (height == 0) continue;
-		int y = this->height - height;
-		// Top of ground with grass
-		dirtSprite.setTextureRect(sf::IntRect(spriteColumn, 0, 1, 38));
-		dirtSprite.setOrigin(sf::Vector2f(0.0f, 13.0f));
-		dirtSprite.setPosition(i, y);
-		window.draw(dirtSprite);
-
-		// Ground underneath
-		dirtSprite.setTextureRect(sf::IntRect(spriteColumn, 38, 1, 16));
-		dirtSprite.setOrigin(sf::Vector2f(0.0f, 0.0f));
-		for (float j = 19; j < height; j += 16)
+		if (height != 0)
 		{
-			dirtSprite.setPosition(i, y + j);
+			int y = this->height - height;
+			// Top of ground with grass
+			dirtSprite.setTextureRect(sf::IntRect(spriteColumn, 0, 1, 38));
+			dirtSprite.setOrigin(sf::Vector2f(0.0f, 13.0f));
+			dirtSprite.setPosition(i, y);
 			window.draw(dirtSprite);
+
+			// Ground underneath
+			dirtSprite.setTextureRect(sf::IntRect(spriteColumn, 38, 1, 16));
+			dirtSprite.setOrigin(sf::Vector2f(0.0f, 0.0f));
+			for (float j = 19; j < height; j += 16)
+			{
+				dirtSprite.setPosition(i, y + j);
+				window.draw(dirtSprite);
+			}
 		}
 
 		spriteColumn++;
