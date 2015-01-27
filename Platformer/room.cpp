@@ -3,7 +3,7 @@
 
 Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm)
 	: State(stm), soundManager(som),
-	  width(1000), height(VIEW_HEIGHT) //TODO temp values!!
+	  width(1000), height(VIEW_HEIGHT)
 {
 	setView(sf::View(sf::Vector2f(VIEW_WIDTH / 2.0, VIEW_HEIGHT / 2.0), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT)));
 	dirtSprite.setTexture(tm.getRef("tiles"));
@@ -12,6 +12,20 @@ Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm)
 Room::~Room()
 {
 	end();
+}
+
+void Room::fillHeightMap(size_t xleft, size_t width, int height)
+{
+	if (heightmap.size() < xleft)
+		heightmap.insert(heightmap.end(), xleft - heightmap.size(), 0);
+
+	size_t xright = xleft + width;
+	size_t overwriteEnd = std::min<size_t>(xright, heightmap.size());
+	for (size_t i = xleft; i < overwriteEnd; i++)
+		heightmap[i] = height;
+
+	if (xright > heightmap.size())
+		heightmap.insert(heightmap.end(), xright - heightmap.size(), height);
 }
 
 void Room::drawHeightMap(sf::RenderWindow &window)
@@ -94,9 +108,11 @@ void Room::draw(sf::RenderWindow &window)
 		auto rect = view_follow->getRect();
 		float vx = rect.left + rect.width/2;
 		float vy = rect.top + rect.height/2;
+
 		auto view_size = getView().getSize();
 		float vw = view_size.x;
 		float vh = view_size.y;
+
 		auto viewLeftMax = vw / 2;
 		auto viewTopMax = vh / 2;
 		auto viewRightMax = width - viewLeftMax;

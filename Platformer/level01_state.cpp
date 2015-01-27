@@ -6,26 +6,6 @@ Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager
 {
 	start(textureManager);
 	scanlines.setTexture(textureManager.getRef("scanlines"));
-
-	heightmap = {
-		10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-		11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,
-		12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-		13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
-		14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
-		15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-		16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
-		17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
-		18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
-		19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19,
-		20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-		10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-		60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60,
-		10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
-	};
 }
 
 Level01_State::~Level01_State()
@@ -44,29 +24,16 @@ void Level01_State::start(TextureManager &textureManager)
 		music.setVolume(50.0f);
 	}
 
+	fillHeightMap(0, 128, 16);
+	fillHeightMap(128, 128, 32);
+	fillHeightMap(256, 64, 48);
+	fillHeightMap(384, 128, 16);
+	fillHeightMap(576, 32, 16);
+	fillHeightMap(736, 32, 16);
+	fillHeightMap(816, 256, 48);
+
 	// Create Objects
-	Object *object /*= new Block(textureManager, 0.0f, 284.0f, 128.0f, 16.0f);
-	objects.push_back(object);
-
-	object = new Block(textureManager, 128.0f, 268.0f, 128.0f, 32.0f);
-	objects.push_back(object);
-
-	object = new Block(textureManager, 256.0f, 252.0f, 64.0f, 48.0f);
-	objects.push_back(object);
-
-	object = new Block(textureManager, 384.0f, 284.0f, 128.0f, 16.0f);
-	objects.push_back(object);
-
-	object = new Block(textureManager, 576.0f, 284.0f, 32.0f, 16.0f);
-	objects.push_back(object);
-
-	object = new Block(textureManager, 736.0f, 284.0f, 32.0f, 16.0f);
-	objects.push_back(object);
-
-	object = new Block(textureManager, 816.0f, 252.0f, 256.0f, 48.0f);
-	objects.push_back(object);
-
-	object */= new Zombie(textureManager, 270.0f, 32.0f);
+	Object *object = new Zombie(textureManager, 270.0f, 32.0f);
 	objects.push_back(object);
 
 	object = new Zombie(textureManager, 405.0f, 32.0f);

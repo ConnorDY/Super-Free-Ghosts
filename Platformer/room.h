@@ -18,6 +18,7 @@ class Room : public State {
 		std::vector<int> heightmap;   // Height map. Index = x-value, value = y-value (from 0 = bottom)
 		                              // However, 0 will be non-colliding for simplicity's sake
 
+		void fillHeightMap(size_t xleft, size_t width, int height);
 		void drawHeightMap(sf::RenderWindow &window);
 	public:
 		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm);
