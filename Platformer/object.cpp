@@ -26,20 +26,24 @@ sf::FloatRect Object::getRect() const
 	return sf::FloatRect(x, y, width, height);
 }
 
-bool Object::placeFree(float xx, float yy, std::vector<Object*> const objects) const
+bool Object::placeFree(float xx, float yy, Room const &room) const
 {
 	sf::FloatRect temp_rect(xx, yy, width, height);
 
+	if (room.heightmapIntersects(temp_rect)) return false;
+
+	auto const &objects = room.getObjects();
 	return std::none_of(objects.begin(), objects.end(), [&](Object* const &elem)
 	{
 		return this != elem && elem->isSolid() && temp_rect.intersects(elem->getRect());
 	});
 }
 
-Object* Object::nonsolidCollision(float xx, float yy, std::vector<Object*> const objects) const
+Object* Object::nonsolidCollision(float xx, float yy, Room const &room) const
 {
 	sf::FloatRect temp_rect(xx, yy, width, height);
 
+	auto const &objects = room.getObjects();
 	auto collision = std::find_if(objects.begin(), objects.end(), [&](Object* const &elem)
 	{
 		return this != elem && !elem->isSolid() && temp_rect.intersects(elem->getRect());
@@ -67,8 +71,7 @@ void Object::update(sf::Time deltaTime, Room const &room)
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 
 	// Gravity
-	auto const objects = room.getObjects();
-	if (placeFree(x, y + 1, objects)) dy += gravity * (float)mstime;
+	if (placeFree(x, y + 1, room)) dy += gravity * (float)mstime;
 	else if (dy > 0.0f) dy = 0.0f;
 
 	if (dy > maxFallSpeed) dy = maxFallSpeed;
@@ -77,7 +80,7 @@ void Object::update(sf::Time deltaTime, Room const &room)
 	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
 	{
 		float j = copysign(i, dy);
-		if (placeFree(x, y + j, objects))
+		if (placeFree(x, y + j, room))
 		{
 			y += j;
 			break;
@@ -88,7 +91,7 @@ void Object::update(sf::Time deltaTime, Room const &room)
 	for (float i = fabs(dx) * (float)mstime; i > 0; i--)
 	{
 		float j = copysign(i, dx);
-		if (placeFree(x + j, y, objects))
+		if (placeFree(x + j, y, room))
 		{
 			x += j;
 			break;

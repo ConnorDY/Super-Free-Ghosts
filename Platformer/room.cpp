@@ -3,7 +3,7 @@
 
 Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm)
 	: State(stm), soundManager(som),
-	  width(VIEW_WIDTH), height(VIEW_HEIGHT) //TODO temp values!!
+	  width(1000), height(VIEW_HEIGHT) //TODO temp values!!
 {
 	setView(sf::View(sf::Vector2f(VIEW_WIDTH / 2.0, VIEW_HEIGHT / 2.0), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT)));
 	dirtSprite.setTexture(tm.getRef("tiles"));
@@ -27,6 +27,7 @@ void Room::drawHeightMap(sf::RenderWindow &window)
 	for (int i = heightmapStart; i < heightmapEnd; i++)
 	{
 		int height = heightmap[i];
+		if (height == 0) continue;
 		int y = this->height - height;
 		// Top of ground with grass
 		dirtSprite.setTextureRect(sf::IntRect(spriteColumn, 0, 1, 38));
@@ -47,6 +48,18 @@ void Room::drawHeightMap(sf::RenderWindow &window)
 		if (spriteColumn == spriteWidth)
 			spriteColumn = 0;
 	}
+}
+
+bool Room::heightmapIntersects(sf::FloatRect const &rect) const
+{
+	int left = std::max<int>(0, floor(rect.left));
+	int right = std::min<int>(heightmap.size(), 1 + ceil(rect.left + rect.width));
+	if (left >= right) return false;
+
+	auto maxHeight = *std::max_element(heightmap.begin() + left, heightmap.begin() + right);
+	if (maxHeight == 0) return false; // 0 is a special case (no solid ground)
+	// Here we are negating because it's height up from the ground (-y)
+	return height - maxHeight <= rect.top + rect.height;
 }
 
 SoundManager& Room::getSoundManager() const
@@ -84,6 +97,14 @@ void Room::draw(sf::RenderWindow &window)
 		auto view_size = getView().getSize();
 		float vw = view_size.x;
 		float vh = view_size.y;
+		auto viewLeftMax = vw / 2;
+		auto viewTopMax = vh / 2;
+		auto viewRightMax = width - viewLeftMax;
+		auto viewBottomMax = height - viewTopMax;
+
+		// Don't let the view go past the bottom or right of the room
+		if (vx > viewRightMax) vx = viewRightMax;
+		if (vy > viewBottomMax) vy = viewBottomMax;
 
 		// Don't let the view go past the top or left of the room
 		if (vx < vw / 2.0f) vx = vw / 2.0f;

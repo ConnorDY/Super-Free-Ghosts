@@ -23,6 +23,7 @@ class Room : public State {
 		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm);
 		virtual ~Room();
 
+		bool heightmapIntersects(sf::FloatRect const &rect) const;
 		SoundManager& getSoundManager() const;
 		std::vector<Object*> const getObjects() const;
 		virtual void start(TextureManager &textureManager) = 0;

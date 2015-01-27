@@ -176,11 +176,10 @@ void Player::update(sf::Time deltaTime, Room const &room)
 		printf("Total Time: %4.3f\n", (float)total_time);
 	}
 
-	auto const objects = room.getObjects();
 	auto& soundManager = room.getSoundManager();
 
 	// Gravity
-	if (placeFree(x, y + 1, objects)) dy += gravity * (float)mstime;
+	if (placeFree(x, y + 1, room)) dy += gravity * (float)mstime;
 	else if (dy > 0.0f)
 	{
 		dy = 0;
@@ -194,7 +193,7 @@ void Player::update(sf::Time deltaTime, Room const &room)
 
 		soundManager.playSound("land");
 	}
-	else if (dy < 0 && !placeFree(x, y - 1, objects))
+	else if (dy < 0 && !placeFree(x, y - 1, room))
 	{
 		dy = 0; // Hitting head on the ceiling
 		// TODO play sound?
@@ -204,7 +203,7 @@ void Player::update(sf::Time deltaTime, Room const &room)
 	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
 	{
 		float j = copysign(i, dy);
-		if (placeFree(x, y + j, objects))
+		if (placeFree(x, y + j, room))
 		{
 			y += j;
 			break;
@@ -217,7 +216,7 @@ void Player::update(sf::Time deltaTime, Room const &room)
 		for (float i = fabs(dx) * (float)mstime; i > 0; i--)
 		{
 			float j = copysign(i, dx);
-			if (placeFree(x + j, y, objects))
+			if (placeFree(x + j, y, room))
 			{
 				x += j;
 				break;

@@ -65,16 +65,15 @@ void Zombie::draw(sf::RenderWindow &window)
 void Zombie::update(sf::Time deltaTime, Room const &room)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
-	auto const objects = room.getObjects();
 	if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.25;
-	if (!placeFree(x, y + 1, objects) && dx == 0) dx = -0.075f / 2.0f; // Hit the ground
+	if (!placeFree(x, y + 1, room) && dx == 0) dx = -0.075f / 2.0f; // Hit the ground
 
 	Object::update(deltaTime, room);
 
 	float adj = ZOMBIE_WIDTH;
 	if (dx < 0) adj *= -1;
 
-	if (!placeFree(x + dx * mstime, y, objects) || (x <= 0.0f && dx < 0) || (placeFree(x + adj, y + 17, objects) && !placeFree(x, y + 1, objects)))
+	if (!placeFree(x + dx * mstime, y, room) || (x <= 0.0f && dx < 0) || (placeFree(x + adj, y + 17, room) && !placeFree(x, y + 1, room)))
 	{
 		// Turn around
 		dx = -dx;
@@ -110,7 +109,7 @@ void Zombie::update(sf::Time deltaTime, Room const &room)
 	// Animations
 	if (opening) setAnimation("casket");
 	else if (inCasket) setAnimation("appear");
-	else if (placeFree(x, y + 1, objects) && dx == 0.0f) setAnimation("fall");
+	else if (placeFree(x, y + 1, room) && dx == 0.0f) setAnimation("fall");
 	else if (turning) setAnimation("turn");
 	else setAnimation("walk");
 

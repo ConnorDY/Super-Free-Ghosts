@@ -26,8 +26,8 @@ class Object
 		bool shouldDelete() const;
 
 		sf::FloatRect getRect() const;
-		bool placeFree(float xx, float yy, std::vector<Object*> const objects) const;
-		Object* nonsolidCollision(float xx, float yy, std::vector<Object*> const objects) const;
+		bool placeFree(float xx, float yy, Room const &room) const;
+		Object* nonsolidCollision(float xx, float yy, Room const &room) const;
 
 		// Mutators
 		void setX(float xx);

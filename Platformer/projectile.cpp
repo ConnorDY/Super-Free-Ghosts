@@ -39,12 +39,12 @@ void Projectile::draw(sf::RenderWindow &window)
 }
 
 // TODO: Get rid of these by fixing the projectile's bounding box (i.e. make x & y the upper left of the bounding box as usual)
-bool Projectile::placeFree_adj(float x, float y, std::vector<Object*> const objects) const {
-	return placeFree(x + (dx < 0 ? -width : 0), y, objects);
+bool Projectile::placeFree_adj(float x, float y, Room const &room) const {
+	return placeFree(x + (dx < 0 ? -width : 0), y, room);
 }
 
-Object* Projectile::nonsolidCollision_adj(float x, float y, std::vector<Object*> const objects) const {
-	return nonsolidCollision(x + (dx < 0 ? -width : 0), y, objects);
+Object* Projectile::nonsolidCollision_adj(float x, float y, Room const &room) const {
+	return nonsolidCollision(x + (dx < 0 ? -width : 0), y, room);
 }
 
 bool Projectile::isOutsideView(Room const &room) const
@@ -62,8 +62,6 @@ void Projectile::update(sf::Time deltaTime, Room const &room)
 {
 	Object::update(deltaTime, room);
 
-	auto const objects = room.getObjects();
-
 	// Determine the direction the projectile is moving in
 	float sign_x = 0, sign_y = 0;
 
@@ -75,10 +73,10 @@ void Projectile::update(sf::Time deltaTime, Room const &room)
 	else if (dy < 0.0f) sign_y = 1.0f;
 
 	// Destroy projectile if it hits a solid object or leaves the room
-	if (!placeFree_adj(x + sign_x, y + sign_y, objects) || isOutsideView(room)) kill(room);
+	if (!placeFree_adj(x + sign_x, y + sign_y, room) || isOutsideView(room)) kill(room);
 
 	// Destroy projectile if it hits an enemy and destroy the enemy
-	Object* col = nonsolidCollision_adj(x, y, objects);
+	Object* col = nonsolidCollision_adj(x, y, room);
 	if (dynamic_cast<Zombie*>(col) != NULL)
 	{
 		col->kill(room);
