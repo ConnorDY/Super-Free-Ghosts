@@ -224,8 +224,6 @@ void Player::update(sf::Time deltaTime, Room const &room)
 		}
 	}
 
-	if (x < 0.0f) x = 0.0f;
-
 	// Jump and Throw Timers
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= 0.2f) midJump = false;
 	else if (midThrow && throwTimer.getElapsedTime().asSeconds() >= throwTime) midThrow = false;
