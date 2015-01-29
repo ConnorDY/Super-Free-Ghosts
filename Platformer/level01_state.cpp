@@ -58,8 +58,15 @@ void Level01_State::draw(sf::RenderWindow &window)
 
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
 {
+	static sf::Clock clock;
 	/* Restart Level if Player is Outside of the Room */
 	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager);
+
+	auto time = clock.getElapsedTime();
+	for (size_t i = 0; i < 200; i++)
+	{
+		heightmap[i + 200] = 30 + 20 * sin((i + time.asMilliseconds()) / 100.);
+	}
 
 	/* Input */
 	sf::Event event;
