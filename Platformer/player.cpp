@@ -219,7 +219,7 @@ void Player::update(sf::Time deltaTime, Room const &room)
 			bool brk = false;
 
 			float ks = 0;
-			float ke = 1;
+			float ke = 0;
 
 			if (dy == 0)
 			{
@@ -227,7 +227,7 @@ void Player::update(sf::Time deltaTime, Room const &room)
 				ke = 4;
 			}
 
-			for (float k = ks; k < ke; k++)
+			for (float k = ks; k <= ke; k++)
 			{
 				if (placeFree(x + j, y - k, room))
 				{
