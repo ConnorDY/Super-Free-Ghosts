@@ -216,11 +216,30 @@ void Player::update(sf::Time deltaTime, Room const &room)
 		for (float i = fabs(dx) * (float)mstime; i > 0; i--)
 		{
 			float j = copysign(i, dx);
-			if (placeFree(x + j, y, room))
+			bool brk = false;
+
+			float ks = 0;
+			float ke = 1;
+
+			if (dy == 0)
 			{
-				x += j;
-				break;
+				ks = -4;
+				ke = 4;
 			}
+
+			for (float k = ks; k < ke; k++)
+			{
+				if (placeFree(x + j, y - k, room))
+				{
+					x += j;
+					y -= k;
+
+					brk = true;
+					break;
+				}
+			}
+
+			if (brk) break;
 		}
 	}
 

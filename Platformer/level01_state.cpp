@@ -30,7 +30,11 @@ void Level01_State::start(TextureManager &textureManager)
 	fillHeightMap(384, 128, 16);
 	fillHeightMap(576, 32, 16);
 	fillHeightMap(736, 32, 16);
-	fillHeightMap(816, 256, 48);
+
+	for (double i = 816; i < 1072; i += .25)
+	{
+		fillHeightMap((size_t)i, 1, 48 + (int)(4 * sin((i - 816.0) / (3.14 * 2))));
+	}
 
 	// Create Objects
 	Object *object = new Zombie(textureManager, 270.0f, 32.0f);
