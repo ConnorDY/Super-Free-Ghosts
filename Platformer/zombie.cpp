@@ -73,7 +73,14 @@ void Zombie::update(sf::Time deltaTime, Room const &room)
 	float adj = ZOMBIE_WIDTH;
 	if (dx < 0) adj *= -1;
 
-	if (!placeFree(x + dx * mstime, y, room) || (x <= 0.0f && dx < 0) || (placeFree(x + adj, y + 17, room) && !placeFree(x, y + 1, room)))
+	bool turn = true;
+
+	for (int i = -4; i < 4; i++)
+	{
+		if (placeFree(x + dx * mstime, y + i, room)) turn = false;
+	}
+
+	if (turn || (x <= 0.0f && dx < 0) || (placeFree(x + adj, y + 17, room) && !placeFree(x, y + 1, room)))
 	{
 		// Turn around
 		dx = -dx;
