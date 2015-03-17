@@ -117,6 +117,9 @@ void Object::update(sf::Time deltaTime, Room const &room)
 
 		if (brk) break;
 	}
+
+	// Move out of heightmap if stuck within it
+	while (!placeFree(x, y, room)) y -= .5;
 }
 
 void Object::kill(Room const &room)

@@ -243,6 +243,9 @@ void Player::update(sf::Time deltaTime, Room const &room)
 		}
 	}
 
+	// Move out of heightmap if stuck within it
+	while (!placeFree(x, y, room)) y -= .5;
+
 	// Jump and Throw Timers
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= 0.2f) midJump = false;
 	else if (midThrow && throwTimer.getElapsedTime().asSeconds() >= throwTime) midThrow = false;

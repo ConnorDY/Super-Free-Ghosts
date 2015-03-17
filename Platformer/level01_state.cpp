@@ -30,11 +30,7 @@ void Level01_State::start(TextureManager &textureManager)
 	fillHeightMap(384, 128, 16);
 	fillHeightMap(576, 32, 16);
 	fillHeightMap(736, 32, 16);
-
-	for (double i = 816; i < 1072; i += .25)
-	{
-		fillHeightMap((size_t)i, 1, 48 + (int)(4 * sin((i - 816.0) / (3.14 * 2))));
-	}
+	fillHeightMap(816, 256, 16);
 
 	// Create Objects
 	Object *object = new Zombie(textureManager, 270.0f, 32.0f);
@@ -62,8 +58,16 @@ void Level01_State::draw(sf::RenderWindow &window)
 
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
 {
+	static sf::Clock clock;
+
 	/* Restart Level if Player is Outside of the Room */
 	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager);
+
+	auto time = clock.getElapsedTime();
+	for (size_t i = 0; i < 256; i++)
+	{
+		heightmap[i + 816] = 30 + 20 * sin((i + time.asMilliseconds()) / 200.);
+	}
 
 	/* Input */
 	sf::Event event;
