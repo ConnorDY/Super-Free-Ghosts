@@ -1,5 +1,6 @@
 #include "menu_state.h"
 #include "level01_state.h"
+#include "options_state.h"
 
 Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager)
 	: State(sM)
@@ -14,6 +15,7 @@ Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager)
 
 	// Menu Options
 	menuOptions.push_back("Start");
+	menuOptions.push_back("Options");
 	menuOptions.push_back("Exit");
 }
 
@@ -102,8 +104,13 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 					getStateManager().setState(std::unique_ptr<State>(new Level01_State(getStateManager(), soundManager, textureManager)));
 					break;
 
-				// Exit
+				// Options Menu
 				case 1:
+					getStateManager().setState(std::unique_ptr<State>(new Options_State(getStateManager(), textureManager)));
+					break;
+
+				// Exit
+				case 2:
 					std::exit(0);
 					break;
 			}
