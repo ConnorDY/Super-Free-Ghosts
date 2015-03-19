@@ -9,9 +9,15 @@ Options_State::Options_State(StateManager &sM, TextureManager &textureManager)
 	const_cast<sf::Texture&>(fnt.getTexture(11)).setSmooth(false);
 
 	// Menu Options
-	menuOptions.push_back("Increase Window Size");
-	menuOptions.push_back("Decrease Window Size");
+	menuOptions.push_back("Window Scale");
+	optionChoices.push_back({ "1", "2", "3" });
+
 	menuOptions.push_back("Back");
+	optionChoices.push_back({});
+
+	// Default values
+	currentValue.push_back(1);
+	currentValue.push_back(0);
 }
 
 Options_State::~Options_State()
@@ -26,15 +32,17 @@ void Options_State::draw(sf::RenderWindow &window)
 	sf::View temp = sf::View(sf::Vector2f((float)VIEW_WIDTH / 2.0f, (float)VIEW_HEIGHT / 2.0f), sf::Vector2f((float)VIEW_WIDTH, (float)VIEW_HEIGHT));
 	window.setView(temp);
 
-	float xx = 200.0f, yy = 180.0f;
+	sf::Text text;
+	float xx = 200.0f, yy = 50.0f;
 
 	for (unsigned int i = 0; i < menuOptions.size(); i++)
 	{
-		// Create text
-		sf::Text text;
+		// Set text string
+		text.setString(menuOptions.at(i));
+
+		// Set text font and size
 		text.setFont(fnt);
 		text.setCharacterSize(11);
-		text.setString(menuOptions.at(i));
 
 		// Text colour
 		if (currentOption == i) text.setColor(sf::Color::Yellow);
@@ -50,6 +58,28 @@ void Options_State::draw(sf::RenderWindow &window)
 
 		// Draw text
 		window.draw(text);
+
+		// Option Choices
+		if (optionChoices.at(i).size() > 0)
+		{
+			// Set text string
+			text.setString(optionChoices.at(i).at(currentValue.at(i)));
+
+			// Text colour
+			if (currentOption == i) text.setColor(sf::Color::Yellow);
+			else text.setColor(sf::Color::White);
+
+			// Center text
+			sf::FloatRect textRect = text.getLocalBounds();
+			text.setOrigin(round(textRect.left + textRect.width / 2.0f), round(textRect.top + textRect.height / 2.0f));
+
+			// Set position
+			text.setPosition(sf::Vector2f(round(xx), round(yy)));
+			yy += 16;
+
+			// Draw text
+			window.draw(text);
+		}
 	}
 }
 
@@ -91,21 +121,47 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 				default:
 					break;
 
-				// Increase Window Size
-				case 0:
-					settings.window_scale++;
-					window.setSize(sf::Vector2u(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale));
-					break;
-
-				// Decrease Window Size
-				case 1:
-					if (settings.window_scale > 1) settings.window_scale--;
-					window.setSize(sf::Vector2u(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale));
-					break;
-
 				// Back
-				case 2:
+				case 1:
 					getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
+					break;
+			}
+		}
+
+		if (inputHandler.checkInput(InputHandler::Input::Left, event))
+		{
+			switch (currentOption)
+			{
+				default:
+					break;
+
+				// Decrease Window Scale
+				case 0:
+					if (settings.window_scale > 1)
+					{
+						settings.window_scale--;
+						currentValue[0]--;
+						window.setSize(sf::Vector2u(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale));
+					}
+					break;
+			}
+		}
+
+		if (inputHandler.checkInput(InputHandler::Input::Right, event))
+		{
+			switch (currentOption)
+			{
+				default:
+					break;
+
+				// Increase Window Scale
+				case 0:
+					if (settings.window_scale < 3)
+					{
+						settings.window_scale++;
+						currentValue[0]++;
+						window.setSize(sf::Vector2u(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale));
+					}
 					break;
 			}
 		}

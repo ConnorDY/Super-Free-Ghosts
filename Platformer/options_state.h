@@ -12,6 +12,8 @@ class Options_State : public State
 {
 private:
 	std::vector<std::string> menuOptions;
+	std::vector<std::vector<std::string>> optionChoices;
+	std::vector<unsigned int> currentValue;
 	sf::Font fnt;
 	unsigned int currentOption = 0;
 public:
