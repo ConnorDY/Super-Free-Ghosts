@@ -87,6 +87,14 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 {
 	restartClock();
 
+	// Load Initial Settings
+	if (!loadedSettings)
+	{
+		currentValue[0] = settings.window_scale - 1;
+
+		loadedSettings = true;
+	}
+
 	// Get Input
 	sf::Event event;
 
