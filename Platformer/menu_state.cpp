@@ -61,7 +61,7 @@ void Menu_State::draw(sf::RenderWindow &window)
 	}
 }
 
-void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
+void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
 {
 	restartClock();
 

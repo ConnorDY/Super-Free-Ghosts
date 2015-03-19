@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "globals.h"
+#include "settings.h"
 #include "texture_manager.h"
 #include "sound_manager.h"
 #include "state_manager.h"
@@ -29,16 +30,20 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 /* Program Entry Point */
 int main()
 {
+	// Default settings
+	settings_t settings;
+	settings.window_scale = 2;
+
 	// Load Textures and Sounds and Shaders
 	TextureManager textureManager;
 	SoundManager soundManager;
 	loadRes(textureManager, soundManager);
 
 	// Create State Manager
-	StateManager stateManager(textureManager, soundManager);
+	StateManager stateManager(textureManager, soundManager, settings);
 	
 	// Create Window
-	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Super Free Ghosts", sf::Style::Close | sf::Style::Titlebar);
+	sf::RenderWindow window(sf::VideoMode(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale), "Super Free Ghosts", sf::Style::Close | sf::Style::Titlebar);
 	window.setVerticalSyncEnabled(VSYNC_ON);
 
 	// Game Loop

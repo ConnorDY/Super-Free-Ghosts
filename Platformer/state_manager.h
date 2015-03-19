@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "globals.h"
+#include "settings.h"
 #include "input_handler.h"
 #include "texture_manager.h"
 #include "sound_manager.h"
@@ -19,9 +20,10 @@ class StateManager
 		TextureManager &textureManager;
 		SoundManager &soundManager;
 		InputHandler inputHandler;
+		settings_t &settings;
 		std::unique_ptr<State> currentState;
 	public:
-		StateManager(TextureManager &tM, SoundManager &sM);
+		StateManager(TextureManager &tM, SoundManager &sM, settings_t &settings);
 		~StateManager();
 
 		// Actions

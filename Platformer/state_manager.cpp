@@ -2,8 +2,8 @@
 
 #include "menu_state.h"
 
-StateManager::StateManager(TextureManager &tM, SoundManager &sM)
-	: textureManager(tM), soundManager(sM), currentState(new Menu_State(*this, tM))
+StateManager::StateManager(TextureManager &tM, SoundManager &sM, settings_t &stg)
+	: textureManager(tM), soundManager(sM), settings(stg), currentState(new Menu_State(*this, tM))
 {
 }
 
@@ -20,7 +20,7 @@ void StateManager::draw(sf::RenderWindow &window)
 
 void StateManager::update(sf::RenderWindow &window)
 {
-	currentState->update(window, textureManager, soundManager, inputHandler);
+	currentState->update(window, textureManager, soundManager, inputHandler, settings);
 }
 
 void StateManager::setState(std::unique_ptr<State> state)

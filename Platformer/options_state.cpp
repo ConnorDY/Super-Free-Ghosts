@@ -9,7 +9,8 @@ Options_State::Options_State(StateManager &sM, TextureManager &textureManager)
 	const_cast<sf::Texture&>(fnt.getTexture(11)).setSmooth(false);
 
 	// Menu Options
-	menuOptions.push_back("Do nothing");
+	menuOptions.push_back("Increase Window Size");
+	menuOptions.push_back("Decrease Window Size");
 	menuOptions.push_back("Back");
 }
 
@@ -52,7 +53,7 @@ void Options_State::draw(sf::RenderWindow &window)
 	}
 }
 
-void Options_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
+void Options_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
 {
 	restartClock();
 
@@ -90,13 +91,20 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 				default:
 					break;
 
-				// Do nothing
+				// Increase Window Size
 				case 0:
-				
+					settings.window_scale++;
+					window.setSize(sf::Vector2u(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale));
+					break;
+
+				// Decrease Window Size
+				case 1:
+					if (settings.window_scale > 1) settings.window_scale--;
+					window.setSize(sf::Vector2u(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale));
 					break;
 
 				// Back
-				case 1:
+				case 2:
 					getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
 					break;
 			}

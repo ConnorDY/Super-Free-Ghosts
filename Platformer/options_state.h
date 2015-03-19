@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "globals.h"
+#include "settings.h"
 #include "state.h"
 
 class Options_State : public State
@@ -19,7 +20,7 @@ public:
 
 	// Actions
 	virtual void draw(sf::RenderWindow &window);
-	virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler);
+	virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings);
 };
 
 #endif

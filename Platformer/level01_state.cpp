@@ -56,7 +56,7 @@ void Level01_State::draw(sf::RenderWindow &window)
 	//window.draw(scanlines);
 }
 
-void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler)
+void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
 {
 	static sf::Clock clock;
 

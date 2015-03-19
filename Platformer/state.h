@@ -8,6 +8,7 @@
 #include "sound_manager.h"
 #include "input_handler.h"
 #include "globals.h"
+#include "settings.h"
 
 class State
 {
@@ -32,7 +33,7 @@ class State
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window) = 0;
-		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler) = 0;
+		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings) = 0;
 		sf::Time restartClock();
 };
 
