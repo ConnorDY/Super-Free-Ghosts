@@ -141,7 +141,7 @@ void Room::draw(sf::RenderWindow &window)
 		object->draw(window);
 }
 
-void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandler&)
+void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandler&, const settings_t &settings)
 {
 	deltaTime = restartClock();
 
@@ -158,7 +158,7 @@ void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandle
 			continue;
 		}
 
-		(*iter)->update(deltaTime, *this);
+		(*iter)->update(deltaTime, *this, settings);
 		iter++;
 	}
 

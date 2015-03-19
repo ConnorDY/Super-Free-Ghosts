@@ -10,6 +10,7 @@
 #include <map>
 
 #include "globals.h"
+#include "settings.h"
 #include "texture_manager.h"
 #include "sound_manager.h"
 #include "object.h"
@@ -41,10 +42,10 @@ class Player : public Object
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
-		void jump(int dir, SoundManager &soundManager);
-		void throwWeapon(std::vector<Object*> &objects, int dir, TextureManager &textureManager, SoundManager &soundManager);
+		void jump(int dir, SoundManager &soundManager, const settings_t &settings);
+		void throwWeapon(std::vector<Object*> &objects, int dir, TextureManager &textureManager, SoundManager &soundManager, const settings_t &settings);
 		void move(int dir);
-		void update(sf::Time deltaTime, Room const &room);
+		void update(sf::Time deltaTime, Room const &room, const settings_t &settings);
 		void setAnimation(std::string name);
 		void changeTexture(TextureManager &textureManager, std::string tex);
 };

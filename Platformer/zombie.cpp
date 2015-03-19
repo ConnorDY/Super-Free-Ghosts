@@ -62,13 +62,13 @@ void Zombie::draw(sf::RenderWindow &window)
 	window.draw(sprite);
 }
 
-void Zombie::update(sf::Time deltaTime, Room const &room)
+void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 	if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.25;
 	if (!placeFree(x, y + 1, room) && dx == 0) dx = -0.075f / 2.0f; // Hit the ground
 
-	Object::update(deltaTime, room);
+	Object::update(deltaTime, room, settings);
 
 	float adj = ZOMBIE_WIDTH;
 	if (dx < 0) adj *= -1;
@@ -152,7 +152,7 @@ void Zombie::updateAnimation(sf::Time deltaTime)
 	sprite.setTextureRect(anim[(int)frame]);
 }
 
-void Zombie::onDeath(Room const &room)
+void Zombie::onDeath(Room const &room, const settings_t &settings)
 {
-	room.getSoundManager().playSound("enemy_die");
+	if (settings.sound_on) room.getSoundManager().playSound("enemy_die");
 }

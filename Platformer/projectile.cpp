@@ -58,9 +58,9 @@ bool Projectile::isOutsideView(Room const &room) const
 	return x < view_left - 30.0f || x > view_right + 30.0f;
 }
 
-void Projectile::update(sf::Time deltaTime, Room const &room)
+void Projectile::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
 {
-	Object::update(deltaTime, room);
+	Object::update(deltaTime, room, settings);
 
 	// Determine the direction the projectile is moving in
 	float sign_x = 0, sign_y = 0;
@@ -73,19 +73,18 @@ void Projectile::update(sf::Time deltaTime, Room const &room)
 	else if (dy < 0.0f) sign_y = 1.0f;
 
 	// Destroy projectile if it hits a solid object or leaves the room
-	if (!placeFree_adj(x + sign_x, y + sign_y, room) || isOutsideView(room)) kill(room);
+	if (!placeFree_adj(x + sign_x, y + sign_y, room) || isOutsideView(room)) kill(room, settings);
 
 	// Destroy projectile if it hits an enemy and destroy the enemy
 	Object* col = nonsolidCollision_adj(x, y, room);
 	if (dynamic_cast<Zombie*>(col) != NULL)
 	{
-		col->kill(room);
-		this->kill(room);
+		col->kill(room, settings);
+		this->kill(room, settings);
 	}
 }
 
-void Projectile::onDeath(Room const &room)
+void Projectile::onDeath(Room const &room, const settings_t &settings)
 {
-	if (!isOutsideView(room))
-		room.getSoundManager().playSound("hit");
+	if (!isOutsideView(room) && settings.sound_on) room.getSoundManager().playSound("hit");
 }

@@ -4,7 +4,7 @@
 struct settings_t
 {
 	int window_scale;
-	bool music_on;
+	bool music_on, sound_on;
 };
 
 #endif

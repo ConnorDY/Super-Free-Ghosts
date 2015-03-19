@@ -16,6 +16,9 @@ private:
 	std::vector<unsigned int> currentValue;
 	sf::Font fnt;
 	unsigned int currentOption = 0;
+
+	void toggleMusic(settings_t &settings);
+	void toggleSound(settings_t &settings);
 public:
 	Options_State(StateManager &sM, TextureManager &textureManager, const settings_t &settings);
 	virtual ~Options_State();

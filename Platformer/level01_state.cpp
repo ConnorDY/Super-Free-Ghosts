@@ -93,8 +93,8 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 			return;
 		}
 
-		if (inputHandler.checkInput(InputHandler::Input::Up, event)) player->jump(moveH, soundManager); // Jumping
-		if (inputHandler.checkInput(InputHandler::Input::Action, event)) player->throwWeapon(objects, player->getDir(), textureManager, soundManager); // Throw Weapon
+		if (inputHandler.checkInput(InputHandler::Input::Up, event)) player->jump(moveH, soundManager, settings); // Jumping
+		if (inputHandler.checkInput(InputHandler::Input::Action, event)) player->throwWeapon(objects, player->getDir(), textureManager, soundManager, settings); // Throw Weapon
 
 		if (inputHandler.checkInput(InputHandler::Input::Debug0, event)) player->changeTexture(textureManager, "arthur0");
 	}
@@ -102,5 +102,5 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	player->move(moveH);
 	player->setCrouching(crouching);
 
-	Room::update(window, textureManager, soundManager, inputHandler);
+	Room::update(window, textureManager, soundManager, inputHandler, settings);
 }

@@ -35,9 +35,9 @@ class Object
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window) = 0;
-		virtual void update(sf::Time deltaTime, Room const &room);
-		void kill(Room const &room);
-		virtual void onDeath(Room const &room);
+		virtual void update(sf::Time deltaTime, Room const &room, const settings_t &settings);
+		void kill(Room const &room, const settings_t &settings);
+		virtual void onDeath(Room const &room, const settings_t &settings);
 	protected:
 		sf::Sprite sprite;
 		float x, y, dx, dy, width, height, gravity, maxFallSpeed;

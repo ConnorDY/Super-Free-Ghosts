@@ -33,6 +33,8 @@ int main()
 	// Default settings
 	settings_t settings;
 	settings.window_scale = 2;
+	settings.music_on = true;
+	settings.sound_on = true;
 
 	// Load Textures and Sounds and Shaders
 	TextureManager textureManager;

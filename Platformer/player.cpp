@@ -115,7 +115,7 @@ void Player::move(int dir)
 	if (dir != 0) sprite.setScale(sf::Vector2f((float)dir, 1.0f));
 }
 
-void Player::jump(int dir, SoundManager &soundManager)
+void Player::jump(int dir, SoundManager &soundManager, const settings_t &settings)
 {
 	if (jumps < 2)
 	{
@@ -133,11 +133,11 @@ void Player::jump(int dir, SoundManager &soundManager)
 		jumped = true;
 		jumps++;
 
-		soundManager.playSound("jump");
+		if (settings.sound_on) soundManager.playSound("jump");
 	}
 }
 
-void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager &textureManager, SoundManager &soundManager)
+void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager &textureManager, SoundManager &soundManager, const settings_t &settings)
 {
 	if (!midThrow)
 	{
@@ -162,11 +162,11 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager 
 		Projectile* weapon = new Projectile(x + sprite.getOrigin().x + adjx, y + sprite.getOrigin().y - 35.0f + adjy, dir, textureManager);
 		objects.push_back(weapon);
 
-		soundManager.playSound("throw");
+		if (settings.sound_on) soundManager.playSound("throw");
 	}
 }
 
-void Player::update(sf::Time deltaTime, Room const &room)
+void Player::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 
@@ -191,7 +191,7 @@ void Player::update(sf::Time deltaTime, Room const &room)
 			jumps = 0;
 		}
 
-		soundManager.playSound("land");
+		if (settings.sound_on) soundManager.playSound("land");
 	}
 	else if (dy < 0 && !placeFree(x, y - 1, room))
 	{

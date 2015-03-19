@@ -32,7 +32,7 @@ class Room : public State {
 		virtual void end();
 		void reset(TextureManager &textureManager, const settings_t &settings);
 		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler);
+		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, const settings_t &settings);
 };
 
 #endif

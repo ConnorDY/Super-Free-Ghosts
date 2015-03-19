@@ -67,7 +67,7 @@ void Object::setY(float yy)
 
 
 /* Actions */
-void Object::update(sf::Time deltaTime, Room const &room)
+void Object::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 
@@ -122,12 +122,12 @@ void Object::update(sf::Time deltaTime, Room const &room)
 	while (!placeFree(x, y, room)) y -= .5;
 }
 
-void Object::kill(Room const &room)
+void Object::kill(Room const &room, const settings_t &settings)
 {
-	onDeath(room);
+	onDeath(room, settings);
 	del = true;
 }
 
-void Object::onDeath(Room const&)
+void Object::onDeath(Room const&, const settings_t &settings)
 {
 }
