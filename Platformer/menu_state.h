@@ -16,7 +16,7 @@ class Menu_State : public State
 		sf::Font fnt;
 		unsigned int currentOption = 0;
 	public:
-		Menu_State(StateManager &sM, TextureManager &textureManager);
+		Menu_State(StateManager &sM, TextureManager &textureManager, const settings_t &settings);
 		virtual ~Menu_State();
 
 		// Actions

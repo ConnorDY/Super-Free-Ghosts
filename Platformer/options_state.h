@@ -16,9 +16,8 @@ private:
 	std::vector<unsigned int> currentValue;
 	sf::Font fnt;
 	unsigned int currentOption = 0;
-	bool loadedSettings = false;
 public:
-	Options_State(StateManager &sM, TextureManager &textureManager);
+	Options_State(StateManager &sM, TextureManager &textureManager, const settings_t &settings);
 	virtual ~Options_State();
 
 	// Actions

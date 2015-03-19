@@ -1,7 +1,7 @@
 #include "room.h"
 #include <algorithm>
 
-Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm)
+Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t &settings)
 	: State(stm), soundManager(som),
 	  width(1000), height(VIEW_HEIGHT)
 {
@@ -100,10 +100,10 @@ void Room::end()
 	objects.clear();
 }
 
-void Room::reset(TextureManager &textureManager)
+void Room::reset(TextureManager &textureManager, const settings_t &settings)
 {
 	end();
-	start(textureManager);
+	start(textureManager, settings);
 }
 
 void Room::draw(sf::RenderWindow &window)

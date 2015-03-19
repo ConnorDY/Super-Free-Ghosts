@@ -19,11 +19,11 @@ class Level01_State : public Room
 		sf::Music music;
 		sf::Sprite scanlines;
 	public:
-		Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager);
+		Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings);
 		virtual ~Level01_State();
 
 		// Actions
-		void start(TextureManager &textureManager);
+		void start(TextureManager &textureManager, const settings_t &settings);
 		virtual void draw(sf::RenderWindow &window);
 		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings);
 };

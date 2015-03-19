@@ -1,10 +1,10 @@
 #include "level01_state.h"
 #include "menu_state.h"
 
-Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager)
-	: Room(sM, som, textureManager)
+Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings)
+	: Room(sM, som, textureManager, settings)
 {
-	start(textureManager);
+	start(textureManager, settings);
 	scanlines.setTexture(textureManager.getRef("scanlines"));
 }
 
@@ -14,10 +14,10 @@ Level01_State::~Level01_State()
 
 
 // Actions
-void Level01_State::start(TextureManager &textureManager)
+void Level01_State::start(TextureManager &textureManager, const settings_t &settings)
 {
 	// Ready Music
-	if (music.openFromFile("res/01.ogg"))
+	if (settings.music_on && music.openFromFile("res/01.ogg"))
 	{
 		music.play();
 		music.setLoop(true);
@@ -61,7 +61,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	static sf::Clock clock;
 
 	/* Restart Level if Player is Outside of the Room */
-	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager);
+	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager, settings);
 
 	auto time = clock.getElapsedTime();
 	for (size_t i = 0; i < 256; i++)
@@ -89,7 +89,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
-			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
+			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager, settings)));
 			return;
 		}
 

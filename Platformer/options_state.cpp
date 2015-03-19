@@ -1,7 +1,7 @@
 #include "options_state.h"
 #include "menu_state.h"
 
-Options_State::Options_State(StateManager &sM, TextureManager &textureManager)
+Options_State::Options_State(StateManager &sM, TextureManager &textureManager, const settings_t &settings)
 	: State(sM)
 {
 	// Load Font
@@ -12,12 +12,18 @@ Options_State::Options_State(StateManager &sM, TextureManager &textureManager)
 	menuOptions.push_back("Window Scale");
 	optionChoices.push_back({ "1", "2", "3" });
 
+	menuOptions.push_back("Music");
+	optionChoices.push_back({ "Off", "On" });
+
 	menuOptions.push_back("Back");
 	optionChoices.push_back({});
 
 	// Default values
-	currentValue.push_back(1);
-	currentValue.push_back(0);
+	currentValue = { 1, 1, 0 };
+
+	// Load values
+	currentValue[0] = settings.window_scale - 1;
+	if (settings.music_on) currentValue[1] = 1; else currentValue[1] = 0;
 }
 
 Options_State::~Options_State()
@@ -87,14 +93,6 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 {
 	restartClock();
 
-	// Load Initial Settings
-	if (!loadedSettings)
-	{
-		currentValue[0] = settings.window_scale - 1;
-
-		loadedSettings = true;
-	}
-
 	// Get Input
 	sf::Event event;
 
@@ -130,8 +128,8 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 					break;
 
 				// Back
-				case 1:
-					getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
+				case 2:
+					getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager, settings)));
 					break;
 			}
 		}
@@ -143,7 +141,7 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 				default:
 					break;
 
-				// Decrease Window Scale
+				// Decrease window scale
 				case 0:
 					if (settings.window_scale > 1)
 					{
@@ -151,6 +149,12 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 						currentValue[0]--;
 						window.setSize(sf::Vector2u(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale));
 					}
+					break;
+
+				// Disable music
+				case 1:
+					settings.music_on = false;
+					currentValue[1] = 0;
 					break;
 			}
 		}
@@ -162,7 +166,7 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 				default:
 					break;
 
-				// Increase Window Scale
+				// Increase window scale
 				case 0:
 					if (settings.window_scale < 3)
 					{
@@ -170,6 +174,12 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 						currentValue[0]++;
 						window.setSize(sf::Vector2u(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale));
 					}
+					break;
+
+				// Enable music
+				case 1:
+					settings.music_on = true;
+					currentValue[1] = 1;
 					break;
 			}
 		}

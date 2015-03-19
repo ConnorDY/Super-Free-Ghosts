@@ -21,16 +21,16 @@ class Room : public State {
 		void fillHeightMap(size_t xleft, size_t width, int height);
 		void drawHeightMap(sf::RenderWindow &window);
 	public:
-		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm);
+		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t &settings);
 		virtual ~Room();
 
 		bool heightmapIntersects(sf::FloatRect const &rect) const;
 		bool exceedsHorizontalBounds(sf::FloatRect const &rect) const;
 		SoundManager& getSoundManager() const;
 		std::vector<Object*> const getObjects() const;
-		virtual void start(TextureManager &textureManager) = 0;
+		virtual void start(TextureManager &textureManager, const settings_t &settings) = 0;
 		virtual void end();
-		void reset(TextureManager &textureManager);
+		void reset(TextureManager &textureManager, const settings_t &settings);
 		virtual void draw(sf::RenderWindow &window);
 		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler);
 };

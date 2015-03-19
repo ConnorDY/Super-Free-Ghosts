@@ -2,7 +2,7 @@
 #include "level01_state.h"
 #include "options_state.h"
 
-Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager)
+Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager, const settings_t &settings)
 	: State(sM)
 {
 	// Set up logo sprite
@@ -101,12 +101,12 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 
 				// Load Level 01
 				case 0:
-					getStateManager().setState(std::unique_ptr<State>(new Level01_State(getStateManager(), soundManager, textureManager)));
+					getStateManager().setState(std::unique_ptr<State>(new Level01_State(getStateManager(), soundManager, textureManager, settings)));
 					break;
 
 				// Options Menu
 				case 1:
-					getStateManager().setState(std::unique_ptr<State>(new Options_State(getStateManager(), textureManager)));
+					getStateManager().setState(std::unique_ptr<State>(new Options_State(getStateManager(), textureManager, settings)));
 					break;
 
 				// Exit
