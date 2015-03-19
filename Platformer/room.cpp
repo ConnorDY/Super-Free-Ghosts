@@ -1,6 +1,8 @@
 #include "room.h"
 #include <algorithm>
 
+#define M_PI 3.14159265358979323846
+
 Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t &settings)
 	: State(stm), soundManager(som),
 	  width(1000), height(VIEW_HEIGHT)
@@ -26,6 +28,22 @@ void Room::fillHeightMap(size_t xleft, size_t width, int height)
 
 	if (xright > heightmap.size())
 		heightmap.insert(heightmap.end(), xright - heightmap.size(), height);
+}
+
+void Room::createSlope(size_t xleft, size_t width, int heightS, int heightE)
+{
+	double s = 0, height = abs(heightE - heightS), adjust = 0;
+
+	if (heightS > heightE)
+	{
+		s = M_PI / 2.;
+		adjust = height;;
+	}
+
+	for (size_t i = 0; i < width; i++)
+	{
+		heightmap[xleft + i] = (double)heightS + height * sin(s + ((double)i / (double)width) * (M_PI / 2.)) - adjust;
+	}
 }
 
 void Room::drawHeightMap(sf::RenderWindow &window)

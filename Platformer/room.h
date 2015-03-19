@@ -19,6 +19,7 @@ class Room : public State {
 		                              // However, 0 will be non-colliding for simplicity's sake
 
 		void fillHeightMap(size_t xleft, size_t width, int height);
+		void createSlope(size_t xleft, size_t width, int heightS, int heightE);
 		void drawHeightMap(sf::RenderWindow &window);
 	public:
 		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t &settings);

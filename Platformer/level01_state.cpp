@@ -24,13 +24,17 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 		music.setVolume(50.0f);
 	}
 
-	fillHeightMap(0, 128, 16);
-	fillHeightMap(128, 128, 32);
-	fillHeightMap(256, 64, 48);
-	fillHeightMap(384, 128, 16);
+	fillHeightMap(0, 320, 16);
+	fillHeightMap(320, 320, 24);
+
+	createSlope(64, 256, 16, 48);
+	createSlope(320, 128, 48, 24);
+	fillHeightMap(438, 128, 24);
+
+	/*fillHeightMap(384, 128, 16);
 	fillHeightMap(576, 32, 16);
 	fillHeightMap(736, 32, 16);
-	fillHeightMap(816, 256, 16);
+	fillHeightMap(816, 256, 16);*/
 
 	// Create Objects
 	Object *object = new Zombie(textureManager, 270.0f, 32.0f);
