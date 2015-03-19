@@ -72,26 +72,36 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 	{
 		switch (event.type)
 		{
-		default:
-			break;
+			default:
+				break;
 
-		case sf::Event::Closed:
-			window.close();
-			break;
+			case sf::Event::Closed:
+				window.close();
+				break;
 		}
 
+		// Escape
+		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
+		{
+			window.close();
+			return;
+		}
+
+		// Up
 		if (inputHandler.checkInput(InputHandler::Input::Up, event))
 		{
 			if (currentOption == 0) currentOption = menuOptions.size() - 1;
 			else currentOption--;
 		}
 
+		// Down
 		if (inputHandler.checkInput(InputHandler::Input::Down, event))
 		{
 			if (currentOption == menuOptions.size() - 1) currentOption = 0;
 			else currentOption++;
 		}
 
+		// Enter
 		if (inputHandler.checkInput(InputHandler::Input::Action, event) || inputHandler.checkInput(InputHandler::Input::Start, event))
 		{
 			switch (currentOption)

@@ -116,20 +116,29 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	{
 		switch (event.type)
 		{
-		default:
-			break;
+			default:
+				break;
 
-		case sf::Event::Closed:
-			window.close();
-			break;
+			case sf::Event::Closed:
+				window.close();
+				break;
 		}
 
+		// Escape
+		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
+		{
+			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager, settings)));
+			return;
+		}
+
+		// Up
 		if (inputHandler.checkInput(InputHandler::Input::Up, event))
 		{
 			if (currentOption == 0) currentOption = menuOptions.size() - 1;
 			else currentOption--;
 		}
 
+		// Down
 		if (inputHandler.checkInput(InputHandler::Input::Down, event))
 		{
 			if (currentOption == menuOptions.size() - 1) currentOption = 0;
