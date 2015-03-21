@@ -71,20 +71,9 @@ void Level01_State::drawBackground(sf::RenderWindow &window)
 
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
 {
-	static sf::Clock clock;
-
 	/* Restart Level if Player is Outside of the Room */
 	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager, settings);
 
-	auto time = clock.getElapsedTime();
-
-	/*ensureHeightmapWidth(816 + 256);
-	for (size_t i = 0; i < 256; i++)
-	{
-		heightmap[i + 816] = 30 + 20 * sin((i + time.asMilliseconds()) / 200.);
-	}*/
-
-	/* Input */
 	sf::Event event;
 
 	int moveH = inputHandler.checkInput(InputHandler::Input::Right) - inputHandler.checkInput(InputHandler::Input::Left); // Horizontal Movement
