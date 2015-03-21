@@ -183,7 +183,7 @@ void Room::updateView(sf::RenderWindow &window)
 		if (vx < vw / 2.0f) vx = vw / 2.0f;
 		if (vy < vh / 2.0f) vy = vh / 2.0f;
 
-		getView().setCenter(vx, vh / 2.0f);
+		getView().setCenter(round(vx), round(vh / 2.0f));
 		window.setView(getView());
 	}
 }
