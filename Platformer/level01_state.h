@@ -25,7 +25,7 @@ class Level01_State : public Room
 
 		// Actions
 		void start(TextureManager &textureManager, const settings_t &settings);
-		virtual void draw(sf::RenderWindow &window);
+		virtual void drawBackground(sf::RenderWindow &window);
 		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings);
 };
 

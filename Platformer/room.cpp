@@ -157,10 +157,8 @@ void Room::reset(TextureManager &textureManager, const settings_t &settings)
 	start(textureManager, settings);
 }
 
-void Room::draw(sf::RenderWindow &window)
+void Room::updateView(sf::RenderWindow &window)
 {
-	drawHeightMapBack(window);
-
 	if (view_follow)
 	{
 		// Update view
@@ -188,11 +186,30 @@ void Room::draw(sf::RenderWindow &window)
 		getView().setCenter(vx, vh / 2.0f);
 		window.setView(getView());
 	}
+}
 
+void Room::drawBackground(sf::RenderWindow &window)
+{
+	drawHeightMapBack(window);
+}
+
+void Room::drawSprites(sf::RenderWindow &window)
+{
 	for (auto object : objects)
 		object->draw(window);
+}
 
+void Room::drawForeground(sf::RenderWindow &window)
+{
 	drawHeightMap(window);
+}
+
+void Room::draw(sf::RenderWindow &window)
+{
+	updateView(window);
+	drawBackground(window);
+	drawSprites(window);
+	drawForeground(window);
 }
 
 void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandler&, const settings_t &settings)
