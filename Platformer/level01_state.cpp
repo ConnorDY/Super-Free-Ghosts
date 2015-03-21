@@ -25,11 +25,14 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	}
 
 	fillHeightMap(0, 512, 64);
-
 	createSlope(256, 128, 64, 96);
 	createSlope(384, 128, 96, 64);
-
-	fillHeightMap(512, 256, 64);
+	fillHeightMap(512, 96, 64);
+	createSlope(608, 128, 64, 96);
+	fillHeightMap(736, 64, 96);
+	createSlope(800, 128, 96, 128);
+	fillHeightMap(928, 64, 128);
+	createSlope(992, 192, 128, 64);
 
 	// Create Objects
 	Object *object = new Zombie(textureManager, 270.0f, 32.0f);
@@ -39,6 +42,9 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	objects.push_back(object);
 
 	object = new Zombie(textureManager, 850.0f, 32.0f);
+	objects.push_back(object);
+
+	object = new Obelisk(textureManager, 280.0f, 280.0f, 50.0f);
 	objects.push_back(object);
 
 	// Create player
@@ -66,11 +72,12 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager, settings);
 
 	auto time = clock.getElapsedTime();
-	ensureHeightmapWidth(816 + 256);
+
+	/*ensureHeightmapWidth(816 + 256);
 	for (size_t i = 0; i < 256; i++)
 	{
 		heightmap[i + 816] = 30 + 20 * sin((i + time.asMilliseconds()) / 200.);
-	}
+	}*/
 
 	/* Input */
 	sf::Event event;

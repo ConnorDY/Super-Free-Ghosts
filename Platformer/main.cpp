@@ -16,6 +16,8 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 	textureManager.loadTexture("weapons", "res/weapons.png");
 	textureManager.loadTexture("zombie", "res/zombie.png");
 	textureManager.loadTexture("tiles", "res/tiles.png");
+	textureManager.loadTexture("grass", "res/grass.png");
+	textureManager.loadTexture("obelisk", "res/obelisk.png");
 	textureManager.loadTexture("bg01", "res/bg01.png");
 	textureManager.loadTexture("logo", "res/logo.png");
 	textureManager.loadTexture("scanlines", "res/scanlines.png");

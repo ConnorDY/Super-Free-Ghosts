@@ -80,6 +80,7 @@
     <ClCompile Include="level01_state.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu_state.cpp" />
+    <ClCompile Include="obelisk.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="options_state.cpp" />
     <ClCompile Include="player.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="input_handler.h" />
     <ClInclude Include="level01_state.h" />
     <ClInclude Include="menu_state.h" />
+    <ClInclude Include="obelisk.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="options_state.h" />
     <ClInclude Include="player.h" />

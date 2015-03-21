@@ -8,20 +8,21 @@ class Object;
 
 class Room : public State {
 	private:
-		SoundManager &soundManager;   // Sound manager for use by objects in this room
+		SoundManager &soundManager;					// Sound manager for use by objects in this room
 	protected:
-		std::vector<Object*> objects; // Objects present in this room
-		Object *view_follow;          // The object to follow around with the camera
-		sf::Time deltaTime;           // The time delta between the most recent update() and the previous
-		int const width, height;      // The width and height of the room
-		sf::Sprite dirtSprite;        // The sprite to paint the heightmap with
-		std::vector<int> heightmap;   // Height map. Index = x-value, value = y-value (from 0 = bottom)
-		                              // However, 0 will be non-colliding for simplicity's sake
+		std::vector<Object*> objects;				// Objects present in this room
+		Object *view_follow;						// The object to follow around with the camera
+		sf::Time deltaTime;							// The time delta between the most recent update() and the previous
+		int const width, height;					// The width and height of the room
+		sf::Sprite dirtSprite, grassSprite;			// The sprite to paint the heightmap with
+		std::vector<int> heightmap;					// Height map. Index = x-value, value = y-value (from 0 = bottom)
+													// However, 0 will be non-colliding for simplicity's sake
 
 		void ensureHeightmapWidth(size_t width);
 		void fillHeightMap(size_t xleft, size_t width, int height);
 		void createSlope(size_t xleft, size_t width, int heightS, int heightE);
 		void drawHeightMap(sf::RenderWindow &window);
+		void drawHeightMapBack(sf::RenderWindow &window);
 	public:
 		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t &settings);
 		virtual ~Room();
