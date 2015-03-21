@@ -17,6 +17,7 @@ private:
 	sf::Font fnt;
 	unsigned int currentOption = 0;
 
+	void toggleVsync(settings_t &settings, sf::RenderWindow &window);
 	void toggleMusic(settings_t &settings);
 	void toggleSound(settings_t &settings);
 public:

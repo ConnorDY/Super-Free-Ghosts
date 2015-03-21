@@ -36,6 +36,7 @@ int main()
 	// Default settings
 	settings_t settings;
 	settings.window_scale = 2;
+	settings.vsync_on = false;
 	settings.music_on = true;
 	settings.sound_on = true;
 
@@ -49,7 +50,7 @@ int main()
 	
 	// Create Window
 	sf::RenderWindow window(sf::VideoMode(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale), "Super Free Ghosts", sf::Style::Close | sf::Style::Titlebar);
-	window.setVerticalSyncEnabled(VSYNC_ON);
+	window.setVerticalSyncEnabled(settings.vsync_on);
 
 	// Game Loop
 	while (window.isOpen())
