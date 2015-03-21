@@ -5,7 +5,7 @@
 
 Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t &settings)
 	: State(stm), soundManager(som),
-	  width(1000), height(VIEW_HEIGHT)
+	  width(2048), height(VIEW_HEIGHT)
 {
 	setView(sf::View(sf::Vector2f(VIEW_WIDTH / 2.0, VIEW_HEIGHT / 2.0), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT)));
 	dirtSprite.setTexture(tm.getRef("tiles"));
