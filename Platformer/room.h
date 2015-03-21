@@ -18,6 +18,7 @@ class Room : public State {
 		std::vector<int> heightmap;   // Height map. Index = x-value, value = y-value (from 0 = bottom)
 		                              // However, 0 will be non-colliding for simplicity's sake
 
+		void ensureHeightmapWidth(size_t width);
 		void fillHeightMap(size_t xleft, size_t width, int height);
 		void createSlope(size_t xleft, size_t width, int heightS, int heightE);
 		void drawHeightMap(sf::RenderWindow &window);

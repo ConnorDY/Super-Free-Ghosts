@@ -63,6 +63,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager, settings);
 
 	auto time = clock.getElapsedTime();
+	ensureHeightmapWidth(816 + 256);
 	for (size_t i = 0; i < 256; i++)
 	{
 		heightmap[i + 816] = 30 + 20 * sin((i + time.asMilliseconds()) / 200.);

@@ -16,33 +16,36 @@ Room::~Room()
 	end();
 }
 
+void Room::ensureHeightmapWidth(size_t width)
+{
+	size_t oldsize = heightmap.size();
+	if (oldsize < width)
+		heightmap.insert(heightmap.end(), width - oldsize, 0);
+}
+
 void Room::fillHeightMap(size_t xleft, size_t width, int height)
 {
-	if (heightmap.size() < xleft)
-		heightmap.insert(heightmap.end(), xleft - heightmap.size(), 0);
+	ensureHeightmapWidth(xleft + width);
 
 	size_t xright = xleft + width;
-	size_t overwriteEnd = std::min<size_t>(xright, heightmap.size());
-	for (size_t i = xleft; i < overwriteEnd; i++)
+	for (size_t i = xleft; i < xright; i++)
 		heightmap[i] = height;
-
-	if (xright > heightmap.size())
-		heightmap.insert(heightmap.end(), xright - heightmap.size(), height);
 }
 
 void Room::createSlope(size_t xleft, size_t width, int heightS, int heightE)
 {
-	double s = 0, height = abs(heightE - heightS), adjust = 0;
+	ensureHeightmapWidth(xleft + width);
+	double sin_phase = 0, height = abs(heightE - heightS), adjust = 0;
 
 	if (heightS > heightE)
 	{
-		s = M_PI / 2.;
-		adjust = height;;
+		sin_phase = M_PI / 2.;
+		adjust = height;
 	}
 
 	for (size_t i = 0; i < width; i++)
 	{
-		heightmap[xleft + i] = (double)heightS + height * sin(s + ((double)i / (double)width) * (M_PI / 2.)) - adjust;
+		heightmap[xleft + i] = heightS + height * sin(sin_phase + (i / (double)width) * (M_PI / 2.)) - adjust;
 	}
 }
 
