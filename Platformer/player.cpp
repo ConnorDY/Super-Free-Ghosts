@@ -103,7 +103,7 @@ void Player::draw(sf::RenderWindow &window)
 	else if (crouching) { adjx = -3.0f; adjy = 6.0f; }
 	else adjx = 0.0f;
 
-	sprite.setPosition(x + sprite.getOrigin().x + (adjx * (float)sign_scalex), y + sprite.getOrigin().y + adjy);
+	sprite.setPosition(round(x + sprite.getOrigin().x + (adjx * (float)sign_scalex)), round(y + sprite.getOrigin().y + adjy));
 
 	if (DEBUG_MODE) window.draw(rectangle);
 	window.draw(sprite);
