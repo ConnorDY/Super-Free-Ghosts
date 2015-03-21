@@ -119,7 +119,7 @@ void Object::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	}
 
 	// Move out of heightmap if stuck within it
-	while (!placeFree(x, y, room)) y -= .5;
+	while (room.heightmapIntersects(sf::FloatRect(x, y, width, height))) y -= .5;
 }
 
 void Object::kill(Room const &room, const settings_t &settings)

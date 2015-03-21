@@ -244,7 +244,7 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	}
 
 	// Move out of heightmap if stuck within it
-	while (!placeFree(x, y, room)) y -= .5;
+	while (room.heightmapIntersects(sf::FloatRect(x, y, width, height))) y -= .5;
 
 	// Jump and Throw Timers
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= 0.2f) midJump = false;
