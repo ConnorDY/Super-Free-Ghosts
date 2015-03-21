@@ -17,7 +17,7 @@ class Level01_State : public Room
 	private:
 		Player *player;
 		sf::Music music;
-		sf::Sprite scanlines;
+		sf::Sprite bg;
 	public:
 		Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings);
 		virtual ~Level01_State();

@@ -5,7 +5,7 @@ Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager
 	: Room(sM, som, textureManager, settings)
 {
 	start(textureManager, settings);
-	scanlines.setTexture(textureManager.getRef("scanlines"));
+	bg.setTexture(textureManager.getRef("bg01"));
 }
 
 Level01_State::~Level01_State()
@@ -49,10 +49,13 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 
 void Level01_State::draw(sf::RenderWindow &window)
 {
-	Room::draw(window);
+	for (size_t i = 0; i < 4; i++)
+	{
+		bg.setPosition(sf::Vector2f(getViewX() + fmod((-getViewX() / 2), 192) + (i * 192), getViewY() + 98));
+		window.draw(bg);
+	}
 
-	//scanlines.setPosition(sf::Vector2f(getViewX(), getViewY()));
-	//window.draw(scanlines);
+	Room::draw(window);
 }
 
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
