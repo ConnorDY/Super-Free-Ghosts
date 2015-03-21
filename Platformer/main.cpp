@@ -11,22 +11,32 @@
 /* Load Game's Resources */
 void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 {
-	textureManager.loadTexture("arthur0", "res/arthur0.png");
-	textureManager.loadTexture("arthur1", "res/arthur1.png");
-	textureManager.loadTexture("weapons", "res/weapons.png");
-	textureManager.loadTexture("zombie", "res/zombie.png");
-	textureManager.loadTexture("tiles", "res/tiles.png");
-	textureManager.loadTexture("grass", "res/grass.png");
-	textureManager.loadTexture("obelisk", "res/obelisk.png");
-	textureManager.loadTexture("bg01", "res/bg01.png");
-	textureManager.loadTexture("logo", "res/logo.png");
-	textureManager.loadTexture("scanlines", "res/scanlines.png");
+	auto textures = std::vector<std::pair<std::string, std::string>>
+	{
+		{ "arthur0", "res/arthur0.png" },
+		{ "arthur1", "res/arthur1.png" },
+		{ "weapons", "res/weapons.png" },
+		{ "zombie", "res/zombie.png" },
+		{ "tiles", "res/tiles.png" },
+		{ "grass", "res/grass.png" },
+		{ "obelisk", "res/obelisk.png" },
+		{ "bg01", "res/bg01.png" },
+		{ "under01", "res/under01.png" },
+		{ "logo", "res/logo.png" },
+		{ "scanlines", "res/scanlines.png" }
+	};
 
-	soundManager.loadSound("jump", "res/jump.wav");
-	soundManager.loadSound("land", "res/land.wav");
-	soundManager.loadSound("throw", "res/throw.wav");
-	soundManager.loadSound("hit", "res/hit.wav");
-	soundManager.loadSound("enemy_die", "res/enemy_die.wav");
+	auto sounds = std::vector<std::pair<std::string, std::string>>
+	{
+		{ "jump", "res/jump.wav" },
+		{ "land", "res/land.wav" },
+		{ "throw", "res/throw.wav" },
+		{ "hit", "res/hit.wav" },
+		{ "enemy_die", "res/enemy_die.wav" }
+	};
+
+	for (auto &texture : textures) textureManager.loadTexture(texture.first, texture.second);
+	for (auto &sound : sounds) soundManager.loadSound(sound.first, sound.second);
 }
 
 

@@ -6,6 +6,7 @@ Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager
 {
 	start(textureManager, settings);
 	bg.setTexture(textureManager.getRef("bg01"));
+	under01.setTexture(textureManager.getRef("under01"));
 }
 
 Level01_State::~Level01_State()
@@ -67,6 +68,14 @@ void Level01_State::drawBackground(sf::RenderWindow &window)
 	}
 
 	Room::drawBackground(window);
+}
+
+void Level01_State::drawForeground(sf::RenderWindow &window)
+{
+	Room::drawForeground(window);
+
+	under01.setPosition(sf::Vector2f(350, 275));
+	window.draw(under01);
 }
 
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
