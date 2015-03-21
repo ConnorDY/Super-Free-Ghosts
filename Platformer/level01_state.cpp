@@ -35,7 +35,7 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	createSlope(992, 192, 128, 64);
 
 	// Create Objects
-	Object *object = new Zombie(textureManager, 270.0f, 32.0f);
+	Object *object = new Zombie(textureManager, 240.0f, 32.0f);
 	objects.push_back(object);
 
 	object = new Zombie(textureManager, 405.0f, 32.0f);
@@ -44,7 +44,10 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	object = new Zombie(textureManager, 850.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Obelisk(textureManager, 280.0f, 280.0f, 50.0f);
+	object = new Obelisk(textureManager, 287.0f, 280.0f, 54.0f);
+	objects.push_back(object);
+
+	object = new Obelisk(textureManager, 736.0f, 280.0f, 48.0f);
 	objects.push_back(object);
 
 	// Create player
