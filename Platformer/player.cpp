@@ -16,7 +16,8 @@ Player::Player(TextureManager &tm, float x, float y)
 	  animation("still"), texture("arthur1"),
 	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(1),
-	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false), textureManager(tm)
+	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false), dead(false),
+	  textureManager(tm)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef(texture));
@@ -56,12 +57,21 @@ Player::Player(TextureManager &tm, float x, float y)
 
 	animations["throwc"].emplace_back(28, 122, 33, 35);
 	animations["throwc"].emplace_back(59, 122, 38, 35);
+
+	animations["die"].emplace_back(6, 156, 36, 32);
+	animations["die"].emplace_back(46, 156, 36, 32);
+	animations["die"].emplace_back(87, 156, 36, 32);
+	animations["die"].emplace_back(129, 156, 42, 32);
+	animations["die"].emplace_back(36, 188, 42, 24);
+	animations["die"].emplace_back(84, 188, 42, 24);
 }
 
 
 /* Mutators */
 void Player::setCrouching(bool c)
 {
+	if (dead) return;
+
 	crouching = c;
 
 	if (dy != 0.0f || jumped) crouching = false;
@@ -69,7 +79,7 @@ void Player::setCrouching(bool c)
 
 void Player::damage(int otherX)
 {
-	if (invincible) return;
+	if (invincible || dead) return;
 
 	// Direction to knock back
 	int dir = -1;
@@ -81,6 +91,7 @@ void Player::damage(int otherX)
 	switch (armour)
 	{
 		default:
+			dead = true;
 			break;
 
 		case 0:
@@ -127,6 +138,8 @@ bool Player::getInvincible() const
 /* Actions */
 void Player::draw(sf::RenderWindow &window)
 {
+	if (invincible && fmod(invincibleTimer.getElapsedTime().asMilliseconds(), 50) == 0) return;
+
 	if (DEBUG_MODE) rectangle.setPosition(roundf(x), roundf(y));
 	
 	int sign_scalex = -1;
@@ -150,6 +163,11 @@ void Player::draw(sf::RenderWindow &window)
 	else adjx = 0.0f;
 
 	if (animation == "jumpi") adjx += 3;
+	else if (animation == "die")
+	{
+		if(frame >= 4.0f) adjy += 8;
+		adjy += 4;
+	}
 	if (sign_scalex == -1) adjx += 1;
 
 	sprite.setPosition(x + sprite.getOrigin().x + (adjx * (float)sign_scalex) - 2, y + sprite.getOrigin().y + adjy);
@@ -160,12 +178,16 @@ void Player::draw(sf::RenderWindow &window)
 
 void Player::move(int dir)
 {
+	if (dead) return;
+
 	if (dy == 0 && !jumped) dx = dir * moveSpeed;
 	if (dir != 0) sprite.setScale(sf::Vector2f((float)dir, 1.0f));
 }
 
 void Player::jump(int dir, SoundManager &soundManager, const settings_t &settings)
 {
+	if (dead) return;
+
 	if (jumps < 2)
 	{
 		if (jumps == 0 && dy != 0.0f) return;
@@ -188,6 +210,8 @@ void Player::jump(int dir, SoundManager &soundManager, const settings_t &setting
 
 void Player::throwWeapon(std::vector<Object*> &objects, int dir, SoundManager &soundManager, const settings_t &settings)
 {
+	if (dead) return;
+
 	if (!midThrow)
 	{
 		midThrow = true;
@@ -242,7 +266,8 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 			jumps = 0;
 		}
 
-		if (settings.sound_on) soundManager.playSound("land");
+		if (dead) dx = 0;
+		else if (settings.sound_on) soundManager.playSound("land");
 	}
 	else if (dy < 0 && !placeFree(x, y - 1, room))
 	{
@@ -300,10 +325,11 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	// Jump, Throw, and Invicibility Timers
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= 0.2f) midJump = false;
 	else if (midThrow && throwTimer.getElapsedTime().asSeconds() >= throwTime) midThrow = false;
-	if (invincible && invincibleTimer.getElapsedTime().asSeconds() >= 2) invincible = false;
+	if (invincible && invincibleTimer.getElapsedTime().asSeconds() >= 2.5) invincible = false;
 
 	// Animation
-	if (crouching)
+	if (dead) setAnimation("die");
+	else if (crouching)
 	{
 		if (midThrow) setAnimation("throwc");
 		else setAnimation("crouch");
@@ -361,7 +387,8 @@ void Player::updateAnimation(sf::Time deltaTime)
 		float speed = 60.0f / 5.2f;
 
 		frame += deltaTime.asSeconds() * speed;
-		frame = fmodf(frame, frames); // Loop animation if it plays past "frames"
+		if (animation == "die" && frame > 5) frame = 5;
+		else frame = fmodf(frame, frames); // Loop animation if it plays past "frames"
 	}
 
 	// Set TextureRect
