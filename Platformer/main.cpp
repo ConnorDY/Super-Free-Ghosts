@@ -21,6 +21,8 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 		{ "grass", "res/grass.png" },
 		{ "obelisk", "res/obelisk.png" },
 		{ "bg01", "res/bg01.png" },
+		{ "bg02", "res/bg02.png" },
+		{ "bg03", "res/bg03.png" },
 		{ "under01", "res/under01.png" },
 		{ "logo", "res/logo.png" },
 		{ "scanlines", "res/scanlines.png" },

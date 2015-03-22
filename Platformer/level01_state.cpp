@@ -5,7 +5,9 @@ Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager
 	: Room(sM, som, textureManager, settings)
 {
 	start(textureManager, settings);
-	bg.setTexture(textureManager.getRef("bg01"));
+	bg01.setTexture(textureManager.getRef("bg01"));
+	bg02.setTexture(textureManager.getRef("bg02"));
+	bg03.setTexture(textureManager.getRef("bg03"));
 	under01.setTexture(textureManager.getRef("under01"));
 }
 
@@ -26,14 +28,16 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	}
 
 	fillHeightMap(0, 512, 64);
-	createSlope(256, 128, 64, 96);
-	createSlope(384, 128, 96, 64);
-	fillHeightMap(512, 96, 64);
-	createSlope(608, 128, 64, 96);
-	fillHeightMap(736, 64, 96);
-	createSlope(800, 128, 96, 128);
-	fillHeightMap(928, 64, 128);
-	createSlope(992, 192, 128, 64);
+	createSlope(256, 96, 64, 96);
+	createSlope(352, 96, 96, 64);
+	fillHeightMap(448, 96, 64);
+	createSlope(544, 128, 64, 96);
+	fillHeightMap(672, 64, 96);
+	createSlope(736, 128, 96, 128);
+	fillHeightMap(864, 64, 128);
+	createSlope(928, 192, 128, 64);
+	createSlope(1120, 128, 64, 80);
+	createSlope(1248, 128, 80, 64);
 
 
 	// Create Objects
@@ -49,7 +53,7 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	object = new Obelisk(textureManager, 287.0f, 280.0f, 54.0f);
 	objects.push_back(object);
 
-	object = new Obelisk(textureManager, 736.0f, 280.0f, 48.0f);
+	object = new Obelisk(textureManager, 660.0f, 280.0f, 50.0f);
 	objects.push_back(object);
 
 	// Create player
@@ -58,16 +62,72 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	view_follow = player;
 }
 
+void Level01_State::drawTree(int x, int y, sf::RenderWindow &window)
+{
+	bg02.setPosition(sf::Vector2f(x, y));
+	window.draw(bg02);
+}
+
+void Level01_State::drawDecor(int x, int y, int type, sf::RenderWindow &window)
+{
+	bg03.setPosition(x, y);
+
+	switch (type)
+	{
+		default:
+			break;
+
+		// Skull and Casket #1
+		case 0:
+			bg03.setTextureRect(sf::IntRect(96, 0, 48, 63));
+			break;
+
+		// Skull and Casket #2
+		case 1:
+			bg03.setTextureRect(sf::IntRect(0, 0, 96, 63));
+			break;
+
+		// Casket on Skulls
+		case 2:
+			bg03.setTextureRect(sf::IntRect(144, 0, 56, 63));
+			break;
+		
+		// Caskets and Banner
+		case 3:
+			bg03.setTextureRect(sf::IntRect(200, 0, 96, 63));
+			break;
+
+		// Banner
+		case 4:
+			bg03.setTextureRect(sf::IntRect(296, 0, 40, 63));
+			break;
+	}
+
+	window.draw(bg03);
+}
+
 void Level01_State::drawBackground(sf::RenderWindow &window)
 {
 	// TODO: hardcoded assumption of view width to background width ratio
 	// TODO: hardcoded background width
 	for (size_t i = 0; i < 4; i++)
 	{
-		bg.setPosition(sf::Vector2f(getViewX() + fmod((-getViewX() / 2), 192) + (i * 192), getViewY() + 98));
-		window.draw(bg);
+		bg01.setPosition(sf::Vector2f(getViewX() + fmod((-getViewX() / 2), 192) + (i * 192), getViewY() + 98));
+		window.draw(bg01);
 	}
 
+	// Decorations
+	drawDecor(10, 171, 0, window);
+	drawTree(-4, 50, window);
+	drawDecor(100, 171, 4, window);
+	drawDecor(160, 171, 1, window);
+	drawDecor(340, 151, 2, window);
+	drawTree(430, 50, window);
+	drawDecor(470, 171, 1, window);
+	drawDecor(590, 151, 4, window);
+	drawDecor(690, 147, 3, window);
+	
+	// Background
 	Room::drawBackground(window);
 }
 
@@ -75,7 +135,7 @@ void Level01_State::drawForeground(sf::RenderWindow &window)
 {
 	Room::drawForeground(window);
 
-	under01.setPosition(sf::Vector2f(350, 275));
+	under01.setPosition(sf::Vector2f(320, 275));
 	window.draw(under01);
 }
 

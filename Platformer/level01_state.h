@@ -18,7 +18,10 @@ class Level01_State : public Room
 	private:
 		Player *player;
 		sf::Music music;
-		sf::Sprite bg, under01;
+		sf::Sprite bg01, bg02, bg03, under01;
+
+		void drawTree(int x, int y, sf::RenderWindow &window);
+		void drawDecor(int x, int y, int type, sf::RenderWindow &window);
 	public:
 		Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings);
 		virtual ~Level01_State();
