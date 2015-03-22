@@ -7,6 +7,7 @@ Obelisk::Obelisk(TextureManager &textureManager, float x, float y, float height)
 {
 	spr.setTexture(textureManager.getRef("obelisk"));
 	
+	flames.push_back(sf::IntRect(30, 30, 1, 1));
 	flames.push_back(sf::IntRect(30, 8, 7, 8));
 	flames.push_back(sf::IntRect(30, 0, 7, 8));
 	flames.push_back(sf::IntRect(30, 8, 7, 8));
@@ -19,7 +20,8 @@ void Obelisk::update(sf::Time deltaTime, Room const &room, const settings_t &set
 	Object::update(deltaTime, room, settings);
 
 	// Flame Animation
-	frame += dir * deltaTime.asSeconds() * 3;
+	frame += dir * deltaTime.asSeconds() * 5;
+	frame = fmod(frame, 4);
 }
 
 void Obelisk::draw(sf::RenderWindow &window)
@@ -29,12 +31,7 @@ void Obelisk::draw(sf::RenderWindow &window)
 	spr.setPosition(sf::Vector2f(x, y - 1)); // "y - 1" as an easy collision fix of sorts
 	window.draw(spr);
 
-	int f = (int)frame % 4;
-
-	if (f > 0)
-	{
-		spr.setTextureRect(flames.at(f - 1));
-		spr.setPosition(sf::Vector2f(x + 13, y + 17));
-		window.draw(spr);
-	}
+	spr.setTextureRect(flames.at(frame));
+	spr.setPosition(sf::Vector2f(x + 13, y + 17));
+	window.draw(spr);
 }
