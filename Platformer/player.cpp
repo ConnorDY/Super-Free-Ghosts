@@ -1,7 +1,9 @@
 #include "player.h"
 
-#define PLAYER_WIDTH  23
+#define PLAYER_WIDTH  22
 #define PLAYER_HEIGHT 37
+
+
 Player::Player(TextureManager &textureManager, float x, float y)
 	: Object(
 			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
@@ -138,7 +140,10 @@ void Player::draw(sf::RenderWindow &window)
 	else if (crouching) { adjx = -3.0f; adjy = 6.0f; }
 	else adjx = 0.0f;
 
-	sprite.setPosition(x + sprite.getOrigin().x + (adjx * (float)sign_scalex), y + sprite.getOrigin().y + adjy);
+	if (animation == "jumpi") adjx += 3;
+	if (sign_scalex == -1) adjx += 1;
+
+	sprite.setPosition(x + sprite.getOrigin().x + (adjx * (float)sign_scalex) - 2, y + sprite.getOrigin().y + adjy);
 
 	if (DEBUG_MODE) window.draw(rectangle);
 	window.draw(sprite);
