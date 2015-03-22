@@ -41,7 +41,7 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 
 
 	// Create Objects
-	Object *object = new Zombie(textureManager, 240.0f, 32.0f);
+	Object *object = new Zombie(textureManager, 240.0f, 250.0f/*32.0f*/);
 	objects.push_back(object);
 
 	object = new Zombie(textureManager, 405.0f, 32.0f);

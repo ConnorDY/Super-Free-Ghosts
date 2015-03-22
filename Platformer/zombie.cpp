@@ -64,53 +64,57 @@ void Zombie::draw(sf::RenderWindow &window)
 
 void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
 {
-	double mstime = deltaTime.asMicroseconds() / 1000.0;
-	if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.25;
-	if (!placeFree(x, y + 1, room) && dx == 0) dx = -0.075f / 2.0f; // Hit the ground
-
-	Object::update(deltaTime, room, settings);
-
-	float adj = ZOMBIE_WIDTH;
-	if (dx < 0) adj *= -1;
-
-	bool turn = true;
-
-	for (int i = -4; i < 4; i++)
+	if (room.heightmapIntersects(sf::FloatRect(x, y, width, height))) y -= deltaTime.asSeconds() * 100;
+	else
 	{
-		if (placeFree(x + dx * mstime, y + i, room)) turn = false;
-	}
+		double mstime = deltaTime.asMicroseconds() / 1000.0;
+		if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.25;
+		if (!placeFree(x, y + 1, room) && dx == 0) dx = -0.075f / 2.0f; // Hit the ground
 
-	if (turn || (x <= 0.0f && dx < 0) || (placeFree(x + adj, y + 17, room) && !placeFree(x, y + 1, room)))
-	{
-		// Turn around
-		dx = -dx;
-		sprite.setScale(sf::Vector2f(1.0f * getDir(), 1.0f));
-		turning = true;
-		turnTimer.restart();
-	}
+		Object::update(deltaTime, room, settings);
 
-	// Rotating
-	if (inCasket)
-	{
-		setX(spawnX + (6.0f * cos(angle)));
-		setY(spawnY + (6.0f * sin(angle)));
+		float adj = ZOMBIE_WIDTH;
+		if (dx < 0) adj *= -1;
 
-		angle += deltaTime.asMicroseconds() / 220000.0f;
-	}
+		bool turn = true;
 
-	// Timers
-	if (turning && turnTimer.getElapsedTime().asSeconds() >= 0.1) turning = false;
+		for (int i = -4; i < 4; i++)
+		{
+			if (placeFree(x + dx * mstime, y + i, room)) turn = false;
+		}
 
-	if (inCasket && !opening && casketTimer.getElapsedTime().asSeconds() >= 3)
-	{
-		openTimer.restart();
-		opening = true;
-	}
+		if (turn || (x <= 0.0f && dx < 0) || (placeFree(x + adj, y + 17, room) && !placeFree(x, y + 1, room)))
+		{
+			// Turn around
+			dx = -dx;
+			sprite.setScale(sf::Vector2f(1.0f * getDir(), 1.0f));
+			turning = true;
+			turnTimer.restart();
+		}
 
-	if (opening && openTimer.getElapsedTime().asSeconds() >= 0.7)
-	{
-		inCasket = false;
-		opening = false;
+		// Rotating
+		if (inCasket)
+		{
+			setX(spawnX + (6.0f * cos(angle)));
+			setY(spawnY + (6.0f * sin(angle)));
+
+			angle += deltaTime.asMicroseconds() / 220000.0f;
+		}
+
+		// Timers
+		if (turning && turnTimer.getElapsedTime().asSeconds() >= 0.1) turning = false;
+
+		if (inCasket && !opening && casketTimer.getElapsedTime().asSeconds() >= 3)
+		{
+			openTimer.restart();
+			opening = true;
+		}
+
+		if (opening && openTimer.getElapsedTime().asSeconds() >= 0.7)
+		{
+			inCasket = false;
+			opening = false;
+		}
 	}
 
 	// Animations
