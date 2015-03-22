@@ -50,6 +50,12 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	object = new Zombie(textureManager, 850.0f, 32.0f);
 	objects.push_back(object);
 
+	object = new Zombie(textureManager, 1000.0f, 32.0f);
+	objects.push_back(object);
+
+	object = new Zombie(textureManager, 1150.0f, 32.0f);
+	objects.push_back(object);
+
 	object = new Obelisk(textureManager, 287.0f, 280.0f, 54.0f);
 	objects.push_back(object);
 
