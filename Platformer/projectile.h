@@ -13,8 +13,6 @@ class Projectile : public Object
 		std::vector<sf::IntRect> weapons;
 
 		bool isOutsideView(Room const &room) const;
-		bool placeFree_adj(float x, float y, Room const &room) const;
-		Object* nonsolidCollision_adj(float x, float y, Room const &room) const;
 	public:
 		Projectile(float x, float y, int dir, TextureManager &textureManager);
 		virtual ~Projectile();

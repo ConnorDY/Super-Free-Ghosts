@@ -159,6 +159,8 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager 
 			adjy = 12.0f;
 		}
 
+		if (getDir() < 0) adjx -= 30;
+
 		Projectile* weapon = new Projectile(x + sprite.getOrigin().x + adjx, y + sprite.getOrigin().y - 35.0f + adjy, dir, textureManager);
 		objects.push_back(weapon);
 

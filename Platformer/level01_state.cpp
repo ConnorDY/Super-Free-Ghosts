@@ -35,6 +35,7 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	fillHeightMap(928, 64, 128);
 	createSlope(992, 192, 128, 64);
 
+
 	// Create Objects
 	Object *object = new Zombie(textureManager, 240.0f, 32.0f);
 	objects.push_back(object);
