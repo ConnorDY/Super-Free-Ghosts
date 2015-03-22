@@ -87,6 +87,7 @@ void Player::damage(int otherX)
 	dx = dir * .1;
 	dy = -.2;
 	jumped = true;
+	jumps = 3;
 }
 
 
