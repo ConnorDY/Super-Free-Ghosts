@@ -92,7 +92,7 @@ void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 			if (placeFree(x + dx * mstime, y + i, room)) turn = false;
 		}
 
-		if (turn || (x <= 0.0f && dx < 0) || (placeFree(x + adj, y + 17, room) && !placeFree(x, y + 1, room)))
+		if (!inCasket && !placeFree(x, y + 3, room) && (turn || (x <= 0.0f && dx < 0) || floor(((double)rand() / RAND_MAX) * 320) == 1 || (placeFree(x + adj, y + 17, room) && !placeFree(x, y + 1, room))))
 		{
 			// Turn around
 			dx = -dx;
