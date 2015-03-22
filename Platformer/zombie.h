@@ -13,6 +13,7 @@
 #include "texture_manager.h"
 #include "sound_manager.h"
 #include "object.h"
+#include "player.h"
 
 class Zombie : public Object
 {

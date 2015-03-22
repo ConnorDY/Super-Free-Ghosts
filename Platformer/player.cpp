@@ -13,7 +13,7 @@ Player::Player(TextureManager &textureManager, float x, float y)
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
 	  animation("still"), texture("arthur1"),
 	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
-	  jumps(0),
+	  jumps(0), armour(1),
 	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false)
 {
 	// Sprite
@@ -65,6 +65,30 @@ void Player::setCrouching(bool c)
 	if (dy != 0.0f || jumped) crouching = false;
 }
 
+void Player::damage(int otherX)
+{
+	if (invincible) return;
+
+	// Direction to knock back
+	int dir = -1;
+	if (x > otherX) dir = 1;
+	
+	// Decrease armour
+	armour--;
+
+	// Give invincibility if not dead
+	if (armour >= 0)
+	{
+		invincible = true;
+		invincibleTimer.restart();
+	}
+
+	// Knock player back
+	dx = dir * .1;
+	dy = -.2;
+	jumped = true;
+}
+
 
 /* Accessors */
 int Player::getDir() const
@@ -74,6 +98,11 @@ int Player::getDir() const
 	if (sprite.getScale().x < 0.0f) dir = -1;
 
 	return dir;
+}
+
+int Player::getArmour() const
+{
+	return armour;
 }
 
 bool Player::getInvincible() const
@@ -253,9 +282,10 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	// Move out of heightmap if stuck within it
 	while (room.heightmapIntersects(sf::FloatRect(x, y, width, height))) y -= .5;
 
-	// Jump and Throw Timers
+	// Jump, Throw, and Invicibility Timers
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= 0.2f) midJump = false;
 	else if (midThrow && throwTimer.getElapsedTime().asSeconds() >= throwTime) midThrow = false;
+	if (invincible && invincibleTimer.getElapsedTime().asSeconds() >= 2) invincible = false;
 
 	// Animation
 	if (crouching)

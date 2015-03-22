@@ -24,7 +24,7 @@ class Player : public Object
 		std::map<std::string, std::vector<sf::IntRect> > animations;
 		std::string animation, texture;
 		float moveSpeed, jumpSpeed, frame, throwTime;
-		int jumps;
+		int jumps, armour;
 		bool jumped, midJump, midThrow, flipped, crouching, invincible;
 		sf::Clock jumpTimer, throwTimer, invincibleTimer;
 		double total_time = 0.0;
@@ -36,9 +36,11 @@ class Player : public Object
 
 		// Mutators
 		void setCrouching(bool c);
+		void damage(int otherX);
 		
 		// Accesors
 		int getDir() const;
+		int getArmour() const;
 		bool getInvincible() const;
 
 		// Actions
