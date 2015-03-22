@@ -25,8 +25,8 @@ class Player : public Object
 		std::string animation, texture;
 		float moveSpeed, jumpSpeed, frame, throwTime;
 		int jumps;
-		bool jumped, midJump, midThrow, flipped, crouching;
-		sf::Clock jumpTimer, throwTimer;
+		bool jumped, midJump, midThrow, flipped, crouching, invincible;
+		sf::Clock jumpTimer, throwTimer, invincibleTimer;
 		double total_time = 0.0;
 
 		// Actions
@@ -39,6 +39,7 @@ class Player : public Object
 		
 		// Accesors
 		int getDir() const;
+		bool getInvincible() const;
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);

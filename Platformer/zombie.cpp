@@ -13,7 +13,7 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
 	animation("appear"),
 	moveSpeed(0.22f / 2.0f), frame(0.0f), spawnX(x), spawnY(y), angle(0),
-	inCasket(true), opening(false), turning(false)
+	inCasket(true), opening(false), turning(false), spawned(false), under(false)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef("zombie"));
@@ -35,9 +35,6 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	animations["walk"].emplace_back(84, 50, 28, 40);
 	animations["walk"].push_back(animations.at("walk")[0]);
 	animations["walk"].emplace_back(112, 50, 28, 40);
-
-	spawned = false;
-	under = false;
 }
 
 

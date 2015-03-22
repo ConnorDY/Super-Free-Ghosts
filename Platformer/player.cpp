@@ -14,7 +14,7 @@ Player::Player(TextureManager &textureManager, float x, float y)
 	  animation("still"), texture("arthur1"),
 	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0),
-	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false)
+	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef(texture));
@@ -74,6 +74,11 @@ int Player::getDir() const
 	if (sprite.getScale().x < 0.0f) dir = -1;
 
 	return dir;
+}
+
+bool Player::getInvincible() const
+{
+	return invincible;
 }
 
 
