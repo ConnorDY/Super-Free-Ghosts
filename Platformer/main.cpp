@@ -23,7 +23,7 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 		{ "bg01", "res/bg01.png" },
 		{ "under01", "res/under01.png" },
 		{ "logo", "res/logo.png" },
-		{ "scanlines", "res/scanlines.png" }
+		{ "scanlines", "res/scanlines.png" },
 	};
 
 	auto sounds = std::vector<std::pair<std::string, std::string>>
@@ -32,7 +32,7 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 		{ "land", "res/land.wav" },
 		{ "throw", "res/throw.wav" },
 		{ "hit", "res/hit.wav" },
-		{ "enemy_die", "res/enemy_die.wav" }
+		{ "enemy_die", "res/enemy_die.wav" },
 	};
 
 	for (auto &texture : textures) textureManager.loadTexture(texture.first, texture.second);
@@ -46,7 +46,7 @@ int main()
 	// Default settings
 	settings_t settings;
 	settings.window_scale = 2;
-	settings.vsync_on = false;
+	settings.vsync_on = true;
 	settings.music_on = true;
 	settings.sound_on = true;
 

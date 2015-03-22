@@ -25,7 +25,7 @@ Options_State::Options_State(StateManager &sM, TextureManager &textureManager, c
 	optionChoices.push_back({});
 
 	// Default values
-	currentValue = { 1, 0, 1, 1, 0 };
+	currentValue = { 1, 1, 1, 1, 0 };
 
 	// Load values
 	currentValue[0] = settings.window_scale - 1;
@@ -47,7 +47,7 @@ void Options_State::draw(sf::RenderWindow &window)
 	window.setView(temp);
 
 	sf::Text text;
-	float xx = 200.0f, yy = 50.0f;
+	float xx = 200.0f, yy = 75.0f;
 
 	for (unsigned int i = 0; i < menuOptions.size(); i++)
 	{
