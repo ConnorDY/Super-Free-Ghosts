@@ -33,6 +33,7 @@ class Zombie : public Object
 
 		// Accesors
 		int getDir() const;
+		bool getInCasket() const;
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);

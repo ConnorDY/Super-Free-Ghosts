@@ -69,7 +69,7 @@ void Projectile::update(sf::Time deltaTime, Room const &room, const settings_t &
 	Object* col = nonsolidCollision(x, y, room);
 	if (dynamic_cast<Zombie*>(col) != NULL)
 	{
-		col->kill(room, settings);
+		if (!((Zombie*)col)->getInCasket()) col->kill(room, settings);
 		this->kill(room, settings);
 	}
 }

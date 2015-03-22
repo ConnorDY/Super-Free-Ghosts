@@ -51,6 +51,11 @@ int Zombie::getDir() const
 	return dir;
 }
 
+bool Zombie::getInCasket() const
+{
+	return inCasket;
+}
+
 
 /* Actions */
 void Zombie::draw(sf::RenderWindow &window)

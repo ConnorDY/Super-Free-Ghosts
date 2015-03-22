@@ -35,9 +35,11 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	fillHeightMap(672, 64, 96);
 	createSlope(736, 128, 96, 128);
 	fillHeightMap(864, 64, 128);
-	createSlope(928, 192, 128, 64);
-	createSlope(1120, 128, 64, 80);
-	createSlope(1248, 128, 80, 64);
+	createSlope(928, 160, 128, 64);
+	createSlope(1088, 112, 64, 80);
+	createSlope(1200, 112, 80, 64);
+	createSlope(1312, 112, 64, 80);
+	fillHeightMap(1424, 224, 80);
 
 
 	// Create Objects
@@ -60,6 +62,12 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	objects.push_back(object);
 
 	object = new Obelisk(textureManager, 660.0f, 280.0f, 50.0f);
+	objects.push_back(object);
+
+	object = new Obelisk(textureManager, 840.0f, 280.0f, 50.0f);
+	objects.push_back(object);
+
+	object = new Obelisk(textureManager, 1500.0f, 280.0f, 60.0f);
 	objects.push_back(object);
 
 	// Create player
