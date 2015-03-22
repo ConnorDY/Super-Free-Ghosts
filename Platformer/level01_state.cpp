@@ -62,6 +62,14 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	view_follow = player;
 }
 
+int Level01_State::countZombies()
+{
+	return count_if(objects.begin(), objects.end(), [&](Object* const &elem)
+	{
+		return dynamic_cast<Zombie*>(elem) != nullptr;
+	});
+}
+
 void Level01_State::drawTree(int x, int y, sf::RenderWindow &window)
 {
 	bg02.setPosition(sf::Vector2f(x, y));
@@ -145,6 +153,8 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager, settings);
 
 	sf::Event event;
+
+	if (countZombies() < 5) objects.push_back(new Zombie(textureManager, ((double)rand() / (RAND_MAX)) * 1248, 250));
 
 	int moveH = inputHandler.checkInput(InputHandler::Input::Right) - inputHandler.checkInput(InputHandler::Input::Left); // Horizontal Movement
 	bool crouching = inputHandler.checkInput(InputHandler::Input::Down); // Crouching

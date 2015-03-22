@@ -69,7 +69,7 @@ void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 {
 	if (inCasket && !spawned && (room.heightmapIntersects(sf::FloatRect(x, y, width, height)) || !placeFree(x, y + 10, room)))
 	{
-		y -= deltaTime.asSeconds() * 80;
+		y -= deltaTime.asSeconds() * 50;
 		spawnY = y;
 		under = true;
 	}
