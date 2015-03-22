@@ -9,7 +9,6 @@ Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const setti
 {
 	setView(sf::View(sf::Vector2f(VIEW_WIDTH / 2.0, VIEW_HEIGHT / 2.0), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT)));
 	dirtSprite.setTexture(tm.getRef("tiles"));
-	grassSprite.setTexture(tm.getRef("grass"));
 }
 
 Room::~Room()
@@ -58,7 +57,7 @@ void Room::drawHeightMap(sf::RenderWindow &window)
 	int viewRight = ceil(center.x + size.x / 2);
 	int heightmapStart = std::max<int>(0, viewLeft);
 	int heightmapEnd = std::min<int>(heightmap.size(), viewRight);
-	int spriteWidth = dirtSprite.getTexture()->getSize().x;
+	int spriteWidth = dirtSprite.getTexture()->getSize().x / 2;
 	int spriteColumn = heightmapStart % spriteWidth;
 	for (int i = heightmapStart; i < heightmapEnd; i++)
 	{
@@ -96,7 +95,7 @@ void Room::drawHeightMapBack(sf::RenderWindow &window)
 	int viewRight = ceil(center.x + size.x / 2);
 	int heightmapStart = std::max<int>(0, viewLeft);
 	int heightmapEnd = std::min<int>(heightmap.size(), viewRight);
-	int spriteWidth = grassSprite.getTexture()->getSize().x;
+	int spriteWidth = dirtSprite.getTexture()->getSize().x / 2;
 	int spriteColumn = heightmapStart % spriteWidth;
 	for (int i = heightmapStart; i < heightmapEnd; i++)
 	{
@@ -105,10 +104,10 @@ void Room::drawHeightMapBack(sf::RenderWindow &window)
 		{
 			int y = this->height - height;
 			// Grass
-			grassSprite.setTextureRect(sf::IntRect(spriteColumn, 0, 1, 38));
-			grassSprite.setOrigin(sf::Vector2f(0.0f, 13.0f));
-			grassSprite.setPosition(i, y);
-			window.draw(grassSprite);
+			dirtSprite.setTextureRect(sf::IntRect(spriteColumn + 16, 0, 1, 38));
+			dirtSprite.setOrigin(sf::Vector2f(0.0f, 13.0f));
+			dirtSprite.setPosition(i, y);
+			window.draw(dirtSprite);
 		}
 
 		spriteColumn++;

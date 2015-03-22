@@ -18,7 +18,6 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 		{ "weapons", "res/weapons.png" },
 		{ "zombie", "res/zombie.png" },
 		{ "tiles", "res/tiles.png" },
-		{ "grass", "res/grass.png" },
 		{ "obelisk", "res/obelisk.png" },
 		{ "bg01", "res/bg01.png" },
 		{ "bg02", "res/bg02.png" },
