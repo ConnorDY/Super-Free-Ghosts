@@ -306,9 +306,8 @@ void Player::updateAnimation(sf::Time deltaTime)
 	{
 		float speed = 60.0f / 5.2f;
 
-		if (frame < (float)frames) frame += deltaTime.asSeconds() * speed;
-
-		if (frame >= (float)frames) frame = 0.0f; // Reset animation
+		frame += deltaTime.asSeconds() * speed;
+		frame = fmodf(frame, frames); // Loop animation if it plays past "frames"
 	}
 
 	// Set TextureRect
