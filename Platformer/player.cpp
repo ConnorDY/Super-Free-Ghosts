@@ -260,7 +260,11 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	}
 	else if (midThrow)
 	{
-		if (jumps < 2) setAnimation("throw");
+		if (jumps < 2)
+		{
+			if (animation == "throwi") throwTime = 0.13f;
+			setAnimation("throw");
+		}
 		else setAnimation("throwi");
 	}
 	else if (dy > 0.0f && !jumped) setAnimation("still"); // Falling
@@ -290,8 +294,8 @@ void Player::setAnimation(std::string name)
 {
 	if (!midJump && animation != name)
 	{
-		animation = name;
 		frame = 0.0f;
+		animation = name;
 	}
 }
 
