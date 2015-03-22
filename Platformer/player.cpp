@@ -4,7 +4,7 @@
 #define PLAYER_HEIGHT 37
 
 
-Player::Player(TextureManager &textureManager, float x, float y)
+Player::Player(TextureManager &tm, float x, float y)
 	: Object(
 			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
 			0.0f, 0.0f,     // dx, dy
@@ -16,7 +16,7 @@ Player::Player(TextureManager &textureManager, float x, float y)
 	  animation("still"), texture("arthur1"),
 	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(1),
-	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false)
+	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false), textureManager(tm)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef(texture));
@@ -77,6 +77,16 @@ void Player::damage(int otherX)
 	
 	// Decrease armour
 	armour--;
+
+	switch (armour)
+	{
+		default:
+			break;
+
+		case 0:
+			changeTexture(textureManager, "arthur0");
+			break;
+	}
 
 	// Give invincibility if not dead
 	if (armour >= 0)
@@ -176,7 +186,7 @@ void Player::jump(int dir, SoundManager &soundManager, const settings_t &setting
 	}
 }
 
-void Player::throwWeapon(std::vector<Object*> &objects, int dir, TextureManager &textureManager, SoundManager &soundManager, const settings_t &settings)
+void Player::throwWeapon(std::vector<Object*> &objects, int dir, SoundManager &soundManager, const settings_t &settings)
 {
 	if (!midThrow)
 	{
