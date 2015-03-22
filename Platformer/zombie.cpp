@@ -37,6 +37,7 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	animations["walk"].emplace_back(112, 50, 28, 40);
 
 	spawned = false;
+	under = false;
 }
 
 
@@ -66,10 +67,11 @@ void Zombie::draw(sf::RenderWindow &window)
 
 void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
 {
-	if (inCasket && !spawned && (room.heightmapIntersects(sf::FloatRect(x, y, width, height)) || !placeFree(x, y + 20, room)))
+	if (inCasket && !spawned && (room.heightmapIntersects(sf::FloatRect(x, y, width, height)) || !placeFree(x, y + 10, room)))
 	{
 		y -= deltaTime.asSeconds() * 80;
 		spawnY = y;
+		under = true;
 	}
 	else if (!spawned) spawned = true;
 	else
@@ -100,7 +102,7 @@ void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 		}
 
 		// Rotating
-		if (inCasket)
+		if (inCasket && !under)
 		{
 			setX(spawnX + (6.0f * cos(angle)));
 			setY(spawnY + (6.0f * sin(angle)));
@@ -111,7 +113,7 @@ void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 		// Timers
 		if (turning && turnTimer.getElapsedTime().asSeconds() >= 0.1) turning = false;
 
-		if (inCasket && !opening && casketTimer.getElapsedTime().asSeconds() >= 3)
+		if (inCasket && !opening && (casketTimer.getElapsedTime().asSeconds() >= 3 || under))
 		{
 			openTimer.restart();
 			opening = true;
