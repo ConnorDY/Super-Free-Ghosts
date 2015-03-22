@@ -35,6 +35,8 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	animations["walk"].emplace_back(84, 50, 28, 40);
 	animations["walk"].push_back(animations.at("walk")[0]);
 	animations["walk"].emplace_back(112, 50, 28, 40);
+
+	spawned = false;
 }
 
 
@@ -64,7 +66,12 @@ void Zombie::draw(sf::RenderWindow &window)
 
 void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
 {
-	if (room.heightmapIntersects(sf::FloatRect(x, y, width, height))) y -= deltaTime.asSeconds() * 100;
+	if (inCasket && !spawned && (room.heightmapIntersects(sf::FloatRect(x, y, width, height)) || !placeFree(x, y + 20, room)))
+	{
+		y -= deltaTime.asSeconds() * 80;
+		spawnY = y;
+	}
+	else if (!spawned) spawned = true;
 	else
 	{
 		double mstime = deltaTime.asMicroseconds() / 1000.0;
