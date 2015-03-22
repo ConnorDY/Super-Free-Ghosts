@@ -1,6 +1,6 @@
 #include "zombie.h"
 
-#define ZOMBIE_WIDTH  27
+#define ZOMBIE_WIDTH  24
 #define ZOMBIE_HEIGHT 40
 Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	: Object(
@@ -63,7 +63,12 @@ void Zombie::draw(sf::RenderWindow &window)
 		window.draw(rectangle);
 	}
 
-	sprite.setPosition(sf::Vector2f(x + sprite.getOrigin().x - (6.0f * inCasket), y + sprite.getOrigin().y + inCasket));
+	int sign_scalex = -1, adjx = 0;
+	if (sprite.getScale().x >= 0.0f) sign_scalex = 1;
+
+	if (sign_scalex == -1) adjx += 2;
+
+	sprite.setPosition(sf::Vector2f(x + sprite.getOrigin().x - (6.0f * inCasket) + adjx, y + sprite.getOrigin().y + inCasket));
 	window.draw(sprite);
 }
 

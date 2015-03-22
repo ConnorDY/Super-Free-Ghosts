@@ -119,9 +119,8 @@ void Player::draw(sf::RenderWindow &window)
 {
 	if (DEBUG_MODE) rectangle.setPosition(roundf(x), roundf(y));
 	
-	int sign_scalex;
+	int sign_scalex = -1;
 	if (sprite.getScale().x >= 0.0f) sign_scalex = 1;
-	else sign_scalex = -1;
 
 	float adjx = 0.0f, adjy = 0.0f;
 
