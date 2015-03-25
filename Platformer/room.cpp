@@ -45,7 +45,7 @@ void Room::createSlope(size_t xleft, size_t width, int heightS, int heightE)
 
 	for (size_t i = 0; i < width; i++)
 	{
-		heightmap[xleft + i] = heightS + height * sin(sin_phase + (i / (double)width) * (M_PI / 2.)) - adjust;
+		heightmap[xleft + i] = heightS + (int)(height * sin(sin_phase + ((double)i / (double)width) * (M_PI / 2.))) - (int)adjust;
 	}
 }
 
@@ -53,8 +53,8 @@ void Room::drawHeightMap(sf::RenderWindow &window)
 {
 	auto &view = window.getView();
 	auto &center = view.getCenter(), &size = view.getSize();
-	int viewLeft = floor(center.x - size.x / 2);
-	int viewRight = ceil(center.x + size.x / 2);
+	int viewLeft = (int)floor(center.x - size.x / 2);
+	int viewRight = (int)ceil(center.x + size.x / 2);
 	int heightmapStart = std::max<int>(0, viewLeft);
 	int heightmapEnd = std::min<int>(heightmap.size(), viewRight);
 	int spriteWidth = dirtSprite.getTexture()->getSize().x / 2;
@@ -68,7 +68,7 @@ void Room::drawHeightMap(sf::RenderWindow &window)
 			// Top of ground with grass
 			dirtSprite.setTextureRect(sf::IntRect(spriteColumn, 0, 1, 38));
 			dirtSprite.setOrigin(sf::Vector2f(0.0f, 13.0f));
-			dirtSprite.setPosition(i, y);
+			dirtSprite.setPosition((float)i, (float)y);
 			window.draw(dirtSprite);
 
 			// Ground underneath
@@ -76,7 +76,7 @@ void Room::drawHeightMap(sf::RenderWindow &window)
 			dirtSprite.setOrigin(sf::Vector2f(0.0f, 0.0f));
 			for (float j = 19; j < height; j += 16)
 			{
-				dirtSprite.setPosition(i, y + j);
+				dirtSprite.setPosition((float)i, (float)(y + j));
 				window.draw(dirtSprite);
 			}
 		}
@@ -91,8 +91,8 @@ void Room::drawHeightMapBack(sf::RenderWindow &window)
 {
 	auto &view = window.getView();
 	auto &center = view.getCenter(), &size = view.getSize();
-	int viewLeft = floor(center.x - size.x / 2);
-	int viewRight = ceil(center.x + size.x / 2);
+	int viewLeft = (int)floor(center.x - size.x / 2);
+	int viewRight = (int)ceil(center.x + size.x / 2);
 	int heightmapStart = std::max<int>(0, viewLeft);
 	int heightmapEnd = std::min<int>(heightmap.size(), viewRight);
 	int spriteWidth = dirtSprite.getTexture()->getSize().x / 2;
@@ -106,7 +106,7 @@ void Room::drawHeightMapBack(sf::RenderWindow &window)
 			// Grass
 			dirtSprite.setTextureRect(sf::IntRect(spriteColumn + 16, 0, 1, 38));
 			dirtSprite.setOrigin(sf::Vector2f(0.0f, 13.0f));
-			dirtSprite.setPosition(i, y);
+			dirtSprite.setPosition((float)i, (float)y);
 			window.draw(dirtSprite);
 		}
 

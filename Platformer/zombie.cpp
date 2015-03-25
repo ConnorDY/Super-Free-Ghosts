@@ -80,7 +80,11 @@ void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 		spawnY = y;
 		under = true;
 	}
-	else if (!spawned) spawned = true;
+	else if (!spawned)
+	{
+		spawned = true;
+		casketTimer.restart();
+	}
 	else
 	{
 		double mstime = deltaTime.asMicroseconds() / 1000.0;
@@ -96,7 +100,7 @@ void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 
 		for (int i = -4; i < 4; i++)
 		{
-			if (placeFree(x + dx * mstime, y + i, room)) turn = false;
+			if (placeFree((float)(x + dx * mstime), y + i, room)) turn = false;
 		}
 
 		if (!inCasket && !placeFree(x, y + 3, room) && (turn || (x <= 0.0f && dx < 0) || floor(((double)rand() / RAND_MAX) * (8000. / mstime)) == 1 || (placeFree(x + adj, y + 17, room) && !placeFree(x, y + 1, room))))
@@ -120,7 +124,7 @@ void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 		// Timers
 		if (turning && turnTimer.getElapsedTime().asSeconds() >= 0.1) turning = false;
 
-		if (inCasket && !opening && (casketTimer.getElapsedTime().asSeconds() >= 3 || under))
+		if (inCasket && !opening && (casketTimer.getElapsedTime().asSeconds() >= 3 || (under && casketTimer.getElapsedTime().asSeconds() >= .9)))
 		{
 			openTimer.restart();
 			opening = true;
@@ -136,7 +140,7 @@ void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 		if (!inCasket)
 		{
 			Object* col = nonsolidCollision(x, y, room);
-			if (dynamic_cast<Player*>(col) != NULL && !((Player*)col)->getInvincible()) ((Player*)col)->damage(x);
+			if (dynamic_cast<Player*>(col) != NULL && !((Player*)col)->getInvincible()) ((Player*)col)->damage((int)x);
 		}
 	}
 
@@ -170,9 +174,8 @@ void Zombie::updateAnimation(sf::Time deltaTime)
 	{
 		float speed = 60.0f / 10.0f;
 
-		if (frame < (float)frames) frame += deltaTime.asSeconds() * speed;
-
-		if (frame >= (float)frames) frame = 0.0f; // Reset animation
+		frame += deltaTime.asSeconds() * speed;
+		frame = fmodf(frame, (float)frames);
 	}
 
 	// Set TextureRect

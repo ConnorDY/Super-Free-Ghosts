@@ -31,7 +31,7 @@ void Obelisk::draw(sf::RenderWindow &window)
 	spr.setPosition(sf::Vector2f(x, y - 1)); // "y - 1" as an easy collision fix of sorts
 	window.draw(spr);
 
-	spr.setTextureRect(flames.at(frame));
+	spr.setTextureRect(flames.at((unsigned int)frame));
 	spr.setPosition(sf::Vector2f(x + 13, y + 17));
 	window.draw(spr);
 }

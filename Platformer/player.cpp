@@ -107,8 +107,8 @@ void Player::damage(int otherX)
 	}
 
 	// Knock player back
-	dx = dir * .1;
-	dy = -.2;
+	dx = dir * .1f;
+	dy = -.2f;
 	jumped = true;
 	jumps = 3;
 }
@@ -325,7 +325,7 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	// Jump, Throw, and Invicibility Timers
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= 0.2f) midJump = false;
 	else if (midThrow && throwTimer.getElapsedTime().asSeconds() >= throwTime) midThrow = false;
-	if (invincible && invincibleTimer.getElapsedTime().asSeconds() >= 2.5) invincible = false;
+	if (invincible && invincibleTimer.getElapsedTime().asSeconds() >= 2.0f) invincible = false;
 
 	// Animation
 	if (dead) setAnimation("die");
@@ -388,7 +388,7 @@ void Player::updateAnimation(sf::Time deltaTime)
 
 		frame += deltaTime.asSeconds() * speed;
 		if (animation == "die" && frame > 5) frame = 5;
-		else frame = fmodf(frame, frames); // Loop animation if it plays past "frames"
+		else frame = fmodf(frame, (float)frames); // Loop animation if it plays past "frames"
 	}
 
 	// Set TextureRect

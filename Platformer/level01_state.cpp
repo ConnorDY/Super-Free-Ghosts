@@ -86,13 +86,13 @@ int Level01_State::countZombies()
 
 void Level01_State::drawTree(int x, int y, sf::RenderWindow &window)
 {
-	bg02.setPosition(sf::Vector2f(x, y));
+	bg02.setPosition(sf::Vector2f((float)x, (float)y));
 	window.draw(bg02);
 }
 
 void Level01_State::drawDecor(int x, int y, int type, sf::RenderWindow &window)
 {
-	bg03.setPosition(x, y);
+	bg03.setPosition((float)x, (float)y);
 
 	switch (type)
 	{
@@ -134,7 +134,7 @@ void Level01_State::drawBackground(sf::RenderWindow &window)
 	// TODO: hardcoded background width
 	for (size_t i = 0; i < 4; i++)
 	{
-		bg01.setPosition(sf::Vector2f(getViewX() + fmod((-getViewX() / 2), 192) + (i * 192), getViewY() + 98));
+		bg01.setPosition(sf::Vector2f(getViewX() + (float)fmod((-getViewX() / 2), 192) + (i * 192), getViewY() + 98));
 		window.draw(bg01);
 	}
 
@@ -168,7 +168,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 	sf::Event event;
 
-	if (countZombies() < 5) objects.push_back(new Zombie(textureManager, ((double)rand() / (RAND_MAX)) * 1248, 250));
+	if (countZombies() < 5) objects.push_back(new Zombie(textureManager, (float)((double)rand() / (RAND_MAX)) * 1248, 250));
 
 	int moveH = inputHandler.checkInput(InputHandler::Input::Right) - inputHandler.checkInput(InputHandler::Input::Left); // Horizontal Movement
 	bool crouching = inputHandler.checkInput(InputHandler::Input::Down); // Crouching
