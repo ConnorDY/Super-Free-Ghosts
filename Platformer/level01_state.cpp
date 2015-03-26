@@ -2,7 +2,7 @@
 #include "menu_state.h"
 
 Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings)
-	: Room(sM, som, textureManager, settings)
+	: Room(sM, som, textureManager, settings), restart(false)
 {
 	start(textureManager, settings);
 	bg01.setTexture(textureManager.getRef("bg01"));
@@ -165,6 +165,14 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 {
 	/* Restart Level if Player is Outside of the Room */
 	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager, settings);
+
+	/* Restart level if the player dies */
+	if (!restart && !player->isAlive())
+	{
+		restartTimer.restart();
+		restart = true;
+	}
+	else if (restart && restartTimer.getElapsedTime().asSeconds() >= 5) reset(textureManager, settings);
 
 	sf::Event event;
 

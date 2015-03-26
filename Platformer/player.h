@@ -42,7 +42,7 @@ class Player : public Object
 		
 		// Accesors
 		int getDir() const;
-		int getArmour() const;
+		int isAlive() const;
 		bool getInvincible() const;
 
 		// Actions

@@ -130,9 +130,9 @@ int Player::getDir() const
 	return dir;
 }
 
-int Player::getArmour() const
+int Player::isAlive() const
 {
-	return armour;
+	return !dead;
 }
 
 bool Player::getInvincible() const
