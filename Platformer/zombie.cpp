@@ -13,7 +13,7 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
 	animation("appear"),
 	moveSpeed(0.22f / 2.0f), frame(0.0f), spawnX(x), spawnY(y), angle(0),
-	inCasket(true), opening(false), turning(false), spawned(false), under(false)
+	inCasket(true), opening(false), turning(false), spawned(false), under(false), visible(true)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef("zombie"));
@@ -57,6 +57,8 @@ bool Zombie::getInCasket() const
 /* Actions */
 void Zombie::draw(sf::RenderWindow &window)
 {
+	if (!visible) return;
+
 	if (DEBUG_MODE)
 	{
 		rectangle.setPosition(sf::Vector2f(x, y));
@@ -143,6 +145,14 @@ void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 			if (dynamic_cast<Player*>(col) != NULL && !((Player*)col)->getInvincible()) ((Player*)col)->damage((int)x);
 		}
 	}
+
+	// Invincibility
+	if (under && inCasket && !opening && flashTimer.getElapsedTime().asSeconds() >= .1)
+	{
+		flashTimer.restart();
+		visible = !visible;
+	}
+	else if (!under || !inCasket || opening) visible = true;
 
 	// Animations
 	if (opening) setAnimation("casket");

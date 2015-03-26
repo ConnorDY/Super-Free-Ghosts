@@ -23,8 +23,8 @@ class Zombie : public Object
 		std::map<std::string, std::vector<sf::IntRect> > animations;
 		std::string animation;
 		float moveSpeed, frame, spawnX, spawnY, angle;
-		bool inCasket, opening, turning, spawned, under;
-		sf::Clock casketTimer, turnTimer, openTimer;
+		bool inCasket, opening, turning, spawned, under, visible;
+		sf::Clock casketTimer, turnTimer, openTimer, flashTimer;
 
 		// Actions
 		void setAnimation(std::string name);

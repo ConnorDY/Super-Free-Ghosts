@@ -26,8 +26,8 @@ class Player : public Object
 		std::string animation, texture;
 		float moveSpeed, jumpSpeed, frame, throwTime;
 		int jumps, armour;
-		bool jumped, midJump, midThrow, flipped, crouching, invincible, hit, dead;
-		sf::Clock jumpTimer, throwTimer, invincibleTimer;
+		bool jumped, midJump, midThrow, flipped, crouching, invincible, hit, dead, visible;
+		sf::Clock jumpTimer, throwTimer, invincibleTimer, flashTimer;
 		double total_time = 0.0;
 
 		// Actions

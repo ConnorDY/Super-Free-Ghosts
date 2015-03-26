@@ -16,7 +16,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  animation("still"), texture("arthur1"),
 	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(1),
-	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false),
+	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true),
 	  textureManager(tm)
 {
 	// Sprite
@@ -144,7 +144,7 @@ bool Player::getInvincible() const
 /* Actions */
 void Player::draw(sf::RenderWindow &window)
 {
-	if (invincible && fmod(invincibleTimer.getElapsedTime().asMilliseconds(), 50) == 0) return;
+	if (!visible) return;
 
 	if (DEBUG_MODE) rectangle.setPosition(roundf(x), roundf(y));
 	
@@ -338,6 +338,14 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= 0.2f) midJump = false;
 	else if (midThrow && throwTimer.getElapsedTime().asSeconds() >= throwTime) midThrow = false;
 	if (invincible && invincibleTimer.getElapsedTime().asSeconds() >= 2.0f) invincible = false;
+
+	// Invincibility
+	if (invincible && flashTimer.getElapsedTime().asMilliseconds() >= 50)
+	{
+		flashTimer.restart();
+		visible = !visible;
+	}
+	else if (!invincible) visible = true;
 
 	// Animation
 	if (dead) setAnimation("die");
