@@ -16,7 +16,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  animation("still"), texture("arthur1"),
 	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(1),
-	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false), dead(false),
+	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false),
 	  textureManager(tm)
 {
 	// Sprite
@@ -58,7 +58,9 @@ Player::Player(TextureManager &tm, float x, float y)
 	animations["throwc"].emplace_back(28, 122, 33, 35);
 	animations["throwc"].emplace_back(59, 122, 38, 35);
 
-	animations["die"].emplace_back(6, 156, 36, 32);
+	animations["hit"].emplace_back(6, 156, 36, 32);
+
+	animations["die"].push_back(animations.at("hit")[0]);
 	animations["die"].emplace_back(46, 156, 36, 32);
 	animations["die"].emplace_back(87, 156, 36, 32);
 	animations["die"].emplace_back(129, 156, 42, 32);
@@ -110,7 +112,11 @@ void Player::damage(int otherX)
 	dx = dir * .1f;
 	dy = -.2f;
 	jumped = true;
+	hit = true;
 	jumps = 3;
+
+	// Flip Player
+	sprite.setScale(sf::Vector2f(sprite.getScale().x * -1, 1.0f));
 }
 
 
@@ -210,7 +216,7 @@ void Player::jump(int dir, SoundManager &soundManager, const settings_t &setting
 
 void Player::throwWeapon(std::vector<Object*> &objects, int dir, SoundManager &soundManager, const settings_t &settings)
 {
-	if (dead) return;
+	if (dead || hit) return;
 
 	if (!midThrow)
 	{
@@ -261,6 +267,12 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 
 		if (jumped)
 		{
+			if (hit)
+			{
+				if (!dead) sprite.setScale(sf::Vector2f(sprite.getScale().x * -1, 1.0f));
+				hit = false;
+			}
+
 			jumped = false;
 			flipped = false;
 			jumps = 0;
@@ -329,6 +341,7 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 
 	// Animation
 	if (dead) setAnimation("die");
+	else if (hit) setAnimation("hit");
 	else if (crouching)
 	{
 		if (midThrow) setAnimation("throwc");
