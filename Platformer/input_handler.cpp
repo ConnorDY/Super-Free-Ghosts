@@ -50,16 +50,6 @@ InputHandler::InputHandler()
 	key->eventType = sf::Event::KeyPressed;
 	key->keyCode = sf::Keyboard::Escape;
 	Inputs[Input::Exit] = key;
-
-
-	/* Debug */
-
-	// Change Arthur's Texture
-	key = new InputKeys();
-	key->inputType = Key;
-	key->eventType = sf::Event::KeyPressed;
-	key->keyCode = sf::Keyboard::E;
-	Inputs[Input::Debug0] = key;
 }
 
 

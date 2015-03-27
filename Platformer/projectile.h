@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "texture_manager.h"
 #include "object.h"
+#include "zombie.h"
 #include "settings.h"
 
 class Projectile : public Object

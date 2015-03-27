@@ -1,5 +1,4 @@
 #include "projectile.h"
-#include "zombie.h"
 
 Projectile::Projectile(float x, float y, int dir, TextureManager &textureManager)
 	: Object(

@@ -53,6 +53,11 @@ bool Zombie::getInCasket() const
 	return inCasket;
 }
 
+bool Zombie::canCollideWith(const Object* obj) const
+{
+	return dynamic_cast<const Obelisk*>(obj) == nullptr;
+}
+
 
 /* Actions */
 void Zombie::draw(sf::RenderWindow &window)

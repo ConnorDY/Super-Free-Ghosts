@@ -5,6 +5,8 @@
 #include <vector>
 #include "globals.h"
 #include "texture_manager.h"
+//#include "zombie.h"
+//#include "obelisk.h"
 class Room;
 #include "room.h"
 
@@ -24,6 +26,7 @@ class Object
 		// Accessors
 		bool isSolid() const;
 		bool shouldDelete() const;
+		virtual bool canCollideWith(const Object* obj) const;
 
 		sf::FloatRect getRect() const;
 		bool placeFree(float xx, float yy, Room const &room) const;
@@ -40,7 +43,7 @@ class Object
 		virtual void onDeath(Room const &room, const settings_t &settings);
 	protected:
 		sf::Sprite sprite;
-		float x, y, dx, dy, width, height, gravity, maxFallSpeed;
+		float x, y, dx, dy, width, height, gravity, maxFallSpeed, type;
 		bool solid, del;
 };
 

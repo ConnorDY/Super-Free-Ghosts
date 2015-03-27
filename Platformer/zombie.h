@@ -14,6 +14,7 @@
 #include "sound_manager.h"
 #include "object.h"
 #include "player.h"
+#include "obelisk.h"
 
 class Zombie : public Object
 {
@@ -35,6 +36,7 @@ class Zombie : public Object
 		// Accesors
 		int getDir() const;
 		bool getInCasket() const;
+		virtual bool canCollideWith(const Object* obj) const;
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);

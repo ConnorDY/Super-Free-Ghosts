@@ -36,7 +36,7 @@ bool Object::placeFree(float xx, float yy, Room const &room) const
 	auto const &objects = room.getObjects();
 	return std::none_of(objects.begin(), objects.end(), [&](Object* const &elem)
 	{
-		return this != elem && elem->isSolid() && temp_rect.intersects(elem->getRect());
+		return this != elem && elem->isSolid() && temp_rect.intersects(elem->getRect()) && this->canCollideWith(elem) && elem->canCollideWith(this);
 	});
 }
 
@@ -51,6 +51,11 @@ Object* Object::nonsolidCollision(float xx, float yy, Room const &room) const
 	});
 	if (collision == objects.end()) return NULL;
 	else return *collision;
+}
+
+bool Object::canCollideWith(const Object *obj) const
+{
+	return true;
 }
 
 
