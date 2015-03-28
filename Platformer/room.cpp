@@ -16,6 +16,11 @@ Room::~Room()
 	end();
 }
 
+bool depthSort(Object* i, Object* j)
+{
+	return (i->getDepth() > j->getDepth());
+}
+
 void Room::ensureHeightmapWidth(size_t width)
 {
 	size_t oldsize = heightmap.size();
@@ -206,7 +211,7 @@ void Room::drawForeground(sf::RenderWindow &window)
 void Room::draw(sf::RenderWindow &window)
 {
 	updateView(window);
-	std::sort(objects.begin(), objects.end());
+	std::sort(objects.begin(), objects.end(), depthSort);
 	drawBackground(window);
 	drawSprites(window);
 	drawForeground(window);

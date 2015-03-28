@@ -19,6 +19,7 @@ Object::~Object()
 
 
 /* Accessors */
+int Object::getDepth() const { return depth; }
 bool Object::isSolid() const { return solid; }
 bool Object::shouldDelete() const { return del; }
 

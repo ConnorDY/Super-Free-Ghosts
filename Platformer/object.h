@@ -27,6 +27,7 @@ class Object
 		}
 
 		// Accessors
+		int getDepth() const;
 		bool isSolid() const;
 		bool shouldDelete() const;
 		virtual bool canCollideWith(const Object* obj) const;
