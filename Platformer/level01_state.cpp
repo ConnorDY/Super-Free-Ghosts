@@ -49,13 +49,31 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	object = new Zombie(textureManager, 405.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Zombie(textureManager, 850.0f, 32.0f);
+	object = new Zombie(textureManager, 625.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Zombie(textureManager, 1000.0f, 32.0f);
+	object = new Zombie(textureManager, 675.0f, 32.0f);
 	objects.push_back(object);
 
-	object = new Zombie(textureManager, 1150.0f, 32.0f);
+	object = new Zombie(textureManager, 725.0f, 32.0f);
+	objects.push_back(object);
+
+	object = new Zombie(textureManager, 775.0f, 32.0f);
+	objects.push_back(object);
+
+	object = new Zombie(textureManager, 1275.0f, 32.0f);
+	objects.push_back(object);
+
+	object = new Zombie(textureManager, 1300.0f, 32.0f);
+	objects.push_back(object);
+
+	object = new Zombie(textureManager, 1325.0f, 32.0f);
+	objects.push_back(object);
+
+	object = new Zombie(textureManager, 1350.0f, 32.0f);
+	objects.push_back(object);
+
+	object = new Zombie(textureManager, 1475.0f, 32.0f);
 	objects.push_back(object);
 
 	object = new Obelisk(textureManager, 287.0f, 280.0f, 54.0f);
@@ -176,7 +194,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 	sf::Event event;
 
-	if (countZombies() < 5) objects.push_back(new Zombie(textureManager, (float)((double)rand() / (RAND_MAX)) * 1248, 250));
+	if (countZombies() < 10) objects.push_back(new Zombie(textureManager, (float)((double)rand() / (RAND_MAX)) * 1248, 250));
 
 	int moveH = inputHandler.checkInput(InputHandler::Input::Right) - inputHandler.checkInput(InputHandler::Input::Left); // Horizontal Movement
 	bool crouching = inputHandler.checkInput(InputHandler::Input::Down); // Crouching
