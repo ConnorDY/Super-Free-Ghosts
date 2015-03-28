@@ -206,6 +206,7 @@ void Room::drawForeground(sf::RenderWindow &window)
 void Room::draw(sf::RenderWindow &window)
 {
 	updateView(window);
+	std::sort(objects.begin(), objects.end());
 	drawBackground(window);
 	drawSprites(window);
 	drawForeground(window);
@@ -233,5 +234,5 @@ void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandle
 	}
 
 	// Output time it took to render this frame
-	//std::cout << "Time: " << (deltaTime.asMicroseconds() / 1000.0) << std::endl;
+	if (DEBUG_MODE) std::cout << "Time: " << (deltaTime.asMicroseconds() / 1000.0) << std::endl;
 }

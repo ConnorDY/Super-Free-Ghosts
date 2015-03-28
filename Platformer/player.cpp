@@ -66,6 +66,9 @@ Player::Player(TextureManager &tm, float x, float y)
 	animations["die"].emplace_back(129, 156, 42, 32);
 	animations["die"].emplace_back(36, 188, 42, 24);
 	animations["die"].emplace_back(84, 188, 42, 24);
+
+	// Depth
+	setDepth(-2);
 }
 
 

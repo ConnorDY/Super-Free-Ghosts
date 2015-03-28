@@ -7,7 +7,8 @@ Object::Object(float x, float y, float width, float height, float dx, float dy, 
 	  gravity(gravity),
 	  maxFallSpeed(maxFallSpeed),
 	  solid(solid),
-	  del(false)
+	  del(false),
+	  depth(0)
 {
 }
 
@@ -68,6 +69,11 @@ void Object::setX(float xx)
 void Object::setY(float yy)
 {
 	y = yy;
+}
+
+void Object::setDepth(int d)
+{
+	depth = d;
 }
 
 

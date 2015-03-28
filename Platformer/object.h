@@ -5,8 +5,6 @@
 #include <vector>
 #include "globals.h"
 #include "texture_manager.h"
-//#include "zombie.h"
-//#include "obelisk.h"
 class Room;
 #include "room.h"
 
@@ -23,6 +21,11 @@ class Object
 		);
 		virtual ~Object();
 
+		bool operator < (const Object& obj) const
+		{
+			return (depth < obj.depth);
+		}
+
 		// Accessors
 		bool isSolid() const;
 		bool shouldDelete() const;
@@ -35,6 +38,7 @@ class Object
 		// Mutators
 		void setX(float xx);
 		void setY(float yy);
+		void setDepth(int depth);
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window) = 0;
@@ -44,6 +48,7 @@ class Object
 	protected:
 		sf::Sprite sprite;
 		float x, y, dx, dy, width, height, gravity, maxFallSpeed, type;
+		int depth;
 		bool solid, del;
 };
 
