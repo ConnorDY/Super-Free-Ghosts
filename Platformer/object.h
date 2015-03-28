@@ -21,11 +21,6 @@ class Object
 		);
 		virtual ~Object();
 
-		bool operator < (const Object& obj) const
-		{
-			return (depth < obj.depth);
-		}
-
 		// Accessors
 		int getDepth() const;
 		bool isSolid() const;
