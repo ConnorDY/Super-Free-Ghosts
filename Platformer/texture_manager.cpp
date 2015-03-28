@@ -18,6 +18,8 @@ void TextureManager::loadTexture(const std::string &name, const std::string &fil
 	sf::Texture tex;
 	tex.loadFromFile(filename);
 
+	if (_DEBUG) std::cout << "Loaded texture \"" << name << "\" from " << filename << std::endl;
+
 	/* Add it to the list of textures */
 	this->textures[name] = tex;
 

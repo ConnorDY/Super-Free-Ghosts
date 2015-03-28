@@ -239,5 +239,5 @@ void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandle
 	}
 
 	// Output time it took to render this frame
-	if (DEBUG_MODE || _DEBUG) std::cout << "Time: " << (deltaTime.asMicroseconds() / 1000.0) << std::endl;
+	if (_DEBUG) std::cout << "Time: " << (deltaTime.asMicroseconds() / 1000.0) << std::endl;
 }

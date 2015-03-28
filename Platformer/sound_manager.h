@@ -2,6 +2,7 @@
 #define SOUND_MANAGER_H
 
 #include <SFML/Audio.hpp>
+#include <iostream>
 #include <string>
 #include <map>
 
