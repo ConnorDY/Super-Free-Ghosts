@@ -78,7 +78,7 @@ void Zombie::draw(sf::RenderWindow &window)
 
 	if (sign_scalex == -1) adjx += 2;
 
-	sprite.setPosition(sf::Vector2f(x + sprite.getOrigin().x - (6.0f * inCasket) + adjx, y + sprite.getOrigin().y + inCasket));
+	sprite.setPosition(sf::Vector2f(x + sprite.getOrigin().x - (6.0f * inCasket) + adjx, y + sprite.getOrigin().y + inCasket + 1));
 	window.draw(sprite);
 }
 
