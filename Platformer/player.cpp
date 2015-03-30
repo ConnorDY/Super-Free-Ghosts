@@ -1,7 +1,7 @@
 #include "player.h"
 
-#define PLAYER_WIDTH  22
-#define PLAYER_HEIGHT 37
+#define PLAYER_WIDTH  17
+#define PLAYER_HEIGHT 35
 
 
 Player::Player(TextureManager &tm, float x, float y)
@@ -13,7 +13,7 @@ Player::Player(TextureManager &tm, float x, float y)
 			0.2f            // Fall speed
 	  ),
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
-	  animation("still"), texture("arthur1"),
+	  animation("still"), texture("player1"),
 	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(1),
 	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true),
@@ -21,42 +21,41 @@ Player::Player(TextureManager &tm, float x, float y)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef(texture));
-	sprite.setOrigin(14.0f, 37.0f);
 
 	// Animations
-	animations["still"].emplace_back(7, 3, 24, 37);
+	animations["still"].emplace_back(0, 0, 50, 50);
 
-	animations["crouch"].emplace_back(-2, 122, 33, 35);
+	animations["crouch"].emplace_back(0, 150, 50, 50);
 
-	animations["jumpu"].emplace_back(0, 45, 38, 37);
-	animations["jumpu2"].emplace_back(34, 45, 38, 37);
+	animations["jumpu"].emplace_back(0, 200, 50, 50);
+	animations["jumpu2"].emplace_back(50, 200, 50, 50);
 
-	animations["jumps"].emplace_back(78, 45, 36, 37);
-	animations["jumps2"].emplace_back(120, 45, 36, 37);
+	animations["jumps"].emplace_back(0, 250, 50, 50);
+	animations["jumps2"].emplace_back(50, 250, 50, 50);
 
-	animations["jumpi"].emplace_back(152, 45, 28, 37);
+	animations["jumpi"].emplace_back(0, 300, 50, 50);
 	
-	animations["run"].emplace_back(34, 3, 28, 37);
-	animations["run"].emplace_back(151, 3, 28, 37);
-	animations["run"].emplace_back(64, 3, 28, 37);
-	animations["run"].emplace_back(92, 3, 28, 37);
-	animations["run"].emplace_back(184, 3, 28, 37);
-	animations["run"].emplace_back(118, 3, 28, 37);
+	animations["run"].emplace_back(0, 50, 50, 50);
+	animations["run"].emplace_back(50, 50, 50, 50);
+	animations["run"].emplace_back(100, 50, 50, 50);
+	animations["run"].emplace_back(150, 50, 50, 50);
+	animations["run"].emplace_back(200, 50, 50, 50);
+	animations["run"].emplace_back(250, 50, 50, 50);
 
-	animations["throw"].emplace_back(3, 83, 28, 37);
-	animations["throw"].emplace_back(33, 82, 36, 37);
+	animations["throw"].emplace_back(0, 100, 50, 50);
+	animations["throw"].emplace_back(50, 100, 50, 50);
 
 	animations["throwi"].push_back(animations.at("throw")[0]);
 	animations["throwi"].push_back(animations.at("throw")[1]);
 	animations["throwi"].push_back(animations.at("jumpi")[0]);
 	animations["throwi"].push_back(animations.at("jumpi")[0]);
-	animations["throwi"].emplace_back(178, 45, 26, 37);
-	animations["throwi"].emplace_back(178, 45, 26, 37);
-	animations["throwi"].emplace_back(202, 45, 26, 37);
-	animations["throwi"].emplace_back(202, 45, 26, 37);
+	animations["throwi"].emplace_back(50, 300, 50, 50);
+	animations["throwi"].emplace_back(50, 300, 50, 50);
+	animations["throwi"].emplace_back(100, 300, 50, 50);
+	animations["throwi"].emplace_back(100, 300, 50, 50);
 
-	animations["throwc"].emplace_back(28, 122, 33, 35);
-	animations["throwc"].emplace_back(59, 122, 38, 35);
+	animations["throwc"].emplace_back(50, 150, 50, 50);
+	animations["throwc"].emplace_back(100, 150, 50, 50);
 
 	animations["hit"].emplace_back(6, 156, 36, 32);
 
@@ -149,37 +148,18 @@ void Player::draw(sf::RenderWindow &window)
 {
 	if (!visible) return;
 
-	if (DEBUG_MODE) rectangle.setPosition(roundf(x), roundf(y));
+	if (DEBUG_MODE) rectangle.setPosition(x, y);
 	
-	int sign_scalex = -1;
-	if (sprite.getScale().x >= 0.0f) sign_scalex = 1;
+	int sign_scalex = 1;
+	float adjx = -15.0f, adjx2 = 0.0f, adjy = -15.0f;
 
-	float adjx = 0.0f, adjy = 0.0f;
-
-	if (jumped)
+	if (sprite.getScale().x < 0.0f)
 	{
-		if (dx == 0.0f)
-		{
-			if (midThrow && jumps == 2) adjx = -3.0f;
-			else if (midJump) adjx = -3.0f;
-			else if (midThrow) adjx = 0.0f;
-			else adjx = -3.0f;
-		}
-		else if (midThrow) adjx = 0.0f;
-		else adjx = -3.0f;
+		sign_scalex = -1;
+		adjx2 = 47.0f;
 	}
-	else if (crouching) { adjx = -3.0f; adjy = 6.0f; }
-	else adjx = 0.0f;
 
-	if (animation == "jumpi") adjx += 3;
-	else if (animation == "die")
-	{
-		if(frame >= 4.0f) adjy += 8;
-		adjy += 4;
-	}
-	if (sign_scalex == -1) adjx += 1;
-
-	sprite.setPosition(x + sprite.getOrigin().x + (adjx * (float)sign_scalex) - 2, y + sprite.getOrigin().y + adjy);
+	sprite.setPosition(x + adjx + adjx2, y + adjy);
 
 	if (DEBUG_MODE) window.draw(rectangle);
 	window.draw(sprite);
@@ -238,12 +218,12 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, SoundManager &s
 		if (crouching)
 		{
 			adjx = -(float)getDir() * 4.0f;
-			adjy = 12.0f;
+			adjy = 9.0f;
 		}
 
 		if (getDir() < 0) adjx -= 30;
 
-		Projectile* weapon = new Projectile(x + sprite.getOrigin().x + adjx, y + sprite.getOrigin().y - 35.0f + adjy, dir, textureManager);
+		Projectile* weapon = new Projectile(x + adjx, y + 6.0f + adjy, dir, textureManager);
 		objects.push_back(weapon);
 
 		if (settings.sound_on) soundManager.playSound("throw");

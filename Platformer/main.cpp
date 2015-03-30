@@ -15,6 +15,7 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 	{
 		{ "arthur0", "res/arthur0.png" },
 		{ "arthur1", "res/arthur1.png" },
+		{ "player1", "res/plyr/plyr_silver.png" },
 		{ "weapons", "res/weapons.png" },
 		{ "zombie", "res/zombie.png" },
 		{ "tiles", "res/tiles.png" },
