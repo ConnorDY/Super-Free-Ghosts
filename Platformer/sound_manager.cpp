@@ -26,7 +26,9 @@ void SoundManager::loadSound(const std::string &name, const std::string &filenam
 	sf::SoundBuffer *buf = new sf::SoundBuffer();
 	buf->loadFromFile(filename);
 
-	if (_DEBUG) std::cout << "Loaded sound \"" << name << "\" from " << filename << std::endl;
+#ifdef _DEBUG
+	std::cout << "Loaded sound \"" << name << "\" from " << filename << std::endl;
+#endif
 
 	/* Add it to the list of buffers */
 	this->buffers[name] = buf;

@@ -1,10 +1,6 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#ifndef _DEBUG
-#define _DEBUG false
-#endif
-
 #define DEBUG_MODE false
 
 #define VIEW_WIDTH 400

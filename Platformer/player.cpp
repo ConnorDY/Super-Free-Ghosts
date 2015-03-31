@@ -30,8 +30,8 @@ Player::Player(TextureManager &tm, float x, float y)
 	animations["jumpu"].emplace_back(0, 200, 50, 50);
 	animations["jumpu2"].emplace_back(50, 200, 50, 50);
 
-	animations["jumps"].emplace_back(0, 250, 50, 50);
-	animations["jumps2"].emplace_back(50, 250, 50, 50);
+	animations["jumps"].emplace_back(50, 250, 50, 50);
+	animations["jumps2"].emplace_back(0, 250, 50, 50);
 
 	animations["jumpi"].emplace_back(0, 300, 50, 50);
 	
