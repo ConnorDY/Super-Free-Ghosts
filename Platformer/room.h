@@ -14,7 +14,7 @@ class Room : public State {
 		Object *view_follow;						// The object to follow around with the camera
 		sf::Time deltaTime;							// The time delta between the most recent update() and the previous
 		int const width, height;					// The width and height of the room
-		sf::Sprite dirtSprite;						// The sprite to paint the heightmap with
+		sf::Sprite dirtSprite, bg02, bg03, under01;	// The sprite to paint the heightmap with (and decorative sprites)
 		std::vector<int> heightmap;					// Height map. Index = x-value, value = y-value (from 0 = bottom)
 													// However, 0 will be non-colliding for simplicity's sake
 
@@ -23,6 +23,9 @@ class Room : public State {
 		void createSlope(size_t xleft, size_t width, int heightS, int heightE);
 		void drawHeightMap(sf::RenderWindow &window);
 		void drawHeightMapBack(sf::RenderWindow &window);
+
+		void drawTree(int x, int y, sf::RenderWindow &window);
+		void drawDecor(int x, int y, int type, sf::RenderWindow &window);
 	public:
 		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t &settings);
 		virtual ~Room();

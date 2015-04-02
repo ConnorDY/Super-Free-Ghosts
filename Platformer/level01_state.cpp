@@ -6,9 +6,6 @@ Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager
 {
 	start(textureManager, settings);
 	bg01.setTexture(textureManager.getRef("bg01"));
-	bg02.setTexture(textureManager.getRef("bg02"));
-	bg03.setTexture(textureManager.getRef("bg03"));
-	under01.setTexture(textureManager.getRef("under01"));
 }
 
 Level01_State::~Level01_State()
@@ -100,50 +97,6 @@ int Level01_State::countZombies()
 	{
 		return dynamic_cast<Zombie*>(elem) != nullptr;
 	});
-}
-
-void Level01_State::drawTree(int x, int y, sf::RenderWindow &window)
-{
-	bg02.setPosition(sf::Vector2f((float)x, (float)y));
-	window.draw(bg02);
-}
-
-void Level01_State::drawDecor(int x, int y, int type, sf::RenderWindow &window)
-{
-	bg03.setPosition((float)x, (float)y);
-
-	switch (type)
-	{
-		default:
-			break;
-
-		// Skull and Casket #1
-		case 0:
-			bg03.setTextureRect(sf::IntRect(96, 0, 48, 63));
-			break;
-
-		// Skull and Casket #2
-		case 1:
-			bg03.setTextureRect(sf::IntRect(0, 0, 96, 63));
-			break;
-
-		// Casket on Skulls
-		case 2:
-			bg03.setTextureRect(sf::IntRect(144, 0, 56, 63));
-			break;
-		
-		// Caskets and Banner
-		case 3:
-			bg03.setTextureRect(sf::IntRect(200, 0, 96, 63));
-			break;
-
-		// Banner
-		case 4:
-			bg03.setTextureRect(sf::IntRect(296, 0, 40, 63));
-			break;
-	}
-
-	window.draw(bg03);
 }
 
 void Level01_State::drawBackground(sf::RenderWindow &window)

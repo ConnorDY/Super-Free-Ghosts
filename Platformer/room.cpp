@@ -9,6 +9,9 @@ Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const setti
 {
 	setView(sf::View(sf::Vector2f(VIEW_WIDTH / 2.0, VIEW_HEIGHT / 2.0), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT)));
 	dirtSprite.setTexture(tm.getRef("tiles"));
+	bg02.setTexture(tm.getRef("bg02"));
+	bg03.setTexture(tm.getRef("bg03"));
+	under01.setTexture(tm.getRef("under01"));
 }
 
 Room::~Room()
@@ -215,6 +218,50 @@ void Room::draw(sf::RenderWindow &window)
 	drawBackground(window);
 	drawSprites(window);
 	drawForeground(window);
+}
+
+void Room::drawTree(int x, int y, sf::RenderWindow &window)
+{
+	bg02.setPosition(sf::Vector2f((float)x, (float)y));
+	window.draw(bg02);
+}
+
+void Room::drawDecor(int x, int y, int type, sf::RenderWindow &window)
+{
+	bg03.setPosition((float)x, (float)y);
+
+	switch (type)
+	{
+		default:
+			break;
+
+			// Skull and Casket #1
+		case 0:
+			bg03.setTextureRect(sf::IntRect(96, 0, 48, 63));
+			break;
+
+			// Skull and Casket #2
+		case 1:
+			bg03.setTextureRect(sf::IntRect(0, 0, 96, 63));
+			break;
+
+			// Casket on Skulls
+		case 2:
+			bg03.setTextureRect(sf::IntRect(144, 0, 56, 63));
+			break;
+
+			// Caskets and Banner
+		case 3:
+			bg03.setTextureRect(sf::IntRect(200, 0, 96, 63));
+			break;
+
+			// Banner
+		case 4:
+			bg03.setTextureRect(sf::IntRect(296, 0, 40, 63));
+			break;
+	}
+
+	window.draw(bg03);
 }
 
 void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandler&, const settings_t &settings)

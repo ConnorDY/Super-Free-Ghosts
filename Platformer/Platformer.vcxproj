@@ -79,6 +79,7 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="input_handler.cpp" />
     <ClCompile Include="level01_state.cpp" />
+    <ClCompile Include="level_editor_state.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu_state.cpp" />
     <ClCompile Include="obelisk.cpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="input_handler.h" />
     <ClInclude Include="level01_state.h" />
+    <ClInclude Include="level_editor_state.h" />
     <ClInclude Include="menu_state.h" />
     <ClInclude Include="obelisk.h" />
     <ClInclude Include="object.h" />

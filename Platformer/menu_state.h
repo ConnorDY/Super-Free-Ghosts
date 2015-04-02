@@ -7,6 +7,9 @@
 #include "globals.h"
 #include "settings.h"
 #include "state.h"
+#include "level01_state.h"
+#include "options_state.h"
+#include "level_editor_state.h"
 
 class Menu_State : public State
 {
