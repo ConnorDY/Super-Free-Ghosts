@@ -214,7 +214,7 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, SoundManager &s
 		throwTimer.restart();
 
 		if (jumps == 0) throwTime = 0.14f;
-		else if (jumps == 1 || flipped) throwTime = 0.13f;
+		else if (jumps == 1 || armour == 0 || flipped) throwTime = 0.13f;
 		else
 		{
 			throwTime = 0.44f;
