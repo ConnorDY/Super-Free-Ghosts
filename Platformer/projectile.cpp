@@ -16,6 +16,8 @@ Projectile::Projectile(float x, float y, int dir, TextureManager &textureManager
 	weapons.push_back(sf::IntRect(26, 34, 30, 7));
 
 	sprite.setTextureRect(weapons[0]);
+
+	setDepth(-3);
 }
 
 Projectile::~Projectile()

@@ -16,7 +16,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  animation("still"), texture("player1"),
 	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(1),
-	  jumped(false), midJump(false), midThrow(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true),
+	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true),
 	  textureManager(tm)
 {
 	// Sprite
@@ -30,8 +30,9 @@ Player::Player(TextureManager &tm, float x, float y)
 	animations["jumpu"].emplace_back(0, 200, 50, 50);
 	animations["jumpu2"].emplace_back(50, 200, 50, 50);
 
-	animations["jumps"].emplace_back(50, 250, 50, 50);
-	animations["jumps2"].emplace_back(0, 250, 50, 50);
+	animations["jumps"].emplace_back(0, 250, 50, 50);
+	animations["jumps2"].emplace_back(50, 250, 50, 50);
+	animations["jumps3"].emplace_back(100, 250, 50, 50);
 
 	animations["jumpi"].emplace_back(0, 300, 50, 50);
 	
@@ -58,6 +59,10 @@ Player::Player(TextureManager &tm, float x, float y)
 	animations["throwc"].emplace_back(100, 150, 50, 50);
 
 	animations["hit"].emplace_back(6, 156, 36, 32);
+
+	animations["roll"].emplace_back(150, 250, 50, 50);
+	animations["roll"].emplace_back(200, 250, 50, 50);
+	animations["roll"].emplace_back(250, 250, 50, 50);
 
 	animations["die"].push_back(animations.at("hit")[0]);
 	animations["die"].emplace_back(46, 156, 36, 32);
@@ -99,7 +104,7 @@ void Player::damage(int otherX)
 			break;
 
 		case 0:
-			changeTexture(textureManager, "arthur0");
+			changeTexture(textureManager, "player0");
 			break;
 	}
 
@@ -158,6 +163,8 @@ void Player::draw(sf::RenderWindow &window)
 		sign_scalex = -1;
 		adjx2 = 47.0f;
 	}
+
+	if (rolling) adjy += 7;
 
 	sprite.setPosition(x + adjx + adjx2, y + adjy);
 
@@ -243,7 +250,16 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	auto& soundManager = room.getSoundManager();
 
 	// Gravity
-	if (placeFree(x, y + 1, room)) dy += gravity * (float)mstime;
+	if (placeFree(x, y + 1, room))
+	{
+		dy += gravity * (float)mstime;
+
+		if (!rolling && armour == 0 && jumps == 2 && dx != 0 && dy > 0 && placeFree(x, y + 1, room) && !placeFree(x, y + 6, room))
+		{
+			rolling = true;
+			rollTimer.restart();
+		}
+	}
 	else if (dy > 0.0f)
 	{
 		dy = 0;
@@ -317,10 +333,11 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	// Move out of heightmap if stuck within it
 	while (room.heightmapIntersects(sf::FloatRect(x, y, width, height))) y -= .5;
 
-	// Jump, Throw, and Invicibility Timers
-	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= 0.2f) midJump = false;
+	// Jump, Throw, Roll, and Invicibility Timers
+	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= .2) midJump = false;
 	else if (midThrow && throwTimer.getElapsedTime().asSeconds() >= throwTime) midThrow = false;
-	if (invincible && invincibleTimer.getElapsedTime().asSeconds() >= 2.0f) invincible = false;
+	if (rolling && rollTimer.getElapsedTime().asSeconds() >= .22) rolling = false;
+	if (invincible && invincibleTimer.getElapsedTime().asSeconds() >= 2.) invincible = false;
 
 	// Invincibility
 	if (invincible && flashTimer.getElapsedTime().asMilliseconds() >= 50)
@@ -333,6 +350,7 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	// Animation
 	if (dead) setAnimation("die");
 	else if (hit) setAnimation("hit");
+	else if (rolling) setAnimation("roll");
 	else if (crouching)
 	{
 		if (midThrow) setAnimation("throwc");
@@ -353,7 +371,8 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 		if (jumped)
 		{
 			if (jumps == 1) setAnimation("jumps");
-			else setAnimation("jumps2");
+			else if (armour > 0) setAnimation("jumps2");
+			else setAnimation("jumps3");
 		}
 		else setAnimation("run");
 	}
