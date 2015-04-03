@@ -52,6 +52,21 @@ void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 	window.draw(shapeGrid);
 }
 
+void Level_Editor_State::updateView(sf::RenderWindow &window)
+{
+	sf::View tempView = getView();
+	sf::Vector2f newView(tempView.getCenter());
+	float shift = (float)deltaTime.asMilliseconds() / 10.0f;
+
+	if (cursor.x < 20) newView.x -= shift;
+	else if (cursor.x > VIEW_WIDTH - 20) newView.x += shift;
+	if (newView.x < VIEW_WIDTH / 2) newView.x = VIEW_WIDTH / 2;
+
+	tempView.setCenter(newView);
+	setView(tempView);
+	window.setView(getView());
+}
+
 void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
 {
 	restartClock();
@@ -88,10 +103,10 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 		}
 		else if (clickedL)
 		{
-			if (point.y == gridCursor.y) fillHeightMap(point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, abs(VIEW_HEIGHT - (point.y * GRID_SCALE)));
+			if (point.y == gridCursor.y) fillHeightMap((size_t)getViewX() + point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, abs(VIEW_HEIGHT - (point.y * GRID_SCALE)));
 			else
 			{
-				createSlope(point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, abs(VIEW_HEIGHT - (point.y * GRID_SCALE)), abs(VIEW_HEIGHT - (gridCursor.y * GRID_SCALE)));
+				createSlope((size_t)getViewX() + point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, abs(VIEW_HEIGHT - (point.y * GRID_SCALE)), abs(VIEW_HEIGHT - (gridCursor.y * GRID_SCALE)));
 			}
 
 			clickedL = false;
@@ -108,7 +123,7 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 		}
 		else if (clickedR)
 		{
-			fillHeightMap(point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, 0);
+			fillHeightMap((size_t)getViewX() + point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, 0);
 			clickedR = false;
 		}
 	}

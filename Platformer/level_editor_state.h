@@ -28,6 +28,7 @@ class Level_Editor_State : public Room
 		// Actions
 		void start(TextureManager &textureManager, const settings_t &settings);
 		virtual void drawForeground(sf::RenderWindow &window);
+		virtual void updateView(sf::RenderWindow &window);
 		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings);
 };
 

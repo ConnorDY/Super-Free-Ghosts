@@ -37,7 +37,7 @@ class Room : public State {
 		virtual void start(TextureManager &textureManager, const settings_t &settings) = 0;
 		virtual void end();
 		void reset(TextureManager &textureManager, const settings_t &settings);
-		void updateView(sf::RenderWindow &window);
+		virtual void updateView(sf::RenderWindow &window);
 		virtual void drawBackground(sf::RenderWindow &window);
 		virtual void drawSprites(sf::RenderWindow &window);
 		virtual void drawForeground(sf::RenderWindow &window);
