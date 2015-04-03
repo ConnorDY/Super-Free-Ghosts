@@ -78,7 +78,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	animations["die"].emplace_back(100, 50, 50, 50);
 
 	// Depth
-	setDepth(-2);
+	setDepth(-3);
 }
 
 
@@ -107,6 +107,7 @@ void Player::damage(int otherX)
 	{
 		default:
 			changeTexture(textureManager, "player0");
+			setDepth(-1);
 			dead = true;
 			break;
 
@@ -172,7 +173,6 @@ void Player::draw(sf::RenderWindow &window)
 	}
 
 	if (rolling) adjy += 7;
-	else if (dead) adjy++;
 
 	sprite.setPosition(x + adjx + adjx2, y + adjy);
 
@@ -418,7 +418,7 @@ void Player::updateAnimation(sf::Time deltaTime)
 		float speed = 60.0f / 5.2f;
 
 		frame += deltaTime.asSeconds() * speed;
-		if (animation == "die" && frame > frames - 1) frame = frames - 1;
+		if (animation == "die" && frame > (float)(frames - 1)) frame = (float)(frames - 1);
 		else frame = fmodf(frame, (float)frames); // Loop animation if it plays past "frames"
 	}
 

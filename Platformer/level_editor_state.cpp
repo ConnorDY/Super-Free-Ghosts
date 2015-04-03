@@ -38,7 +38,7 @@ void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 		for (unsigned int j = 0; j <= ceil(VIEW_HEIGHT / GRID_SCALE); j++)
 		{
 			shapeGrid.setOutlineColor(sf::Color(255, 255, 255, 50));
-			shapeGrid.setPosition(sf::Vector2f(i * GRID_SCALE, j * GRID_SCALE));
+			shapeGrid.setPosition(sf::Vector2f((float)i * GRID_SCALE, (float)j * GRID_SCALE));
 			window.draw(shapeGrid);
 		}
 	}
@@ -48,7 +48,7 @@ void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 
 	// Highlighted Grid Part
 	shapeGrid.setOutlineColor(sf::Color(0, 216, 216, 100));
-	shapeGrid.setPosition(sf::Vector2f(gridCursor.x * GRID_SCALE, gridCursor.y * GRID_SCALE));
+	shapeGrid.setPosition(sf::Vector2f((float)gridCursor.x * GRID_SCALE, (float)gridCursor.y * GRID_SCALE));
 	window.draw(shapeGrid);
 }
 
@@ -116,8 +116,8 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 
 	// Get mouse position
 	sf::Vector2i m = sf::Mouse::getPosition(window);
-	cursor = sf::Vector2i(floor(m.x / (float)settings.window_scale), floor(m.y / (float)settings.window_scale));
-	gridCursor = sf::Vector2i(floor(cursor.x / GRID_SCALE), floor(cursor.y / GRID_SCALE));
+	cursor = sf::Vector2i((int)floor(m.x / (float)settings.window_scale), (int)floor(m.y / (float)settings.window_scale));
+	gridCursor = sf::Vector2i((int)floor(cursor.x / GRID_SCALE), (int)floor(cursor.y / GRID_SCALE));
 
 	Room::update(window, textureManager, soundManager, inputHandler, settings);
 }

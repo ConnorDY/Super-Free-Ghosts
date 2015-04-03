@@ -17,7 +17,7 @@ Projectile::Projectile(float x, float y, int dir, TextureManager &textureManager
 
 	sprite.setTextureRect(weapons[0]);
 
-	setDepth(-3);
+	setDepth(-4);
 }
 
 Projectile::~Projectile()

@@ -37,7 +37,7 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	animations["walk"].emplace_back(112, 50, 28, 40);
 
 	// Depth
-	setDepth(-1);
+	setDepth(-2);
 }
 
 
