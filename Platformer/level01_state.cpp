@@ -135,7 +135,11 @@ void Level01_State::drawForeground(sf::RenderWindow &window)
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
 {
 	/* Restart Level if Player is Outside of the Room */
-	if (player->getRect().top > VIEW_HEIGHT) reset(textureManager, settings);
+	if (player->getRect().top > VIEW_HEIGHT)
+	{
+		reset(textureManager, settings);
+		return;
+	}
 
 	/* Restart level if the player dies */
 	if (!restart && !player->isAlive())
@@ -143,7 +147,12 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 		restartTimer.restart();
 		restart = true;
 	}
-	else if (restart && restartTimer.getElapsedTime().asSeconds() >= 5) reset(textureManager, settings);
+	else if (restart && restartTimer.getElapsedTime().asSeconds() >= 5)
+	{
+		restart = false;
+		reset(textureManager, settings);
+		return;
+	}
 
 	sf::Event event;
 
