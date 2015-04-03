@@ -65,6 +65,34 @@ void Level_Editor_State::updateView(sf::RenderWindow &window)
 	window.setView(getView());
 }
 
+static constexpr double gridYToRealY(double gridY) { return VIEW_HEIGHT - gridY * GRID_SCALE; }
+static constexpr double gridXToRealX(double gridX) { return gridX * GRID_SCALE; }
+
+class LineEndpoints {
+		sf::Vector2i leftpoint, rightpoint;
+		State const *state;
+	public:
+		LineEndpoints(State const *state, sf::Vector2i leftpoint, sf::Vector2i rightpoint)
+			: leftpoint(leftpoint), rightpoint(rightpoint), state(state)
+		{}
+		double getLeft() { return (size_t)state->getViewX() + gridXToRealX(leftpoint.x); }
+		double getWidth() { return (rightpoint.x - leftpoint.x + 1) * GRID_SCALE; }
+		double getLeftY() { return gridYToRealY(leftpoint.y); }
+		double getRightY() { return gridYToRealY(rightpoint.y); }
+};
+
+static LineEndpoints getLineFromPoints(Level_Editor_State const *state, sf::Vector2i const &point1, sf::Vector2i const &point2) {
+	sf::Vector2i leftpoint, rightpoint;
+	if (point1.x > point2.x)
+		leftpoint = point2, rightpoint = point1;
+	else
+		leftpoint = point1, rightpoint = point2;
+
+	if (leftpoint.x < 0) leftpoint.x = 0;
+	if (rightpoint.x < 0) rightpoint.x = 0;
+	return LineEndpoints(state, leftpoint, rightpoint);
+}
+
 void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
 {
 	// Get Input
@@ -99,22 +127,10 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 		}
 		else if (clickedL)
 		{
-			if (point.y == gridCursor.y) fillHeightMap((size_t)getViewX() + point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, abs(VIEW_HEIGHT - (point.y * GRID_SCALE)));
-			else
-			{
-				sf::Vector2i leftpoint, rightpoint;
-				if (point.x > gridCursor.x)
-					leftpoint = gridCursor, rightpoint = point;
-				else
-					leftpoint = point, rightpoint = gridCursor;
-
-				if (leftpoint.x < 0) leftpoint.x = 0;
-				if (rightpoint.x < 0) rightpoint.x = 0;
-
-				createSlope((size_t)getViewX() + leftpoint.x * GRID_SCALE, (rightpoint.x + 1 - leftpoint.x) * GRID_SCALE, abs(VIEW_HEIGHT - (leftpoint.y * GRID_SCALE)), abs(VIEW_HEIGHT - (rightpoint.y * GRID_SCALE)));
-			}
-
 			clickedL = false;
+
+			auto line = getLineFromPoints(this, point, gridCursor);
+			createSlope(line.getLeft(), line.getWidth(), line.getLeftY(), line.getRightY());
 		}
 
 		/* Right Clicking */
@@ -128,7 +144,8 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 		}
 		else if (clickedR)
 		{
-			fillHeightMap((size_t)getViewX() + point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, 0);
+			auto line = getLineFromPoints(this, point, gridCursor);
+			fillHeightMap(line.getLeft(), line.getWidth(), 0);
 			clickedR = false;
 		}
 	}
