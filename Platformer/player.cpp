@@ -13,7 +13,7 @@ Player::Player(TextureManager &tm, float x, float y)
 			0.2f            // Fall speed
 	  ),
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
-	  animation("still"), texture("player1"),
+	  animation("still"), texture("player2"),
 	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(1),
 	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true),
@@ -58,18 +58,24 @@ Player::Player(TextureManager &tm, float x, float y)
 	animations["throwc"].emplace_back(50, 150, 50, 50);
 	animations["throwc"].emplace_back(100, 150, 50, 50);
 
-	animations["hit"].emplace_back(6, 156, 36, 32);
+	animations["hit"].emplace_back(250, 0, 50, 50);
 
 	animations["roll"].emplace_back(150, 250, 50, 50);
 	animations["roll"].emplace_back(200, 250, 50, 50);
 	animations["roll"].emplace_back(250, 250, 50, 50);
 
-	animations["die"].push_back(animations.at("hit")[0]);
-	animations["die"].emplace_back(46, 156, 36, 32);
-	animations["die"].emplace_back(87, 156, 36, 32);
-	animations["die"].emplace_back(129, 156, 42, 32);
-	animations["die"].emplace_back(36, 188, 42, 24);
-	animations["die"].emplace_back(84, 188, 42, 24);
+	animations["die"].emplace_back(0, 0, 50, 50);
+	animations["die"].push_back(animations.at("die")[0]);
+	animations["die"].push_back(animations.at("die")[0]);
+	animations["die"].push_back(animations.at("die")[0]);
+	animations["die"].emplace_back(50, 0, 50, 50);
+	animations["die"].emplace_back(100, 0, 50, 50);
+	animations["die"].emplace_back(150, 0, 50, 50);
+	animations["die"].emplace_back(200, 0, 50, 50);
+	animations["die"].emplace_back(250, 0, 50, 50);
+	animations["die"].emplace_back(0, 50, 50, 50);
+	animations["die"].emplace_back(50, 50, 50, 50);
+	animations["die"].emplace_back(100, 50, 50, 50);
 
 	// Depth
 	setDepth(-2);
@@ -100,11 +106,12 @@ void Player::damage(int otherX)
 	switch (armour)
 	{
 		default:
+			changeTexture(textureManager, "player0");
 			dead = true;
 			break;
 
 		case 0:
-			changeTexture(textureManager, "player0");
+			changeTexture(textureManager, "player1");
 			break;
 	}
 
@@ -165,6 +172,7 @@ void Player::draw(sf::RenderWindow &window)
 	}
 
 	if (rolling) adjy += 7;
+	else if (dead) adjy++;
 
 	sprite.setPosition(x + adjx + adjx2, y + adjy);
 
@@ -410,7 +418,7 @@ void Player::updateAnimation(sf::Time deltaTime)
 		float speed = 60.0f / 5.2f;
 
 		frame += deltaTime.asSeconds() * speed;
-		if (animation == "die" && frame > 5) frame = 5;
+		if (animation == "die" && frame > frames - 1) frame = frames - 1;
 		else frame = fmodf(frame, (float)frames); // Loop animation if it plays past "frames"
 	}
 
