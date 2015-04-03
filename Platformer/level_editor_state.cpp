@@ -9,7 +9,6 @@ Level_Editor_State::Level_Editor_State(StateManager &sM, SoundManager &som, Text
 	cursor = sf::Vector2i(0, 0);
 	point = cursor;
 	clickedL = false;
-	clickedR = false;
 
 	shapeCursor.setSize(sf::Vector2f(2, 2));
 	shapeCursor.setOrigin(sf::Vector2f(1, 1));
@@ -109,45 +108,29 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 			case sf::Event::Closed:
 				window.close();
 				break;
+
+			case sf::Event::MouseButtonPressed:
+				point = gridCursor;
+				if (event.mouseButton.button == sf::Mouse::Left) clickedL = true;
+				break;
+
+			case sf::Event::MouseButtonReleased:
+				auto line = getLineFromPoints(point, gridCursor);
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+					clickedL = false;
+					createSlope(line.getLeft(), line.getWidth(), line.getLeftY(), line.getRightY());
+				}
+				else if (event.mouseButton.button ==  sf::Mouse::Right)
+				{
+					fillHeightMap(line.getLeft(), line.getWidth(), 0);
+				}
 		}
 
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
 			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager, settings)));
 			return;
-		}
-
-		/* Left Clicking */
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			if (!clickedL)
-			{
-				point = gridCursor;
-				clickedL = true;
-			}
-		}
-		else if (clickedL)
-		{
-			clickedL = false;
-
-			auto line = getLineFromPoints(point, gridCursor);
-			createSlope(line.getLeft(), line.getWidth(), line.getLeftY(), line.getRightY());
-		}
-
-		/* Right Clicking */
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-		{
-			if (!clickedR)
-			{
-				point = gridCursor;
-				clickedR = true;
-			}
-		}
-		else if (clickedR)
-		{
-			auto line = getLineFromPoints(point, gridCursor);
-			fillHeightMap(line.getLeft(), line.getWidth(), 0);
-			clickedR = false;
 		}
 	}
 

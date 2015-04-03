@@ -20,7 +20,7 @@ class Level_Editor_State : public Room
 		sf::Clock restartTimer;
 		sf::Vector2i cursor, gridCursor, point;
 		sf::RectangleShape shapeCursor, shapeGrid;
-		bool clickedL, clickedR;	
+		bool clickedL;
 	public:
 		Level_Editor_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings);
 		virtual ~Level_Editor_State();
