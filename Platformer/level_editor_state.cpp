@@ -36,12 +36,12 @@ void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 {
 	auto gridXOffset = floor(getViewX() / GRID_SCALE) * GRID_SCALE;
 	// Grid
-	for (unsigned int i = 0; i <= ceil(VIEW_WIDTH / GRID_SCALE); i++)
+	for (unsigned int j = 0; j <= ceil(VIEW_HEIGHT / GRID_SCALE); j++)
 	{
-		for (unsigned int j = 0; j <= ceil(VIEW_HEIGHT / GRID_SCALE); j++)
+		if (clickedL && j == point.y) shapeGrid.setOutlineColor(sf::Color(255, 216, 0, 150));
+		else shapeGrid.setOutlineColor(sf::Color(255, 255, 255, 50));
+		for (unsigned int i = 0; i <= ceil(VIEW_WIDTH / GRID_SCALE); i++)
 		{
-			if (clickedL && j == point.y) shapeGrid.setOutlineColor(sf::Color(255, 216, 0, 150));
-			else shapeGrid.setOutlineColor(sf::Color(255, 255, 255, 50));
 			shapeGrid.setPosition(sf::Vector2f(gridXToWindowX(i) + gridXOffset, gridYToWindowY(j)));
 			window.draw(shapeGrid);
 		}
