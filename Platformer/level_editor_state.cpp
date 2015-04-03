@@ -8,7 +8,8 @@ Level_Editor_State::Level_Editor_State(StateManager &sM, SoundManager &som, Text
 {
 	cursor = sf::Vector2i(0, 0);
 	point = cursor;
-	clicked = false;
+	clickedL = false;
+	clickedR = false;
 
 	shapeCursor.setSize(sf::Vector2f(2, 2));
 	shapeCursor.setOrigin(sf::Vector2f(1, 1));
@@ -76,18 +77,40 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 			return;
 		}
 
+		/* Left Clicking */
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			if (!clicked)
+			if (!clickedL)
 			{
 				point = gridCursor;
-				clicked = true;
+				clickedL = true;
 			}
 		}
-		else if (clicked)
+		else if (clickedL)
 		{
-			fillHeightMap(point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, abs(VIEW_HEIGHT - (point.y * GRID_SCALE)));
-			clicked = false;
+			if (point.y == gridCursor.y) fillHeightMap(point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, abs(VIEW_HEIGHT - (point.y * GRID_SCALE)));
+			else
+			{
+				createSlope(point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, abs(VIEW_HEIGHT - (point.y * GRID_SCALE)), abs(VIEW_HEIGHT - (gridCursor.y * GRID_SCALE)));
+			}
+
+			clickedL = false;
+		}
+
+		/* Right Clicking */
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		{
+			if (!clickedR)
+			{
+				point = gridCursor;
+				clickedR = true;
+			}
+		}
+		else if (clickedR)
+		{
+			if (point.y == gridCursor.y) fillHeightMap(point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, 0);
+
+			clickedR = false;
 		}
 	}
 
