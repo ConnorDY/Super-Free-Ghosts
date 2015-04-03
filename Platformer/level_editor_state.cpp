@@ -108,8 +108,7 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 		}
 		else if (clickedR)
 		{
-			if (point.y == gridCursor.y) fillHeightMap(point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, 0);
-
+			fillHeightMap(point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, 0);
 			clickedR = false;
 		}
 	}
