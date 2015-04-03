@@ -57,16 +57,16 @@ void Level_Editor_State::updateView(sf::RenderWindow &window)
 	sf::Vector2f viewRect(getView().getCenter());
 	double shift = deltaTime.asMicroseconds() / 10000.;
 
-	if (cursor.x < 20) viewRect.x -= shift;
-	else if (cursor.x > VIEW_WIDTH - 20) viewRect.x += shift;
+	if (cursor.x - getViewX() < 20) viewRect.x -= shift;
+	else if (cursor.x - getViewX() > VIEW_WIDTH - 20) viewRect.x += shift;
 	viewRect.x = std::max<double>(viewRect.x, VIEW_WIDTH / 2);
 
 	getView().setCenter(viewRect);
 	window.setView(getView());
 }
 
-static constexpr double gridYToRealY(double gridY) { return VIEW_HEIGHT - gridY * GRID_SCALE; }
-static constexpr double gridXToRealX(double gridX) { return gridX * GRID_SCALE; }
+static double gridYToRealY(double gridY) { return VIEW_HEIGHT - gridY * GRID_SCALE; }
+static double gridXToRealX(double gridX) { return gridX * GRID_SCALE; }
 
 class LineEndpoints {
 		sf::Vector2i leftpoint, rightpoint;
@@ -75,7 +75,7 @@ class LineEndpoints {
 		LineEndpoints(State const *state, sf::Vector2i leftpoint, sf::Vector2i rightpoint)
 			: leftpoint(leftpoint), rightpoint(rightpoint), state(state)
 		{}
-		double getLeft() { return (size_t)state->getViewX() + gridXToRealX(leftpoint.x); }
+		double getLeft() { return gridXToRealX(leftpoint.x); }
 		double getWidth() { return (rightpoint.x - leftpoint.x + 1) * GRID_SCALE; }
 		double getLeftY() { return gridYToRealY(leftpoint.y); }
 		double getRightY() { return gridYToRealY(rightpoint.y); }
@@ -152,7 +152,7 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 
 	// Get mouse position
 	sf::Vector2i m = sf::Mouse::getPosition(window);
-	cursor = sf::Vector2i((int)floor(m.x / (float)settings.window_scale), (int)floor(m.y / (float)settings.window_scale));
+	cursor = sf::Vector2i((int)floor(m.x / (float)settings.window_scale) + getViewX(), (int)floor(m.y / (float)settings.window_scale));
 	gridCursor = sf::Vector2i((int)floor(cursor.x / GRID_SCALE), (int)floor(cursor.y / GRID_SCALE));
 
 	Room::update(window, textureManager, soundManager, inputHandler, settings);
