@@ -106,7 +106,16 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 			if (point.y == gridCursor.y) fillHeightMap((size_t)getViewX() + point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, abs(VIEW_HEIGHT - (point.y * GRID_SCALE)));
 			else
 			{
-				createSlope((size_t)getViewX() + point.x * GRID_SCALE, (gridCursor.x + 1 - point.x) * GRID_SCALE, abs(VIEW_HEIGHT - (point.y * GRID_SCALE)), abs(VIEW_HEIGHT - (gridCursor.y * GRID_SCALE)));
+				sf::Vector2i leftpoint, rightpoint;
+				if (point.x > gridCursor.x)
+					leftpoint = gridCursor, rightpoint = point;
+				else
+					leftpoint = point, rightpoint = gridCursor;
+
+				if (leftpoint.x < 0) leftpoint.x = 0;
+				if (rightpoint.x < 0) rightpoint.x = 0;
+
+				createSlope((size_t)getViewX() + leftpoint.x * GRID_SCALE, (rightpoint.x + 1 - leftpoint.x) * GRID_SCALE, abs(VIEW_HEIGHT - (leftpoint.y * GRID_SCALE)), abs(VIEW_HEIGHT - (rightpoint.y * GRID_SCALE)));
 			}
 
 			clickedL = false;

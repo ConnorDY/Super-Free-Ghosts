@@ -1,4 +1,5 @@
 #include "room.h"
+#include <cassert>
 #include <algorithm>
 
 #define M_PI 3.14159265358979323846
@@ -42,6 +43,7 @@ void Room::fillHeightMap(size_t xleft, size_t width, int height)
 
 void Room::createSlope(size_t xleft, size_t width, int heightS, int heightE)
 {
+	assert(width > 0 && width < 0x1000000);
 	ensureHeightmapWidth(xleft + width);
 	double sin_phase = 0, height = abs(heightE - heightS), adjust = 0;
 
