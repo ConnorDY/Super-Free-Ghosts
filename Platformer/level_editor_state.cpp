@@ -30,15 +30,19 @@ void Level_Editor_State::start(TextureManager &textureManager, const settings_t 
 
 }
 
+static double gridYToWindowY(double gridY) { return gridY * GRID_SCALE; }
+static double gridXToWindowX(double gridX) { return gridX * GRID_SCALE; }
+
 void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 {
+	auto gridXOffset = floor(getViewX() / GRID_SCALE) * GRID_SCALE;
 	// Grid
+	shapeGrid.setOutlineColor(sf::Color(255, 255, 255, 50));
 	for (unsigned int i = 0; i <= ceil(VIEW_WIDTH / GRID_SCALE); i++)
 	{
 		for (unsigned int j = 0; j <= ceil(VIEW_HEIGHT / GRID_SCALE); j++)
 		{
-			shapeGrid.setOutlineColor(sf::Color(255, 255, 255, 50));
-			shapeGrid.setPosition(sf::Vector2f((float)i * GRID_SCALE, (float)j * GRID_SCALE));
+			shapeGrid.setPosition(sf::Vector2f(gridXToWindowX(i) + gridXOffset, gridYToWindowY(j)));
 			window.draw(shapeGrid);
 		}
 	}
@@ -48,7 +52,7 @@ void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 
 	// Highlighted Grid Part
 	shapeGrid.setOutlineColor(sf::Color(0, 216, 216, 100));
-	shapeGrid.setPosition(sf::Vector2f((float)gridCursor.x * GRID_SCALE, (float)gridCursor.y * GRID_SCALE));
+	shapeGrid.setPosition(sf::Vector2f(gridXToWindowX(gridCursor.x), gridYToWindowY(gridCursor.y)));
 	window.draw(shapeGrid);
 }
 
@@ -65,23 +69,19 @@ void Level_Editor_State::updateView(sf::RenderWindow &window)
 	window.setView(getView());
 }
 
-static double gridYToRealY(double gridY) { return VIEW_HEIGHT - gridY * GRID_SCALE; }
-static double gridXToRealX(double gridX) { return gridX * GRID_SCALE; }
-
 class LineEndpoints {
 		sf::Vector2i leftpoint, rightpoint;
-		State const *state;
 	public:
-		LineEndpoints(State const *state, sf::Vector2i leftpoint, sf::Vector2i rightpoint)
-			: leftpoint(leftpoint), rightpoint(rightpoint), state(state)
+		LineEndpoints(sf::Vector2i leftpoint, sf::Vector2i rightpoint)
+			: leftpoint(leftpoint), rightpoint(rightpoint)
 		{}
-		double getLeft() { return gridXToRealX(leftpoint.x); }
+		double getLeft() { return gridXToWindowX(leftpoint.x); }
 		double getWidth() { return (rightpoint.x - leftpoint.x + 1) * GRID_SCALE; }
-		double getLeftY() { return gridYToRealY(leftpoint.y); }
-		double getRightY() { return gridYToRealY(rightpoint.y); }
+		double getLeftY() { return VIEW_HEIGHT - gridYToWindowY(leftpoint.y); }
+		double getRightY() { return VIEW_HEIGHT - gridYToWindowY(rightpoint.y); }
 };
 
-static LineEndpoints getLineFromPoints(Level_Editor_State const *state, sf::Vector2i const &point1, sf::Vector2i const &point2) {
+static LineEndpoints getLineFromPoints(sf::Vector2i const &point1, sf::Vector2i const &point2) {
 	sf::Vector2i leftpoint, rightpoint;
 	if (point1.x > point2.x)
 		leftpoint = point2, rightpoint = point1;
@@ -90,7 +90,7 @@ static LineEndpoints getLineFromPoints(Level_Editor_State const *state, sf::Vect
 
 	if (leftpoint.x < 0) leftpoint.x = 0;
 	if (rightpoint.x < 0) rightpoint.x = 0;
-	return LineEndpoints(state, leftpoint, rightpoint);
+	return LineEndpoints( leftpoint, rightpoint);
 }
 
 void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
@@ -129,7 +129,7 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 		{
 			clickedL = false;
 
-			auto line = getLineFromPoints(this, point, gridCursor);
+			auto line = getLineFromPoints(point, gridCursor);
 			createSlope(line.getLeft(), line.getWidth(), line.getLeftY(), line.getRightY());
 		}
 
@@ -144,7 +144,7 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 		}
 		else if (clickedR)
 		{
-			auto line = getLineFromPoints(this, point, gridCursor);
+			auto line = getLineFromPoints(point, gridCursor);
 			fillHeightMap(line.getLeft(), line.getWidth(), 0);
 			clickedR = false;
 		}
@@ -152,7 +152,7 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 
 	// Get mouse position
 	sf::Vector2i m = sf::Mouse::getPosition(window);
-	cursor = sf::Vector2i((int)floor(m.x / (float)settings.window_scale) + getViewX(), (int)floor(m.y / (float)settings.window_scale));
+	cursor = sf::Vector2i((int)floor(m.x / (float)settings.window_scale) + getViewX(), (int)floor(m.y / (float)settings.window_scale) + getViewY());
 	gridCursor = sf::Vector2i((int)floor(cursor.x / GRID_SCALE), (int)floor(cursor.y / GRID_SCALE));
 
 	Room::update(window, textureManager, soundManager, inputHandler, settings);
