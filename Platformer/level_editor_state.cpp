@@ -54,23 +54,19 @@ void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 
 void Level_Editor_State::updateView(sf::RenderWindow &window)
 {
-	sf::View tempView = getView();
-	sf::Vector2f newView(tempView.getCenter());
-	float shift = (float)deltaTime.asMilliseconds() / 10.0f;
+	sf::Vector2f viewRect(getView().getCenter());
+	double shift = deltaTime.asMicroseconds() / 10000.;
 
-	if (cursor.x < 20) newView.x -= shift;
-	else if (cursor.x > VIEW_WIDTH - 20) newView.x += shift;
-	if (newView.x < VIEW_WIDTH / 2) newView.x = VIEW_WIDTH / 2;
+	if (cursor.x < 20) viewRect.x -= shift;
+	else if (cursor.x > VIEW_WIDTH - 20) viewRect.x += shift;
+	viewRect.x = std::max<double>(viewRect.x, VIEW_WIDTH / 2);
 
-	tempView.setCenter(newView);
-	setView(tempView);
+	getView().setCenter(viewRect);
 	window.setView(getView());
 }
 
 void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
 {
-	restartClock();
-
 	// Get Input
 	sf::Event event;
 
