@@ -12,11 +12,11 @@
 #include "globals.h"
 #include "texture_manager.h"
 #include "sound_manager.h"
-#include "object.h"
+#include "damageable_object.h"
 #include "player.h"
 #include "obelisk.h"
 
-class Zombie : public Object
+class Zombie : public DamageableObject
 {
 	private:
 		sf::Sprite sprite;

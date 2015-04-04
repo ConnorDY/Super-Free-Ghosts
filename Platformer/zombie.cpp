@@ -3,7 +3,7 @@
 #define ZOMBIE_WIDTH  24
 #define ZOMBIE_HEIGHT 40
 Zombie::Zombie(TextureManager &textureManager, float x, float y)
-	: Object(
+	: DamageableObject(
 		x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
 		0.0f, 0.0f,     // dx, dy
 		false,           // solid

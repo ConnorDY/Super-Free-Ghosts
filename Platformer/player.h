@@ -13,10 +13,10 @@
 #include "settings.h"
 #include "texture_manager.h"
 #include "sound_manager.h"
-#include "object.h"
+#include "damageable_object.h"
 #include "projectile.h"
 
-class Player : public Object
+class Player : public DamageableObject
 {
 	private:
 		TextureManager &textureManager;

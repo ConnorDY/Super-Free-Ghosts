@@ -5,7 +5,7 @@
 
 
 Player::Player(TextureManager &tm, float x, float y)
-	: Object(
+	: DamageableObject(
 			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
 			0.0f, 0.0f,     // dx, dy
 			false,           // solid
@@ -79,8 +79,9 @@ Player::Player(TextureManager &tm, float x, float y)
 	animations["die"].emplace_back(50, 50, 50, 50);
 	animations["die"].emplace_back(100, 50, 50, 50);
 
-	// Depth
+	// Depth and Health
 	setDepth(-3);
+	setHealth(2);
 }
 
 

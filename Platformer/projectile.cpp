@@ -62,7 +62,7 @@ void Projectile::update(sf::Time deltaTime, Room const &room, const settings_t &
 
 	if (dynamic_cast<Zombie*>(col) != nullptr)
 	{
-		if (!((Zombie*)col)->getInCasket()) col->kill(room, settings);
+		if (!((Zombie*)col)->getInCasket()) ((Zombie*)col)->damage(room, settings);
 		kill(room, settings);
 	}
 	
