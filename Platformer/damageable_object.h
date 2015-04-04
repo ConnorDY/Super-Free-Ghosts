@@ -6,14 +6,16 @@
 #include "object.h"
 #include "settings.h"
 
+namespace Team {
+	enum Alignment
+	{
+		Player, Enemy, Neutral
+	};
+}
+
 class DamageableObject : public Object
 {
 	public:
-		enum Team
-		{
-			Player, Enemy, Neutral
-		};
-
 		explicit DamageableObject(
 			float x = 0, float y = 0,
 			float width = 0, float height = 0,
@@ -34,7 +36,7 @@ class DamageableObject : public Object
 
 	private:
 		int health;
-		Team team;
+		Team::Alignment team;
 };
 
 #endif
