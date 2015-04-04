@@ -6,7 +6,7 @@
 Level_Editor_State::Level_Editor_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings)
 	: Room(sM, som, textureManager, settings)
 {
-	cursor = sf::Vector2i(0, 0);
+	cursor = sf::Vector2i(-1, -1);
 	point = cursor;
 	clickedL = false;
 
@@ -38,10 +38,16 @@ void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 	// Grid
 	for (unsigned int j = 0; j <= ceil(VIEW_HEIGHT / GRID_SCALE); j++)
 	{
-		if (clickedL && j == point.y) shapeGrid.setOutlineColor(sf::Color(255, 216, 0, 150));
-		else shapeGrid.setOutlineColor(sf::Color(255, 255, 255, 50));
 		for (unsigned int i = 0; i <= ceil(VIEW_WIDTH / GRID_SCALE); i++)
 		{
+			sf::Color col;
+
+			if (i == point.x && j == point.y) col = sf::Color(255, 0, 0, 150);
+			else if (j == gridCursor.y) col = sf::Color(255, 255, 255, 150);
+			else if (j == point.y) col = sf::Color(255, 216, 0, 150);
+			else col = sf::Color(255, 255, 255, 50);
+
+			shapeGrid.setOutlineColor(col);
 			shapeGrid.setPosition(sf::Vector2f(gridXToWindowX(i) + gridXOffset, gridYToWindowY(j)));
 			window.draw(shapeGrid);
 		}
@@ -51,7 +57,7 @@ void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 	Room::drawForeground(window);
 
 	// Highlighted Grid Part
-	shapeGrid.setOutlineColor(sf::Color(0, 216, 216, 100));
+	shapeGrid.setOutlineColor(sf::Color(0, 255, 33, 150));
 	shapeGrid.setPosition(sf::Vector2f(gridXToWindowX(gridCursor.x), gridYToWindowY(gridCursor.y)));
 	window.draw(shapeGrid);
 }
@@ -125,6 +131,9 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 				{
 					fillHeightMap(line.getLeft(), line.getWidth(), 0);
 				}
+
+				point = sf::Vector2i(-1, -1);
+				break;
 		}
 
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
