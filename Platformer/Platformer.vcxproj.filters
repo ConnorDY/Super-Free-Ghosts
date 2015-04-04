@@ -66,6 +66,9 @@
     <ClCompile Include="level_editor_state.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="chest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h">
@@ -120,6 +123,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="level_editor_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="chest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

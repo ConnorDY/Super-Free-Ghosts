@@ -54,25 +54,28 @@ bool Projectile::isOutsideView(Room const &room) const
 
 void Projectile::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
 {
-	Object::update(deltaTime, room, settings);
-
-	// Determine the direction the projectile is moving in
-	float sign_x = 0;
-
-	// TODO: clean up
-	if (dx > 0.0f) sign_x = 1.0f;
-	else if (dx < 0.0f) sign_x = -1.0f;
-
-	// Destroy projectile if it hits a solid object or leaves the room
-	if (!placeFree(x + sign_x, y, room) || isOutsideView(room)) kill(room, settings);
+	// Update X
+	x += dx * (float)deltaTime.asMilliseconds();
 
 	// Destroy projectile if it hits an enemy and destroy the enemy
 	Object* col = nonsolidCollision(x, y, room);
-	if (dynamic_cast<Zombie*>(col) != NULL)
+
+	if (dynamic_cast<Zombie*>(col) != nullptr)
 	{
 		if (!((Zombie*)col)->getInCasket()) col->kill(room, settings);
-		this->kill(room, settings);
+		kill(room, settings);
 	}
+	
+	// Destory projectile if it hits a chest and damage the chest
+	col = solidCollision(x, y, room);
+	if (dynamic_cast<Chest*>(col) != nullptr)
+	{
+		((Chest*)col)->damage(room, settings);
+		kill(room, settings);
+	}
+
+	// Destroy projectile if it hits a solid object or leaves the room
+	if (!placeFree(x, y, room) || isOutsideView(room)) kill(room, settings);
 }
 
 void Projectile::onDeath(Room const &room, const settings_t &settings)

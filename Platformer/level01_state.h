@@ -10,6 +10,7 @@
 #include "player.h"
 #include "projectile.h"
 #include "zombie.h"
+#include "chest.h"
 #include "obelisk.h"
 #include "block.h"
 #include "room.h"

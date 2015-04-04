@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="block.cpp" />
+    <ClCompile Include="chest.cpp" />
     <ClCompile Include="input_handler.cpp" />
     <ClCompile Include="level01_state.cpp" />
     <ClCompile Include="level_editor_state.cpp" />
@@ -96,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
+    <ClInclude Include="chest.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="input_handler.h" />
     <ClInclude Include="level01_state.h" />

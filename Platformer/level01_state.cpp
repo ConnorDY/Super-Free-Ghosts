@@ -85,6 +85,9 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	object = new Obelisk(textureManager, 1500.0f, 280.0f, 60.0f);
 	objects.push_back(object);
 
+	object = new Chest(textureManager, 120.0f, 234.0f);
+	objects.push_back(object);
+
 	// Create player
 	player = new Player(textureManager, 15.0f, 234.0f);
 	objects.push_back(player);
