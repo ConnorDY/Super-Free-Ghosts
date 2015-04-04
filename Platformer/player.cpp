@@ -13,9 +13,9 @@ Player::Player(TextureManager &tm, float x, float y)
 			0.2f            // Fall speed
 	  ),
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
-	  animation("still"), texture("player2"),
+	  animation("still"), texture("player3"),
 	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
-	  jumps(0), armour(1),
+	  jumps(0), armour(2),
 	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true),
 	  textureManager(tm)
 {
@@ -29,6 +29,8 @@ Player::Player(TextureManager &tm, float x, float y)
 
 	animations["jumpu"].emplace_back(0, 200, 50, 50);
 	animations["jumpu2"].emplace_back(50, 200, 50, 50);
+	animations["jumpud"].emplace_back(100, 200, 50, 50);
+	animations["jumpu2d"].emplace_back(150, 200, 50, 50);
 
 	animations["jumps"].emplace_back(0, 250, 50, 50);
 	animations["jumps2"].emplace_back(50, 250, 50, 50);
@@ -101,26 +103,19 @@ void Player::damage(int otherX)
 	if (x > otherX) dir = 1;
 	
 	// Decrease armour
-	armour--;
-
-	switch (armour)
+	if (armour > 0)
 	{
-		default:
-			changeTexture(textureManager, "player0");
-			setDepth(-1);
-			dead = true;
-			break;
+		changeTexture(textureManager, "player1");
+		armour = 0;
 
-		case 0:
-			changeTexture(textureManager, "player1");
-			break;
-	}
-
-	// Give invincibility if not dead
-	if (armour >= 0)
-	{
 		invincible = true;
 		invincibleTimer.restart();
+	}
+	else
+	{
+		changeTexture(textureManager, "player0");
+		setDepth(-1);
+		dead = true;
 	}
 
 	// Knock player back
@@ -388,8 +383,16 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	{
 		if (jumped)
 		{
-			if (jumps == 1) setAnimation("jumpu");
-			else setAnimation("jumpu2");
+			if (jumps == 1)
+			{
+				if (armour == 2 && dy > 0) setAnimation("jumpud");
+				else setAnimation("jumpu");
+			}
+			else
+			{
+				if (armour == 2 && dy > 0) setAnimation("jumpu2d");
+				else setAnimation("jumpu2");
+			}
 		}
 		else setAnimation("still");
 	}
