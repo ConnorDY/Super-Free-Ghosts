@@ -34,7 +34,7 @@ static double gridXToWindowX(double gridX) { return gridX * GRID_SCALE; }
 
 void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 {
-	auto gridXOffset = floor(getViewX() / GRID_SCALE) * GRID_SCALE;
+	auto gridXOffset = gridXToWindowX(floor(getViewX() / GRID_SCALE));
 	// Grid
 	for (unsigned int j = 0; j <= ceil(VIEW_HEIGHT / GRID_SCALE); j++)
 	{
@@ -42,7 +42,7 @@ void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 		{
 			sf::Color col;
 
-			if (i == point.x && j == point.y) col = sf::Color(255, 0, 0, 150);
+			if (i + gridXOffset / GRID_SCALE == point.x && j == point.y) col = sf::Color(255, 0, 0, 150);
 			else if (j == gridCursor.y) col = sf::Color(255, 255, 255, 150);
 			else if (j == point.y) col = sf::Color(255, 216, 0, 150);
 			else col = sf::Color(255, 255, 255, 50);
