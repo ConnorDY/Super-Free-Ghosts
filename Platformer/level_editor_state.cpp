@@ -18,6 +18,10 @@ Level_Editor_State::Level_Editor_State(StateManager &sM, SoundManager &som, Text
 	shapeGrid.setOrigin(sf::Vector2f(-1, -1));
 	shapeGrid.setFillColor(sf::Color(255, 255, 255, 10));
 	shapeGrid.setOutlineThickness(1);
+
+	// Create player
+	player = new Player(textureManager, -50.0f, 500.0f);
+	objects.push_back(player);
 }
 
 Level_Editor_State::~Level_Editor_State()
@@ -104,6 +108,9 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 	// Get Input
 	sf::Event event;
 
+	int moveH = inputHandler.checkInput(InputHandler::Input::Right) - inputHandler.checkInput(InputHandler::Input::Left); // Horizontal Movement
+	bool crouching = inputHandler.checkInput(InputHandler::Input::Down); // Crouching
+
 	while (window.pollEvent(event))
 	{
 		switch (event.type)
@@ -118,6 +125,11 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 			case sf::Event::MouseButtonPressed:
 				point = gridCursor;
 				if (event.mouseButton.button == sf::Mouse::Left) clickedL = true;
+				if (event.mouseButton.button == sf::Mouse::Middle)
+				{
+					player->setX(cursor.x);
+					player->setY(cursor.y);
+				}
 				break;
 
 			case sf::Event::MouseButtonReleased:
@@ -141,7 +153,13 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager, settings)));
 			return;
 		}
+		
+		if (inputHandler.checkInput(InputHandler::Input::Up, event)) player->jump(moveH, soundManager, settings); // Jumping
+		if (inputHandler.checkInput(InputHandler::Input::Action, event)) player->throwWeapon(objects, player->getDir(), soundManager, settings); // Throw Weapon
 	}
+
+	player->move(moveH);
+	player->setCrouching(crouching);
 
 	// Get mouse position
 	sf::Vector2i m = sf::Mouse::getPosition(window);
