@@ -28,7 +28,7 @@ Level_Editor_State::~Level_Editor_State()
 {
 }
 
-void Level_Editor_State::start(TextureManager &textureManager, const settings_t &settings)
+void Level_Editor_State::start(TextureManager&, settings_t const&)
 {
 
 }
@@ -40,9 +40,9 @@ void Level_Editor_State::drawForeground(sf::RenderWindow &window)
 {
 	auto gridXOffset = gridXToWindowX(floor(getViewX() / GRID_SCALE));
 	// Grid
-	for (unsigned int j = 0; j <= ceil(VIEW_HEIGHT / GRID_SCALE); j++)
+	for (int j = 0; j <= ceil(VIEW_HEIGHT / GRID_SCALE); j++)
 	{
-		for (unsigned int i = 0; i <= ceil(VIEW_WIDTH / GRID_SCALE); i++)
+		for (int i = 0; i <= ceil(VIEW_WIDTH / GRID_SCALE); i++)
 		{
 			sf::Color col;
 
@@ -150,7 +150,7 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
-			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager, settings)));
+			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
 			return;
 		}
 		

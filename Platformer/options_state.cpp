@@ -1,7 +1,7 @@
 #include "options_state.h"
 #include "menu_state.h"
 
-Options_State::Options_State(StateManager &sM, TextureManager &textureManager, const settings_t &settings)
+Options_State::Options_State(StateManager &sM, const settings_t &settings)
 	: State(sM)
 {
 	// Load Font
@@ -117,7 +117,7 @@ void Options_State::toggleSound(settings_t &settings)
 	if (currentValue[3] == 0) currentValue[3] = 1; else currentValue[3] = 0;
 }
 
-void Options_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
+void Options_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager&, InputHandler &inputHandler, settings_t &settings)
 {
 	restartClock();
 
@@ -139,7 +139,7 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 		// Escape
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
-			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager, settings)));
+			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
 			return;
 		}
 
@@ -167,7 +167,7 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 				// Back
 				case 4:
-					getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager, settings)));
+					getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
 					break;
 			}
 		}

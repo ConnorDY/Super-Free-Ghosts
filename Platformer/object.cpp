@@ -6,9 +6,9 @@ Object::Object(float x, float y, float width, float height, float dx, float dy, 
 	  width(width), height(height),
 	  gravity(gravity),
 	  maxFallSpeed(maxFallSpeed),
+	  depth(0),
 	  solid(solid),
-	  del(false),
-	  depth(0)
+	  del(false)
 {
 }
 
@@ -68,7 +68,7 @@ Object* Object::nonsolidCollision(float xx, float yy, Room const &room) const
 	else return *collision;
 }
 
-bool Object::canCollideWith(const Object *obj) const
+bool Object::canCollideWith(Object const*) const
 {
 	return true;
 }
@@ -92,7 +92,7 @@ void Object::setDepth(int d)
 
 
 /* Actions */
-void Object::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
+void Object::update(sf::Time deltaTime, Room const &room, const settings_t&)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 
@@ -153,6 +153,6 @@ void Object::kill(Room const &room, const settings_t &settings)
 	del = true;
 }
 
-void Object::onDeath(Room const&, const settings_t &settings)
+void Object::onDeath(Room const&, const settings_t&)
 {
 }

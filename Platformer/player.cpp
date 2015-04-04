@@ -12,12 +12,12 @@ Player::Player(TextureManager &tm, float x, float y)
 			0.0014f / 2.0f,       // Gravity
 			0.2f            // Fall speed
 	  ),
+	  textureManager(tm),
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
 	  animation("still"), texture("player3"),
 	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(2),
-	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true),
-	  textureManager(tm)
+	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef(texture));
@@ -159,14 +159,10 @@ void Player::draw(sf::RenderWindow &window)
 
 	if (DEBUG_MODE) rectangle.setPosition(x, y);
 	
-	int sign_scalex = 1;
 	float adjx = -15.0f, adjx2 = 0.0f, adjy = -15.0f;
 
 	if (sprite.getScale().x < 0.0f)
-	{
-		sign_scalex = -1;
 		adjx2 = 47.0f;
-	}
 
 	if (rolling) adjy += 7;
 

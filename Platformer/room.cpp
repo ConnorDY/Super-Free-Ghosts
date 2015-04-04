@@ -4,7 +4,7 @@
 
 #define M_PI 3.14159265358979323846
 
-Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t &settings)
+Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t&)
 	: State(stm), soundManager(som),
 	  width(2048), height(VIEW_HEIGHT)
 {

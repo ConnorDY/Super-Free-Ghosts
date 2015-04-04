@@ -5,6 +5,7 @@ Chest::Chest(TextureManager &textureManager, float x, float y)
 	x, y, 20, 17
 	)
 {
+	(void)textureManager; // textureManager is unused but will be used in future
 	rect.setSize(sf::Vector2f(width, height));
 	setHealth(3);
 }

@@ -26,7 +26,7 @@ void DamageableObject::damage(const Room &room, const settings_t &settings)
 	else kill(room, settings);
 }
 
-void DamageableObject::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
+void DamageableObject::update(sf::Time, Room const&, const settings_t&)
 {
 
 }

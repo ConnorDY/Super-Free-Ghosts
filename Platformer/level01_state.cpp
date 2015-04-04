@@ -178,7 +178,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
-			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager, settings)));
+			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
 			return;
 		}
 

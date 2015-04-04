@@ -1,6 +1,6 @@
 #include "menu_state.h"
 
-Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager, const settings_t &settings)
+Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager)
 	: State(sM)
 {
 	// Set up logo sprite
@@ -120,7 +120,7 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 
 				// Options Menu
 				case 2:
-					getStateManager().setState(std::unique_ptr<State>(new Options_State(getStateManager(), textureManager, settings)));
+					getStateManager().setState(std::unique_ptr<State>(new Options_State(getStateManager(), settings)));
 					break;
 
 				// Exit

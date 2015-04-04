@@ -21,7 +21,7 @@ private:
 	void toggleMusic(settings_t &settings);
 	void toggleSound(settings_t &settings);
 public:
-	Options_State(StateManager &sM, TextureManager &textureManager, const settings_t &settings);
+	Options_State(StateManager &sM, const settings_t &settings);
 	virtual ~Options_State();
 
 	// Actions
