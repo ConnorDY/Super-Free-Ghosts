@@ -15,7 +15,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  textureManager(tm),
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
 	  animation("still"), texture("player3"),
-	  moveSpeed(0.19f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
+	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(2),
 	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true)
 {
@@ -155,7 +155,8 @@ bool Player::getInvincible() const
 /* Actions */
 void Player::draw(sf::RenderWindow &window)
 {
-	if (!visible) return;
+	if (!visible) sprite.setColor(sf::Color(255, 255, 255, 125));
+	else sprite.setColor(sf::Color(255, 255, 255, 255));
 
 	if (DEBUG_MODE) rectangle.setPosition(x, y);
 	

@@ -12,7 +12,7 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	),
 	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
 	animation("appear"),
-	moveSpeed(0.22f / 2.0f), frame(0.0f), spawnX(x), spawnY(y), angle(0),
+	moveSpeed(0.075f / 2.0f), frame(0.0f), spawnX(x), spawnY(y), angle(0),
 	inCasket(true), opening(false), turning(false), spawned(false), under(false), visible(true)
 {
 	// Sprite
@@ -38,6 +38,9 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 
 	// Depth
 	setDepth(-2);
+
+	// Increase Movement Speed
+	if (floor((double)rand() / RAND_MAX * 4.) == 1.0) moveSpeed = .12f / 2.0f;
 }
 
 
@@ -65,7 +68,8 @@ bool Zombie::canCollideWith(const Object* obj) const
 /* Actions */
 void Zombie::draw(sf::RenderWindow &window)
 {
-	if (!visible) return;
+	if (!visible) sprite.setColor(sf::Color(255, 255, 255, 125));
+	else sprite.setColor(sf::Color(255, 255, 255, 255));
 
 	if (DEBUG_MODE)
 	{
@@ -99,7 +103,7 @@ void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 	{
 		double mstime = deltaTime.asMicroseconds() / 1000.0;
 		if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.25;
-		if (!placeFree(x, y + 1, room) && dx == 0) dx = -0.075f / 2.0f; // Hit the ground
+		if (!placeFree(x, y + 1, room) && dx == 0) dx = -moveSpeed; // Hit the ground
 
 		Object::update(deltaTime, room, settings);
 
