@@ -153,8 +153,11 @@ void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 		// Hit Player
 		if (!inCasket)
 		{
-			Player* col = dynamic_cast<Player*>(nonsolidCollision(x, y, room));
-			if (col != nullptr && !col->getInvincible()) col->damage((int)x);
+			for (auto col : allCollisions(x, y, room))
+			{
+				Player* player = dynamic_cast<Player*>(col);
+				if (player != nullptr && !player->getInvincible()) player->damage((int)x);
+			}
 		}
 	}
 

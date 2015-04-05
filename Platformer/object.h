@@ -29,8 +29,7 @@ class Object
 
 		virtual sf::FloatRect getRect() const;
 		bool placeFree(float xx, float yy, Room const &room) const;
-		Object* solidCollision(float xx, float yy, Room const &room) const;
-		Object* nonsolidCollision(float xx, float yy, Room const &room) const;
+		std::vector<Object*> allCollisions(float xx, float yy, Room const &room) const;
 
 		// Mutators
 		void setX(float xx);

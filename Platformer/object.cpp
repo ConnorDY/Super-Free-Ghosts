@@ -42,30 +42,17 @@ bool Object::placeFree(float xx, float yy, Room const &room) const
 	});
 }
 
-Object* Object::solidCollision(float xx, float yy, Room const &room) const
+std::vector<Object*> Object::allCollisions(float xx, float yy, Room const &room) const
 {
+	std::vector<Object*> result;
 	sf::FloatRect temp_rect(xx, yy, width, height);
 
 	auto const &objects = room.getObjects();
-	auto collision = std::find_if(objects.begin(), objects.end(), [&](Object* const &elem)
+	std::copy_if(objects.begin(), objects.end(), std::back_inserter(result), [&](Object* const &elem)
 	{
-		return this != elem && elem->isSolid() && temp_rect.intersects(elem->getRect());
+		return this != elem && temp_rect.intersects(elem->getRect());
 	});
-	if (collision == objects.end()) return NULL;
-	else return *collision;
-}
-
-Object* Object::nonsolidCollision(float xx, float yy, Room const &room) const
-{
-	sf::FloatRect temp_rect(xx, yy, width, height);
-
-	auto const &objects = room.getObjects();
-	auto collision = std::find_if(objects.begin(), objects.end(), [&](Object* const &elem)
-	{
-		return this != elem && !elem->isSolid() && temp_rect.intersects(elem->getRect());
-	});
-	if (collision == objects.end()) return NULL;
-	else return *collision;
+	return result;
 }
 
 bool Object::canCollideWith(Object const*) const

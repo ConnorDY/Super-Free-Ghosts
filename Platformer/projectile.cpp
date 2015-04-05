@@ -57,21 +57,21 @@ void Projectile::update(sf::Time deltaTime, Room const &room, const settings_t &
 	// Update X
 	x += dx * (float)deltaTime.asMilliseconds();
 
-	// Destroy projectile if it hits an enemy and destroy the enemy
-	Object* col = nonsolidCollision(x, y, room);
+	std::vector<Object*> cols = allCollisions(x, y, room);
 
-	if (dynamic_cast<Zombie*>(col) != nullptr)
+	for (Object* col : cols)
 	{
-		if (!((Zombie*)col)->getInCasket()) ((Zombie*)col)->damage(room, settings);
-		kill(room, settings);
-	}
-	
-	// Destory projectile if it hits a chest and damage the chest
-	col = solidCollision(x, y, room);
-	if (dynamic_cast<Chest*>(col) != nullptr)
-	{
-		((Chest*)col)->damage(room, settings);
-		kill(room, settings);
+		// Destroy projectile if it hits an enemy and destroy the enemy
+		if (dynamic_cast<Zombie*>(col) != nullptr)
+		{
+			if (!((Zombie*)col)->getInCasket()) ((Zombie*)col)->damage(room, settings);
+			kill(room, settings);
+		}
+		// Destory projectile if it hits a chest and damage the chest
+		else if (dynamic_cast<Chest*>(col) != nullptr)
+		{
+			((Chest*)col)->damage(room, settings);
+		}
 	}
 
 	// Destroy projectile if it hits a solid object or leaves the room
