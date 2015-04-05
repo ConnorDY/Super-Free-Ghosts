@@ -44,6 +44,7 @@ class Player : public DamageableObject
 		int getDir() const;
 		int isAlive() const;
 		bool getInvincible() const;
+		virtual sf::FloatRect getRect() const;
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);

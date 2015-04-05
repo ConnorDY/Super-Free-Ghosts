@@ -171,7 +171,7 @@ void Room::updateView(sf::RenderWindow &window)
 	if (view_follow)
 	{
 		// Update view
-		auto rect = view_follow->getRect();
+		auto rect = view_follow->Object::getRect();
 		float vx = rect.left + rect.width/2;
 		float vy = rect.top + rect.height/2;
 

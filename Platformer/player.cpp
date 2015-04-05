@@ -151,6 +151,22 @@ bool Player::getInvincible() const
 	return invincible;
 }
 
+sf::FloatRect Player::getRect() const
+{
+	float adjx = 0;
+
+	int dir = 1;
+	if (sprite.getScale().x < 0)
+	{
+		adjx = 2;
+		dir = -1;
+	}
+
+	if (crouching) return sf::FloatRect(x + adjx, y + 15.0f, width, height - 15.0f);
+	
+	return sf::FloatRect(x + (2.0f * dir) + adjx, y + 2.0f, width - 2.0f, height - 2.0f);
+}
+
 
 /* Actions */
 void Player::draw(sf::RenderWindow &window)
@@ -158,12 +174,16 @@ void Player::draw(sf::RenderWindow &window)
 	if (!visible) sprite.setColor(sf::Color(255, 255, 255, 125));
 	else sprite.setColor(sf::Color(255, 255, 255, 255));
 
-	if (DEBUG_MODE) rectangle.setPosition(x, y);
+	if (DEBUG_MODE)
+	{
+		sf::FloatRect tempRect = getRect();
+		rectangle.setSize(sf::Vector2f(tempRect.width, tempRect.height));
+		rectangle.setPosition(tempRect.left, tempRect.top);
+	}
 	
 	float adjx = -15.0f, adjx2 = 0.0f, adjy = -15.0f;
 
-	if (sprite.getScale().x < 0.0f)
-		adjx2 = 47.0f;
+	if (sprite.getScale().x < 0.0f) adjx2 = 47.0f;
 
 	if (rolling) adjy += 7;
 
