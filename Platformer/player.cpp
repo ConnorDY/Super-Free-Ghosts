@@ -1,7 +1,7 @@
 #include "player.h"
 
-#define PLAYER_WIDTH  50
-#define PLAYER_HEIGHT 50
+#define PLAYER_WIDTH  17
+#define PLAYER_HEIGHT 35
 
 
 Player::Player(TextureManager &tm, float x, float y)
@@ -176,16 +176,18 @@ void Player::draw(sf::RenderWindow &window)
 
 	if (DEBUG_MODE)
 	{
-		sf::FloatRect tempRect = sf::FloatRect(x, y, width, height);//getRect();
+		sf::FloatRect tempRect = getRect();
 		rectangle.setSize(sf::Vector2f(tempRect.width, tempRect.height));
 		rectangle.setPosition(tempRect.left, tempRect.top);
 	}
 	
-	float adjx = 0.0f, adjy = 0.0f;
+	float adjx = -15.0f, adjx2 = 0.0f, adjy = -15.0f;
 
-	if (sprite.getScale().x < 0.0f) adjx = 50.0f;
+	if (sprite.getScale().x < 0.0f) adjx2 = 47.0f;
 
-	sprite.setPosition(x + adjx, y + adjy);
+	if (rolling) adjy += 7;
+
+	sprite.setPosition(x + adjx + adjx2, y + adjy);
 
 	if (DEBUG_MODE) window.draw(rectangle);
 	window.draw(sprite);
