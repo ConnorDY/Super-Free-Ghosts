@@ -154,6 +154,11 @@ bool Player::getInvincible() const
 sf::FloatRect Player::getRect() const
 {
 	if (crouching) return sf::FloatRect(x, y + 15.0f, width, height - 15.0f);
+	if (jumps > 0)
+	{
+		if (armour == 0) return sf::FloatRect(x, y + 4.0f, width, height - 14.0f);
+		return sf::FloatRect(x, y + 2.0f, width - 2.0f, height - 10.0f);
+	}
 	return sf::FloatRect(x, y + 2.0f, width - 2.0f, height - 2.0f);
 }
 
