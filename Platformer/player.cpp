@@ -278,7 +278,7 @@ void Player::checkDoubleJumpedObjects(Room const &room)
 	for (auto obj : room.getObjects())
 	{
 		auto objbb = obj->getRect();
-		if (objbb.left > jumpLR.first && objbb.left + objbb.width <= jumpLR.second)
+		if (objbb.left + objbb.width > jumpLR.first && objbb.left < jumpLR.second)
 			obj->onDoubleJumpedOver(room);
 	}
 }
