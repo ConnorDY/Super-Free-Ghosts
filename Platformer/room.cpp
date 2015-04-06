@@ -126,16 +126,22 @@ void Room::drawHeightMapBack(sf::RenderWindow &window)
 	}
 }
 
+int Room::getMinTerrainYBetween(int left, int right) const
+{
+	auto maxHeight = *std::max_element(heightmap.begin() + left, heightmap.begin() + right);
+	// Negating maxHeight because the heightmap goes up (against the Y axis)
+	return height - maxHeight;
+}
+
 bool Room::heightmapIntersects(sf::FloatRect const &rect) const
 {
 	int left = std::max<int>(0, floor(rect.left));
 	int right = std::min<int>(heightmap.size(), 1 + ceil(rect.left + rect.width));
 	if (left >= right) return false;
 
-	auto maxHeight = *std::max_element(heightmap.begin() + left, heightmap.begin() + right);
-	if (maxHeight == 0) return false; // 0 is a special case (no solid ground)
-	// Here we are negating because it's height up from the ground (-y)
-	return height - maxHeight <= rect.top + rect.height;
+	auto yVal = getMinTerrainYBetween(left, right);
+	if (yVal == height) return false; // 0 height is a special case (no solid ground)
+	return yVal <= rect.top + rect.height;
 }
 
 bool Room::exceedsHorizontalBounds(sf::FloatRect const &rect) const

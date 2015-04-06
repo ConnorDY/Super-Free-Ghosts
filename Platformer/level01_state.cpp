@@ -73,6 +73,7 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	object = new Zombie(textureManager, 1475.0f, 32.0f);
 	objects.push_back(object);
 
+	objects.push_back(new Chest(textureManager, 287 + 5, 280));
 	object = new Obelisk(textureManager, 287.0f, 280.0f, 54.0f);
 	objects.push_back(object);
 

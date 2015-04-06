@@ -31,6 +31,7 @@ class Room : public State {
 		virtual ~Room();
 
 		bool heightmapIntersects(sf::FloatRect const &rect) const;
+		int getMinTerrainYBetween(int left, int right) const;
 		bool exceedsHorizontalBounds(sf::FloatRect const &rect) const;
 		SoundManager& getSoundManager() const;
 		std::vector<Object*> const getObjects() const;
