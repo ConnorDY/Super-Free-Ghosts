@@ -34,8 +34,7 @@ void Chest::update(sf::Time deltaTime, Room const &room, const settings_t &)
 	if (slidingUp)
 	{
 		// Our Y value matters now, so check it:
-		if (room.heightmapIntersects(sf::FloatRect(x, y, width, height)))
-			y = room.getMinTerrainYBetween(x, x + width) - height;
+		pushOutOfHeightmap(room);
 		// Check for obelisk collisions and jump to the top of them
 		auto mybbox = getRect();
 		for (auto obj : allCollisions(x, y - 1, room))

@@ -130,9 +130,26 @@ void Object::update(sf::Time deltaTime, Room const &room, const settings_t&)
 		if (brk) break;
 	}
 
-	// Move out of heightmap if stuck within it
+	pushOutOfHeightmap(room);
+}
+
+void Object::pushOutOfHeightmap(Room const &room)
+{
 	if (room.heightmapIntersects(sf::FloatRect(x, y, width, height)))
 		y = room.getMinTerrainYBetween(x, x + width) - height;
+}
+
+void Object::pushOutOfSolids(Room const &room)
+{
+	pushOutOfHeightmap(room);
+
+	// Move out of any solid objects
+	for (auto obj : allCollisions(x, y, room))
+		if (obj->isSolid())
+		{
+			auto objbbox = obj->getRect();
+			y = std::min<int>(y, objbbox.top - height);
+		}
 }
 
 void Object::kill(Room const &room, const settings_t &settings)
