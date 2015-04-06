@@ -22,7 +22,7 @@ sf::FloatRect Chest::getRect() const
 void Chest::draw(sf::RenderWindow &window)
 {
 	// Don't bother drawing if it's completely submerged
-	if (slideUpFraction == 0) return;
+	if (slideUpFraction == 0 && !DEBUG_MODE) return;
 
 	auto bbox = getRect();
 	rect.setPosition(sf::Vector2f(bbox.left, bbox.top));
