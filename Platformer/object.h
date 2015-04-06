@@ -41,6 +41,7 @@ class Object
 		virtual void update(sf::Time deltaTime, Room const &room, const settings_t &settings);
 		virtual void kill(Room const &room, const settings_t &settings);
 		virtual void onDeath(Room const &room, const settings_t &settings);
+		virtual void onDoubleJumpedOver(Room const &room);
 	protected:
 		sf::Sprite sprite;
 		float x, y, dx, dy, width, height, gravity, maxFallSpeed, type;

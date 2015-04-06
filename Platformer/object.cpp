@@ -143,3 +143,7 @@ void Object::kill(Room const &room, const settings_t &settings)
 void Object::onDeath(Room const&, const settings_t&)
 {
 }
+
+void Object::onDoubleJumpedOver(Room const &)
+{
+}

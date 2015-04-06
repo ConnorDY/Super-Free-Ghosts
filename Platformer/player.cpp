@@ -203,8 +203,12 @@ void Player::jump(int dir, SoundManager &soundManager, const settings_t &setting
 
 	if (jumps < 2)
 	{
-		if (jumps == 0 && dy != 0.0f) return;
-		if (jumps == 1)
+		if (jumps == 0)
+		{
+			if (dy != 0.0f) return;
+			xJumpedFrom = x;
+		}
+		else if (jumps == 1)
 		{
 			setAnimation("jumpi");
 			midJump = true;
@@ -251,6 +255,31 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, SoundManager &s
 		objects.push_back(weapon);
 
 		if (settings.sound_on) soundManager.playSound("throw");
+	}
+}
+
+std::pair<int, int> Player::getJumpPoints() const
+{
+	if (x < xJumpedFrom)
+		return {x, xJumpedFrom};
+	return {xJumpedFrom, x};
+}
+
+void Player::checkDoubleJumpedObjects(Room const &room)
+{
+	// Must have double-jumped
+	if (jumps < 2) return;
+
+	auto mybb = getRect();
+	auto jumpLR = getJumpPoints();
+	// Right hand point of our jump should be from the right of our BB, not left
+	jumpLR.second += mybb.width;
+
+	for (auto obj : room.getObjects())
+	{
+		auto objbb = obj->getRect();
+		if (objbb.left > jumpLR.first && objbb.left + objbb.width <= jumpLR.second)
+			obj->onDoubleJumpedOver(room);
 	}
 }
 
@@ -363,6 +392,8 @@ void Player::update(sf::Time deltaTime, Room const &room, const settings_t &sett
 		visible = !visible;
 	}
 	else if (!invincible) visible = true;
+
+	checkDoubleJumpedObjects(room);
 
 	// Animation
 	if (dead) setAnimation("die");

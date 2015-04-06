@@ -29,10 +29,13 @@ class Player : public DamageableObject
 		bool jumped, midJump, midThrow, rolling, flipped, crouching, invincible, hit, dead, visible;
 		sf::Clock jumpTimer, throwTimer, rollTimer, invincibleTimer, flashTimer;
 		double total_time = 0.0;
+		int xJumpedFrom;
 
 		// Actions
 		void updateAnimation(sf::Time deltaTime);
 		void changeTexture(TextureManager &textureManager, std::string tex);
+		void checkDoubleJumpedObjects(Room const &room);
+		std::pair<int, int> getJumpPoints() const;
 	public:
 		Player(TextureManager &textureManager, float x, float y);
 
