@@ -6,7 +6,7 @@ CXXFLAGS=-std=c++14 -g3
 OBJS=state_manager.o texture_manager.o sound_manager.o input_handler.o \
      object.o projectile.o player.o zombie.o obelisk.o room.o block.o \
      state.o menu_state.o options_state.o level01_state.o damageable_object.o \
-     chest.o level_editor_state.o main.o
+     chest.o level_editor_state.o dialogue.o main.o
 OUTPUT=platformer
 
 all: $(OUTPUT)
