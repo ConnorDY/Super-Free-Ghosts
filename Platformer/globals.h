@@ -1,7 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#define DEBUG_MODE true
+#define DEBUG_MODE false
 
 #define VIEW_WIDTH 400
 #define VIEW_HEIGHT 300

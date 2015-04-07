@@ -37,6 +37,13 @@ InputHandler::InputHandler()
 	key->keyCode = sf::Keyboard::Z;
 	Inputs[Input::Action] = key;
 
+	// Advance Dialogue
+	key = new InputKeys();
+	key->inputType = Key;
+	key->eventType = sf::Event::KeyPressed;
+	key->keyCode = sf::Keyboard::X;
+	Inputs[Input::Dialogue] = key;
+
 	// Start
 	key = new InputKeys();
 	key->inputType = Key;

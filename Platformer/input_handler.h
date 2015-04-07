@@ -11,7 +11,7 @@ class InputHandler
 		enum Input
 		{
 			Left, Right, Up, Down,
-			Action, Start, Exit, Debug0
+			Action, Dialogue, Start, Exit, Debug0
 		};
 
 		InputHandler();
