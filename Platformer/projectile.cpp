@@ -67,10 +67,11 @@ void Projectile::update(sf::Time deltaTime, Room const &room, const settings_t &
 			if (!((Zombie*)col)->getInCasket()) ((Zombie*)col)->damage(room, settings);
 			kill(room, settings);
 		}
-		// Destory projectile if it hits a chest and damage the chest
+		// Destroy projectile if it hits a chest and damage the chest
 		else if (dynamic_cast<Chest*>(col) != nullptr)
 		{
 			((Chest*)col)->damage(room, settings);
+			kill(room, settings);
 		}
 	}
 

@@ -3,7 +3,8 @@
 
 Chest::Chest(TextureManager &textureManager, float x, float y)
 	: DamageableObject(
-		x, y, 20, 17
+		x, y, 20, 17,
+		0, 0, false
 	),
 	  slideUpFraction(0),
 	  slidingUp(false)
