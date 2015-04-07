@@ -14,10 +14,10 @@ class Dialogue
 	private:
 		sf::Font fnt;
 		sf::Text txt;
-		sf::RectangleShape rect;
-		sf::Clock timer;
+		sf::RectangleShape rect, ip;
+		sf::Clock timer, ipTimer;
 		unsigned int index, line;
-		bool done;
+		bool done, ipShow;
 		std::vector<std::string> textLines;
 	public:
 		Dialogue(const std::vector<std::string> lines);
