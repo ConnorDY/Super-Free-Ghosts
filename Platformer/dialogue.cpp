@@ -44,7 +44,11 @@ void Dialogue::update(InputHandler &inputHandler)
 {
 	sf::Time deltaTime = timer.getElapsedTime();
 
-	if (deltaTime.asMilliseconds() >= 50.)
+	bool held = inputHandler.checkInput(InputHandler::Input::Dialogue);
+	double speed = 50.;
+	if (held) speed = 10;
+
+	if (deltaTime.asMilliseconds() >= speed)
 	{
 		index++;
 		timer.restart();
@@ -52,7 +56,7 @@ void Dialogue::update(InputHandler &inputHandler)
 
 	if (index >= textLines.at(line).length()) index = textLines.at(line).length() - 1;
 	
-	if (index == textLines.at(line).length() - 1 && inputHandler.checkInput(InputHandler::Input::Dialogue))
+	if (index == textLines.at(line).length() - 1 && held)
 	{
 		if (line < textLines.size() - 1)
 		{
