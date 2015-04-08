@@ -20,6 +20,6 @@ void Torch::onDeath(Room &room, settings_t const&)
 	if (!placeFree(x, y, room)) {
 		// If we hit something (ground, obelisk), try spawning a flame
 		// it will put itself out if it's not in a sensible place.
-		room.spawn(new Flame(x, y, 4, room.textureManager));
+		room.spawn(new Flame(x, y, dx > 0 ? 1 : -1, 4, room.textureManager));
 	}
 }

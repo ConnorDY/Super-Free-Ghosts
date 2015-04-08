@@ -1,11 +1,11 @@
 #include "flame.h"
 #include "room.h"
 
-Flame::Flame(float x, float y, int remaining, TextureManager &textureManager)
+Flame::Flame(float x, float y, int dir, int remaining, TextureManager &textureManager)
 	: Weapon(x, y, 8, 8, 0, 0, 0, 0, textureManager),
-	  remaining(remaining), lifetime(300)
+	  remaining(remaining), lifetime(300), dir(dir)
 {
-	rectangle.setFillColor(sf::Color(255,0,0,255));
+	rectangle.setFillColor(sf::Color(255,0,0,128));
 }
 
 Flame::~Flame() {}
@@ -32,5 +32,5 @@ void Flame::move(sf::Time deltaTime, Room &room, settings_t const &settings)
 void Flame::onDeath(Room &room, settings_t const&)
 {
 	if (remaining > 0)
-		room.spawn(new Flame(x + 4, y, remaining - 1, room.textureManager));
+		room.spawn(new Flame(x + 4 * dir, y, dir, remaining - 1, room.textureManager));
 }
