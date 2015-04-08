@@ -15,7 +15,7 @@ Obelisk::Obelisk(TextureManager &textureManager, float x, float y, float height)
 
 
 /* Actions */
-void Obelisk::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
+void Obelisk::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 {
 	Object::update(deltaTime, room, settings);
 

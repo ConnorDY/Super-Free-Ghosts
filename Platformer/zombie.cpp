@@ -86,7 +86,7 @@ void Zombie::draw(sf::RenderWindow &window)
 	window.draw(sprite);
 }
 
-void Zombie::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
+void Zombie::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 {
 	if (inCasket && !spawned && (room.heightmapIntersects(sf::FloatRect(x, y, width, height)) || !placeFree(x, y + 10, room)))
 	{

@@ -17,7 +17,7 @@ class Obelisk : public Object
 		explicit Obelisk(TextureManager &textureManager, float x = -128, float y = -128, float height = 72);
 
 		// Actions
-		virtual void update(sf::Time deltaTime, Room const &room, const settings_t &settings);
+		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
 		virtual void draw(sf::RenderWindow &window);
 };
 

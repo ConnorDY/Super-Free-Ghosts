@@ -159,11 +159,18 @@ std::vector<Object*> const Room::getObjects() const
 	return objects;
 }
 
+void Room::spawn(Object *obj)
+{
+	spawnQueue.push_back(obj);
+}
+
 void Room::end()
 {
 	view_follow = nullptr;
 	for (Object* i : objects) delete i;
 	objects.clear();
+	for (Object* i : spawnQueue) delete i;
+	spawnQueue.clear();
 }
 
 void Room::reset(TextureManager &textureManager, const settings_t &settings)
@@ -275,6 +282,9 @@ void Room::drawDecor(int x, int y, int type, sf::RenderWindow &window)
 void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandler&, const settings_t &settings)
 {
 	deltaTime = restartClock();
+
+	std::copy(spawnQueue.begin(), spawnQueue.end(), std::back_inserter(objects));
+	spawnQueue.clear();
 
 	// Update objects and player
 	auto iter = objects.begin();

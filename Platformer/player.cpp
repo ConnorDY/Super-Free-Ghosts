@@ -225,7 +225,7 @@ void Player::jump(int dir, SoundManager &soundManager, const settings_t &setting
 	}
 }
 
-void Player::throwWeapon(std::vector<Object*> &objects, int dir, SoundManager &soundManager, const settings_t &settings)
+void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const settings_t &settings)
 {
 	if (dead || hit) return;
 
@@ -251,8 +251,7 @@ void Player::throwWeapon(std::vector<Object*> &objects, int dir, SoundManager &s
 
 		if (getDir() < 0) adjx -= 30;
 
-		Projectile* weapon = new Projectile(x + adjx, y + 6.0f + adjy, dir, textureManager);
-		objects.push_back(weapon);
+		room.spawn(new Projectile(x + adjx, y + 6.0f + adjy, dir, textureManager));
 
 		if (settings.sound_on) soundManager.playSound("throw");
 	}
@@ -265,7 +264,7 @@ std::pair<int, int> Player::getJumpPoints() const
 	return {xJumpedFrom, x};
 }
 
-void Player::checkDoubleJumpedObjects(Room const &room)
+void Player::checkDoubleJumpedObjects(Room &room)
 {
 	// Must have double-jumped
 	if (jumps < 2) return;
@@ -283,7 +282,7 @@ void Player::checkDoubleJumpedObjects(Room const &room)
 	}
 }
 
-void Player::update(sf::Time deltaTime, Room const &room, const settings_t &settings)
+void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 

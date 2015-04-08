@@ -34,7 +34,7 @@ class Player : public DamageableObject
 		// Actions
 		void updateAnimation(sf::Time deltaTime);
 		void changeTexture(TextureManager &textureManager, std::string tex);
-		void checkDoubleJumpedObjects(Room const &room);
+		void checkDoubleJumpedObjects(Room &room);
 		std::pair<int, int> getJumpPoints() const;
 	public:
 		Player(TextureManager &textureManager, float x, float y);
@@ -52,9 +52,9 @@ class Player : public DamageableObject
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
 		void jump(int dir, SoundManager &soundManager, const settings_t &settings);
-		void throwWeapon(std::vector<Object*> &objects, int dir, SoundManager &soundManager, const settings_t &settings);
+		void throwWeapon(Room &room, int dir, SoundManager &soundManager, const settings_t &settings);
 		void move(int dir);
-		void update(sf::Time deltaTime, Room const &room, const settings_t &settings);
+		void update(sf::Time deltaTime, Room &room, const settings_t &settings);
 		void setAnimation(std::string name);
 };
 

@@ -189,7 +189,7 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 		}
 
 		if (inputHandler.checkInput(InputHandler::Input::Up, event)) player->jump(moveH, soundManager, settings); // Jumping
-		if (inputHandler.checkInput(InputHandler::Input::Action, event)) player->throwWeapon(objects, player->getDir(), soundManager, settings); // Throw Weapon
+		if (inputHandler.checkInput(InputHandler::Input::Action, event)) player->throwWeapon(*this, player->getDir(), soundManager, settings); // Throw Weapon
 	}
 
 	player->move(moveH);

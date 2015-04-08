@@ -79,7 +79,7 @@ void Object::setDepth(int d)
 
 
 /* Actions */
-void Object::update(sf::Time deltaTime, Room const &room, const settings_t&)
+void Object::update(sf::Time deltaTime, Room &room, const settings_t&)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 
@@ -152,16 +152,16 @@ void Object::pushOutOfSolids(Room const &room)
 		}
 }
 
-void Object::kill(Room const &room, const settings_t &settings)
+void Object::kill(Room &room, const settings_t &settings)
 {
 	onDeath(room, settings);
 	del = true;
 }
 
-void Object::onDeath(Room const&, const settings_t&)
+void Object::onDeath(Room&, const settings_t&)
 {
 }
 
-void Object::onDoubleJumpedOver(Room const &)
+void Object::onDoubleJumpedOver(Room&)
 {
 }

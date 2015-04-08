@@ -40,7 +40,7 @@ class Zombie : public DamageableObject
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime, Room const &room, const settings_t &settings);
+		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
 		virtual void onDeath(Room const &room, const settings_t &settings);
 };
 

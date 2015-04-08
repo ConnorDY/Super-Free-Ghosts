@@ -30,7 +30,7 @@ class DamageableObject : public Object
 		void setHealth(int h);
 
 		// Actions
-		virtual void damage(const Room &room, const settings_t &settings);
+		virtual void damage(Room &room, const settings_t &settings);
 		virtual void draw(sf::RenderWindow &window) = 0;
 		virtual void update(sf::Time deltaTime, Room const &room, const settings_t &settings);
 

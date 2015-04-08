@@ -20,7 +20,7 @@ void DamageableObject::setHealth(int h)
 	health = h;
 }
 
-void DamageableObject::damage(const Room &room, const settings_t &settings)
+void DamageableObject::damage(Room &room, const settings_t &settings)
 {
 	if (health > 1) health--;
 	else kill(room, settings);

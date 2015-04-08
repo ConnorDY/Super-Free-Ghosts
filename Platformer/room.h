@@ -17,6 +17,7 @@ class Room : public State {
 		sf::Sprite dirtSprite, bg02, bg03, under01;	// The sprite to paint the heightmap with (and decorative sprites)
 		std::vector<int> heightmap;					// Height map. Index = x-value, value = y-value (from 0 = bottom)
 													// However, 0 will be non-colliding for simplicity's sake
+		std::vector<Object*> spawnQueue;            // Queue of objects to be spawned next tick
 
 		void ensureHeightmapWidth(size_t width);
 		void fillHeightMap(size_t xleft, size_t width, int height);
@@ -35,6 +36,7 @@ class Room : public State {
 		bool exceedsHorizontalBounds(sf::FloatRect const &rect) const;
 		SoundManager& getSoundManager() const;
 		std::vector<Object*> const getObjects() const;
+		void spawn(Object *obj);
 		virtual void start(TextureManager &textureManager, const settings_t &settings) = 0;
 		virtual void end();
 		void reset(TextureManager &textureManager, const settings_t &settings);

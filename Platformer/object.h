@@ -38,10 +38,10 @@ class Object
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window) = 0;
-		virtual void update(sf::Time deltaTime, Room const &room, const settings_t &settings);
-		virtual void kill(Room const &room, const settings_t &settings);
-		virtual void onDeath(Room const &room, const settings_t &settings);
-		virtual void onDoubleJumpedOver(Room const &room);
+		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
+		virtual void kill(Room &room, const settings_t &settings);
+		virtual void onDeath(Room &room, const settings_t &settings);
+		virtual void onDoubleJumpedOver(Room &room);
 		void pushOutOfHeightmap(Room const &room);
 		void pushOutOfSolids(Room const &room);
 	protected:
