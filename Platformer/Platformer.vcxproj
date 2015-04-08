@@ -46,7 +46,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>D:\Libs\SFML-2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SFML_STATIC;_DEBUG;WIN32;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SFML_STATIC;_USE_MATH_DEFINES;_DEBUG;WIN32;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -63,7 +63,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>D:\Libs\SFML-2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SFML_STATIC;GLEW_STATIC;UNICODE;WIN32;_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SFML_STATIC;_USE_MATH_DEFINES;GLEW_STATIC;UNICODE;WIN32;_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -80,6 +80,7 @@
     <ClCompile Include="chest.cpp" />
     <ClCompile Include="damageable_object.cpp" />
     <ClCompile Include="dialogue.cpp" />
+    <ClCompile Include="flame.cpp" />
     <ClCompile Include="input_handler.cpp" />
     <ClCompile Include="level01_state.cpp" />
     <ClCompile Include="level_editor_state.cpp" />
@@ -95,6 +96,8 @@
     <ClCompile Include="state.cpp" />
     <ClCompile Include="state_manager.cpp" />
     <ClCompile Include="texture_manager.cpp" />
+    <ClCompile Include="torch.cpp" />
+    <ClCompile Include="weapon.cpp" />
     <ClCompile Include="zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +105,7 @@
     <ClInclude Include="chest.h" />
     <ClInclude Include="damageable_object.h" />
     <ClInclude Include="dialogue.h" />
+    <ClInclude Include="flame.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="input_handler.h" />
     <ClInclude Include="level01_state.h" />
@@ -118,6 +122,8 @@
     <ClInclude Include="state.h" />
     <ClInclude Include="state_manager.h" />
     <ClInclude Include="texture_manager.h" />
+    <ClInclude Include="torch.h" />
+    <ClInclude Include="weapon.h" />
     <ClInclude Include="zombie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

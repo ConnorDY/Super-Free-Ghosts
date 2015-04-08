@@ -75,6 +75,15 @@
     <ClCompile Include="dialogue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="flame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="torch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="weapon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h">
@@ -138,6 +147,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dialogue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="flame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="torch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="weapon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
