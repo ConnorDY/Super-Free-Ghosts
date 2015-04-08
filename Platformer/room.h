@@ -26,6 +26,8 @@ class Room : public State {
 		void drawTree(int x, int y, sf::RenderWindow &window);
 		void drawDecor(int x, int y, int type, sf::RenderWindow &window);
 	public:
+		TextureManager &textureManager;
+
 		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t &settings);
 		virtual ~Room();
 
