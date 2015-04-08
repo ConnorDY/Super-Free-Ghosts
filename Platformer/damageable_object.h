@@ -31,9 +31,6 @@ class DamageableObject : public Object
 
 		// Actions
 		virtual void damage(Room &room, const settings_t &settings);
-		virtual void draw(sf::RenderWindow &window) = 0;
-		virtual void update(sf::Time deltaTime, Room const &room, const settings_t &settings);
-
 	private:
 		int health;
 		Team::Alignment team;

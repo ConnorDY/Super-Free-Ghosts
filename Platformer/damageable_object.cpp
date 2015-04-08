@@ -25,8 +25,3 @@ void DamageableObject::damage(Room &room, const settings_t &settings)
 	if (health > 1) health--;
 	else kill(room, settings);
 }
-
-void DamageableObject::update(sf::Time, Room const&, const settings_t&)
-{
-
-}
