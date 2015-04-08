@@ -292,6 +292,9 @@ void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandle
 	auto end = objects.end();
 	while (iter != end)
 	{
+		if (!(*iter)->shouldDelete())
+			(*iter)->update(deltaTime, *this, settings);
+
 		if ((*iter)->shouldDelete())
 		{
 			delete *iter;
@@ -300,7 +303,6 @@ void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandle
 			continue;
 		}
 
-		(*iter)->update(deltaTime, *this, settings);
 		iter++;
 	}
 
