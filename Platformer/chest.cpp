@@ -30,7 +30,7 @@ void Chest::draw(sf::RenderWindow &window)
 	window.draw(rect);
 }
 
-void Chest::update(sf::Time deltaTime, Room const &room, const settings_t &)
+void Chest::update(sf::Time deltaTime, Room &room, const settings_t &)
 {
 	if (slidingUp)
 	{
@@ -53,7 +53,7 @@ void Chest::update(sf::Time deltaTime, Room const &room, const settings_t &)
 	//Object::update(deltaTime, room, settings);
 }
 
-void Chest::onDoubleJumpedOver(Room const &)
+void Chest::onDoubleJumpedOver(Room &)
 {
 	slidingUp = true;
 }

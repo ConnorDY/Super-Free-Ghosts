@@ -19,9 +19,9 @@ class Chest : public DamageableObject
 		virtual sf::FloatRect getRect() const;
 
 		// Actions
-		virtual void update(sf::Time deltaTime, Room const &room, const settings_t &settings);
+		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
 		virtual void draw(sf::RenderWindow &window);
-		virtual void onDoubleJumpedOver(Room const &room);
+		virtual void onDoubleJumpedOver(Room &room);
 };
 
 #endif

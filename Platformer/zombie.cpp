@@ -208,7 +208,7 @@ void Zombie::updateAnimation(sf::Time deltaTime)
 	sprite.setTextureRect(anim[(int)frame]);
 }
 
-void Zombie::onDeath(Room const &room, const settings_t &settings)
+void Zombie::onDeath(Room &room, const settings_t &settings)
 {
 	if (settings.sound_on) room.getSoundManager().playSound("enemy_die");
 }
