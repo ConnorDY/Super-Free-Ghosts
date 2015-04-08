@@ -20,12 +20,12 @@ void Flame::move(sf::Time deltaTime, Room &room, settings_t const &settings)
 
 	auto oldY = y;
 	pushOutOfSolids(room);
-	assert(placeFree(x, y, room)); // We should not be in a solid now, need I say it
 	// If we pushed too far up, kill ourselves (because we are too far down in a wall and should not jump to its top)
 	if (oldY - y > maxYAdjust) del = true;  // Do not call onDeath(), do not want a respawn here
 
 	// Same goes for if we're still in the air despite the above
 	if (placeFree(x, y + 1, room)) del = true;
+	else assert(placeFree(x, y, room)); // We should not be in a solid now, need I say it
 
 	lifetime -= deltaTime.asMilliseconds();
 	if (lifetime <= 0) kill(room, settings);
