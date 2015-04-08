@@ -142,7 +142,7 @@ bool Room::heightmapIntersects(sf::FloatRect const &rect) const
 
 	auto yVal = getMinTerrainYBetween(left, right);
 	if (yVal == height) return false; // 0 height is a special case (no solid ground)
-	return yVal <= rect.top + rect.height;
+	return yVal < rect.top + rect.height;
 }
 
 bool Room::exceedsHorizontalBounds(sf::FloatRect const &rect) const
