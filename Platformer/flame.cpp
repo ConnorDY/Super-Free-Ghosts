@@ -25,7 +25,6 @@ void Flame::move(sf::Time deltaTime, Room &room, settings_t const &settings)
 
 	// Same goes for if we're still in the air despite the above
 	if (placeFree(x, y + 1, room)) del = true;
-	else assert(placeFree(x, y, room)); // We should not be in a solid now, need I say it
 
 	lifetime -= deltaTime.asMilliseconds();
 	if (lifetime <= 0) kill(room, settings);
