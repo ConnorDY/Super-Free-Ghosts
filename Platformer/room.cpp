@@ -2,8 +2,7 @@
 #include "object.h"
 #include <cassert>
 #include <algorithm>
-
-#define M_PI 3.14159265358979323846
+#include <cmath>
 
 Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t&)
 	: State(stm), soundManager(som),
