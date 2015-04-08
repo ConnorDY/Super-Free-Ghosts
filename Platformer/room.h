@@ -2,21 +2,20 @@
 #define ROOM_H
 
 class Object;
-
 #include "state.h"
 #include "object.h"
 
 class Room : public State {
 	private:
-		SoundManager &soundManager;					// Sound manager for use by objects in this room
+		SoundManager &soundManager;                 // Sound manager for use by objects in this room
 	protected:
-		std::vector<Object*> objects;				// Objects present in this room
-		Object *view_follow;						// The object to follow around with the camera
-		sf::Time deltaTime;							// The time delta between the most recent update() and the previous
-		int const width, height;					// The width and height of the room
-		sf::Sprite dirtSprite, bg02, bg03, under01;	// The sprite to paint the heightmap with (and decorative sprites)
-		std::vector<int> heightmap;					// Height map. Index = x-value, value = y-value (from 0 = bottom)
-													// However, 0 will be non-colliding for simplicity's sake
+		std::vector<Object*> objects;               // Objects present in this room
+		Object *view_follow;                        // The object to follow around with the camera
+		sf::Time deltaTime;                         // The time delta between the most recent update() and the previous
+		int const width, height;                    // The width and height of the room
+		sf::Sprite dirtSprite, bg02, bg03, under01; // The sprite to paint the heightmap with (and decorative sprites)
+		std::vector<int> heightmap;                 // Height map. Index = x-value, value = y-value (from 0 = bottom)
+		                                            // However, 0 will be non-colliding for simplicity's sake
 		std::vector<Object*> spawnQueue;            // Queue of objects to be spawned next tick
 
 		void ensureHeightmapWidth(size_t width);

@@ -23,7 +23,7 @@ class DamageableObject : public Object
 			bool solid = true,
 			float gravity = 0,
 			float maxFallSpeed = 0
-			);
+		);
 		virtual ~DamageableObject();
 
 		// Mutators

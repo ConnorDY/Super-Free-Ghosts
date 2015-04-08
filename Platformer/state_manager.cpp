@@ -1,5 +1,4 @@
 #include "state_manager.h"
-
 #include "menu_state.h"
 
 StateManager::StateManager(TextureManager &tM, SoundManager &sM, settings_t &stg)

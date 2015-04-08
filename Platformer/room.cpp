@@ -20,9 +20,9 @@ Room::~Room()
 	end();
 }
 
-bool depthSort(Object* i, Object* j)
+static bool depthSort(Object const* i, Object const* j)
 {
-	return (i->getDepth() > j->getDepth());
+	return i->getDepth() > j->getDepth();
 }
 
 void Room::ensureHeightmapWidth(size_t width)

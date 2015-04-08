@@ -8,8 +8,8 @@ Player::Player(TextureManager &tm, float x, float y)
 	: DamageableObject(
 			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
 			0.0f, 0.0f,     // dx, dy
-			false,           // solid
-			0.0014f / 2.0f,       // Gravity
+			false,          // solid
+			0.0014f / 2.0f, // Gravity
 			0.2f            // Fall speed
 	  ),
 	  textureManager(tm),
