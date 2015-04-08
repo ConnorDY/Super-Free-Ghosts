@@ -1,5 +1,6 @@
 #include "flame.h"
 #include "room.h"
+#include "assert.h"
 
 Flame::Flame(float x, float y, int dir, int remaining, TextureManager &textureManager)
 	: Weapon(x, y, 8, 8, 0, 0, 0, 0, textureManager),
@@ -19,6 +20,7 @@ void Flame::move(sf::Time deltaTime, Room &room, settings_t const &settings)
 
 	auto oldY = y;
 	pushOutOfSolids(room);
+	assert(placeFree(x, y, room)); // We should not be in a solid now, need I say it
 	// If we pushed too far up, kill ourselves (because we are too far down in a wall and should not jump to its top)
 	if (oldY - y > maxYAdjust) del = true;  // Do not call onDeath(), do not want a respawn here
 
