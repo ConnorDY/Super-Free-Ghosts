@@ -247,11 +247,11 @@ void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const 
 		float adjx = -(float)getDir() * 8.0f, adjy = 0.0f;
 		if (crouching)
 		{
-			adjx = -(float)getDir() * 4.0f;
+			adjx = -(float)getDir() * 10.0f;
 			adjy = 9.0f;
 		}
 
-		if (getDir() < 0) adjx -= 30;
+		if (getDir() < 0) adjx += 10;
 
 		room.spawn(new Torch(x + adjx, y + 6.0f + adjy, dir, textureManager));
 
