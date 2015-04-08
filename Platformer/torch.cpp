@@ -3,11 +3,11 @@
 #include "room.h"
 // vim: noet
 
-Torch::Torch(float x, float y, TextureManager &textureManager)
+Torch::Torch(float x, float y, int dir, TextureManager &textureManager)
 	: Weapon(
-			x, y, 8, 8,    // x, y, w, h
-			0.04f, 0.04f,  // dx, dy
-			0.0007f, 0.2f, // gravity, terminal velocity
+			x, y, 8, 8,          // x, y, w, h
+			0.04f * dir, 0.04f,  // dx, dy
+			0.0007f, 0.2f,       // gravity, terminal velocity
 			textureManager
 	)
 {

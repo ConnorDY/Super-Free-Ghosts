@@ -7,7 +7,7 @@
 class Torch : public Weapon
 {
 	public:
-		Torch(float x, float y, TextureManager &textureManager);
+		Torch(float x, float y, int dir, TextureManager &textureManager);
 		virtual ~Torch();
 
 		virtual void onDeath(Room &room, const settings_t &settings);
