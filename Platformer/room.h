@@ -3,7 +3,6 @@
 
 class Object;
 #include "state.h"
-#include "object.h"
 
 class Room : public State {
 	private:

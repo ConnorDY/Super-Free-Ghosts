@@ -1,4 +1,7 @@
 #include "menu_state.h"
+#include "level01_state.h"
+#include "level_editor_state.h"
+#include "options_state.h"
 
 Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager)
 	: State(sM)

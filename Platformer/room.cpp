@@ -1,4 +1,5 @@
 #include "room.h"
+#include "object.h"
 #include <cassert>
 #include <algorithm>
 

@@ -1,4 +1,5 @@
 #include "object.h"
+#include "room.h"
 
 Object::Object(float x, float y, float width, float height, float dx, float dy, bool solid, float gravity, float maxFallSpeed)
 	: x(x), y(y),

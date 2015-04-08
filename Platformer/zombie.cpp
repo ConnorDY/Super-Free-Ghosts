@@ -1,4 +1,5 @@
 #include "zombie.h"
+#include "room.h"
 
 #define ZOMBIE_WIDTH  24
 #define ZOMBIE_HEIGHT 40

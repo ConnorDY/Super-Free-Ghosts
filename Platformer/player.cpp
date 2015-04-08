@@ -1,4 +1,5 @@
 #include "player.h"
+#include "room.h"
 
 #define PLAYER_WIDTH  17
 #define PLAYER_HEIGHT 35
