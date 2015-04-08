@@ -155,6 +155,7 @@ void Object::pushOutOfSolids(Room const &room)
 
 void Object::kill(Room &room, const settings_t &settings)
 {
+	if (del) return;
 	onDeath(room, settings);
 	del = true;
 }
