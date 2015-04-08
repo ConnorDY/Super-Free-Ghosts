@@ -1,5 +1,6 @@
 #include "player.h"
 #include "room.h"
+#include "torch.h"
 
 #define PLAYER_WIDTH  17
 #define PLAYER_HEIGHT 35
@@ -252,7 +253,7 @@ void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const 
 
 		if (getDir() < 0) adjx -= 30;
 
-		room.spawn(new Projectile(x + adjx, y + 6.0f + adjy, dir, textureManager));
+		room.spawn(new Torch(x + adjx, y + 6.0f + adjy, dir, textureManager));
 
 		if (settings.sound_on) soundManager.playSound("throw");
 	}

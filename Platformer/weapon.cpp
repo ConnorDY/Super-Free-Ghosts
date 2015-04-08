@@ -41,6 +41,7 @@ void Weapon::move(sf::Time deltaTime, Room&, settings_t const&)
 void Weapon::update(sf::Time deltaTime, Room &room, settings_t const &settings)
 {
 	move(deltaTime, room, settings);
+	if (del) return; // Don't do anything if our move killed us
 
 	for (Object* col : allCollisions(x, y, room))
 	{

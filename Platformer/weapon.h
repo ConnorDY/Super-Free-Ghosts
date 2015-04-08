@@ -4,9 +4,8 @@
 #include "object.h"
 
 class Weapon : public Object {
-	private:
-		sf::RectangleShape rectangle;
 	protected:
+		sf::RectangleShape rectangle;
 		bool isOutsideView(Room const &room, float leeway = 30) const;
 	public:
 		Weapon(float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, TextureManager &textureManager);
