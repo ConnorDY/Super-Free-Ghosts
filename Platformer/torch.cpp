@@ -8,7 +8,7 @@ Torch::Torch(float x, float y, int dir, TextureManager &textureManager)
 			x, y, 8, 8,          // x, y, w, h
 			0.12f * dir, -0.18f,  // dx, dy
 			0.0007f, 0.2f,       // gravity, terminal velocity
-			textureManager
+			12, textureManager
 	)
 {
 }

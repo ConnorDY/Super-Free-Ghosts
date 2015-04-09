@@ -3,9 +3,9 @@
 #include "chest.h"
 #include "room.h"
 
-Weapon::Weapon(float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, TextureManager &textureManager)
+Weapon::Weapon(float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage, TextureManager &textureManager)
 	: Object(x, y, width, height, dx, dy, false, gravity, maxFallSpeed),
-	  rectangle(sf::Vector2f(width, height))
+		rectangle(sf::Vector2f(width, height)), dmg(damage)
 {
 	sprite.setTexture(textureManager.getRef("weapons"));
 	sprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
@@ -48,13 +48,13 @@ void Weapon::update(sf::Time deltaTime, Room &room, settings_t const &settings)
 		// Destroy weapon if it hits an enemy and destroy the enemy
 		if (dynamic_cast<Zombie*>(col) != nullptr)
 		{
-			if (!((Zombie*)col)->getInCasket()) ((Zombie*)col)->damage(room, settings);
+			if (!((Zombie*)col)->getInCasket()) ((Zombie*)col)->damage(dmg, room, settings);
 			kill(room, settings);
 		}
 		// Destroy weapon if it hits a chest and damage the chest
 		else if (dynamic_cast<Chest*>(col) != nullptr)
 		{
-			((Chest*)col)->damage(room, settings);
+			((Chest*)col)->damage(dmg, room, settings);
 			kill(room, settings);
 		}
 	}

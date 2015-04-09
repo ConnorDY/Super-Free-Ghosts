@@ -3,8 +3,8 @@
 #include "assert.h"
 
 Flame::Flame(float x, float y, int dir, int remaining, TextureManager &textureManager)
-	: Weapon(x, y, 8, 8, 0, 0, 0, 0, textureManager),
-	  remaining(remaining), lifetime(100), dir(dir)
+	: Weapon(x, y, 8, 8, 0, 0, 0, 0, 5, textureManager),
+		remaining(remaining), lifetime(100), dir(dir)
 {
 	rectangle.setFillColor(sf::Color(255,0,0,128));
 }

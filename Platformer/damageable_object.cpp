@@ -4,10 +4,8 @@ DamageableObject::DamageableObject(float x, float y, float width, float height, 
 	: Object(
 	x, y, width, height,
 	dx, dy, solid,
-	gravity, maxFallSpeed)
+	gravity, maxFallSpeed), health(10), team(Team::Neutral)
 {
-	health = 1;
-	team = Team::Neutral;
 }
 
 DamageableObject::~DamageableObject()
@@ -20,8 +18,8 @@ void DamageableObject::setHealth(int h)
 	health = h;
 }
 
-void DamageableObject::damage(Room &room, const settings_t &settings)
+void DamageableObject::damage(int dmg, Room &room, const settings_t &settings)
 {
-	if (health > 1) health--;
-	else kill(room, settings);
+	health -= dmg;
+	if (health <= 0) kill(room, settings);
 }

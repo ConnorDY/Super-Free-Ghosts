@@ -30,7 +30,7 @@ class DamageableObject : public Object
 		void setHealth(int h);
 
 		// Actions
-		virtual void damage(Room &room, const settings_t &settings);
+		virtual void damage(int dmg, Room &room, const settings_t &settings);
 	private:
 		int health;
 		Team::Alignment team;
