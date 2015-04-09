@@ -2,9 +2,10 @@
 #include "room.h"
 #include "torch.h"
 
+#include "blood_particle.h"
+
 #define PLAYER_WIDTH  17
 #define PLAYER_HEIGHT 35
-
 
 Player::Player(TextureManager &tm, float x, float y)
 	: DamageableObject(
@@ -394,6 +395,9 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 	else if (!invincible) visible = true;
 
 	checkDoubleJumpedObjects(room);
+
+	// I'm so sorry
+	room.spawn(new BloodParticle(x + 2, y + 10, 1));
 
 	// Animation
 	if (dead) setAnimation("die");

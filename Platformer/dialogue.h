@@ -1,8 +1,6 @@
 #ifndef DIALOGUE_H
 #define DIALOGUE_H
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 #include <string>
 #include <iostream>
 

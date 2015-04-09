@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="block.cpp" />
+    <ClCompile Include="blood_particle.cpp" />
     <ClCompile Include="chest.cpp" />
     <ClCompile Include="damageable_object.cpp" />
     <ClCompile Include="dialogue.cpp" />
@@ -89,6 +90,7 @@
     <ClCompile Include="obelisk.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="options_state.cpp" />
+    <ClCompile Include="particle.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="projectile.cpp" />
     <ClCompile Include="room.cpp" />
@@ -102,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
+    <ClInclude Include="blood_particle.h" />
     <ClInclude Include="chest.h" />
     <ClInclude Include="damageable_object.h" />
     <ClInclude Include="dialogue.h" />
@@ -114,6 +117,7 @@
     <ClInclude Include="obelisk.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="options_state.h" />
+    <ClInclude Include="particle.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="projectile.h" />
     <ClInclude Include="room.h" />

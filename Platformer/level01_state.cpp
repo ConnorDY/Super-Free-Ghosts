@@ -138,7 +138,7 @@ void Level01_State::drawForeground(sf::RenderWindow &window)
 	under01.setPosition(sf::Vector2f(320, 275));
 	window.draw(under01);
 
-	dialogue->draw(window, getView());
+	//dialogue->draw(window, getView());
 }
 
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
