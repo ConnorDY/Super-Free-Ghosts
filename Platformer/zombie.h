@@ -1,7 +1,6 @@
 #ifndef ZOMBIE_H
 #define ZOMBIE_H
 
-#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <stdlib.h>
 #include <math.h>
@@ -9,12 +8,7 @@
 #include <vector>
 #include <map>
 
-#include "globals.h"
-#include "texture_manager.h"
-#include "sound_manager.h"
 #include "damageable_object.h"
-#include "player.h"
-#include "obelisk.h"
 
 class Zombie : public DamageableObject
 {

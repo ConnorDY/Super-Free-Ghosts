@@ -1,5 +1,10 @@
 #include "level_editor_state.h"
+#include "globals.h"
 #include "menu_state.h"
+#include "projectile.h"
+#include "zombie.h"
+#include "obelisk.h"
+#include "block.h"
 
 #define GRID_SCALE 8
 

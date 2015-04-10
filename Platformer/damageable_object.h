@@ -1,8 +1,6 @@
 #ifndef DAMAGEABLE_OBJECT_H
 #define DAMAGEABLE_OBJECT_H
 
-#include <SFML/Graphics.hpp>
-#include "texture_manager.h"
 #include "object.h"
 #include "settings.h"
 

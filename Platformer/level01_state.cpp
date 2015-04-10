@@ -1,5 +1,11 @@
 #include "level01_state.h"
+#include "globals.h"
 #include "menu_state.h"
+#include "projectile.h"
+#include "zombie.h"
+#include "chest.h"
+#include "obelisk.h"
+#include "block.h"
 
 Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings)
 	: Room(sM, som, textureManager, settings), restart(false)
@@ -170,6 +176,8 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 	int moveH = inputHandler.checkInput(InputHandler::Input::Right) - inputHandler.checkInput(InputHandler::Input::Left); // Horizontal Movement
 	bool crouching = inputHandler.checkInput(InputHandler::Input::Down); // Crouching
 
+	setDimmed(player->isTransforming());
+
 	while (window.pollEvent(event))
 	{
 		switch (event.type)
@@ -190,6 +198,8 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 		if (inputHandler.checkInput(InputHandler::Input::Up, event)) player->jump(moveH, soundManager, settings); // Jumping
 		if (inputHandler.checkInput(InputHandler::Input::Action, event)) player->throwWeapon(*this, player->getDir(), soundManager, settings); // Throw Weapon
+
+		if (inputHandler.checkInput(InputHandler::Input::Dialogue, event)) player->upgrade(1);
 	}
 
 	player->move(moveH);

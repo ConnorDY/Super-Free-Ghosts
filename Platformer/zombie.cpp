@@ -1,5 +1,8 @@
 #include "zombie.h"
+#include "globals.h"
 #include "room.h"
+#include "player.h"
+#include "obelisk.h"
 
 #define ZOMBIE_WIDTH  24
 #define ZOMBIE_HEIGHT 40

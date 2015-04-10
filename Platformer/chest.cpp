@@ -1,4 +1,5 @@
 #include "chest.h"
+#include "globals.h"
 #include "obelisk.h"
 
 Chest::Chest(TextureManager &textureManager, float x, float y)

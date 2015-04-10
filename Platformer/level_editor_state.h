@@ -5,13 +5,8 @@
 #include <algorithm>
 #include <vector>
 
-#include "globals.h"
 #include "settings.h"
 #include "player.h"
-#include "projectile.h"
-#include "zombie.h"
-#include "obelisk.h"
-#include "block.h"
 #include "room.h"
 
 class Level_Editor_State : public Room

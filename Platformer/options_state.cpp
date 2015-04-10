@@ -1,4 +1,5 @@
 #include "options_state.h"
+#include "globals.h"
 #include "menu_state.h"
 
 Options_State::Options_State(StateManager &sM, const settings_t &settings)

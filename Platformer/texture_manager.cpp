@@ -1,4 +1,5 @@
 #include "texture_manager.h"
+#include "globals.h"
 
 TextureManager::TextureManager()
 {

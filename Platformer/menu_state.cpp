@@ -1,4 +1,5 @@
 #include "menu_state.h"
+#include "globals.h"
 #include "level01_state.h"
 #include "level_editor_state.h"
 #include "options_state.h"

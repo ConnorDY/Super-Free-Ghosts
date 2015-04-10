@@ -7,7 +7,6 @@
 #include "texture_manager.h"
 #include "sound_manager.h"
 #include "input_handler.h"
-#include "globals.h"
 #include "settings.h"
 
 class State

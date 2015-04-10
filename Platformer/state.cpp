@@ -1,4 +1,5 @@
 #include "state.h"
+#include "globals.h"
 
 State::State(StateManager &sm) : stateManager(sm)
 {

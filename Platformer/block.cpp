@@ -1,4 +1,5 @@
 #include "block.h"
+#include "globals.h"
 
 Block::Block(TextureManager &textureManager, float x, float y, float width, float height)
 	: Object(

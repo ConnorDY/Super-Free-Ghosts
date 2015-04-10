@@ -1,4 +1,5 @@
 #include "weapon.h"
+#include "globals.h"
 #include "zombie.h"
 #include "chest.h"
 #include "room.h"

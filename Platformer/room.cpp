@@ -1,5 +1,7 @@
 #include "room.h"
+#include "globals.h"
 #include "object.h"
+#include "player.h"
 #include <cassert>
 #include <algorithm>
 #include <cmath>
@@ -7,13 +9,16 @@
 Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t&)
 	: State(stm), soundManager(som),
 	  width(2048), height(VIEW_HEIGHT),
-	  textureManager(tm)
+	  textureManager(tm), dimmed(false)
 {
 	setView(sf::View(sf::Vector2f(VIEW_WIDTH / 2.0, VIEW_HEIGHT / 2.0), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT)));
 	dirtSprite.setTexture(tm.getRef("tiles"));
 	bg02.setTexture(tm.getRef("bg02"));
 	bg03.setTexture(tm.getRef("bg03"));
 	under01.setTexture(tm.getRef("under01"));
+
+	rect.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
+	rect.setFillColor(sf::Color(0, 0, 0, 150));
 }
 
 Room::~Room()
@@ -180,6 +185,11 @@ void Room::reset(TextureManager &textureManager, const settings_t &settings)
 	start(textureManager, settings);
 }
 
+void Room::setDimmed(bool d)
+{
+	dimmed = d;
+}
+
 void Room::updateView(sf::RenderWindow &window)
 {
 	if (view_follow)
@@ -219,7 +229,9 @@ void Room::drawBackground(sf::RenderWindow &window)
 void Room::drawSprites(sf::RenderWindow &window)
 {
 	for (auto object : objects)
-		object->draw(window);
+	{
+		if (!dimmed || dynamic_cast<Player*>(object) == nullptr) object->draw(window);
+	}
 }
 
 void Room::drawForeground(sf::RenderWindow &window)
@@ -234,6 +246,17 @@ void Room::draw(sf::RenderWindow &window)
 	drawBackground(window);
 	drawSprites(window);
 	drawForeground(window);
+
+	if (dimmed)
+	{
+		rect.setPosition(getViewX(), getViewY());
+		window.draw(rect);
+
+		for (auto object : objects)
+		{
+			if (dynamic_cast<Player*>(object) != nullptr) object->draw(window);
+		}
+	}
 }
 
 void Room::drawTree(int x, int y, sf::RenderWindow &window)

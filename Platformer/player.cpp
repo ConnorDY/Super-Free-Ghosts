@@ -1,7 +1,8 @@
 #include "player.h"
+#include "globals.h"
 #include "room.h"
 #include "torch.h"
-
+#include "projectile.h"
 #include "blood_particle.h"
 
 #define PLAYER_WIDTH  17
@@ -20,7 +21,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  animation("still"), texture("player3"),
 	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(2),
-	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true)
+	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true), transforming(false)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef(texture));
@@ -82,6 +83,15 @@ Player::Player(TextureManager &tm, float x, float y)
 	animations["die"].emplace_back(50, 50, 50, 50);
 	animations["die"].emplace_back(100, 50, 50, 50);
 
+	// Transformation animation
+	for (unsigned int i = 0; i < 2; i++)
+	{
+		for (unsigned int j = 0; j < 16; j++)
+		{
+			animations["transform1"].emplace_back(i * 182, j * 136, 182, 136);
+		}
+	}
+	
 	// Depth and Health
 	setDepth(-3);
 	setHealth(2);
@@ -109,7 +119,6 @@ void Player::damage(int otherX)
 	// Decrease armour
 	if (armour > 0)
 	{
-		changeTexture(textureManager, "player1");
 		armour = 0;
 
 		invincible = true;
@@ -117,10 +126,12 @@ void Player::damage(int otherX)
 	}
 	else
 	{
-		changeTexture(textureManager, "player0");
+		armour = -1;
 		setDepth(-1);
 		dead = true;
 	}
+
+	fixTexture();
 
 	// Knock player back
 	dx = dir * .1f;
@@ -131,6 +142,14 @@ void Player::damage(int otherX)
 
 	// Flip Player
 	sprite.setScale(sf::Vector2f(sprite.getScale().x * -1, 1.0f));
+}
+
+void Player::upgrade(int a)
+{
+	transforming = true;
+	invincible = true;
+	armour = a;
+	changeTexture(textureManager, "transform1");
 }
 
 
@@ -154,6 +173,11 @@ bool Player::getInvincible() const
 	return invincible;
 }
 
+bool Player::isTransforming() const
+{
+	return transforming;
+}
+
 sf::FloatRect Player::getRect() const
 {
 	if (crouching) return sf::FloatRect(x, y + 15.0f, width, height - 15.0f);
@@ -169,7 +193,7 @@ sf::FloatRect Player::getRect() const
 /* Actions */
 void Player::draw(sf::RenderWindow &window)
 {
-	if (!visible) sprite.setColor(sf::Color(255, 255, 255, 125));
+	if (!visible && !transforming) sprite.setColor(sf::Color(255, 255, 255, 125));
 	else sprite.setColor(sf::Color(255, 255, 255, 255));
 
 	sf::FloatRect boundingRect = getRect();
@@ -181,10 +205,20 @@ void Player::draw(sf::RenderWindow &window)
 	
 	float adjx = -15.0f, adjy = -15.0f;
 
-	if (!crouching) adjx -= 2;
-	if (sprite.getScale().x < 0.0f) adjx = boundingRect.width - adjx;
+	if (transforming)
+	{
+		adjx = -76.0f;
+		adjy = -100.0f;
 
-	if (rolling) adjy += 7;
+		if (sprite.getScale().x < 0.0f) adjx = boundingRect.width - adjx;
+	}
+	else
+	{
+		if (!crouching) adjx -= 2;
+		if (sprite.getScale().x < 0.0f) adjx = boundingRect.width - adjx;
+
+		if (rolling) adjy += 7;
+	}
 
 	sprite.setPosition(x + adjx, y + adjy);
 
@@ -202,7 +236,7 @@ void Player::move(int dir)
 
 void Player::jump(int dir, SoundManager &soundManager, const settings_t &settings)
 {
-	if (dead) return;
+	if (dead || transforming) return;
 
 	if (jumps < 2)
 	{
@@ -230,7 +264,7 @@ void Player::jump(int dir, SoundManager &soundManager, const settings_t &setting
 
 void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const settings_t &settings)
 {
-	if (dead || hit) return;
+	if (dead || hit || transforming) return;
 
 	if (!midThrow)
 	{
@@ -254,7 +288,7 @@ void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const 
 
 		if (getDir() < 0) adjx += 10;
 
-		room.spawn(new Torch(x + adjx, y + 6.0f + adjy, dir, textureManager));
+		room.spawn(new Projectile(x + adjx, y + 6.0f + adjy, dir, textureManager));
 
 		if (settings.sound_on) soundManager.playSound("throw");
 	}
@@ -297,88 +331,92 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 
 	auto& soundManager = room.getSoundManager();
 
-	// Gravity
-	if (placeFree(x, y + 1, room))
+	if (!transforming)
 	{
-		dy += gravity * (float)mstime;
-
-		if (!rolling && armour == 0 && jumps == 2 && dx != 0 && dy > 0 && placeFree(x, y + 1, room) && !placeFree(x, y + 6, room))
+		// Gravity
+		if (placeFree(x, y + 1, room))
 		{
-			rolling = true;
-			rollTimer.restart();
-		}
-	}
-	else if (dy > 0.0f)
-	{
-		dy = 0;
+			dy += gravity * (float)mstime;
 
-		if (jumped)
-		{
-			if (hit)
+			if (!rolling && armour == 0 && jumps == 2 && dx != 0 && dy > 0 && placeFree(x, y + 1, room) && !placeFree(x, y + 6, room))
 			{
-				if (!dead) sprite.setScale(sf::Vector2f(sprite.getScale().x * -1, 1.0f));
-				hit = false;
+				rolling = true;
+				rollTimer.restart();
 			}
-
-			jumped = false;
-			flipped = false;
-			jumps = 0;
 		}
-
-		if (dead) dx = 0;
-		else if (settings.sound_on) soundManager.playSound("land");
-	}
-	else if (dy < 0 && !placeFree(x, y - 1, room))
-	{
-		dy = 0; // Hitting head on the ceiling
-		// TODO play sound?
-	}
-
-	// Update Y
-	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
-	{
-		float j = copysign(i, dy);
-		if (placeFree(x, y + j, room))
+		else if (dy > 0.0f)
 		{
-			y += j;
-			break;
-		}
-	}
+			dy = 0;
 
-	// Update X
-	if ((dy == 0.0f && !midThrow && !crouching) || jumped)
-	{
-		for (float i = fabs(dx) * (float)mstime; i > 0; i--)
-		{
-			float j = copysign(i, dx);
-			bool brk = false;
-
-			float ks = 0;
-			float ke = 0;
-
-			if (dy == 0)
+			if (jumped)
 			{
-				ks = -4;
-				ke = 4;
-			}
-
-			for (float k = ks; k <= ke; k++)
-			{
-				if (placeFree(x + j, y - k, room))
+				if (hit)
 				{
-					x += j;
-					y -= k;
-
-					brk = true;
-					break;
+					if (!dead) sprite.setScale(sf::Vector2f(sprite.getScale().x * -1, 1.0f));
+					hit = false;
 				}
+
+				jumped = false;
+				flipped = false;
+				jumps = 0;
 			}
 
-			if (brk) break;
+			if (dead) dx = 0;
+			else if (settings.sound_on) soundManager.playSound("land");
 		}
-	}
+		else if (dy < 0 && !placeFree(x, y - 1, room))
+		{
+			dy = 0; // Hitting head on the ceiling
+			// TODO play sound?
+		}
 
-	pushOutOfSolids(room);
+		// Update Y
+		for (float i = fabs(dy) * (float)mstime; i > 0; i--)
+		{
+			float j = copysign(i, dy);
+			if (placeFree(x, y + j, room))
+			{
+				y += j;
+				break;
+			}
+		}
+
+		// Update X
+		if ((dy == 0.0f && !midThrow && !crouching) || jumped)
+		{
+			for (float i = fabs(dx) * (float)mstime; i > 0; i--)
+			{
+				float j = copysign(i, dx);
+				bool brk = false;
+
+				float ks = 0;
+				float ke = 0;
+
+				if (dy == 0)
+				{
+					ks = -4;
+					ke = 4;
+				}
+
+				for (float k = ks; k <= ke; k++)
+				{
+					if (placeFree(x + j, y - k, room))
+					{
+						x += j;
+						y -= k;
+
+						brk = true;
+						break;
+					}
+				}
+
+				if (brk) break;
+			}
+		}
+
+		pushOutOfSolids(room);
+	}
+	else invincibleTimer.restart();
 
 	// Jump, Throw, Roll, and Invicibility Timers
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= .2) midJump = false;
@@ -396,11 +434,9 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 
 	checkDoubleJumpedObjects(room);
 
-	// I'm so sorry
-	room.spawn(new BloodParticle(x + 2, y + 10, 1));
-
 	// Animation
 	if (dead) setAnimation("die");
+	else if (transforming) setAnimation("transform1");
 	else if (hit) setAnimation("hit");
 	else if (rolling) setAnimation("roll");
 	else if (crouching)
@@ -471,6 +507,12 @@ void Player::updateAnimation(sf::Time deltaTime)
 
 		frame += deltaTime.asSeconds() * speed;
 		if (animation == "die" && frame > (float)(frames - 1)) frame = (float)(frames - 1);
+		else if (transforming && frame > (float)(frames - 1))
+		{
+			frame = (float)(frames - 1);
+			transforming = false;
+			fixTexture();
+		}
 		else frame = fmodf(frame, (float)frames); // Loop animation if it plays past "frames"
 	}
 
@@ -482,4 +524,26 @@ void Player::changeTexture(TextureManager &textureManager, std::string tex)
 {
 	texture = tex;
 	sprite.setTexture(textureManager.getRef(texture));
+}
+
+void Player::fixTexture()
+{
+	switch (armour)
+	{
+		default:
+			changeTexture(textureManager, "player0");
+			break;
+
+		case 0:
+			changeTexture(textureManager, "player1");
+			break;
+
+		case 1:
+			changeTexture(textureManager, "player2");
+			break;
+
+		case 2:
+			changeTexture(textureManager, "player3");
+			break;
+	}
 }

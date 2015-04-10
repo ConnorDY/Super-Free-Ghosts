@@ -9,12 +9,10 @@
 #include <vector>
 #include <map>
 
-#include "globals.h"
 #include "settings.h"
 #include "texture_manager.h"
 #include "sound_manager.h"
 #include "damageable_object.h"
-#include "projectile.h"
 
 class Player : public DamageableObject
 {
@@ -26,7 +24,7 @@ class Player : public DamageableObject
 		std::string animation, texture;
 		float moveSpeed, jumpSpeed, frame, throwTime;
 		int jumps, armour;
-		bool jumped, midJump, midThrow, rolling, flipped, crouching, invincible, hit, dead, visible;
+		bool jumped, midJump, midThrow, rolling, flipped, crouching, invincible, hit, dead, visible, transforming;
 		sf::Clock jumpTimer, throwTimer, rollTimer, invincibleTimer, flashTimer;
 		double total_time = 0.0;
 		int xJumpedFrom;
@@ -34,6 +32,7 @@ class Player : public DamageableObject
 		// Actions
 		void updateAnimation(sf::Time deltaTime);
 		void changeTexture(TextureManager &textureManager, std::string tex);
+		void fixTexture();
 		void checkDoubleJumpedObjects(Room &room);
 		std::pair<int, int> getJumpPoints() const;
 	public:
@@ -42,11 +41,13 @@ class Player : public DamageableObject
 		// Mutators
 		void setCrouching(bool c);
 		void damage(int otherX);
+		void upgrade(int a);
 		
 		// Accesors
 		int getDir() const;
 		int isAlive() const;
 		bool getInvincible() const;
+		bool isTransforming() const;
 		virtual sf::FloatRect getRect() const;
 
 		// Actions

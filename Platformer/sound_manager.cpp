@@ -1,4 +1,5 @@
 #include "sound_manager.h"
+#include "globals.h"
 
 SoundManager::SoundManager()
 {

@@ -1,7 +1,6 @@
 #ifndef OBELISK_H
 #define OBELISK_H
 
-#include <SFML/Graphics.hpp>
 #include <math.h>
 
 #include "object.h"

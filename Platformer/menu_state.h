@@ -4,7 +4,6 @@
 #include <SFML/Audio.hpp>
 #include <vector>
 
-#include "globals.h"
 #include "settings.h"
 #include "state.h"
 

@@ -6,7 +6,6 @@
 #include <string>
 #include <memory>
 
-#include "globals.h"
 #include "settings.h"
 #include "input_handler.h"
 #include "texture_manager.h"

@@ -7,6 +7,8 @@ class Object;
 class Room : public State {
 	private:
 		SoundManager &soundManager;                 // Sound manager for use by objects in this room
+		sf::RectangleShape rect;
+		bool dimmed;
 	protected:
 		std::vector<Object*> objects;               // Objects present in this room
 		Object *view_follow;                        // The object to follow around with the camera
@@ -40,6 +42,7 @@ class Room : public State {
 		virtual void start(TextureManager &textureManager, const settings_t &settings) = 0;
 		virtual void end();
 		void reset(TextureManager &textureManager, const settings_t &settings);
+		void setDimmed(bool d);
 		virtual void updateView(sf::RenderWindow &window);
 		virtual void drawBackground(sf::RenderWindow &window);
 		virtual void drawSprites(sf::RenderWindow &window);

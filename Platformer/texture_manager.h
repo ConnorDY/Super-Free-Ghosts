@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <map>
-#include "globals.h"
 
 class TextureManager
 {

@@ -4,7 +4,6 @@
 #include <string>
 #include <iostream>
 
-#include "globals.h"
 #include "input_handler.h"
 
 class Dialogue

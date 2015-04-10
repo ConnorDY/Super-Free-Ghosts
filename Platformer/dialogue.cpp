@@ -1,4 +1,5 @@
 #include "dialogue.h"
+#include "globals.h"
 
 Dialogue::Dialogue(const std::vector<std::string> lines)
 {

@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "globals.h"
 #include "texture_manager.h"
 #include "settings.h"
 class Room;
