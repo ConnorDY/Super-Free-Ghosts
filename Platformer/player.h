@@ -24,8 +24,8 @@ class Player : public DamageableObject
 		std::string animation, texture;
 		float moveSpeed, jumpSpeed, frame, throwTime;
 		int jumps, armour;
-		bool jumped, midJump, midThrow, rolling, flipped, crouching, invincible, hit, dead, visible, transforming;
-		sf::Clock jumpTimer, throwTimer, rollTimer, invincibleTimer, flashTimer;
+		bool jumped, midJump, midThrow, rolling, flipped, crouching, invincible, hit, dead, visible, transforming, fadeout;
+		sf::Clock jumpTimer, throwTimer, rollTimer, invincibleTimer, flashTimer, fadeTimer;
 		double total_time = 0.0;
 		int xJumpedFrom;
 
@@ -46,6 +46,7 @@ class Player : public DamageableObject
 		// Accesors
 		int getDir() const;
 		int isAlive() const;
+		double getFadeTime() const;
 		bool getInvincible() const;
 		bool isTransforming() const;
 		virtual sf::FloatRect getRect() const;

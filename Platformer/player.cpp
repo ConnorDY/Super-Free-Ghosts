@@ -21,7 +21,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  animation("still"), texture("player3"),
 	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(2),
-	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true), transforming(false)
+	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true), transforming(false), fadeout(false)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef(texture));
@@ -168,6 +168,12 @@ int Player::isAlive() const
 	return !dead;
 }
 
+double Player::getFadeTime() const
+{
+	if (!fadeout) return 0;
+	else return fadeTimer.getElapsedTime().asMilliseconds();
+}
+
 bool Player::getInvincible() const
 {
 	return invincible;
@@ -209,16 +215,14 @@ void Player::draw(sf::RenderWindow &window)
 	{
 		adjx = -76.0f;
 		adjy = -100.0f;
-
-		if (sprite.getScale().x < 0.0f) adjx = boundingRect.width - adjx;
 	}
 	else
 	{
 		if (!crouching) adjx -= 2;
-		if (sprite.getScale().x < 0.0f) adjx = boundingRect.width - adjx;
-
 		if (rolling) adjy += 7;
 	}
+
+	if (sprite.getScale().x < 0.0f) adjx = boundingRect.width - adjx;
 
 	sprite.setPosition(x + adjx, y + adjy);
 
@@ -282,11 +286,11 @@ void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const 
 		float adjx = -(float)getDir() * 8.0f, adjy = 0.0f;
 		if (crouching)
 		{
-			adjx = -(float)getDir() * 10.0f;
+			adjx = -(float)getDir() * 14.0f;
 			adjy = 9.0f;
 		}
 
-		if (getDir() < 0) adjx += 10;
+		if (getDir() < 0) adjx -= 8.0f;
 
 		room.spawn(new Projectile(x + adjx, y + 6.0f + adjy, dir, textureManager));
 
@@ -423,6 +427,12 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 	else if (midThrow && throwTimer.getElapsedTime().asSeconds() >= throwTime) midThrow = false;
 	if (rolling && rollTimer.getElapsedTime().asSeconds() >= .22) rolling = false;
 	if (invincible && invincibleTimer.getElapsedTime().asSeconds() >= 2.) invincible = false;
+	if (fadeout && fadeTimer.getElapsedTime().asSeconds() >= .2)
+	{
+		fadeout = false;
+		transforming = false;
+		fixTexture();
+	}
 
 	// Invincibility
 	if (invincible && flashTimer.getElapsedTime().asMilliseconds() >= 50)
@@ -503,15 +513,19 @@ void Player::updateAnimation(sf::Time deltaTime)
 	// Adjust frame
 	if (frames > 1)
 	{
-		float speed = 60.0f / 5.2f;
+		float speed = 11.5384615385f;
+		if (transforming) speed = 12.5f;
 
 		frame += deltaTime.asSeconds() * speed;
 		if (animation == "die" && frame > (float)(frames - 1)) frame = (float)(frames - 1);
 		else if (transforming && frame > (float)(frames - 1))
 		{
 			frame = (float)(frames - 1);
-			transforming = false;
-			fixTexture();
+			if (!fadeout)
+			{
+				fadeTimer.restart();
+				fadeout = true;
+			}
 		}
 		else frame = fmodf(frame, (float)frames); // Loop animation if it plays past "frames"
 	}

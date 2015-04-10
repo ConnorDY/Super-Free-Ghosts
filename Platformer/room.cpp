@@ -18,7 +18,6 @@ Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const setti
 	under01.setTexture(tm.getRef("under01"));
 
 	rect.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
-	rect.setFillColor(sf::Color(0, 0, 0, 150));
 }
 
 Room::~Room()
@@ -249,13 +248,24 @@ void Room::draw(sf::RenderWindow &window)
 
 	if (dimmed)
 	{
-		rect.setPosition(getViewX(), getViewY());
-		window.draw(rect);
+		double fadeTime = 200.0;
+		Player* plyr = new Player(TextureManager(), 0, 0);
 
 		for (auto object : objects)
 		{
-			if (dynamic_cast<Player*>(object) != nullptr) object->draw(window);
+			if (dynamic_cast<Player*>(object) != nullptr)  plyr = (Player*)object;
 		}
+
+		if (plyr->isTransforming()) fadeTime = plyr->getFadeTime();
+		
+		if (fadeTime < 200.0)
+		{
+			rect.setFillColor(sf::Color(0, 0, 0, 150.0 * (200.0 - fadeTime) / 200.0));
+			rect.setPosition(getViewX(), getViewY());
+			window.draw(rect);
+		}
+
+		plyr->draw(window);
 	}
 }
 
@@ -315,8 +325,7 @@ void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandle
 	auto end = objects.end();
 	while (iter != end)
 	{
-		if (!(*iter)->shouldDelete())
-			(*iter)->update(deltaTime, *this, settings);
+		if (!(*iter)->shouldDelete() && (!dimmed || dynamic_cast<Player*>(*iter) != nullptr)) (*iter)->update(deltaTime, *this, settings);
 
 		if ((*iter)->shouldDelete())
 		{
