@@ -427,7 +427,7 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 	else if (midThrow && throwTimer.getElapsedTime().asSeconds() >= throwTime) midThrow = false;
 	if (rolling && rollTimer.getElapsedTime().asSeconds() >= .22) rolling = false;
 	if (invincible && invincibleTimer.getElapsedTime().asSeconds() >= 2.) invincible = false;
-	if (fadeout && fadeTimer.getElapsedTime().asSeconds() >= .2)
+	if (fadeout && fadeTimer.getElapsedTime().asSeconds() >= .4)
 	{
 		fadeout = false;
 		transforming = false;
