@@ -46,57 +46,26 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 
 
 	// Create Objects
-	Object *object = new Zombie(textureManager, 240.0f, 250.0f/*32.0f*/);
-	objects.push_back(object);
+	objects.push_back(new Zombie(textureManager, 240.0f, 250.0f));
+	objects.push_back(new Zombie(textureManager, 405.0f, 32.0f));
+	objects.push_back(new Zombie(textureManager, 625.0f, 32.0f));
+	objects.push_back(new Zombie(textureManager, 675.0f, 32.0f));
+	objects.push_back(new Zombie(textureManager, 725.0f, 32.0f));
+	objects.push_back(new Zombie(textureManager, 775.0f, 32.0f));
+	objects.push_back(new Zombie(textureManager, 1275.0f, 32.0f));
+	objects.push_back(new Zombie(textureManager, 1300.0f, 32.0f));
+	objects.push_back(new Zombie(textureManager, 1325.0f, 32.0f));
+	objects.push_back(new Zombie(textureManager, 1350.0f, 32.0f));
+	objects.push_back(new Zombie(textureManager, 1475.0f, 32.0f));
 
-	object = new Zombie(textureManager, 405.0f, 32.0f);
-	objects.push_back(object);
-
-	object = new Zombie(textureManager, 625.0f, 32.0f);
-	objects.push_back(object);
-
-	object = new Zombie(textureManager, 675.0f, 32.0f);
-	objects.push_back(object);
-
-	object = new Zombie(textureManager, 725.0f, 32.0f);
-	objects.push_back(object);
-
-	object = new Zombie(textureManager, 775.0f, 32.0f);
-	objects.push_back(object);
-
-	object = new Zombie(textureManager, 1275.0f, 32.0f);
-	objects.push_back(object);
-
-	object = new Zombie(textureManager, 1300.0f, 32.0f);
-	objects.push_back(object);
-
-	object = new Zombie(textureManager, 1325.0f, 32.0f);
-	objects.push_back(object);
-
-	object = new Zombie(textureManager, 1350.0f, 32.0f);
-	objects.push_back(object);
-
-	object = new Zombie(textureManager, 1475.0f, 32.0f);
-	objects.push_back(object);
-
-	objects.push_back(new Chest(textureManager, 287 + 5, 280));
-	object = new Obelisk(textureManager, 287.0f, 280.0f, 54.0f);
-	objects.push_back(object);
-
-	object = new Obelisk(textureManager, 660.0f, 280.0f, 50.0f);
-	objects.push_back(object);
-
-	object = new Obelisk(textureManager, 840.0f, 280.0f, 50.0f);
-	objects.push_back(object);
-
-	object = new Obelisk(textureManager, 1500.0f, 280.0f, 60.0f);
-	objects.push_back(object);
-
-	object = new Chest(textureManager, 120.0f, 234.0f);
-	objects.push_back(object);
+	objects.push_back(new Chest(textureManager, 5.0f, 234.0f));
+	objects.push_back(new Obelisk(textureManager, 287.0f, 280.0f, 54.0f));
+	objects.push_back(new Obelisk(textureManager, 660.0f, 280.0f, 50.0f));
+	objects.push_back(new Obelisk(textureManager, 840.0f, 280.0f, 50.0f));
+	objects.push_back(new Obelisk(textureManager, 1500.0f, 280.0f, 60.0f));
 
 	// Create player
-	player = new Player(textureManager, 15.0f, 234.0f);
+	player = new Player(textureManager, 45.0f, 234.0f);
 	objects.push_back(player);
 	view_follow = player;
 

@@ -173,8 +173,11 @@ double Player::getFadeTime() const
 {
 	double ret = fadeTimer.getElapsedTime().asMilliseconds();
 
-	if (ret > 400.0) ret = 400;
-	if (!fadeout) ret = 400.0 - ret;
+	if (!fadeout)
+	{
+		if (ret > 200.0) ret = 200;
+		ret = 200.0 - ret;
+	}
 	
 	return ret;
 }
@@ -187,6 +190,11 @@ bool Player::getInvincible() const
 bool Player::isTransforming() const
 {
 	return transforming;
+}
+
+bool Player::isFadingOut() const
+{
+	return fadeout;
 }
 
 sf::FloatRect Player::getRect() const

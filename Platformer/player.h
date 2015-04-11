@@ -49,6 +49,7 @@ class Player : public DamageableObject
 		double getFadeTime() const;
 		bool getInvincible() const;
 		bool isTransforming() const;
+		bool isFadingOut() const;
 		virtual sf::FloatRect getRect() const;
 
 		// Actions

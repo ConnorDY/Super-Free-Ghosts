@@ -24,6 +24,9 @@ class DamageableObject : public Object
 		);
 		virtual ~DamageableObject();
 
+		// Accessors
+		int getHealth() const;
+
 		// Mutators
 		void setHealth(int h);
 

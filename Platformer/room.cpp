@@ -249,6 +249,7 @@ void Room::draw(sf::RenderWindow &window)
 	if (dimmed)
 	{
 		double fadeTime = 400.0;
+		double fadeLength = 400.0;
 		Player* plyr = new Player(TextureManager(), 0, 0);
 
 		for (auto object : objects)
@@ -257,10 +258,11 @@ void Room::draw(sf::RenderWindow &window)
 		}
 
 		if (plyr->isTransforming()) fadeTime = plyr->getFadeTime();
+		if (plyr->isFadingOut()) fadeLength /= 2.0;
 		
-		if (fadeTime < 400.0)
+		if (fadeTime < fadeLength)
 		{
-			rect.setFillColor(sf::Color(0, 0, 0, 100.0 * (400.0 - fadeTime) / 400.0));
+			rect.setFillColor(sf::Color(0, 0, 0, 100.0 * (fadeLength - fadeTime) / fadeLength));
 			rect.setPosition(getViewX(), getViewY());
 			window.draw(rect);
 		}

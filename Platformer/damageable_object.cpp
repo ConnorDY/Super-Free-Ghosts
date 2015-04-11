@@ -13,6 +13,11 @@ DamageableObject::~DamageableObject()
 
 }
 
+int DamageableObject::getHealth() const
+{
+	return health;
+}
+
 void DamageableObject::setHealth(int h)
 {
 	health = h;
