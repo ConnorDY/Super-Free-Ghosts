@@ -150,6 +150,7 @@ void Player::upgrade(int a)
 	invincible = true;
 	armour = a;
 	changeTexture(textureManager, "transform1");
+	fadeTimer.restart();
 }
 
 
@@ -170,8 +171,12 @@ int Player::isAlive() const
 
 double Player::getFadeTime() const
 {
-	if (!fadeout) return 0;
-	else return fadeTimer.getElapsedTime().asMilliseconds();
+	double ret = fadeTimer.getElapsedTime().asMilliseconds();
+
+	if (ret > 400.0) ret = 400;
+	if (!fadeout) ret = 400.0 - ret;
+	
+	return ret;
 }
 
 bool Player::getInvincible() const
@@ -232,7 +237,7 @@ void Player::draw(sf::RenderWindow &window)
 
 void Player::move(int dir)
 {
-	if (dead) return;
+	if (dead || transforming) return;
 
 	if (dy == 0 && !jumped) dx = dir * moveSpeed;
 	if (dir != 0) sprite.setScale(sf::Vector2f((float)dir, 1.0f));

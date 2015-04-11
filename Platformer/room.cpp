@@ -260,7 +260,7 @@ void Room::draw(sf::RenderWindow &window)
 		
 		if (fadeTime < 400.0)
 		{
-			rect.setFillColor(sf::Color(0, 0, 0, 150.0 * (400.0 - fadeTime) / 400.0));
+			rect.setFillColor(sf::Color(0, 0, 0, 100.0 * (400.0 - fadeTime) / 400.0));
 			rect.setPosition(getViewX(), getViewY());
 			window.draw(rect);
 		}
