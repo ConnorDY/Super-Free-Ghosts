@@ -19,12 +19,12 @@ Chest::Chest(TextureManager &textureManager, float x, float y)
 	spr.setTexture(textureManager.getRef("chest1"));
 
 	// Frames
-	for (unsigned int i = 0; i < 7; i++) frames.emplace_back(0, i * 26, 35, 26);
+	for (unsigned int i = 0; i < 8; i++) frames.emplace_back(0, i * 26, 35, 26);
 
 	// Animations
 	animations.push_back({ frames[1], frames[2], frames[0] });
 	animations.push_back({ frames[2], frames[1], frames[0] });
-	animations.push_back({ frames[3], frames[4], frames[5], frames[6] });
+	animations.push_back({ frames[3], frames[4], frames[5], frames[6], frames[7] });
 	animations.push_back({ frames[0] });
 }
 
@@ -55,6 +55,11 @@ void Chest::draw(sf::RenderWindow &window)
 		window.draw(rect);
 	}
 
+	// Transparency
+	double a = 1;
+	if (leaving) a = (750. - leaveTimer.getElapsedTime().asMilliseconds()) / 750.;
+	spr.setColor(sf::Color(255, 255, 255, 255 * a));
+
 	spr.setPosition(bbox.left, bbox.top - 7.0f);
 	window.draw(spr);
 }
@@ -81,7 +86,7 @@ void Chest::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 	// XXX The usual updates are a waste of time for us atm
 	//Object::update(deltaTime, room, settings);
 
-	if (leaving && leaveTimer.getElapsedTime().asSeconds() > .3)
+	if (leaving && leaveTimer.getElapsedTime().asMilliseconds() > 750)
 	{
 		kill(room, settings);
 	}
@@ -112,8 +117,11 @@ void Chest::updateAnimation(sf::Time deltaTime)
 	// Adjust frame
 	if (frames > 1)
 	{
-		float speed = .01f;
+		float speed = .019f;
+		if (animation == 2) speed = .012f;
+
 		frame += (float)deltaTime.asMilliseconds() * speed;
+
 		if (frame > (float)(frames - 1))
 		{
 			frame = (float)(frames - 1);
