@@ -1,19 +1,23 @@
 #include "chest.h"
 #include "globals.h"
 #include "obelisk.h"
+#include "crystal.h"
+#include "room.h"
 
-Chest::Chest(TextureManager &textureManager, float x, float y)
+Chest::Chest(TextureManager &tM, float x, float y)
 	: DamageableObject(
 		x, y, 31, 19,
 		0, 0, false
 	),
 	  frame(0), animation(3),
 	  slideUpFraction(0),
-	  slidingUp(false), leaving(false)
+	  slidingUp(false), leaving(false),
+	  textureManager(tM), leaveTimer(0)
 {
 	(void)textureManager; // textureManager is unused but will be used in future
 	rect.setSize(sf::Vector2f(width, height));
 	setHealth(3);
+	setDepth(-2);
 
 	// Sprite
 	spr.setTexture(textureManager.getRef("chest1"));
@@ -57,7 +61,10 @@ void Chest::draw(sf::RenderWindow &window)
 
 	// Transparency
 	double a = 1;
-	if (leaving) a = (750. - leaveTimer.getElapsedTime().asMilliseconds()) / 750.;
+
+	if (leaving) a = (750. - leaveTimer) / 750.;
+	if (a < 0) a = 0;
+
 	spr.setColor(sf::Color(255, 255, 255, 255 * a));
 
 	spr.setPosition(bbox.left, bbox.top - 7.0f);
@@ -86,12 +93,17 @@ void Chest::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 	// XXX The usual updates are a waste of time for us atm
 	//Object::update(deltaTime, room, settings);
 
-	if (leaving && leaveTimer.getElapsedTime().asMilliseconds() > 750)
+	if (leaving)
 	{
-		kill(room, settings);
+		if (leaveTimer > 750.0)
+		{
+			leaveTimer = 750.0;
+			kill(room, settings);
+		}
+		else leaveTimer += deltaTime.asMilliseconds();
 	}
 
-	updateAnimation(deltaTime);
+	updateAnimation(deltaTime, room);
 }
 
 void Chest::onDoubleJumpedOver(Room &)
@@ -108,7 +120,7 @@ void Chest::setAnimation(int a)
 	}
 }
 
-void Chest::updateAnimation(sf::Time deltaTime)
+void Chest::updateAnimation(sf::Time deltaTime, Room &room)
 {
 	// Get current animation
 	std::vector<sf::IntRect> &anim = animations.at(animation);
@@ -128,8 +140,8 @@ void Chest::updateAnimation(sf::Time deltaTime)
 
 			if (!leaving && getHealth() <= 0)
 			{
+				room.spawn(new Crystal(textureManager, x + 7, y - 5));
 				leaving = true;
-				leaveTimer.restart();
 			}
 		}
 	}

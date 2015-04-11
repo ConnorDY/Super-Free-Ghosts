@@ -93,7 +93,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	}
 	
 	// Depth and Health
-	setDepth(-3);
+	setDepth(-4);
 	setHealth(2);
 }
 

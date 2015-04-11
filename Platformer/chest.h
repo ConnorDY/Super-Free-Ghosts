@@ -12,12 +12,13 @@ class Chest : public DamageableObject
 	private:
 		sf::RectangleShape rect;
 		sf::Sprite spr;
-		sf::Clock leaveTimer;
 		std::vector<std::vector<sf::IntRect> > animations;
 		std::vector<sf::IntRect> frames;
+		TextureManager textureManager;
 		int animation;
 		float slideUpFraction, // How far it is in its slide between underground and visible
 			  frame;
+		double leaveTimer;
 		bool slidingUp, leaving;
 	public:
 		explicit Chest(TextureManager &textureManager, float x = -128, float y = -128);
@@ -30,7 +31,7 @@ class Chest : public DamageableObject
 		virtual void draw(sf::RenderWindow &window);
 		virtual void onDoubleJumpedOver(Room &room);
 		void setAnimation(int a);
-		void updateAnimation(sf::Time deltaTime);
+		void updateAnimation(sf::Time deltaTime, Room &room);
 };
 
 #endif
