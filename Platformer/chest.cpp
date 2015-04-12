@@ -9,10 +9,10 @@ Chest::Chest(TextureManager &tM, float x, float y)
 		x, y, 31, 19,
 		0, 0, false
 	),
-	  frame(0), animation(3),
-	  slideUpFraction(0),
-	  slidingUp(false), leaving(false),
-	  textureManager(tM), leaveTimer(0)
+	  textureManager(tM),
+	  animation(3), slideUpFraction(0),
+	  frame(0), leaveTimer(0),
+	  slidingUp(false), leaving(false)
 {
 	(void)textureManager; // textureManager is unused but will be used in future
 	rect.setSize(sf::Vector2f(width, height));
