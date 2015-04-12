@@ -39,6 +39,8 @@ void Demo_State::drawBackground(sf::RenderWindow &window)
 void Demo_State::drawForeground(sf::RenderWindow &window)
 {
 	Room::drawForeground(window);
+
+	dialogue->draw(window, getView());
 }
 
 void Demo_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
@@ -94,6 +96,8 @@ void Demo_State::update(sf::RenderWindow &window, TextureManager &textureManager
 
 	player->move(moveH);
 	player->setCrouching(crouching);
+
+	dialogue->update(inputHandler);
 
 	Room::update(window, textureManager, soundManager, inputHandler, settings);
 }
