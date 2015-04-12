@@ -16,6 +16,7 @@ Chest::Chest(TextureManager &tM, float x, float y)
 {
 	(void)textureManager; // textureManager is unused but will be used in future
 	rect.setSize(sf::Vector2f(width, height));
+	rect.setFillColor(sf::Color(255, 0, 255, 128));
 	setHealth(3);
 	setDepth(-2);
 
@@ -53,12 +54,6 @@ void Chest::draw(sf::RenderWindow &window)
 
 	auto bbox = getRect();
 
-	if (DEBUG_MODE)
-	{
-		rect.setPosition(sf::Vector2f(bbox.left, bbox.top));
-		window.draw(rect);
-	}
-
 	// Transparency
 	double a = 1;
 
@@ -69,6 +64,12 @@ void Chest::draw(sf::RenderWindow &window)
 
 	spr.setPosition(bbox.left, bbox.top - 7.0f);
 	window.draw(spr);
+
+	if (DEBUG_MODE)
+	{
+		rect.setPosition(sf::Vector2f(bbox.left, bbox.top));
+		window.draw(rect);
+	}
 }
 
 void Chest::update(sf::Time deltaTime, Room &room, const settings_t &settings)
@@ -77,10 +78,10 @@ void Chest::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 	{
 		// Our Y value matters now, so check it:
 		pushOutOfHeightmap(room);
-		// Check for obelisk collisions and jump to the top of them
+		// Check for collisions and jump to the top of them
 		auto mybbox = getRect();
 		for (auto obj : allCollisions(x, y - 1, room))
-			if (dynamic_cast<Obelisk*>(obj) != nullptr)
+			if (obj->isSolid())
 			{
 				auto objbbox = obj->getRect();
 				y = std::min<int>(y, objbbox.top - mybbox.height);
