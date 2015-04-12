@@ -23,7 +23,7 @@ void Demo_State::start(TextureManager &textureManager, const settings_t &)
 	objects.push_back(new Block(0, VIEW_HEIGHT - 32, 256, 64));
 
 	// Chests
-	objects.push_back(new Chest(textureManager, 150.0f, 234.0f));
+	objects.push_back(new Chest(textureManager, 150.0f, 256));
 
 	// Create player
 	player = new Player(textureManager, 45.0f, 234.0f);
