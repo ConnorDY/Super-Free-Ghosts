@@ -8,7 +8,6 @@
 
 Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t&)
 	: State(stm), soundManager(som),
-	  dimmed(false),
 	  width(2048), height(VIEW_HEIGHT),
 	  textureManager(tm)
 {
@@ -17,8 +16,6 @@ Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const setti
 	bg02.setTexture(tm.getRef("bg02"));
 	bg03.setTexture(tm.getRef("bg03"));
 	under01.setTexture(tm.getRef("under01"));
-
-	rect.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
 }
 
 Room::~Room()
@@ -185,11 +182,6 @@ void Room::reset(TextureManager &textureManager, const settings_t &settings)
 	start(textureManager, settings);
 }
 
-void Room::setDimmed(bool d)
-{
-	dimmed = d;
-}
-
 void Room::updateView(sf::RenderWindow &window)
 {
 	if (view_follow)
@@ -221,6 +213,9 @@ void Room::updateView(sf::RenderWindow &window)
 	}
 }
 
+bool Room::shouldUpdate(Object const*) const { return true; }
+bool Room::shouldDraw(Object const*) const { return true; }
+
 void Room::drawBackground(sf::RenderWindow &window)
 {
 	drawHeightMapBack(window);
@@ -228,25 +223,14 @@ void Room::drawBackground(sf::RenderWindow &window)
 
 void Room::drawSprites(sf::RenderWindow &window)
 {
-	for (auto object : objects)
-	{
-		if (!dimmed || dynamic_cast<Player*>(object) == nullptr) object->draw(window);
-	}
+	for (auto &object : objects)
+		if (shouldDraw(object))
+			object->draw(window);
 }
 
 void Room::drawForeground(sf::RenderWindow &window)
 {
 	drawHeightMap(window);
-}
-
-static Player* findPlayer(std::vector<Object*> const objects)
-{
-	for (auto object : objects)
-	{
-		auto existing_player = dynamic_cast<Player*>(object);
-		if (existing_player != nullptr) return existing_player;
-	}
-	return nullptr;
 }
 
 void Room::draw(sf::RenderWindow &window)
@@ -256,28 +240,6 @@ void Room::draw(sf::RenderWindow &window)
 	drawBackground(window);
 	drawSprites(window);
 	drawForeground(window);
-
-	if (dimmed)
-	{
-		double fadeTime = 400.0;
-		double fadeLength = 400.0;
-
-		auto plyr = findPlayer(objects);
-		if (plyr != nullptr)
-		{
-			if (plyr->isTransforming()) fadeTime = plyr->getFadeTime();
-			if (plyr->isFadingOut()) fadeLength /= 2.0;
-
-			if (fadeTime < fadeLength)
-			{
-				rect.setFillColor(sf::Color(0, 0, 0, 100.0 * (fadeLength - fadeTime) / fadeLength));
-				rect.setPosition(getViewX(), getViewY());
-				window.draw(rect);
-			}
-
-			plyr->draw(window);
-		}
-	}
 }
 
 void Room::drawTree(int x, int y, sf::RenderWindow &window)
@@ -336,11 +298,12 @@ void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandle
 	auto end = objects.end();
 	while (iter != end)
 	{
-		if (!(*iter)->shouldDelete() && (!dimmed || dynamic_cast<Player*>(*iter) != nullptr)) (*iter)->update(deltaTime, *this, settings);
+		Object *obj = *iter;
+		if (!obj->shouldDelete() && shouldUpdate(obj)) obj->update(deltaTime, *this, settings);
 
-		if ((*iter)->shouldDelete())
+		if (obj->shouldDelete())
 		{
-			delete *iter;
+			delete obj;
 			iter = objects.erase(iter);
 			end = objects.end();
 			continue;

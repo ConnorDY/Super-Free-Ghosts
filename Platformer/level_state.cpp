@@ -6,7 +6,9 @@
 #include "menu_state.h"
 
 LevelState::LevelState(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings)
-	: Room(sM, som, textureManager, settings), restart(false)
+	: Room(sM, som, textureManager, settings),
+	  restart(false), dimmed(false),
+	  overlayRect(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT))
 {
 }
 
@@ -33,6 +35,22 @@ int LevelState::countZombies() const
 bool LevelState::shouldSpawnMoreZombies() const
 {
 	return countZombies() < 10;
+}
+
+bool LevelState::shouldUpdate(Object const* object) const
+{
+	// When the screen is dimmed, update only the player
+	if (dimmed && dynamic_cast<Player const*>(object) == nullptr)
+		return false;
+	return Room::shouldUpdate(object);
+}
+
+bool LevelState::shouldDraw(Object const* object) const
+{
+	// When the screen is dimmed, skip the player for drawing (we are going to draw him on another depth)
+	if (dimmed && dynamic_cast<Player const*>(object) != nullptr)
+		return false;
+	return Room::shouldDraw(object);
 }
 
 void LevelState::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
@@ -62,7 +80,7 @@ void LevelState::update(sf::RenderWindow &window, TextureManager &textureManager
 	int moveH = inputHandler.checkInput(InputHandler::Input::Right) - inputHandler.checkInput(InputHandler::Input::Left); // Horizontal Movement
 	bool crouching = inputHandler.checkInput(InputHandler::Input::Down); // Crouching
 
-	setDimmed(player->isTransforming());
+	dimmed = player->isTransforming();
 
 	sf::Event event;
 	while (window.pollEvent(event))
@@ -100,4 +118,30 @@ void LevelState::update(sf::RenderWindow &window, TextureManager &textureManager
 	}
 
 	Room::update(window, textureManager, soundManager, inputHandler, settings);
+}
+
+void LevelState::draw(sf::RenderWindow &window)
+{
+	Room::draw(window);
+
+	if (dimmed)
+	{
+		double fadeTime = 400.0;
+		double fadeLength = 400.0;
+
+		if (player != nullptr)
+		{
+			if (player->isTransforming()) fadeTime = player->getFadeTime();
+			if (player->isFadingOut()) fadeLength /= 2.0;
+
+			if (fadeTime < fadeLength)
+			{
+				overlayRect.setFillColor(sf::Color(0, 0, 0, 100.0 * (fadeLength - fadeTime) / fadeLength));
+				overlayRect.setPosition(getViewX(), getViewY());
+				window.draw(overlayRect);
+			}
+
+			player->draw(window);
+		}
+	}
 }
