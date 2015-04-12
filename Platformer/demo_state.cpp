@@ -14,7 +14,7 @@ Demo_State::~Demo_State()
 {
 }
 
-void Demo_State::start(TextureManager &textureManager, const settings_t &settings)
+void Demo_State::start(TextureManager &textureManager, const settings_t &)
 {
 	// Test dialogue
 	dialogue = new Dialogue(std::vector<std::string>({ "Welcome to our game demo! Press X to continue.", "This is another line of text!" }));

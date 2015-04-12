@@ -1,7 +1,7 @@
 #include "crystal.h"
 #include "player.h"
 
-Crystal::Crystal(TextureManager &textureManager, float x, float y)
+Crystal::Crystal(TextureManager &, float x, float y)
 	: Object(
 	x, y, 15, 15,
 	0.0f, 0.0f, false
@@ -22,7 +22,7 @@ void Crystal::draw(sf::RenderWindow &window)
 	window.draw(rect);
 }
 
-void Crystal::update(sf::Time deltaTime, Room &room, const settings_t &settings)
+void Crystal::update(sf::Time, Room &room, const settings_t &settings)
 {
 	for (auto col : allCollisions(x, y, room))
 	{

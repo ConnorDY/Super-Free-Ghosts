@@ -28,7 +28,7 @@ void BloodParticle::update(sf::Time deltaTime, Room &room, const settings_t &set
 	if (!placeFree(x, y + 1.0f, room)) deactivate();
 }
 
-void BloodParticle::onDeath(Room &room, const settings_t &settings)
+void BloodParticle::onDeath(Room &, const settings_t &)
 {
 	std::cout << "lel" << std::endl;
 }

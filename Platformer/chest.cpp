@@ -38,7 +38,7 @@ sf::FloatRect Chest::getRect() const
 	return sf::FloatRect(x, y + yAdjustment, width, height);
 }
 
-void Chest::damage(int dmg, Room &room, const settings_t &settings)
+void Chest::damage(int, Room&, const settings_t&)
 {
 	int hp = getHealth() - 1;
 	if (hp < 0) hp = 0;
