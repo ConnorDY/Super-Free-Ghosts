@@ -17,7 +17,7 @@ Demo_State::~Demo_State()
 void Demo_State::start(TextureManager &textureManager, const settings_t &)
 {
 	// Test dialogue
-	dialogue = std::unique_ptr<Dialogue>(new Dialogue(std::vector<std::string>({ "Welcome to our game demo! Press X to continue.", "This is another line of text!" })));
+	dialogue = std::make_unique<Dialogue>(std::vector<std::string>({ "Welcome to our game demo! Press X to continue.", "This is another line of text!" }));
 
 	// Blocks
 	objects.push_back(new Block(0, VIEW_HEIGHT - 32, 256, 64));

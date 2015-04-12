@@ -140,7 +140,7 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 		// Escape
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
-			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
+			getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager));
 			return;
 		}
 
@@ -168,7 +168,7 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 				// Back
 				case 4:
-					getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
+					getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager));
 					break;
 			}
 		}

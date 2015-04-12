@@ -115,17 +115,17 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 
 				// Load Demo State
 				case 0:
-					getStateManager().setState(std::unique_ptr<State>(new Demo_State(getStateManager(), soundManager, textureManager, settings)));
+					getStateManager().setState(std::make_unique<Demo_State>(getStateManager(), soundManager, textureManager, settings));
 					break;
 
 				// Options Menu
 				case 1:
-					getStateManager().setState(std::unique_ptr<State>(new Level_Editor_State(getStateManager(), soundManager, textureManager, settings)));
+					getStateManager().setState(std::make_unique<Level_Editor_State>(getStateManager(), soundManager, textureManager, settings));
 					break;
 
 				// Options Menu
 				case 2:
-					getStateManager().setState(std::unique_ptr<State>(new Options_State(getStateManager(), settings)));
+					getStateManager().setState(std::make_unique<Options_State>(getStateManager(), settings));
 					break;
 
 				// Exit

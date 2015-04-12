@@ -97,7 +97,7 @@ void LevelState::update(sf::RenderWindow &window, TextureManager &textureManager
 
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
-			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
+			getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager));
 			return;
 		}
 

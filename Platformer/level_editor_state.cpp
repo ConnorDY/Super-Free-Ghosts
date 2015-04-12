@@ -155,7 +155,7 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
-			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
+			getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager));
 			return;
 		}
 		
