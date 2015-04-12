@@ -1,4 +1,5 @@
 #include "level01_state.h"
+#include "player.h"
 #include "globals.h"
 #include "menu_state.h"
 #include "projectile.h"
@@ -8,7 +9,7 @@
 #include "block.h"
 
 Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings)
-	: Room(sM, som, textureManager, settings), restart(false)
+	: LevelState(sM, som, textureManager, settings)
 {
 	start(textureManager, settings);
 	bg01.setTexture(textureManager.getRef("bg01"));
@@ -66,16 +67,8 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 
 	// Create player
 	player = new Player(textureManager, 45.0f, 234.0f);
-	objects.push_back(player);
+	objects.push_back(player); // player will be destroyed when objects is
 	view_follow = player;
-}
-
-int Level01_State::countZombies()
-{
-	return count_if(objects.begin(), objects.end(), [&](Object* const &elem)
-	{
-		return dynamic_cast<Zombie*>(elem) != nullptr;
-	});
 }
 
 void Level01_State::drawBackground(sf::RenderWindow &window)
@@ -100,72 +93,13 @@ void Level01_State::drawBackground(sf::RenderWindow &window)
 	drawDecor(690, 147, 3, window);
 	
 	// Background
-	Room::drawBackground(window);
+	LevelState::drawBackground(window);
 }
 
 void Level01_State::drawForeground(sf::RenderWindow &window)
 {
-	Room::drawForeground(window);
+	LevelState::drawForeground(window);
 
 	under01.setPosition(sf::Vector2f(320, 275));
 	window.draw(under01);
-}
-
-void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
-{
-	/* Restart Level if Player is Outside of the Room */
-	if (player->getRect().top > VIEW_HEIGHT)
-	{
-		reset(textureManager, settings);
-		return;
-	}
-
-	/* Restart level if the player dies */
-	if (!restart && !player->isAlive())
-	{
-		restartTimer.restart();
-		restart = true;
-	}
-	else if (restart && restartTimer.getElapsedTime().asSeconds() >= 5)
-	{
-		restart = false;
-		reset(textureManager, settings);
-		return;
-	}
-
-	sf::Event event;
-
-	if (countZombies() < 10) objects.push_back(new Zombie(textureManager, (float)((double)rand() / (RAND_MAX)) * 1248, 250));
-
-	int moveH = inputHandler.checkInput(InputHandler::Input::Right) - inputHandler.checkInput(InputHandler::Input::Left); // Horizontal Movement
-	bool crouching = inputHandler.checkInput(InputHandler::Input::Down); // Crouching
-
-	setDimmed(player->isTransforming());
-
-	while (window.pollEvent(event))
-	{
-		switch (event.type)
-		{
-			default:
-				break;
-
-			case sf::Event::Closed:
-				window.close();
-				break;
-		}
-
-		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
-		{
-			getStateManager().setState(std::unique_ptr<State>(new Menu_State(getStateManager(), textureManager)));
-			return;
-		}
-
-		if (inputHandler.checkInput(InputHandler::Input::Up, event)) player->jump(moveH, soundManager, settings); // Jumping
-		if (inputHandler.checkInput(InputHandler::Input::Action, event)) player->throwWeapon(*this, player->getDir(), soundManager, settings); // Throw Weapon
-	}
-
-	player->move(moveH);
-	player->setCrouching(crouching);
-
-	Room::update(window, textureManager, soundManager, inputHandler, settings);
 }

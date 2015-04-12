@@ -8,24 +8,18 @@
 #include "settings.h"
 #include "player.h"
 #include "dialogue.h"
-#include "room.h"
+#include "level_state.h"
 
-class Demo_State : public Room
+class Demo_State : public LevelState
 {
-	private:
-		Player *player;
-		Dialogue *dialogue;
-		sf::Clock restartTimer;
-		bool restart;
+	protected:
+		virtual bool shouldSpawnMoreZombies() const;
 	public:
 		Demo_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings);
 		virtual ~Demo_State();
 
 		// Actions
 		void start(TextureManager &textureManager, const settings_t &settings);
-		virtual void drawBackground(sf::RenderWindow &window);
-		virtual void drawForeground(sf::RenderWindow &window);
-		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings);
 };
 
 #endif

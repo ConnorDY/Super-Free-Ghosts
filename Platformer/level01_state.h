@@ -6,28 +6,21 @@
 #include <vector>
 
 #include "settings.h"
-#include "player.h"
-#include "room.h"
+#include "level_state.h"
 
-class Level01_State : public Room
+class Level01_State : public LevelState
 {
 	private:
-		Player *player;
 		sf::Music music;
 		sf::Sprite bg01;
-		sf::Clock restartTimer;
-		bool restart;
-		
-		int countZombies();
 	public:
 		Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings);
 		virtual ~Level01_State();
 
 		// Actions
-		void start(TextureManager &textureManager, const settings_t &settings);
+		virtual void start(TextureManager &textureManager, const settings_t &settings);
 		virtual void drawBackground(sf::RenderWindow &window);
 		virtual void drawForeground(sf::RenderWindow &window);
-		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings);
 };
 
 #endif

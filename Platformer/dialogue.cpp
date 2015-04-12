@@ -8,7 +8,7 @@ Dialogue::Dialogue(const std::vector<std::string> lines)
 	done = false;
 	index = 0;
 	line = 0;
-	
+
 	if (!fnt.loadFromFile("res/Tewi-normal-11.bdf")) std::cout << "Failed to load dialogue font!" << std::endl;
 	const_cast<sf::Texture&>(fnt.getTexture(11)).setSmooth(false);
 
@@ -29,6 +29,16 @@ Dialogue::~Dialogue()
 
 }
 
+bool Dialogue::isDone() const
+{
+	return done;
+}
+
+void Dialogue::onFinish()
+{
+	done = true;
+}
+
 void Dialogue::draw(sf::RenderWindow &window, const sf::View &view)
 {
 	if (done) return;
@@ -40,7 +50,7 @@ void Dialogue::draw(sf::RenderWindow &window, const sf::View &view)
 	// Background
 	rect.setPosition(viewCoords.x + 4, viewCoords.y + VIEW_HEIGHT - 24);
 	window.draw(rect);
-	
+
 	// Text
 	txt.setString(textLines.at(line).substr(0, index + 1));
 	txt.setPosition(viewCoords.x + 8, viewCoords.y + VIEW_HEIGHT - 22);
@@ -76,7 +86,7 @@ void Dialogue::update(InputHandler &inputHandler)
 			index = 0;
 			line++;
 		}
-		else done = true;
+		else onFinish();
 	}
 
 	if (ipTimer.getElapsedTime().asMilliseconds() > 200)

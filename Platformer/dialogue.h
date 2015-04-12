@@ -16,9 +16,13 @@ class Dialogue
 		unsigned int index, line;
 		bool done, ipShow;
 		std::vector<std::string> textLines;
+	protected:
+		virtual void onFinish();
 	public:
 		Dialogue(const std::vector<std::string> lines);
 		~Dialogue();
+
+		bool isDone() const;
 
 		void setup();
 		void draw(sf::RenderWindow &window, const sf::View &view);
