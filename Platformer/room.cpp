@@ -238,6 +238,16 @@ void Room::drawForeground(sf::RenderWindow &window)
 	drawHeightMap(window);
 }
 
+static Player* findPlayer(std::vector<Object*> const objects)
+{
+	for (auto object : objects)
+	{
+		auto existing_player = dynamic_cast<Player*>(object);
+		if (existing_player != nullptr) return existing_player;
+	}
+	return nullptr;
+}
+
 void Room::draw(sf::RenderWindow &window)
 {
 	updateView(window);
@@ -250,24 +260,22 @@ void Room::draw(sf::RenderWindow &window)
 	{
 		double fadeTime = 400.0;
 		double fadeLength = 400.0;
-		Player* plyr = new Player(TextureManager(), 0, 0);
 
-		for (auto object : objects)
+		auto plyr = findPlayer(objects);
+		if (plyr != nullptr)
 		{
-			if (dynamic_cast<Player*>(object) != nullptr)  plyr = (Player*)object;
-		}
+			if (plyr->isTransforming()) fadeTime = plyr->getFadeTime();
+			if (plyr->isFadingOut()) fadeLength /= 2.0;
 
-		if (plyr->isTransforming()) fadeTime = plyr->getFadeTime();
-		if (plyr->isFadingOut()) fadeLength /= 2.0;
-		
-		if (fadeTime < fadeLength)
-		{
-			rect.setFillColor(sf::Color(0, 0, 0, 100.0 * (fadeLength - fadeTime) / fadeLength));
-			rect.setPosition(getViewX(), getViewY());
-			window.draw(rect);
-		}
+			if (fadeTime < fadeLength)
+			{
+				rect.setFillColor(sf::Color(0, 0, 0, 100.0 * (fadeLength - fadeTime) / fadeLength));
+				rect.setPosition(getViewX(), getViewY());
+				window.draw(rect);
+			}
 
-		plyr->draw(window);
+			plyr->draw(window);
+		}
 	}
 }
 
