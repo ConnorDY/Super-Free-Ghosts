@@ -223,7 +223,7 @@ void Room::drawBackground(sf::RenderWindow &window)
 
 void Room::drawSprites(sf::RenderWindow &window)
 {
-	for (auto &object : objects)
+	for (auto object : objects)
 		if (shouldDraw(object))
 			object->draw(window);
 }
