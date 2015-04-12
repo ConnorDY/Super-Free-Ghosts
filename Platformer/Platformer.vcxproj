@@ -81,6 +81,7 @@
     <ClCompile Include="chest.cpp" />
     <ClCompile Include="crystal.cpp" />
     <ClCompile Include="damageable_object.cpp" />
+    <ClCompile Include="demo_state.cpp" />
     <ClCompile Include="dialogue.cpp" />
     <ClCompile Include="flame.cpp" />
     <ClCompile Include="input_handler.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="chest.h" />
     <ClInclude Include="crystal.h" />
     <ClInclude Include="damageable_object.h" />
+    <ClInclude Include="demo_state.h" />
     <ClInclude Include="dialogue.h" />
     <ClInclude Include="flame.h" />
     <ClInclude Include="globals.h" />

@@ -7,14 +7,12 @@
 
 #include "settings.h"
 #include "player.h"
-#include "dialogue.h"
 #include "room.h"
 
 class Level01_State : public Room
 {
 	private:
 		Player *player;
-		Dialogue *dialogue;
 		sf::Music music;
 		sf::Sprite bg01;
 		sf::Clock restartTimer;

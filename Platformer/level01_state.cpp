@@ -68,9 +68,6 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	player = new Player(textureManager, 45.0f, 234.0f);
 	objects.push_back(player);
 	view_follow = player;
-
-	// Test dialogue
-	dialogue = new Dialogue(std::vector<std::string>({ "Welcome to our game demo! Press X to continue.", "This is another line of text!" }));
 }
 
 int Level01_State::countZombies()
@@ -112,8 +109,6 @@ void Level01_State::drawForeground(sf::RenderWindow &window)
 
 	under01.setPosition(sf::Vector2f(320, 275));
 	window.draw(under01);
-
-	//dialogue->draw(window, getView());
 }
 
 void Level01_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
@@ -171,9 +166,6 @@ void Level01_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 	player->move(moveH);
 	player->setCrouching(crouching);
-
-	// Update dialogue
-	dialogue->update(inputHandler);
 
 	Room::update(window, textureManager, soundManager, inputHandler, settings);
 }

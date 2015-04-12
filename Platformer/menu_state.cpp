@@ -1,5 +1,6 @@
 #include "menu_state.h"
 #include "globals.h"
+#include "demo_state.h"
 #include "level01_state.h"
 #include "level_editor_state.h"
 #include "options_state.h"
@@ -112,9 +113,9 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 				default:
 					break;
 
-				// Load Level 01
+				// Load Demo State
 				case 0:
-					getStateManager().setState(std::unique_ptr<State>(new Level01_State(getStateManager(), soundManager, textureManager, settings)));
+					getStateManager().setState(std::unique_ptr<State>(new Demo_State(getStateManager(), soundManager, textureManager, settings)));
 					break;
 
 				// Options Menu
