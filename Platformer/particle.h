@@ -25,7 +25,6 @@ class Particle : public Object
 
 		virtual void draw(sf::RenderWindow &window) = 0;
 		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
-		virtual void onDeath(Room &room, const settings_t &settings);
 };
 
 #endif

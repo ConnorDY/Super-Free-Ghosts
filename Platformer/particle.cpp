@@ -32,7 +32,3 @@ void Particle::update(sf::Time deltaTime, Room &room, const settings_t &settings
 
 	if (!active && timer.getElapsedTime().asMilliseconds() >= lifetime)	kill(room, settings);
 }
-
-void Particle::onDeath(Room &room, const settings_t &settings)
-{
-}
