@@ -8,6 +8,7 @@ Weapon::Weapon(float x, float y, float width, float height, float dx, float dy, 
 	: Object(x, y, width, height, dx, dy, false, gravity, maxFallSpeed),
 		rectangle(sf::Vector2f(width, height)), dmg(damage)
 {
+	rectangle.setFillColor(sf::Color(255, 0, 0, 128));
 	sprite.setTexture(textureManager.getRef("weapons"));
 	sprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
 }
@@ -66,6 +67,9 @@ void Weapon::update(sf::Time deltaTime, Room &room, settings_t const &settings)
 
 void Weapon::draw(sf::RenderWindow &window)
 {
+	sprite.setPosition(x, y);
+	window.draw(sprite);
+
 	if (DEBUG_MODE)
 	{
 		auto rect = getRect();
@@ -73,12 +77,6 @@ void Weapon::draw(sf::RenderWindow &window)
 		rectangle.setSize(sf::Vector2f(rect.width, rect.height));
 		window.draw(rectangle);
 	}
-
-	float adj = 0;
-	if (dx < 0.0f) adj = width;
-
-	sprite.setPosition(x + adj, y);
-	window.draw(sprite);
 }
 
 void Weapon::onDeath(Room &room, const settings_t &settings)

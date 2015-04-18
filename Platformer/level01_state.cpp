@@ -1,8 +1,6 @@
 #include "level01_state.h"
 #include "player.h"
 #include "globals.h"
-#include "menu_state.h"
-#include "projectile.h"
 #include "zombie.h"
 #include "chest.h"
 #include "obelisk.h"

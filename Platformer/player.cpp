@@ -2,7 +2,7 @@
 #include "globals.h"
 #include "room.h"
 #include "torch.h"
-#include "projectile.h"
+#include "spear.h"
 #include "blood_particle.h"
 
 #define PLAYER_WIDTH  17
@@ -305,7 +305,7 @@ void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const 
 
 		if (getDir() < 0) adjx -= 8.0f;
 
-		room.spawn(new Projectile(x + adjx, y + 6.0f + adjy, dir, textureManager));
+		room.spawn(new Spear(x + adjx, y + 6.0f + adjy, dir, textureManager));
 
 		if (settings.sound_on) soundManager.playSound("throw");
 	}
