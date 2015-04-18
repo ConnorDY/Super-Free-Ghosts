@@ -22,7 +22,8 @@ Player::Player(TextureManager &tm, float x, float y)
 	  animation("still"), texture("player3"),
 	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(PlayerArmour::GOLD),
-	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true), transforming(false), fadeout(false)
+	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true), transforming(false), fadeout(false),
+	  chosenWeapon(PlayerWeapon::SPEAR)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef(texture));
@@ -290,6 +291,19 @@ void Player::jump(int dir, SoundManager &soundManager, const settings_t &setting
 	}
 }
 
+Weapon* Player::createWeaponAt(float x, float y)
+{
+	switch (chosenWeapon)
+	{
+		case PlayerWeapon::SPEAR:
+			return Spear::spawnAdjusted(x, y, getDir(), textureManager);
+			break;
+		default:
+			assert(false);
+			break;
+	}
+}
+
 void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const settings_t &settings)
 {
 	if (dead || hit || transforming) return;
@@ -307,15 +321,14 @@ void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const 
 			flipped = true;
 		}
 
-		float adjx = -8.0f, adjy = 0.0f;
+		float adjx = -8.0f, adjy = 6.0f;
 		if (crouching)
 		{
 			adjx -= 1.0f;
-			adjy = 9.0f;
+			adjy += 9.0f;
 		}
-		if (getDir() < 0) adjx = getRect().width - adjx;
-
-		room.spawn(Spear::spawnAdjusted(x + adjx, y + 6.0f + adjy, dir, textureManager));
+		if (dir < 0) adjx = getRect().width - adjx;
+		room.spawn(createWeaponAt(x + adjx, y + adjy));
 
 		if (settings.sound_on) soundManager.playSound("throw");
 	}

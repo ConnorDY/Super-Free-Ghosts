@@ -13,6 +13,11 @@
 #include "texture_manager.h"
 #include "sound_manager.h"
 #include "damageable_object.h"
+#include "weapon.h"
+
+namespace PlayerWeapon { enum Enum {
+	SPEAR, BOMB, TORCH, TRIDENT, HAMMER
+};}
 
 namespace PlayerArmour { enum Enum {
 	DEAD, NAKED, SILVER, GOLD
@@ -33,6 +38,7 @@ class Player : public DamageableObject
 		sf::Clock jumpTimer, throwTimer, rollTimer, invincibleTimer, flashTimer, fadeTimer;
 		double total_time = 0.0;
 		int xJumpedFrom;
+		PlayerWeapon::Enum chosenWeapon;
 
 		// Actions
 		void updateAnimation(sf::Time deltaTime);
@@ -40,6 +46,7 @@ class Player : public DamageableObject
 		void fixTexture();
 		void checkDoubleJumpedObjects(Room &room);
 		std::pair<int, int> getJumpPoints() const;
+		Weapon* createWeaponAt(float x, float y);
 	public:
 		Player(TextureManager &textureManager, float x, float y);
 
