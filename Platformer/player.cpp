@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "player.h"
 #include "globals.h"
 #include "room.h"
@@ -20,7 +21,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
 	  animation("still"), texture("player3"),
 	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
-	  jumps(0), armour(2),
+	  jumps(0), armour(PlayerArmour::GOLD),
 	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true), transforming(false), fadeout(false)
 {
 	// Sprite
@@ -108,6 +109,18 @@ void Player::setCrouching(bool c)
 	if (dy != 0.0f || jumped) crouching = false;
 }
 
+PlayerArmour::Enum getDecreasedArmour(PlayerArmour::Enum orig)
+{
+	using namespace PlayerArmour;
+	switch (orig)
+	{
+		case GOLD: return SILVER;
+		case SILVER: return NAKED;
+		case NAKED: return DEAD;
+		default: assert(false);
+	}
+}
+
 void Player::damage(int otherX)
 {
 	if (invincible || dead) return;
@@ -117,16 +130,14 @@ void Player::damage(int otherX)
 	if (x > otherX) dir = 1;
 	
 	// Decrease armour
-	if (armour > 0)
+	armour = getDecreasedArmour(armour);
+	if (armour != PlayerArmour::DEAD)
 	{
-		armour = 0;
-
 		invincible = true;
 		invincibleTimer.restart();
 	}
 	else
 	{
-		armour = -1;
 		setDepth(-1);
 		dead = true;
 	}
@@ -144,7 +155,7 @@ void Player::damage(int otherX)
 	sprite.setScale(sf::Vector2f(sprite.getScale().x * -1, 1.0f));
 }
 
-void Player::upgrade(int a)
+void Player::upgrade(PlayerArmour::Enum a)
 {
 	transforming = true;
 	invincible = true;
@@ -202,7 +213,7 @@ sf::FloatRect Player::getRect() const
 	if (crouching) return sf::FloatRect(x, y + 15.0f, width, height - 15.0f);
 	if (jumps > 0)
 	{
-		if (armour == 0) return sf::FloatRect(x, y + 4.0f, width, height - 14.0f);
+		if (armour == PlayerArmour::NAKED) return sf::FloatRect(x, y + 4.0f, width, height - 14.0f);
 		return sf::FloatRect(x, y + 2.0f, width - 2.0f, height - 10.0f);
 	}
 	return sf::FloatRect(x, y + 2.0f, width - 2.0f, height - 2.0f);
@@ -289,7 +300,7 @@ void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const 
 		throwTimer.restart();
 
 		if (jumps == 0) throwTime = 0.14f;
-		else if (jumps == 1 || armour == 0 || flipped) throwTime = 0.13f;
+		else if (jumps == 1 || armour == PlayerArmour::NAKED || flipped) throwTime = 0.13f;
 		else
 		{
 			throwTime = 0.44f;
@@ -354,7 +365,7 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 		{
 			dy += gravity * (float)mstime;
 
-			if (!rolling && armour == 0 && jumps == 2 && dx != 0 && dy > 0 && placeFree(x, y + 1, room) && !placeFree(x, y + 6, room))
+			if (!rolling && armour == PlayerArmour::NAKED && jumps == 2 && dx != 0 && dy > 0 && placeFree(x, y + 1, room) && !placeFree(x, y + 6, room))
 			{
 				rolling = true;
 				rollTimer.restart();
@@ -481,7 +492,7 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 		if (jumped)
 		{
 			if (jumps == 1) setAnimation("jumps");
-			else if (armour > 0) setAnimation("jumps2");
+			else if (armour != PlayerArmour::NAKED) setAnimation("jumps2");
 			else setAnimation("jumps3");
 		}
 		else setAnimation("run");
@@ -492,12 +503,12 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 		{
 			if (jumps == 1)
 			{
-				if (armour == 2 && dy > 0) setAnimation("jumpud");
+				if (armour == PlayerArmour::GOLD && dy > 0) setAnimation("jumpud");
 				else setAnimation("jumpu");
 			}
 			else
 			{
-				if (armour == 2 && dy > 0) setAnimation("jumpu2d");
+				if (armour == PlayerArmour::GOLD && dy > 0) setAnimation("jumpu2d");
 				else setAnimation("jumpu2");
 			}
 		}
@@ -554,22 +565,27 @@ void Player::changeTexture(TextureManager &textureManager, std::string tex)
 
 void Player::fixTexture()
 {
+	using namespace PlayerArmour;
 	switch (armour)
 	{
-		default:
+		case DEAD:
 			changeTexture(textureManager, "player0");
 			break;
 
-		case 0:
+		case NAKED:
 			changeTexture(textureManager, "player1");
 			break;
 
-		case 1:
+		case SILVER:
 			changeTexture(textureManager, "player2");
 			break;
 
-		case 2:
+		case GOLD:
 			changeTexture(textureManager, "player3");
+			break;
+
+		default:
+			assert(false);
 			break;
 	}
 }

@@ -29,7 +29,7 @@ void Crystal::update(sf::Time, Room &room, const settings_t &settings)
 		Player* player = dynamic_cast<Player*>(col);
 		if (player != nullptr)
 		{
-			player->upgrade(1);
+			player->upgrade(PlayerArmour::SILVER);
 			kill(room, settings);
 		}
 	}

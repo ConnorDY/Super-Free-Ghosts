@@ -14,6 +14,10 @@
 #include "sound_manager.h"
 #include "damageable_object.h"
 
+namespace PlayerArmour { enum Enum {
+	DEAD, NAKED, SILVER, GOLD
+};}
+
 class Player : public DamageableObject
 {
 	private:
@@ -23,7 +27,8 @@ class Player : public DamageableObject
 		std::map<std::string, std::vector<sf::IntRect> > animations;
 		std::string animation, texture;
 		float moveSpeed, jumpSpeed, frame, throwTime;
-		int jumps, armour;
+		int jumps;
+		PlayerArmour::Enum armour;
 		bool jumped, midJump, midThrow, rolling, flipped, crouching, invincible, hit, dead, visible, transforming, fadeout;
 		sf::Clock jumpTimer, throwTimer, rollTimer, invincibleTimer, flashTimer, fadeTimer;
 		double total_time = 0.0;
@@ -41,7 +46,7 @@ class Player : public DamageableObject
 		// Mutators
 		void setCrouching(bool c);
 		void damage(int otherX);
-		void upgrade(int a);
+		void upgrade(PlayerArmour::Enum a);
 		
 		// Accesors
 		int getDir() const;
