@@ -296,16 +296,15 @@ void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const 
 			flipped = true;
 		}
 
-		float adjx = -(float)getDir() * 8.0f, adjy = 0.0f;
+		float adjx = -8.0f, adjy = 0.0f;
 		if (crouching)
 		{
-			adjx = -(float)getDir() * 14.0f;
+			adjx -= 1.0f;
 			adjy = 9.0f;
 		}
+		if (getDir() < 0) adjx = getRect().width - adjx;
 
-		if (getDir() < 0) adjx -= 8.0f;
-
-		room.spawn(new Spear(x + adjx, y + 6.0f + adjy, dir, textureManager));
+		room.spawn(Spear::spawnAdjusted(x + adjx, y + 6.0f + adjy, dir, textureManager));
 
 		if (settings.sound_on) soundManager.playSound("throw");
 	}

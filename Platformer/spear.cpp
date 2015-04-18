@@ -23,3 +23,9 @@ Spear::Spear(float x, float y, int dir, TextureManager &textureManager)
 Spear::~Spear()
 {
 }
+
+Spear* Spear::spawnAdjusted(float x, float y, int dir, TextureManager &textureManager)
+{
+	if (dir < 0) x -= BBOX.width;
+	return new Spear(x, y, dir, textureManager);
+}
