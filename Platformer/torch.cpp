@@ -6,11 +6,12 @@
 Torch::Torch(float x, float y, int dir, TextureManager &textureManager)
 	: Weapon(
 			x, y, 8, 8,          // x, y, w, h
-			0.12f * dir, -0.18f,  // dx, dy
+			0.12f * dir, -0.18f, // dx, dy
 			0.0007f, 0.2f,       // gravity, terminal velocity
 			12, textureManager
 	)
 {
+	// TODO: Set sprite and such
 }
 
 Torch::~Torch() {}

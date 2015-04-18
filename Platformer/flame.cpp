@@ -7,6 +7,7 @@ Flame::Flame(float x, float y, int dir, int remaining, TextureManager &textureMa
 		remaining(remaining), lifetime(100), dir(dir)
 {
 	rectangle.setFillColor(sf::Color(255,0,0,128));
+	// TODO: Set sprite and such
 }
 
 Flame::~Flame() {}
