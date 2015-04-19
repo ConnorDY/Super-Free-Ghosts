@@ -6,6 +6,7 @@
 #include "spear.h"
 #include "super_spear.h"
 #include "hammer.h"
+#include "super_hammer.h"
 #include "blood_particle.h"
 
 #define PLAYER_WIDTH  17
@@ -305,7 +306,10 @@ Weapon* Player::createWeaponAt(float x, float y)
 		case PlayerWeapon::TORCH:
 			return new Torch(x, y, getDir(), textureManager);
 		case PlayerWeapon::HAMMER:
-			return Hammer::spawnAdjusted(x, y, getDir(), textureManager);
+			if (armour == PlayerArmour::GOLD)
+				return SuperHammer::spawnAdjusted(x, y, getDir(), textureManager);
+			else
+				return Hammer::spawnAdjusted(x, y, getDir(), textureManager);
 		default:
 			assert(false);
 			break;
