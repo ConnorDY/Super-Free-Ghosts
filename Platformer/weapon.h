@@ -16,7 +16,7 @@ class Weapon : public Object {
 		virtual ~Weapon();
 
 		virtual void move(sf::Time deltaTime, Room &room, settings_t const &settings);
-		void draw(sf::RenderWindow &window);
+		virtual void draw(sf::RenderWindow &window);
 		virtual void update(sf::Time deltaTime, Room &room, settings_t const &settings);
 		virtual void onDeath(Room &room, settings_t const &settings);
 };
