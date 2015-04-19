@@ -8,6 +8,7 @@
 #include "hammer.h"
 #include "super_hammer.h"
 #include "trident.h"
+#include "super_trident.h"
 #include "blood_particle.h"
 
 #define PLAYER_WIDTH  17
@@ -309,7 +310,8 @@ std::function<Weapon*(float, float, int, TextureManager&)> getWeaponSpawnFunc(Pl
 			if (super) return &SuperHammer::spawnAdjusted;
 			else return &Hammer::spawnAdjusted;
 		case TRIDENT:
-			return &Trident::spawnAdjusted;
+			if (super) return &SuperTrident::spawnAdjusted;
+			else return &Trident::spawnAdjusted;
 		default:
 			assert(false);
 			abort(); // If you have NDEBUG...
