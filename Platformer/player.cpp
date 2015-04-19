@@ -301,6 +301,8 @@ Weapon* Player::createWeaponAt(float x, float y)
 				return SuperSpear::spawnAdjusted(x, y, getDir(), textureManager);
 			else
 				return Spear::spawnAdjusted(x, y, getDir(), textureManager);
+		case PlayerWeapon::TORCH:
+			return new Torch(x, y, getDir(), textureManager);
 		default:
 			assert(false);
 			break;
