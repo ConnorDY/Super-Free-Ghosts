@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <functional>
 #include "player.h"
 #include "globals.h"
 #include "room.h"
