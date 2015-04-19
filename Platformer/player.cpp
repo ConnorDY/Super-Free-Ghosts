@@ -29,7 +29,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(PlayerArmour::GOLD),
 	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true), transforming(false), fadeout(false),
-	  chosenWeapon(PlayerWeapon::TRIDENT)
+	  chosenWeapon(PlayerWeapon::SPEAR)
 {
 	// Sprite
 	sprite.setTexture(textureManager.getRef(texture));
@@ -251,7 +251,7 @@ void Player::draw(sf::RenderWindow &window)
 
 void Player::move(int dir)
 {
-	if (dead || transforming) return;
+	if (dead || transforming || hit) return;
 
 	if (dy == 0 && !jumped) dx = dir * moveSpeed;
 	if (dir != 0) sprite.setScale(sf::Vector2f((float)dir, 1.0f));
