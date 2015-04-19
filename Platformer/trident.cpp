@@ -48,7 +48,7 @@ void Trident::draw(sf::RenderWindow &window)
 	auto trailPoints = std::minmax<float>(x, trailX);
 
 	// Draw trails
-	auto trailTop = rect.top + (rect.height - 3) / 2;
+	auto trailTop = rect.top + rect.height / 2 - 2;
 	sf::RectangleShape trail(sf::Vector2f(trailPoints.second - trailPoints.first, 3));
 	trail.setPosition(trailPoints.first + trailAdj, trailTop);
 	trail.setFillColor(sf::Color(255, 255, 255, 64));
