@@ -4,6 +4,7 @@
 #include "room.h"
 #include "torch.h"
 #include "spear.h"
+#include "super_spear.h"
 #include "blood_particle.h"
 
 #define PLAYER_WIDTH  17
@@ -296,8 +297,10 @@ Weapon* Player::createWeaponAt(float x, float y)
 	switch (chosenWeapon)
 	{
 		case PlayerWeapon::SPEAR:
-			return Spear::spawnAdjusted(x, y, getDir(), textureManager);
-			break;
+			if (armour == PlayerArmour::GOLD)
+				return SuperSpear::spawnAdjusted(x, y, getDir(), textureManager);
+			else
+				return Spear::spawnAdjusted(x, y, getDir(), textureManager);
 		default:
 			assert(false);
 			break;
