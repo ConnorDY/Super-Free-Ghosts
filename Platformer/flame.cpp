@@ -2,8 +2,14 @@
 #include "room.h"
 #include "assert.h"
 
+namespace
+{
+	sf::IntRect const BBOX(0, 0, 8, 8);
+	int const SPRITE_WIDTH = 0, SPRITE_HEIGHT = 0;
+}
+
 Flame::Flame(float x, float y, int dir, int remaining, TextureManager &textureManager)
-	: Weapon(x, y, 8, 8, 0, 0, 0, 0, 5, textureManager),
+	: Weapon(x, y, BBOX.width, BBOX.height, 0, 0, 0, 0, 5, textureManager),
 		remaining(remaining), lifetime(100), dir(dir)
 {
 	rectangle.setFillColor(sf::Color(255,0,0,128));

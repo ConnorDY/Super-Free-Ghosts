@@ -1,13 +1,18 @@
 #include "torch.h"
 #include "flame.h"
 #include "room.h"
-// vim: noet
+
+namespace
+{
+	sf::IntRect const BBOX(0, 0, 8, 8);
+	int const SPRITE_WIDTH = 0, SPRITE_HEIGHT = 0;
+}
 
 Torch::Torch(float x, float y, int dir, TextureManager &textureManager)
 	: Weapon(
-			x, y, 8, 8,          // x, y, w, h
-			0.12f * dir, -0.18f, // dx, dy
-			0.0007f, 0.2f,       // gravity, terminal velocity
+			x, y, BBOX.width, BBOX.height, // x, y, w, h
+			0.12f * dir, -0.18f,           // dx, dy
+			0.0007f, 0.2f,                 // gravity, terminal velocity
 			12, textureManager
 	)
 {
@@ -27,6 +32,6 @@ void Torch::onDeath(Room &room, settings_t const&)
 
 Torch* Torch::spawnAdjusted(float x, float y, int dir, TextureManager &textureManager)
 {
-	if (dir < 0) x -= 8; // TODO magic number
+	if (dir < 0) x -= BBOX.width;
 	return new Torch(x, y, dir, textureManager);
 }
