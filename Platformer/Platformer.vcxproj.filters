@@ -114,6 +114,9 @@
     <ClCompile Include="trident.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="super_trident.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h">
@@ -216,6 +219,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="trident.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="super_trident.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -104,6 +104,7 @@
     <ClCompile Include="state_manager.cpp" />
     <ClCompile Include="super_hammer.cpp" />
     <ClCompile Include="super_spear.cpp" />
+    <ClCompile Include="super_trident.cpp" />
     <ClCompile Include="texture_manager.cpp" />
     <ClCompile Include="torch.cpp" />
     <ClCompile Include="trident.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="state_manager.h" />
     <ClInclude Include="super_hammer.h" />
     <ClInclude Include="super_spear.h" />
+    <ClInclude Include="super_trident.h" />
     <ClInclude Include="texture_manager.h" />
     <ClInclude Include="torch.h" />
     <ClInclude Include="trident.h" />

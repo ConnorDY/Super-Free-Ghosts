@@ -113,9 +113,9 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 				default:
 					break;
 
-				// Load Demo State
+				// Load Level01 State
 				case 0:
-					getStateManager().setState(std::make_unique<Demo_State>(getStateManager(), soundManager, textureManager, settings));
+					getStateManager().setState(std::make_unique<Level01_State>(getStateManager(), soundManager, textureManager, settings));
 					break;
 
 				// Options Menu
