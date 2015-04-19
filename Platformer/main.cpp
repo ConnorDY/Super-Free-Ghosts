@@ -30,6 +30,7 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 		{ "logo", "res/logo.png" },
 		{ "spear", "res/weapons/spear.png" },
 		{ "hammer", "res/weapons/hammer.png" },
+		{ "trident", "res/weapons/trident.png" },
 	};
 
 	auto sounds = std::vector<std::pair<std::string, std::string>>
