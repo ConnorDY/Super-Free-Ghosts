@@ -6,6 +6,7 @@ namespace
 {
 	sf::IntRect const BBOX(27, 10, 35, 8);
 	int const SPRITE_WIDTH = 67, SPRITE_HEIGHT = 29;
+	int const TRAIL_LENGTH = 40;
 }
 
 Trident::Trident(float x, float y, int dir, TextureManager &textureManager)
@@ -16,7 +17,8 @@ Trident::Trident(float x, float y, int dir, TextureManager &textureManager)
 }
 
 Trident::Trident(float x, float y, int width, int height, int dir, TextureManager &textureManager)
-	: Weapon(x, y, width, height, 0.4f * dir, 0, 0, 0, 10, textureManager)
+	: Weapon(x, y, width, height, 0.3f * dir, 0, 0, 0, 10, textureManager),
+	  trailX(x)
 {
 	destroyedOnHit = false;
 	setDepth(-4);
@@ -25,6 +27,30 @@ Trident::Trident(float x, float y, int width, int height, int dir, TextureManage
 
 Trident::~Trident()
 {
+}
+
+void Trident::draw(sf::RenderWindow &window)
+{
+	// Update trails
+	if (abs(x - trailX) > TRAIL_LENGTH)
+		trailX = x + copysign(TRAIL_LENGTH, trailX - x);
+
+	auto trailPoints = std::minmax<float>(x, trailX);
+
+	// Draw trails
+	auto rect = getRect();
+	auto trailTop = rect.top + (rect.height - 3) / 2;
+	sf::RectangleShape trail(sf::Vector2f(trailPoints.second - trailPoints.first, 3));
+	trail.setPosition(trailPoints.first, trailTop);
+	trail.setFillColor(sf::Color(255, 255, 255, 64));
+	window.draw(trail);
+
+	trail.setPosition(trailPoints.first, trailTop + 1);
+	trail.setSize(sf::Vector2f(trailPoints.second - trailPoints.first, 1));
+	trail.setFillColor(sf::Color(255, 255, 255, 128));
+	window.draw(trail);
+	// Draw sprite
+	Weapon::draw(window);
 }
 
 Trident* Trident::spawnAdjusted(float x, float y, int dir, TextureManager &textureManager)
