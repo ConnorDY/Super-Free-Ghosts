@@ -20,7 +20,7 @@ namespace PlayerWeapon { enum Enum {
 };}
 
 namespace PlayerArmour { enum Enum {
-	DEAD, NAKED, SILVER, GOLD
+	NAKED, SILVER, GOLD
 };}
 
 class Player : public DamageableObject

@@ -593,12 +593,14 @@ void Player::changeTexture(TextureManager &textureManager, std::string tex)
 void Player::fixTexture()
 {
 	using namespace PlayerArmour;
+	if (dead)
+	{
+		changeTexture(textureManager, "player0");
+		return;
+	}
+
 	switch (armour)
 	{
-		case DEAD:
-			changeTexture(textureManager, "player0");
-			break;
-
 		case NAKED:
 			changeTexture(textureManager, "player1");
 			break;
