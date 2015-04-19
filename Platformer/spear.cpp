@@ -11,7 +11,7 @@ Spear::Spear(float x, float y, int dir, TextureManager &textureManager)
 {
 	// Normal spear: Sprite strip of 49x12 sprites, 1 frame, BB 35x6+8+3
 	sprite.setTexture(textureManager.getRef("spear"));
-	sprite.setTextureRect(sf::IntRect(0, 0, SPRITE_WIDTH, SPRITE_HEIGHT));
+	animationFrames.emplace_back(0, 0, SPRITE_WIDTH, SPRITE_HEIGHT);
 	SpriteUtil::setOriginAndScale(sprite,
 			sf::Vector2f(static_cast<float>(dir), 1.0f),
 			BBOX

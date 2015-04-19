@@ -6,7 +6,7 @@
 
 Weapon::Weapon(float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage, TextureManager &textureManager)
 	: Object(x, y, width, height, dx, dy, false, gravity, maxFallSpeed),
-		rectangle(sf::Vector2f(width, height)), dmg(damage)
+		rectangle(sf::Vector2f(width, height)), dmg(damage), animationFrame(0), animationSpeed(2)
 {
 	rectangle.setFillColor(sf::Color(255, 0, 0, 128));
 	sprite.setTexture(textureManager.getRef("weapons"));
@@ -63,12 +63,18 @@ void Weapon::update(sf::Time deltaTime, Room &room, settings_t const &settings)
 
 	// Destroy weapon if it hits a solid object or leaves the room
 	if (!placeFree(x, y, room) || isOutsideView(room)) kill(room, settings);
+
+	animationFrame = fmod(animationFrame + deltaTime.asSeconds() * animationSpeed, animationFrames.size());
 }
 
 void Weapon::draw(sf::RenderWindow &window)
 {
-	sprite.setPosition(x, y);
-	window.draw(sprite);
+	if (!animationFrames.empty())
+	{
+		sprite.setPosition(x, y);
+		sprite.setTextureRect(animationFrames[floor(animationFrame)]);
+		window.draw(sprite);
+	}
 
 	if (DEBUG_MODE)
 	{

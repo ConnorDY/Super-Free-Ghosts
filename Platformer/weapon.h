@@ -8,6 +8,8 @@ class Weapon : public Object {
 		sf::RectangleShape rectangle;
 		bool isOutsideView(Room const &room, float leeway = 30) const;
 		int dmg;
+		float animationFrame, animationSpeed;
+		std::vector<sf::IntRect> animationFrames;
 	public:
 		Weapon(float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage, TextureManager &textureManager);
 		virtual ~Weapon();
