@@ -31,21 +31,30 @@ Trident::~Trident()
 
 void Trident::draw(sf::RenderWindow &window)
 {
+	auto rect = getRect();
+	float trailAdj;
 	// Update trails
-	if (abs(x - trailX) > TRAIL_LENGTH)
-		trailX = x + copysign(TRAIL_LENGTH, trailX - x);
+	if (x < trailX)
+	{
+		trailX = std::min<float>(x + 40, trailX);
+		trailAdj = rect.width;
+	}
+	else
+	{
+		trailX = std::max<float>(x - 40, trailX);
+		trailAdj = 0;
+	}
 
 	auto trailPoints = std::minmax<float>(x, trailX);
 
 	// Draw trails
-	auto rect = getRect();
 	auto trailTop = rect.top + (rect.height - 3) / 2;
 	sf::RectangleShape trail(sf::Vector2f(trailPoints.second - trailPoints.first, 3));
-	trail.setPosition(trailPoints.first, trailTop);
+	trail.setPosition(trailPoints.first + trailAdj, trailTop);
 	trail.setFillColor(sf::Color(255, 255, 255, 64));
 	window.draw(trail);
 
-	trail.setPosition(trailPoints.first, trailTop + 1);
+	trail.setPosition(trailPoints.first + trailAdj, trailTop + 1);
 	trail.setSize(sf::Vector2f(trailPoints.second - trailPoints.first, 1));
 	trail.setFillColor(sf::Color(255, 255, 255, 128));
 	window.draw(trail);
