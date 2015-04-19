@@ -6,7 +6,8 @@
 
 Weapon::Weapon(float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage, TextureManager &textureManager)
 	: Object(x, y, width, height, dx, dy, false, gravity, maxFallSpeed),
-		rectangle(sf::Vector2f(width, height)), dmg(damage), animationFrame(0), animationSpeed(6)
+	  rectangle(sf::Vector2f(width, height)), dmg(damage), animationFrame(0),
+	  animationSpeed(6), destroyedOnHit(true)
 {
 	rectangle.setFillColor(sf::Color(255, 0, 0, 128));
 	sprite.setTexture(textureManager.getRef("weapons"));
@@ -51,13 +52,15 @@ void Weapon::update(sf::Time deltaTime, Room &room, settings_t const &settings)
 		if (dynamic_cast<Zombie*>(col) != nullptr)
 		{
 			if (!((Zombie*)col)->getInCasket()) ((Zombie*)col)->damage(dmg, room, settings);
-			kill(room, settings);
+			if (destroyedOnHit)
+				kill(room, settings);
 		}
 		// Destroy weapon if it hits a chest and damage the chest
 		else if (dynamic_cast<Chest*>(col) != nullptr)
 		{
 			((Chest*)col)->damage(dmg, room, settings);
-			kill(room, settings);
+			if (destroyedOnHit)
+				kill(room, settings);
 		}
 	}
 
