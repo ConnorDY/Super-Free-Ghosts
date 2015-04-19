@@ -1,7 +1,8 @@
 #include "trident.h"
 #include "sprite_util.h"
 
-namespace {
+namespace
+{
 	sf::IntRect const BBOX(27, 10, 35, 8);
 	int const SPRITE_WIDTH = 67, SPRITE_HEIGHT = 29;
 }
