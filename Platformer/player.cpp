@@ -325,34 +325,38 @@ Weapon* Player::createWeaponAt(float x, float y)
 	return getWeaponSpawnFunc(chosenWeapon, armour == PlayerArmour::GOLD)(x, y, getDir(), textureManager);
 }
 
+bool Player::canThrowWeapon(Room const &room) const
+{
+	if (dead || hit || transforming || midThrow) return false;
+	if (chosenWeapon == PlayerWeapon::TRIDENT && !Trident::canThrow(room)) return false;
+	return true;
+}
+
 void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const settings_t &settings)
 {
-	if (dead || hit || transforming) return;
+	if (!canThrowWeapon(room)) return;
 
-	if (!midThrow)
+	midThrow = true;
+	throwTimer.restart();
+
+	if (jumps == 0) throwTime = 0.14f;
+	else if (jumps == 1 || armour == PlayerArmour::NAKED || flipped) throwTime = 0.13f;
+	else
 	{
-		midThrow = true;
-		throwTimer.restart();
-
-		if (jumps == 0) throwTime = 0.14f;
-		else if (jumps == 1 || armour == PlayerArmour::NAKED || flipped) throwTime = 0.13f;
-		else
-		{
-			throwTime = 0.44f;
-			flipped = true;
-		}
-
-		float adjx = -8.0f, adjy = 6.0f;
-		if (crouching)
-		{
-			adjx -= 1.0f;
-			adjy += 9.0f;
-		}
-		if (dir < 0) adjx = getRect().width - adjx;
-		room.spawn(createWeaponAt(x + adjx, y + adjy));
-
-		if (settings.sound_on) soundManager.playSound("throw");
+		throwTime = 0.44f;
+		flipped = true;
 	}
+
+	float adjx = -8.0f, adjy = 6.0f;
+	if (crouching)
+	{
+		adjx -= 1.0f;
+		adjy += 9.0f;
+	}
+	if (dir < 0) adjx = getRect().width - adjx;
+	room.spawn(createWeaponAt(x + adjx, y + adjy));
+
+	if (settings.sound_on) soundManager.playSound("throw");
 }
 
 std::pair<int, int> Player::getJumpPoints() const

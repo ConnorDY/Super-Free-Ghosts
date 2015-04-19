@@ -12,6 +12,7 @@ class Trident : public Weapon
 		Trident(float x, float y, int dir, TextureManager &textureManager);
 		virtual ~Trident();
 		static Trident* spawnAdjusted(float x, float y, int dir, TextureManager &textureManager);
+		static bool canThrow(Room const &room);
 };
 
 #endif

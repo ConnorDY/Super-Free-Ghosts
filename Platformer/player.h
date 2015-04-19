@@ -47,6 +47,7 @@ class Player : public DamageableObject
 		void checkDoubleJumpedObjects(Room &room);
 		std::pair<int, int> getJumpPoints() const;
 		Weapon* createWeaponAt(float x, float y);
+		bool canThrowWeapon(Room const &room) const;
 	public:
 		Player(TextureManager &textureManager, float x, float y);
 

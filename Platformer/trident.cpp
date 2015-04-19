@@ -1,5 +1,6 @@
 #include "trident.h"
 #include "sprite_util.h"
+#include "room.h"
 
 namespace
 {
@@ -30,4 +31,13 @@ Trident* Trident::spawnAdjusted(float x, float y, int dir, TextureManager &textu
 {
 	if (dir < 0) x -= BBOX.width;
 	return new Trident(x, y, dir, textureManager);
+}
+
+bool Trident::canThrow(Room const &room)
+{
+	auto &objs = room.getObjects();
+	return std::find_if(
+			objs.begin(), objs.end(),
+			[](Object *obj) { return dynamic_cast<Trident*>(obj) != nullptr; }
+		) == objs.end();
 }
