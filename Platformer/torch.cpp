@@ -24,3 +24,9 @@ void Torch::onDeath(Room &room, settings_t const&)
 		room.spawn(new Flame(x, y, dx > 0 ? 1 : -1, 4, room.textureManager));
 	}
 }
+
+Torch* Torch::spawnAdjusted(float x, float y, int dir, TextureManager &textureManager)
+{
+	if (dir < 0) x -= 8; // TODO magic number
+	return new Torch(x, y, dir, textureManager);
+}

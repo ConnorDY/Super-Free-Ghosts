@@ -294,26 +294,30 @@ void Player::jump(int dir, SoundManager &soundManager, const settings_t &setting
 	}
 }
 
-Weapon* Player::createWeaponAt(float x, float y)
+std::function<Weapon*(float, float, int, TextureManager&)> getWeaponSpawnFunc(PlayerWeapon::Enum weapon, bool super)
 {
-	switch (chosenWeapon)
+	using namespace PlayerWeapon;
+	switch (weapon)
 	{
-		case PlayerWeapon::SPEAR:
-			if (armour == PlayerArmour::GOLD)
-				return SuperSpear::spawnAdjusted(x, y, getDir(), textureManager);
-			else
-				return Spear::spawnAdjusted(x, y, getDir(), textureManager);
-		case PlayerWeapon::TORCH:
-			return new Torch(x, y, getDir(), textureManager);
-		case PlayerWeapon::HAMMER:
-			if (armour == PlayerArmour::GOLD)
-				return SuperHammer::spawnAdjusted(x, y, getDir(), textureManager);
-			else
-				return Hammer::spawnAdjusted(x, y, getDir(), textureManager);
+		case SPEAR:
+			if (super) return &SuperSpear::spawnAdjusted;
+			else return &Spear::spawnAdjusted;
+		case TORCH:
+			return &Torch::spawnAdjusted;
+		case HAMMER:
+			if (super) return &SuperHammer::spawnAdjusted;
+			else return &Hammer::spawnAdjusted;
 		default:
 			assert(false);
-			break;
+			abort(); // If you have NDEBUG...
 	}
+}
+
+Weapon* Player::createWeaponAt(float x, float y)
+{
+	// oh shit I think this is too many levels of abstraction for a c++ program :P
+	// I did this because argument spam everywhere adds more noise than signal to the code
+	return getWeaponSpawnFunc(chosenWeapon, armour == PlayerArmour::GOLD)(x, y, getDir(), textureManager);
 }
 
 void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const settings_t &settings)

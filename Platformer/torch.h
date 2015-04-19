@@ -11,6 +11,7 @@ class Torch : public Weapon
 		virtual ~Torch();
 
 		virtual void onDeath(Room &room, const settings_t &settings);
+		static Torch* spawnAdjusted(float x, float y, int dir, TextureManager &textureManager);
 };
 
 #endif
