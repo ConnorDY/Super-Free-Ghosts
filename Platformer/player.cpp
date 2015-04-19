@@ -116,18 +116,6 @@ void Player::setCrouching(bool c)
 	if (dy != 0.0f || jumped) crouching = false;
 }
 
-PlayerArmour::Enum getDecreasedArmour(PlayerArmour::Enum orig)
-{
-	using namespace PlayerArmour;
-	switch (orig)
-	{
-		case GOLD: return SILVER;
-		case SILVER: return NAKED;
-		case NAKED: return DEAD;
-		default: assert(false);
-	}
-}
-
 void Player::damage(int otherX)
 {
 	if (invincible || dead) return;
@@ -137,9 +125,9 @@ void Player::damage(int otherX)
 	if (x > otherX) dir = 1;
 	
 	// Decrease armour
-	armour = getDecreasedArmour(armour);
-	if (armour != PlayerArmour::DEAD)
+	if (armour != PlayerArmour::NAKED)
 	{
+		armour = PlayerArmour::NAKED;
 		invincible = true;
 		invincibleTimer.restart();
 	}
