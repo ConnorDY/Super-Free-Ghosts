@@ -1,6 +1,7 @@
 #include <vector>
 #include "super_hammer.h"
 #include "sprite_util.h"
+#include "room.h"
 
 namespace {
 	sf::IntRect const BBOX(3, 3, 13, 13);
@@ -8,8 +9,13 @@ namespace {
 }
 
 SuperHammer::SuperHammer(float x, float y, int dir, TextureManager &textureManager)
+	: SuperHammer(x, y, dir, 1, textureManager)
+{
+}
+
+SuperHammer::SuperHammer(float x, float y, int dir, int remainingBounces, TextureManager &textureManager)
 	: Hammer(x, y, BBOX.width, BBOX.height, dir, textureManager),
-	  remainingBounces(1)
+	  remainingBounces(remainingBounces)
 {
 	for (int i = 0; i < 6; i++)
 		animationFrames.emplace_back(i * SPRITE_WIDTH, SPRITE_HEIGHT, SPRITE_WIDTH, SPRITE_HEIGHT);
@@ -24,23 +30,34 @@ void SuperHammer::move(sf::Time deltaTime, Room &room, settings_t const &setting
 {
 	Hammer::move(deltaTime, room, settings);
 
-	// If we hit something, time to rebound or die!
+	// If we hit something, manually kill the hammer BUT undo our last vertical movement, just in case we hit the ground
+	// This y-value will then be used in onDeath
 	if (!placeFree(x, y, room))
 	{
-		if (remainingBounces != 0)
-		{
-			remainingBounces--;
-			float const mstime = deltaTime.asMicroseconds() / 1000.0f;
-			// First, undo the last vertical movement
-			y -= dy * mstime;
-			// Then kick us off the ground again
-			dy = -dy / 2.0f;
-		}
+		float const mstime = deltaTime.asMicroseconds() / 1000.0f;
+		y -= dy * mstime;
+		kill(room, settings);
 	}
 }
+
 
 SuperHammer* SuperHammer::spawnAdjusted(float x, float y, int dir, TextureManager &textureManager)
 {
 	if (dir < 0) x -= BBOX.width;
 	return new SuperHammer(x, y, dir, textureManager);
+}
+
+void SuperHammer::onDeath(Room &room, settings_t const&)
+{
+	if (remainingBounces != 0)
+	{
+		auto bouncedHammer = new SuperHammer(x, y, dx > 0 ? 1 : -1, remainingBounces - 1, room.textureManager);
+
+		// Make the hammer go up, if it wasn't already
+		if (dy > 0)
+			dy = -dy / 2.0f;
+
+		bouncedHammer->dy = dy;
+		room.spawn(bouncedHammer);
+	}
 }

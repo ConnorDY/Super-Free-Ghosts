@@ -9,8 +9,10 @@ class SuperHammer : public Hammer
 		int remainingBounces;
 	public:
 		SuperHammer(float x, float y, int dir, TextureManager &textureManager);
+		SuperHammer(float x, float y, int dir, int remainingBounces, TextureManager &textureManager);
 		virtual ~SuperHammer();
 		virtual void move(sf::Time deltaTime, Room &room, settings_t const &settings);
+		virtual void onDeath(Room &room, settings_t const &settings);
 		static SuperHammer* spawnAdjusted(float x, float y, int dir, TextureManager &textureManager);
 };
 
