@@ -15,7 +15,7 @@ Spear::Spear(float x, float y, int dir, TextureManager &textureManager)
 }
 
 Spear::Spear(float x, float y, int width, int height, int dir, TextureManager &textureManager)
-	: Weapon(x, y, width, height, 0.4f * dir, 0, 0, 0, 10, textureManager)
+	: Weapon(x, y, width, height, 0.4f * dir, 0, 0, 0, 8, textureManager)
 {
 	setDepth(-4);
 	sprite.setTexture(textureManager.getRef("spear"));

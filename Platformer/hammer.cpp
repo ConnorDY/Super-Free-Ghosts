@@ -15,7 +15,7 @@ Hammer::Hammer(float x, float y, int dir, TextureManager &textureManager)
 }
 
 Hammer::Hammer(float x, float y, int width, int height, int dir, TextureManager &textureManager)
-	: Weapon(x, y, width, height, 0.14f * dir, -0.23f, 0.0007f, 0.4f, 10, textureManager)
+	: Weapon(x, y, width, height, 0.14f * dir, -0.23f, 0.0007f, 0.4f, 9, textureManager)
 {
 	setDepth(-4);
 	sprite.setTexture(textureManager.getRef("hammer"));

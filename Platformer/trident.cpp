@@ -17,7 +17,7 @@ Trident::Trident(float x, float y, int dir, TextureManager &textureManager)
 }
 
 Trident::Trident(float x, float y, int width, int height, int dir, TextureManager &textureManager)
-	: Weapon(x, y, width, height, 0.3f * dir, 0, 0, 0, 10, textureManager),
+	: Weapon(x, y, width, height, 0.3f * dir, 0, 0, 0, 5, textureManager),
 	  trailX(x)
 {
 	destroyedOnHit = false;
