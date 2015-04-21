@@ -42,6 +42,7 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 
 	// Depth
 	setDepth(-2);
+	setHealth(8);
 
 	// Increase Movement Speed
 	if (floor((double)rand() / RAND_MAX * 4.) == 1.0) moveSpeed = .12f / 2.0f;
@@ -201,7 +202,7 @@ void Zombie::updateAnimation(sf::Time deltaTime)
 	// Adjust frame
 	if (frames > 1)
 	{
-		float speed = 60.0f / 10.0f;
+		float speed = 6.0f;
 
 		frame += deltaTime.asSeconds() * speed;
 		frame = fmodf(frame, (float)frames);

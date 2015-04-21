@@ -2,6 +2,7 @@
 #include "player.h"
 #include "globals.h"
 #include "zombie.h"
+#include "handeye.h"
 #include "chest.h"
 #include "obelisk.h"
 #include "block.h"
@@ -56,6 +57,8 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 	objects.push_back(new Zombie(textureManager, 1325.0f, 32.0f));
 	objects.push_back(new Zombie(textureManager, 1350.0f, 32.0f));
 	objects.push_back(new Zombie(textureManager, 1475.0f, 32.0f));
+
+	objects.push_back(new HandEye(textureManager, 320.0f, 32.0f));
 
 	objects.push_back(new Chest(textureManager, 5.0f, 234.0f));
 	objects.push_back(new Obelisk(textureManager, 287.0f, 280.0f, 54.0f));

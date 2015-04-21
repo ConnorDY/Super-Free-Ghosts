@@ -85,6 +85,7 @@
     <ClCompile Include="dialogue.cpp" />
     <ClCompile Include="flame.cpp" />
     <ClCompile Include="hammer.cpp" />
+    <ClCompile Include="handeye.cpp" />
     <ClCompile Include="input_handler.cpp" />
     <ClCompile Include="level01_state.cpp" />
     <ClCompile Include="level_editor_state.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="flame.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="hammer.h" />
+    <ClInclude Include="handeye.h" />
     <ClInclude Include="input_handler.h" />
     <ClInclude Include="level01_state.h" />
     <ClInclude Include="level_editor_state.h" />

@@ -87,12 +87,12 @@ void LevelState::update(sf::RenderWindow &window, TextureManager &textureManager
 	{
 		switch (event.type)
 		{
-		default:
-			break;
+			default:
+				break;
 
-		case sf::Event::Closed:
-			window.close();
-			break;
+			case sf::Event::Closed:
+				window.close();
+				break;
 		}
 
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
