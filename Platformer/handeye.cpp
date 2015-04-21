@@ -13,7 +13,8 @@ HandEye::HandEye(TextureManager &textureManager, float x, float y)
 	animation("awake"), frame(0),
 	pulling(false), awake(false), waking(false)
 {
-	for (unsigned int i = 0; i < 17; i++) animations["pull"].emplace_back(0, i * 56, 55, 56);
+	for (unsigned int i = 0; i < 7; i++) animations["pull"].emplace_back(0, i * 56, 55, 56);
+	for (unsigned int i = 7; i < 17; i++) animations["pulling"].emplace_back(0, i * 56, 55, 56);
 	for (unsigned int i = 0; i < 20; i++) animations["awake"].emplace_back(55, i * 40, 53, 40);
 
 	sprite.setTexture(textureManager.getRef("handeye"));
@@ -43,6 +44,12 @@ void HandEye::draw(sf::RenderWindow &window)
 
 	float adjx = 0.0f, adjy = 0.0f;
 
+	if (animation != "awake")
+	{
+		adjx = -2.0f;
+		adjy = -10.0f;
+	}
+
 	if (sprite.getScale().x < 0.0f) adjx = boundingRect.width - adjx;
 
 	sprite.setPosition(x + adjx, y + adjy);
@@ -52,6 +59,15 @@ void HandEye::draw(sf::RenderWindow &window)
 void HandEye::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 {
 	Object::update(deltaTime, room, settings);
+
+	if (!awake && !waking) // TODO: Add check for the distance to the player
+	{
+		waking = true;
+	}
+
+	if (pulling) setAnimation("pulling");
+	else if (awake) setAnimation("pull");
+	else setAnimation("awake");
 
 	updateAnimation(deltaTime);
 }
@@ -77,6 +93,21 @@ void HandEye::updateAnimation(sf::Time deltaTime)
 		double speed = 10.;
 
 		if (awake || waking) frame += deltaTime.asSeconds() * speed;
+
+		if (frame >= frames - 1)
+		{
+			if (awake && !pulling)
+			{
+				pulling = true;
+			}
+			if (waking)
+			{
+				waking = false;
+				awake = true;
+				frame = frames - 1;
+			}
+		}
+
 		frame = fmodf(frame, (float)frames);
 	}
 
