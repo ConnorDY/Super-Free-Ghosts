@@ -12,6 +12,8 @@
 
 class Demo_State : public LevelState
 {
+	private:
+		sf::RectangleShape shapeGrid;
 	protected:
 		virtual bool shouldSpawnMoreZombies() const;
 	public:
@@ -20,6 +22,7 @@ class Demo_State : public LevelState
 
 		// Actions
 		void start(TextureManager &textureManager, const settings_t &settings);
+		virtual void drawBackground(sf::RenderWindow &window);
 };
 
 #endif

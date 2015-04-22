@@ -5,6 +5,8 @@
 #include "handeye.h"
 #include "menu_state.h"
 
+#define GRID_SCALE 8
+
 Demo_State::Demo_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings)
 	: LevelState(sM, som, textureManager, settings)
 {
@@ -17,6 +19,12 @@ Demo_State::~Demo_State()
 
 void Demo_State::start(TextureManager &textureManager, const settings_t &)
 {
+	// Background
+	shapeGrid.setSize(sf::Vector2f(GRID_SCALE - 2, GRID_SCALE - 2));
+	shapeGrid.setOrigin(sf::Vector2f(-1, -1));
+	shapeGrid.setFillColor(sf::Color(255, 255, 255, 10));
+	shapeGrid.setOutlineThickness(1);
+
 	// Test dialogue
 	dialogue = std::make_unique<Dialogue>(std::vector<std::string>({ "Welcome to our game demo! Press X to continue.", "This is another line of text!" }));
 
@@ -42,4 +50,28 @@ void Demo_State::start(TextureManager &textureManager, const settings_t &)
 bool Demo_State::shouldSpawnMoreZombies() const
 {
 	return false;
+}
+
+static double gridYToWindowY(double gridY) { return gridY * GRID_SCALE; }
+static double gridXToWindowX(double gridX) { return gridX * GRID_SCALE; }
+
+void Demo_State::drawBackground(sf::RenderWindow &window)
+{
+	auto gridXOffset = gridXToWindowX(floor(getViewX() / GRID_SCALE));
+
+	// Grid
+	for (int j = 0; j <= ceil(VIEW_HEIGHT / GRID_SCALE); j++)
+	{
+		for (int i = 0; i <= ceil(VIEW_WIDTH / GRID_SCALE); i++)
+		{
+			sf::Color col;
+			col = sf::Color(255, 255, 255, 50);
+
+			shapeGrid.setOutlineColor(col);
+			shapeGrid.setPosition(sf::Vector2f(gridXToWindowX(i) + gridXOffset, gridYToWindowY(j)));
+			window.draw(shapeGrid);
+		}
+	}
+
+	Room::drawBackground(window);
 }
