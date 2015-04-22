@@ -18,7 +18,9 @@ Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager)
 
 	// Menu Options
 	menuOptions.push_back("Start");
+#ifndef DEMO_MODE
 	menuOptions.push_back("Level Editor");
+#endif
 	menuOptions.push_back("Options");
 	menuOptions.push_back("Exit");
 }
@@ -111,8 +113,20 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 			switch (currentOption)
 			{
 				default:
+					std::exit(0);
 					break;
 
+#ifdef DEMO_MODE
+				// Load Demo State
+				case 0:
+					getStateManager().setState(std::make_unique<Demo_State>(getStateManager(), soundManager, textureManager, settings));
+					break;
+
+				// Options Menu
+				case 1:
+					getStateManager().setState(std::make_unique<Options_State>(getStateManager(), settings));
+					break;
+#else
 				// Load Level01 State
 				case 0:
 					getStateManager().setState(std::make_unique<Level01_State>(getStateManager(), soundManager, textureManager, settings));
@@ -127,11 +141,7 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 				case 2:
 					getStateManager().setState(std::make_unique<Options_State>(getStateManager(), settings));
 					break;
-
-				// Exit
-				case 3:
-					std::exit(0);
-					break;
+#endif
 			}
 		}
 	}

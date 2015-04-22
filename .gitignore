@@ -34,5 +34,7 @@ Platformer/platformer
 # Directories
 Debug/
 Release/
+Demo/
 Platformer/Debug/
 Platformer/Release/
+Platformer/Demo/
