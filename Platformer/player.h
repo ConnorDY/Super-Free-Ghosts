@@ -55,6 +55,7 @@ class Player : public DamageableObject
 		void setCrouching(bool c);
 		void damage(int otherX);
 		void upgrade(PlayerArmour::Enum a);
+		void setWeapon(PlayerWeapon::Enum a);
 		
 		// Accesors
 		int getDir() const;

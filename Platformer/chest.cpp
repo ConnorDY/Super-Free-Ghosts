@@ -2,6 +2,7 @@
 #include "globals.h"
 #include "obelisk.h"
 #include "crystal.h"
+#include "weapondrop.h"
 #include "room.h"
 
 Chest::Chest(TextureManager &tM, float x, float y)
@@ -22,6 +23,7 @@ Chest::Chest(TextureManager &tM, float x, float y)
 
 	// Sprite
 	spr.setTexture(textureManager.getRef("chest1"));
+	setDepth(1);
 
 	// Frames
 	for (unsigned int i = 0; i < 8; i++) frames.emplace_back(0, i * 26, 35, 26);
@@ -141,7 +143,7 @@ void Chest::updateAnimation(sf::Time deltaTime, Room &room)
 
 			if (!leaving && getHealth() <= 0)
 			{
-				room.spawn(new Crystal(textureManager, x + 7, y - 5));
+				room.spawn(new WeaponDrop(textureManager, x + 7, y - 5));
 				leaving = true;
 			}
 		}

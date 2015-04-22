@@ -145,6 +145,7 @@
     <ClCompile Include="torch.cpp" />
     <ClCompile Include="trident.cpp" />
     <ClCompile Include="weapon.cpp" />
+    <ClCompile Include="weapondrop.cpp" />
     <ClCompile Include="zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="torch.h" />
     <ClInclude Include="trident.h" />
     <ClInclude Include="weapon.h" />
+    <ClInclude Include="weapondrop.h" />
     <ClInclude Include="zombie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
