@@ -10,8 +10,9 @@ HandEye::HandEye(TextureManager &textureManager, float x, float y)
 		0.0f, 0.0f, false,
 		0.00185f / 2.0f, 0.25f
 	),
-	animation("awake"), frame(0),
-	pulling(false), awake(false), waking(false)
+	animation("awake"),
+	pulling(false), awake(false), waking(false),
+	frame(0)
 {
 	for (unsigned int i = 0; i < 7; i++) animations["pull"].emplace_back(0, i * 56, 55, 56);
 	for (unsigned int i = 7; i < 17; i++) animations["pulling"].emplace_back(0, i * 56, 55, 56);
