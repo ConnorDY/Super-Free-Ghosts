@@ -143,7 +143,7 @@ void Chest::updateAnimation(sf::Time deltaTime, Room &room)
 
 			if (!leaving && getHealth() <= 0)
 			{
-				room.spawn(new WeaponDrop(textureManager, x + 7, y - 5));
+				room.spawn(new Crystal(textureManager, x + 7, y - 5));
 				leaving = true;
 			}
 		}

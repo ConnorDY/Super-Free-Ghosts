@@ -91,13 +91,19 @@ Player::Player(TextureManager &tm, float x, float y)
 	animations["die"].emplace_back(50, 50, 50, 50);
 	animations["die"].emplace_back(100, 50, 50, 50);
 
-	// Transformation animation
+	// Transformation animations
 	for (unsigned int i = 0; i < 2; i++)
 	{
 		for (unsigned int j = 0; j < 16; j++)
 		{
 			animations["transform1"].emplace_back(i * 182, j * 136, 182, 136);
 		}
+	}
+
+	for (unsigned int i = 0; i < 37; i++)
+	{
+		animations["transform2-1"].emplace_back(i * 92, 0, 92, 450);
+		animations["transform2-2"].emplace_back(i * 92, 450, 92, 450);
 	}
 	
 	// Depth and Health
@@ -155,7 +161,18 @@ void Player::upgrade(PlayerArmour::Enum a)
 	transforming = true;
 	invincible = true;
 	armour = a;
-	changeTexture(textureManager, "transform1");
+
+	switch (armour)
+	{
+		case PlayerArmour::SILVER:
+			changeTexture(textureManager, "transform1");
+			break;
+		
+		case PlayerArmour::GOLD:
+			changeTexture(textureManager, "transform2");
+			break;
+	}
+	
 	fadeTimer.restart();
 }
 
@@ -238,8 +255,18 @@ void Player::draw(sf::RenderWindow &window)
 
 	if (transforming)
 	{
-		adjx = -76.0f;
-		adjy = -100.0f;
+		switch (armour)
+		{
+			case PlayerArmour::SILVER:
+				adjx = -76.0f;
+				adjy = -100.0f;
+				break;
+
+			case PlayerArmour::GOLD:
+				adjx = 0.0f;
+				adjy = -414.0f;
+				break;
+		}
 	}
 	else
 	{
@@ -502,7 +529,19 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 
 	// Animation
 	if (dead) setAnimation("die");
-	else if (transforming) setAnimation("transform1");
+	else if (transforming)
+	{
+		switch (armour)
+		{
+			case PlayerArmour::SILVER:
+				setAnimation("transform1");
+				break;
+
+			case PlayerArmour::GOLD:
+				setAnimation("transform2-1");
+				break;
+		}
+	}
 	else if (hit) setAnimation("hit");
 	else if (rolling) setAnimation("roll");
 	else if (crouching)

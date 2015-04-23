@@ -10,7 +10,7 @@ Crystal::Crystal(TextureManager &, float x, float y)
 	rect.setSize(sf::Vector2f(width, height));
 	rect.setFillColor(sf::Color(0, 70, 255, 200));
 
-	type = PlayerArmour::SILVER;
+	type = PlayerArmour::GOLD;
 }
 
 Crystal::~Crystal()
