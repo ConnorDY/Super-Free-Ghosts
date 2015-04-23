@@ -33,7 +33,7 @@ class Player : public DamageableObject
 		std::string animation, texture;
 		float moveSpeed, jumpSpeed, frame, throwTime;
 		int jumps;
-		PlayerArmour::Enum armour;
+		PlayerArmour::Enum armour, armourLast;
 		bool jumped, midJump, midThrow, rolling, flipped, crouching, invincible, hit, dead, visible, transforming, fadeout;
 		sf::Clock jumpTimer, throwTimer, rollTimer, invincibleTimer, flashTimer, fadeTimer;
 		double total_time = 0.0;

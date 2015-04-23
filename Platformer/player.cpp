@@ -27,7 +27,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
 	  animation("still"), texture("player2"),
 	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
-	  jumps(0), armour(PlayerArmour::SILVER),
+	  jumps(0), armour(PlayerArmour::SILVER), armourLast(PlayerArmour::SILVER),
 	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true), transforming(false), fadeout(false),
 	  chosenWeapon(PlayerWeapon::SPEAR)
 {
@@ -160,6 +160,7 @@ void Player::upgrade(PlayerArmour::Enum a)
 {
 	transforming = true;
 	invincible = true;
+	armourLast = armour;
 	armour = a;
 
 	switch (armour)
@@ -538,7 +539,16 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 				break;
 
 			case PlayerArmour::GOLD:
-				setAnimation("transform2-1");
+				switch (armourLast)
+				{
+					case PlayerArmour::NAKED:
+						setAnimation("transform2-1");
+						break;
+
+					case PlayerArmour::SILVER:
+						setAnimation("transform2-2");
+						break;
+				}
 				break;
 		}
 	}
