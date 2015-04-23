@@ -263,8 +263,8 @@ void Player::draw(sf::RenderWindow &window)
 				break;
 
 			case PlayerArmour::GOLD:
-				adjx = 0.0f;
-				adjy = -414.0f;
+				adjx = -40.0f;
+				adjy = -415.0f;
 				break;
 		}
 	}
