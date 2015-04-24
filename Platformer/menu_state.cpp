@@ -132,7 +132,7 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 					getStateManager().setState(std::make_unique<Level01_State>(getStateManager(), soundManager, textureManager, settings));
 					return;
 
-				// Options Menu
+				// Level editor
 				case 1:
 					getStateManager().setState(std::make_unique<Level_Editor_State>(getStateManager(), soundManager, textureManager, settings));
 					return;
