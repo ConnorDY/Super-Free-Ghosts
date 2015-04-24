@@ -33,7 +33,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
 	  animation("still"), texture("player2"),
 	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
-	  jumps(0), armour(PlayerArmour::SILVER), armourLast(PlayerArmour::SILVER),
+	  jumps(0), armour(PlayerArmour::SILVER),
 	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true),
 	  chosenWeapon(PlayerWeapon::SPEAR)
 {
@@ -167,7 +167,7 @@ std::unique_ptr<ModalAnimation> Player::makeUpgradeAnimation(float xoff, float y
 	static float const ANIM_SPEED = 12.5f;
 	auto lastFrame = std::vector<sf::IntRect>(animFrames.end() - 1, animFrames.end());
 
-	std::unique_ptr<ModalAnimation> spriteAnimation = std::make_unique<SpriteAnimation>(x + xoff, y + yoff, animTexture, animFrames, ANIM_SPEED, this);
+	std::unique_ptr<ModalAnimation> spriteAnimation = std::make_unique<SpriteAnimation>(x + xoff, y + yoff, getDir(), animTexture, animFrames, ANIM_SPEED, this);
 	if (hasFlash)
 	{
 		std::vector<int> flashes1 { 7, 13, 19, 25, 31 };
@@ -191,9 +191,15 @@ std::unique_ptr<ModalAnimation> Player::makeUpgradeAnimation(float xoff, float y
 		),
 		CombinedAnimations::keepUntilBothFinish(
 			std::make_unique<FadeInAnimation>(0.2f, sf::Color(0, 0, 0, 100)),
-			std::make_unique<SpriteAnimation>(x + xoff, y + yoff, animTexture, lastFrame, ANIM_SPEED, this)
+			std::make_unique<SpriteAnimation>(x + xoff, y + yoff, getDir(), animTexture, lastFrame, ANIM_SPEED, this)
 		)
 	);
+}
+
+float Player::fixAdjXForDirection(float adjx) const
+{
+	if (sprite.getScale().x < 0.0f) adjx = getRect().width - adjx;
+	return adjx;
 }
 
 void Player::upgrade(PlayerArmour::Enum a, Room &room, settings_t const &settings)
@@ -206,7 +212,7 @@ void Player::upgrade(PlayerArmour::Enum a, Room &room, settings_t const &setting
 	switch (armour)
 	{
 		case PlayerArmour::SILVER:
-			animation = makeUpgradeAnimation(-76.0f, -100.0f, false, textureManager.getRef("transform1"), animations["transform1"]);
+			animation = makeUpgradeAnimation(fixAdjXForDirection(-76.0f), -100.0f, false, textureManager.getRef("transform1"), animations["transform1"]);
 			break;
 		case PlayerArmour::GOLD:
 			{
@@ -225,7 +231,7 @@ void Player::upgrade(PlayerArmour::Enum a, Room &room, settings_t const &setting
 					default:
 						throw std::domain_error("Tried to upgrade to gold from an armour with no animation");
 				}
-				animation = makeUpgradeAnimation(-40.0f, -415.0f, true, textureManager.getRef("transform2"), animFrames);
+				animation = makeUpgradeAnimation(fixAdjXForDirection(-40.0f), -415.0f, true, textureManager.getRef("transform2"), animFrames);
 			}
 			break;
 		default:
@@ -292,7 +298,7 @@ void Player::draw(sf::RenderWindow &window)
 	if (!crouching) adjx -= 2;
 	if (rolling) adjy += 7;
 
-	if (sprite.getScale().x < 0.0f) adjx = boundingRect.width - adjx;
+	adjx = fixAdjXForDirection(adjx);
 
 	sprite.setPosition(x + adjx, y + adjy);
 

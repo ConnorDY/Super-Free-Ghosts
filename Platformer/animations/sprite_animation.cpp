@@ -1,9 +1,10 @@
 #include "sprite_animation.h"
 
-SpriteAnimation::SpriteAnimation(float x, float y, sf::Texture const &texture, std::vector<sf::IntRect> animationFrames, float speed, Object const *replacedObject)
+SpriteAnimation::SpriteAnimation(float x, float y, int dir, sf::Texture const &texture, std::vector<sf::IntRect> animationFrames, float speed, Object const *replacedObject)
 	: ModalAnimation(), sprite(texture), animationFrames(animationFrames),
 	  replacedObject(replacedObject)
 {
+	sprite.setScale(dir, 1);
 	sprite.setPosition(x, y);
 	animationSpeed = speed;
 }

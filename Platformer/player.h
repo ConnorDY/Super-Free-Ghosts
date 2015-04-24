@@ -36,7 +36,7 @@ class Player : public DamageableObject
 		std::string animation, texture;
 		float moveSpeed, jumpSpeed, frame, throwTime;
 		int jumps;
-		PlayerArmour::Enum armour, armourLast;
+		PlayerArmour::Enum armour;
 		bool jumped, midJump, midThrow, rolling, flipped, crouching, invincible, hit, dead, visible;
 		sf::Clock jumpTimer, throwTimer, rollTimer, invincibleTimer, flashTimer;
 		double total_time = 0.0;
@@ -52,6 +52,7 @@ class Player : public DamageableObject
 		Weapon* createWeaponAt(float x, float y);
 		bool canThrowWeapon(Room const &room) const;
 		std::unique_ptr<ModalAnimation> makeUpgradeAnimation(float xoff, float yoff, bool hasFlash, sf::Texture const &animTexture, std::vector<sf::IntRect> const &animFrames) const;
+		float fixAdjXForDirection(float adjx) const;
 	public:
 		Player(TextureManager &textureManager, float x, float y);
 
