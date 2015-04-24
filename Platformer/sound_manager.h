@@ -3,6 +3,7 @@
 
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <map>
 #include "settings.h"
@@ -11,8 +12,8 @@ class SoundManager
 {
 	private:
 		settings_t const &settings;
-		std::map<std::string, sf::SoundBuffer*> buffers;
-		std::map<std::string, sf::Sound*> sounds;
+		std::map<std::string, std::unique_ptr<sf::SoundBuffer>> buffers;
+		std::map<std::string, std::unique_ptr<sf::Sound>> sounds;
 	public:
 		SoundManager(settings_t const &settings);
 		~SoundManager();

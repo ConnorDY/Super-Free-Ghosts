@@ -8,15 +8,6 @@ SoundManager::SoundManager(settings_t const &settings)
 
 SoundManager::~SoundManager()
 {
-	for (auto const &it : sounds)
-	{
-		delete it.second;
-	}
-
-	for (auto const &it : buffers)
-	{
-		delete it.second;
-	}
 }
 
 
@@ -24,20 +15,18 @@ SoundManager::~SoundManager()
 void SoundManager::loadSound(const std::string &name, const std::string &filename)
 {
 	/* Load the sound buffer */
-	sf::SoundBuffer *buf = new sf::SoundBuffer();
+	auto buf = std::make_unique<sf::SoundBuffer>();
 	buf->loadFromFile(filename);
 
 #ifdef _DEBUG
 	std::cout << "Loaded sound \"" << name << "\" from " << filename << std::endl;
 #endif
 
-	/* Add it to the list of buffers */
-	this->buffers[name] = buf;
-
 	/* Create sound and add it to the list of sounds */
-	sf::Sound *snd = new sf::Sound();
-	snd->setBuffer(*this->buffers.at(name));
-	this->sounds[name] = snd;
+	this->sounds[name] = std::make_unique<sf::Sound>(*buf);
+
+	/* Add the buffer to the list of buffers */
+	this->buffers[name] = std::move(buf);
 }
 
 void SoundManager::playSound(const std::string &sound) const
