@@ -19,8 +19,8 @@ class Level01_State : public LevelState
 
 		// Actions
 		virtual void start();
-		virtual void drawBackground(sf::RenderWindow &window);
-		virtual void drawForeground(sf::RenderWindow &window);
+		virtual void drawBackground(sf::RenderWindow &window) override;
+		virtual void drawForeground(sf::RenderWindow &window) override;
 };
 
 #endif

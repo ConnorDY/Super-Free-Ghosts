@@ -27,8 +27,8 @@ class LevelState : public Room
 		int countZombies() const;
 
 		// Actions
-		virtual void drawForeground(sf::RenderWindow &window);
-		virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler);
+		virtual void drawForeground(sf::RenderWindow &window) override;
+		virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler) override;
 };
 
 #endif

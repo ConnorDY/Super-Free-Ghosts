@@ -11,9 +11,9 @@ class BloodParticle : public Particle
 		BloodParticle(Room &room, float x, float y, int dir);
 		~BloodParticle();
 
-		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime);
-		virtual void onDeath();
+		virtual void draw(sf::RenderWindow &window) override;
+		virtual void update(sf::Time deltaTime) override;
+		virtual void onDeath() override;
 };
 
 #endif

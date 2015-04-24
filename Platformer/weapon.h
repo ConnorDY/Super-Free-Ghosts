@@ -16,9 +16,9 @@ class Weapon : public Object {
 		virtual ~Weapon();
 
 		virtual void move(sf::Time deltaTime);
-		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime);
-		virtual void onDeath();
+		virtual void draw(sf::RenderWindow &window) override;
+		virtual void update(sf::Time deltaTime) override;
+		virtual void onDeath() override;
 };
 
 #endif

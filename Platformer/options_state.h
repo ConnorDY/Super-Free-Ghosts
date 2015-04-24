@@ -26,8 +26,8 @@ public:
 	virtual ~Options_State();
 
 	// Actions
-	virtual void draw(sf::RenderWindow &window);
-	virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler);
+	virtual void draw(sf::RenderWindow &window) override;
+	virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler) override;
 };
 
 #endif

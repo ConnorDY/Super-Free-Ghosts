@@ -12,8 +12,8 @@ class DimAnimation : public ModalAnimation
 		DimAnimation(Room const &room, float fadeInTime, sf::Color colour);
 		virtual ~DimAnimation();
 
-		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime);
+		virtual void draw(sf::RenderWindow &window) override;
+		virtual void update(sf::Time deltaTime) override;
 };
 
 #endif

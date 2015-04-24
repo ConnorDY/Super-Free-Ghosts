@@ -23,10 +23,10 @@ class Level_Editor_State : public Room
 		virtual ~Level_Editor_State();
 
 		// Actions
-		void start();
-		virtual void drawForeground(sf::RenderWindow &window);
-		virtual void updateView(sf::RenderWindow &window);
-		virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler);
+		void start() override;
+		virtual void drawForeground(sf::RenderWindow &window) override;
+		virtual void updateView(sf::RenderWindow &window) override;
+		virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler) override;
 };
 
 #endif

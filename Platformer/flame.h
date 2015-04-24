@@ -13,8 +13,8 @@ class Flame : public Weapon
 		Flame(Room &room, float x, float y, int dir, int remaining);
 		virtual ~Flame();
 
-		virtual void move(sf::Time deltaTime);
-		virtual void onDeath();
+		virtual void move(sf::Time deltaTime) override;
+		virtual void onDeath() override;
 };
 
 #endif

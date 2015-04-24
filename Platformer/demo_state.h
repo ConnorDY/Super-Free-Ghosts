@@ -21,8 +21,8 @@ class Demo_State : public LevelState
 		virtual ~Demo_State();
 
 		// Actions
-		void start();
-		virtual void drawBackground(sf::RenderWindow &window);
+		void start() override;
+		virtual void drawBackground(sf::RenderWindow &window) override;
 };
 
 #endif

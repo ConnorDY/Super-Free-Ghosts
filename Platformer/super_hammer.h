@@ -11,8 +11,8 @@ class SuperHammer : public Hammer
 		SuperHammer(Room &room, float x, float y, int dir);
 		SuperHammer(Room &room, float x, float y, int dir, int remainingBounces);
 		virtual ~SuperHammer();
-		virtual void move(sf::Time deltaTime);
-		virtual void onDeath();
+		virtual void move(sf::Time deltaTime) override;
+		virtual void onDeath() override;
 		static SuperHammer* spawnAdjusted(Room &room, float x, float y, int dir);
 };
 

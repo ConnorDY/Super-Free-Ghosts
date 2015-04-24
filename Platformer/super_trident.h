@@ -10,7 +10,7 @@ class SuperTrident : public Trident
 	public:
 		SuperTrident(Room &room, float x, float y, int dir);
 		virtual ~SuperTrident();
-		virtual void draw(sf::RenderWindow &window);
+		virtual void draw(sf::RenderWindow &window) override;
 		static SuperTrident* spawnAdjusted(Room &room, float x, float y, int dir);
 };
 

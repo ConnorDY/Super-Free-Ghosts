@@ -13,7 +13,7 @@ class Trident : public Weapon
 	public:
 		Trident(Room &room, float x, float y, int dir);
 		virtual ~Trident();
-		virtual void draw(sf::RenderWindow &window);
+		virtual void draw(sf::RenderWindow &window) override;
 		static Trident* spawnAdjusted(Room &room, float x, float y, int dir);
 		static bool canThrow(Room const &room);
 };

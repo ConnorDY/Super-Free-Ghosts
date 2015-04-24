@@ -68,14 +68,14 @@ class Player : public DamageableObject
 		bool getInvincible() const;
 		bool isTransforming() const;
 		bool isFadingOut() const;
-		virtual sf::FloatRect getRect() const;
+		virtual sf::FloatRect getRect() const override;
 
 		// Actions
-		virtual void draw(sf::RenderWindow &window);
+		virtual void draw(sf::RenderWindow &window) override;
 		void jump(int dir);
 		void throwWeapon(int dir);
 		void move(int dir);
-		void update(sf::Time deltaTime);
+		void update(sf::Time deltaTime) override;
 		void setAnimation(std::string name);
 };
 

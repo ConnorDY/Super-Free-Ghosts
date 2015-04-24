@@ -14,7 +14,7 @@ class Block : public Object
 		explicit Block(Room &room, float x = -128, float y = -128, float width = 32, float height = 32);
 
 		// Actions
-		virtual void draw(sf::RenderWindow &window);
+		virtual void draw(sf::RenderWindow &window) override;
 };
 
 #endif

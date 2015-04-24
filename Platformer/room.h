@@ -55,8 +55,8 @@ class Room : public State {
 		virtual void drawBackground(sf::RenderWindow &window);
 		virtual void drawSprites(sf::RenderWindow &window);
 		virtual void drawForeground(sf::RenderWindow &window);
-		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler);
+		virtual void draw(sf::RenderWindow &window) override;
+		virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler) override;
 };
 
 #endif

@@ -24,7 +24,7 @@ class Particle : public Object
 		bool isActive() const;
 		void deactivate();
 
-		virtual void update(sf::Time deltaTime);
+		virtual void update(sf::Time deltaTime) override;
 };
 
 #endif

@@ -12,9 +12,9 @@ class SpriteAnimation : public ModalAnimation
 		SpriteAnimation(Room const &room, float x, float y, int dir, sf::Texture const &texture, std::vector<sf::IntRect> animationFrames, float speed, Object const *replacedObject);
 		virtual ~SpriteAnimation();
 
-		virtual bool shouldDraw(Object const* obj);
+		virtual bool shouldDraw(Object const* obj) override;
 
-		virtual void draw(sf::RenderWindow &window);
+		virtual void draw(sf::RenderWindow &window) override;
 };
 
 #endif

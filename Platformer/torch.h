@@ -10,7 +10,7 @@ class Torch : public Weapon
 		Torch(Room &room, float x, float y, int dir);
 		virtual ~Torch();
 
-		virtual void onDeath();
+		virtual void onDeath() override;
 		static Torch* spawnAdjusted(Room &room, float x, float y, int dir);
 };
 

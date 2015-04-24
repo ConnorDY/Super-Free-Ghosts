@@ -30,12 +30,12 @@ class Zombie : public DamageableObject
 		// Accesors
 		int getDir() const;
 		bool getInCasket() const;
-		virtual bool canCollideWith(const Object* obj) const;
+		virtual bool canCollideWith(const Object* obj) const override;
 
 		// Actions
-		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime);
-		virtual void onDeath();
+		virtual void draw(sf::RenderWindow &window) override;
+		virtual void update(sf::Time deltaTime) override;
+		virtual void onDeath() override;
 };
 
 #endif

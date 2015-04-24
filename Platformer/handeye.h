@@ -26,12 +26,12 @@ class HandEye : public DamageableObject
 		HandEye(Room &room, float x, float y);
 
 		// Accesors
-		virtual bool canCollideWith(const Object* obj) const;
+		virtual bool canCollideWith(const Object* obj) const override;
 
 		// Actions
-		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime);
-		virtual void onDeath();
+		virtual void draw(sf::RenderWindow &window) override;
+		virtual void update(sf::Time deltaTime) override;
+		virtual void onDeath() override;
 };
 
 #endif

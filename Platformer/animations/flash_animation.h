@@ -14,8 +14,8 @@ class FlashAnimation : public ModalAnimation
 		FlashAnimation(Room const &room, std::vector<int> flashes, float speed, sf::Color colour);
 		virtual ~FlashAnimation();
 
-		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime);
+		virtual void draw(sf::RenderWindow &window) override;
+		virtual void update(sf::Time deltaTime) override;
 };
 
 #endif
