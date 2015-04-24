@@ -1,64 +1,67 @@
 #include "combined_animations.h"
 
-class LongestLifetimeAnimation : public ModalAnimation
+namespace
 {
-	private:
-		std::unique_ptr<ModalAnimation> one, two;
-	public:
-		LongestLifetimeAnimation(std::unique_ptr<ModalAnimation> one, std::unique_ptr<ModalAnimation> two)
-			: one(std::move(one)), two(std::move(two))
-		{}
-		~LongestLifetimeAnimation() {}
+	class LongestLifetimeAnimation : public ModalAnimation
+	{
+		private:
+			std::unique_ptr<ModalAnimation> one, two;
+		public:
+			LongestLifetimeAnimation(std::unique_ptr<ModalAnimation> one, std::unique_ptr<ModalAnimation> two)
+				: one(std::move(one)), two(std::move(two))
+			{}
+			~LongestLifetimeAnimation() {}
 
-		virtual bool finished() { return one->finished() && two->finished(); }
-		virtual bool shouldDraw(Object const* obj) { return one->shouldDraw(obj) && two->shouldDraw(obj); }
+			virtual bool finished() { return one->finished() && two->finished(); }
+			virtual bool shouldDraw(Object const* obj) { return one->shouldDraw(obj) && two->shouldDraw(obj); }
 
-		virtual void draw(sf::RenderWindow &window)
-		{
-			one->draw(window);
-			two->draw(window);
-		}
-		virtual void update(sf::Time deltaTime, Room &room, settings_t const &settings)
-		{
-			one->update(deltaTime, room, settings);
-			two->update(deltaTime, room, settings);
-		}
-};
-
-class SequentialAnimation : public ModalAnimation
-{
-	private:
-		std::vector<std::unique_ptr<ModalAnimation>> animations;
-	public:
-		SequentialAnimation(std::vector<std::unique_ptr<ModalAnimation>> animations)
-			: animations(std::move(animations))
-		{}
-		~SequentialAnimation() {}
-
-		virtual bool finished() { return animations.empty(); }
-		virtual bool shouldDraw(Object const* obj)
-		{
-			if (animations.empty()) return true;
-			return animations[0]->shouldDraw(obj);
-		}
-
-		virtual void draw(sf::RenderWindow &window)
-		{
-			if (!animations.empty()) animations[0]->draw(window);
-		}
-		virtual void update(sf::Time deltaTime, Room &room, settings_t const &settings)
-		{
-			while (!animations.empty())
+			virtual void draw(sf::RenderWindow &window)
 			{
-				animations[0]->update(deltaTime, room, settings);
-				if (animations[0]->finished())
-				{
-					animations.erase(animations.begin());
-				}
-				else break;
+				one->draw(window);
+				two->draw(window);
 			}
-		}
-};
+			virtual void update(sf::Time deltaTime, Room &room, settings_t const &settings)
+			{
+				one->update(deltaTime, room, settings);
+				two->update(deltaTime, room, settings);
+			}
+	};
+
+	class SequentialAnimation : public ModalAnimation
+	{
+		private:
+			std::vector<std::unique_ptr<ModalAnimation>> animations;
+		public:
+			SequentialAnimation(std::vector<std::unique_ptr<ModalAnimation>> animations)
+				: animations(std::move(animations))
+			{}
+			~SequentialAnimation() {}
+
+			virtual bool finished() { return animations.empty(); }
+			virtual bool shouldDraw(Object const* obj)
+			{
+				if (animations.empty()) return true;
+				return animations[0]->shouldDraw(obj);
+			}
+
+			virtual void draw(sf::RenderWindow &window)
+			{
+				if (!animations.empty()) animations[0]->draw(window);
+			}
+			virtual void update(sf::Time deltaTime, Room &room, settings_t const &settings)
+			{
+				while (!animations.empty())
+				{
+					animations[0]->update(deltaTime, room, settings);
+					if (animations[0]->finished())
+					{
+						animations.erase(animations.begin());
+					}
+					else break;
+				}
+			}
+	};
+}
 
 namespace CombinedAnimations
 {
