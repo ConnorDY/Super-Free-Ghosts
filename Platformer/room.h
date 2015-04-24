@@ -2,11 +2,15 @@
 #define ROOM_H
 
 class Object;
+class ModalAnimation;
 #include "state.h"
 
 class Room : public State {
 	private:
 		SoundManager &soundManager;                 // Sound manager for use by objects in this room
+		std::unique_ptr<ModalAnimation> animation;  // Currently-playing modal animation (or else wrapped nullptr)
+
+		bool shouldDraw(Object const* object) const;
 	protected:
 		std::vector<Object*> objects;               // Objects present in this room
 		Object *view_follow;                        // The object to follow around with the camera
@@ -23,9 +27,6 @@ class Room : public State {
 		void drawHeightMap(sf::RenderWindow &window);
 		void drawHeightMapBack(sf::RenderWindow &window);
 
-		virtual bool shouldUpdate(Object const* object) const;
-		virtual bool shouldDraw(Object const* object) const;
-
 		void drawTree(int x, int y, sf::RenderWindow &window);
 		void drawDecor(int x, int y, int type, sf::RenderWindow &window);
 	public:
@@ -37,12 +38,18 @@ class Room : public State {
 		bool heightmapIntersects(sf::FloatRect const &rect) const;
 		int getMinTerrainYBetween(int left, int right) const;
 		bool exceedsHorizontalBounds(sf::FloatRect const &rect) const;
+
 		SoundManager& getSoundManager() const;
 		std::vector<Object*> const getObjects() const;
+		bool isAnimationInProgress() const;
+
 		void spawn(Object *obj);
+		void playModalAnimation(std::unique_ptr<ModalAnimation> animation, settings_t const &settings);
+
 		virtual void start(TextureManager &textureManager, const settings_t &settings) = 0;
 		virtual void end();
 		void reset(TextureManager &textureManager, const settings_t &settings);
+
 		virtual void updateView(sf::RenderWindow &window);
 		virtual void drawBackground(sf::RenderWindow &window);
 		virtual void drawSprites(sf::RenderWindow &window);

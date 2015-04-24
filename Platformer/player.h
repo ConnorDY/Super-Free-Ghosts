@@ -7,6 +7,7 @@
 #include <math.h>
 #include <string>
 #include <vector>
+#include <memory>
 #include <map>
 
 #include "settings.h"
@@ -14,6 +15,8 @@
 #include "sound_manager.h"
 #include "damageable_object.h"
 #include "weapon.h"
+
+class ModalAnimation;
 
 namespace PlayerWeapon { enum Enum {
 	SPEAR, BOMB, TORCH, TRIDENT, HAMMER
@@ -34,8 +37,8 @@ class Player : public DamageableObject
 		float moveSpeed, jumpSpeed, frame, throwTime;
 		int jumps;
 		PlayerArmour::Enum armour, armourLast;
-		bool jumped, midJump, midThrow, rolling, flipped, crouching, invincible, hit, dead, visible, transforming, fadeout;
-		sf::Clock jumpTimer, throwTimer, rollTimer, invincibleTimer, flashTimer, fadeTimer;
+		bool jumped, midJump, midThrow, rolling, flipped, crouching, invincible, hit, dead, visible;
+		sf::Clock jumpTimer, throwTimer, rollTimer, invincibleTimer, flashTimer;
 		double total_time = 0.0;
 		int xJumpedFrom;
 		PlayerWeapon::Enum chosenWeapon;
@@ -48,13 +51,14 @@ class Player : public DamageableObject
 		std::pair<int, int> getJumpPoints() const;
 		Weapon* createWeaponAt(float x, float y);
 		bool canThrowWeapon(Room const &room) const;
+		std::unique_ptr<ModalAnimation> makeUpgradeAnimation(float xoff, float yoff, bool hasFlash, sf::Texture const &animTexture, std::vector<sf::IntRect> const &animFrames) const;
 	public:
 		Player(TextureManager &textureManager, float x, float y);
 
 		// Mutators
 		void setCrouching(bool c);
 		void damage(int otherX);
-		void upgrade(PlayerArmour::Enum a);
+		void upgrade(PlayerArmour::Enum a, Room &room, settings_t const &settings);
 		void setWeapon(PlayerWeapon::Enum a);
 		
 		// Accesors

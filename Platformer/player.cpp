@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <functional>
+#include <stdexcept>
 #include "player.h"
 #include "globals.h"
 #include "room.h"
@@ -11,6 +12,11 @@
 #include "trident.h"
 #include "super_trident.h"
 #include "blood_particle.h"
+#include "animations/combined_animations.h"
+#include "animations/dim_animation.h"
+#include "animations/fade_in_animation.h"
+#include "animations/flash_animation.h"
+#include "animations/sprite_animation.h"
 
 #define PLAYER_WIDTH  17
 #define PLAYER_HEIGHT 35
@@ -28,7 +34,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  animation("still"), texture("player2"),
 	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(PlayerArmour::SILVER), armourLast(PlayerArmour::SILVER),
-	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true), transforming(false), fadeout(false),
+	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true),
 	  chosenWeapon(PlayerWeapon::SPEAR)
 {
 	// Sprite
@@ -156,25 +162,77 @@ void Player::damage(int otherX)
 	sprite.setScale(sf::Vector2f(sprite.getScale().x * -1, 1.0f));
 }
 
-void Player::upgrade(PlayerArmour::Enum a)
+std::unique_ptr<ModalAnimation> Player::makeUpgradeAnimation(float xoff, float yoff, bool hasFlash, sf::Texture const &animTexture, std::vector<sf::IntRect> const &animFrames) const
 {
-	transforming = true;
+	static float const ANIM_SPEED = 12.5f;
+	auto lastFrame = std::vector<sf::IntRect>(animFrames.end() - 1, animFrames.end());
+
+	std::unique_ptr<ModalAnimation> spriteAnimation = std::make_unique<SpriteAnimation>(x + xoff, y + yoff, animTexture, animFrames, ANIM_SPEED, this);
+	if (hasFlash)
+	{
+		std::vector<int> flashes1 { 7, 13, 19, 25, 31 };
+		std::vector<int> flashes2 { 11, 17, 23, 29, 35 };
+
+		sf::Color flashColour1(255, 255, 255, 128), flashColour2(255, 255, 255, 64);
+
+		spriteAnimation = CombinedAnimations::keepUntilBothFinish(
+			CombinedAnimations::keepUntilBothFinish(
+				std::make_unique<FlashAnimation>(flashes1, ANIM_SPEED, flashColour1),
+				std::make_unique<FlashAnimation>(flashes2, ANIM_SPEED, flashColour2)
+			),
+			std::move(spriteAnimation)
+		);
+	}
+
+	return CombinedAnimations::inSequence(
+		CombinedAnimations::keepUntilBothFinish(
+			std::make_unique<DimAnimation>(0.2f, sf::Color(0, 0, 0, 100)),
+			std::move(spriteAnimation)
+		),
+		CombinedAnimations::keepUntilBothFinish(
+			std::make_unique<FadeInAnimation>(0.2f, sf::Color(0, 0, 0, 100)),
+			std::make_unique<SpriteAnimation>(x + xoff, y + yoff, animTexture, lastFrame, ANIM_SPEED, this)
+		)
+	);
+}
+
+void Player::upgrade(PlayerArmour::Enum a, Room &room, settings_t const &settings)
+{
 	invincible = true;
-	armourLast = armour;
+	auto armourLast = armour;
 	armour = a;
 
+	std::unique_ptr<ModalAnimation> animation;
 	switch (armour)
 	{
 		case PlayerArmour::SILVER:
-			changeTexture(textureManager, "transform1");
+			animation = makeUpgradeAnimation(-76.0f, -100.0f, false, textureManager.getRef("transform1"), animations["transform1"]);
 			break;
-		
 		case PlayerArmour::GOLD:
-			changeTexture(textureManager, "transform2");
+			{
+				// do transform 2
+				std::vector<sf::IntRect> animFrames;
+				switch (armourLast)
+				{
+					case PlayerArmour::NAKED:
+						animFrames = animations["transform2-1"];
+						break;
+
+					case PlayerArmour::SILVER:
+						animFrames = animations["transform2-2"];
+						break;
+
+					default:
+						throw std::domain_error("Tried to upgrade to gold from an armour with no animation");
+				}
+				animation = makeUpgradeAnimation(-40.0f, -415.0f, true, textureManager.getRef("transform2"), animFrames);
+			}
 			break;
+		default:
+			throw std::domain_error("Tried to upgrade to an armour with no animation");
 	}
-	
-	fadeTimer.restart();
+	room.playModalAnimation(std::move(animation), settings);
+	fixTexture();
 }
 
 void Player::setWeapon(PlayerWeapon::Enum a)
@@ -198,32 +256,9 @@ int Player::isAlive() const
 	return !dead;
 }
 
-double Player::getFadeTime() const
-{
-	double ret = fadeTimer.getElapsedTime().asMilliseconds();
-
-	if (!fadeout)
-	{
-		if (ret > 200.0) ret = 200;
-		ret = 200.0 - ret;
-	}
-	
-	return ret;
-}
-
 bool Player::getInvincible() const
 {
 	return invincible;
-}
-
-bool Player::isTransforming() const
-{
-	return transforming;
-}
-
-bool Player::isFadingOut() const
-{
-	return fadeout;
 }
 
 sf::FloatRect Player::getRect() const
@@ -241,7 +276,7 @@ sf::FloatRect Player::getRect() const
 /* Actions */
 void Player::draw(sf::RenderWindow &window)
 {
-	if (!visible && !transforming) sprite.setColor(sf::Color(255, 255, 255, 125));
+	if (!visible) sprite.setColor(sf::Color(255, 255, 255, 125));
 	else sprite.setColor(sf::Color(255, 255, 255, 255));
 
 	sf::FloatRect boundingRect = getRect();
@@ -254,26 +289,8 @@ void Player::draw(sf::RenderWindow &window)
 	
 	float adjx = -15.0f, adjy = -15.0f;
 
-	if (transforming)
-	{
-		switch (armour)
-		{
-			case PlayerArmour::SILVER:
-				adjx = -76.0f;
-				adjy = -100.0f;
-				break;
-
-			case PlayerArmour::GOLD:
-				adjx = -40.0f;
-				adjy = -415.0f;
-				break;
-		}
-	}
-	else
-	{
-		if (!crouching) adjx -= 2;
-		if (rolling) adjy += 7;
-	}
+	if (!crouching) adjx -= 2;
+	if (rolling) adjy += 7;
 
 	if (sprite.getScale().x < 0.0f) adjx = boundingRect.width - adjx;
 
@@ -285,7 +302,7 @@ void Player::draw(sf::RenderWindow &window)
 
 void Player::move(int dir)
 {
-	if (dead || transforming || hit) return;
+	if (dead || hit) return;
 
 	if (dy == 0 && !jumped) dx = dir * moveSpeed;
 	if (dir != 0) sprite.setScale(sf::Vector2f((float)dir, 1.0f));
@@ -293,7 +310,7 @@ void Player::move(int dir)
 
 void Player::jump(int dir, SoundManager &soundManager, const settings_t &settings)
 {
-	if (dead || transforming) return;
+	if (dead) return;
 
 	if (jumps < 2)
 	{
@@ -350,7 +367,7 @@ Weapon* Player::createWeaponAt(float x, float y)
 
 bool Player::canThrowWeapon(Room const &room) const
 {
-	if (dead || hit || transforming || midThrow) return false;
+	if (dead || hit || midThrow) return false;
 	if (chosenWeapon == PlayerWeapon::TRIDENT && !Trident::canThrow(room)) return false;
 	return true;
 }
@@ -419,104 +436,94 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 
 	auto& soundManager = room.getSoundManager();
 
-	if (!transforming)
+	// Gravity
+	if (placeFree(x, y + 1, room))
 	{
-		// Gravity
-		if (placeFree(x, y + 1, room))
+		dy += gravity * (float)mstime;
+
+		if (!rolling && armour == PlayerArmour::NAKED && jumps == 2 && dx != 0 && dy > 0 && placeFree(x, y + 1, room) && !placeFree(x, y + 6, room))
 		{
-			dy += gravity * (float)mstime;
-
-			if (!rolling && armour == PlayerArmour::NAKED && jumps == 2 && dx != 0 && dy > 0 && placeFree(x, y + 1, room) && !placeFree(x, y + 6, room))
-			{
-				rolling = true;
-				rollTimer.restart();
-			}
+			rolling = true;
+			rollTimer.restart();
 		}
-		else if (dy > 0.0f)
-		{
-			dy = 0;
-
-			if (jumped)
-			{
-				if (hit)
-				{
-					if (!dead) sprite.setScale(sf::Vector2f(sprite.getScale().x * -1, 1.0f));
-					hit = false;
-				}
-
-				jumped = false;
-				flipped = false;
-				jumps = 0;
-			}
-
-			if (dead) dx = 0;
-			else if (settings.sound_on) soundManager.playSound("land");
-		}
-		else if (dy < 0 && !placeFree(x, y - 1, room))
-		{
-			dy = 0; // Hitting head on the ceiling
-			// TODO play sound?
-		}
-
-		// Update Y
-		for (float i = fabs(dy) * (float)mstime; i > 0; i--)
-		{
-			float j = copysign(i, dy);
-			if (placeFree(x, y + j, room))
-			{
-				y += j;
-				break;
-			}
-		}
-
-		// Update X
-		if ((dy == 0.0f && !midThrow && !crouching) || jumped)
-		{
-			for (float i = fabs(dx) * (float)mstime; i > 0; i--)
-			{
-				float j = copysign(i, dx);
-				bool brk = false;
-
-				float ks = 0;
-				float ke = 0;
-
-				if (dy == 0)
-				{
-					ks = -4;
-					ke = 4;
-				}
-
-				for (float k = ks; k <= ke; k++)
-				{
-					if (placeFree(x + j, y - k, room))
-					{
-						x += j;
-						y -= k;
-
-						brk = true;
-						break;
-					}
-				}
-
-				if (brk) break;
-			}
-		}
-
-		pushOutOfSolids(room);
 	}
-	else invincibleTimer.restart();
+	else if (dy > 0.0f)
+	{
+		dy = 0;
+
+		if (jumped)
+		{
+			if (hit)
+			{
+				if (!dead) sprite.setScale(sf::Vector2f(sprite.getScale().x * -1, 1.0f));
+				hit = false;
+			}
+
+			jumped = false;
+			flipped = false;
+			jumps = 0;
+		}
+
+		if (dead) dx = 0;
+		else if (settings.sound_on) soundManager.playSound("land");
+	}
+	else if (dy < 0 && !placeFree(x, y - 1, room))
+	{
+		dy = 0; // Hitting head on the ceiling
+		// TODO play sound?
+	}
+
+	// Update Y
+	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
+	{
+		float j = copysign(i, dy);
+		if (placeFree(x, y + j, room))
+		{
+			y += j;
+			break;
+		}
+	}
+
+	// Update X
+	if ((dy == 0.0f && !midThrow && !crouching) || jumped)
+	{
+		for (float i = fabs(dx) * (float)mstime; i > 0; i--)
+		{
+			float j = copysign(i, dx);
+			bool brk = false;
+
+			float ks = 0;
+			float ke = 0;
+
+			if (dy == 0)
+			{
+				ks = -4;
+				ke = 4;
+			}
+
+			for (float k = ks; k <= ke; k++)
+			{
+				if (placeFree(x + j, y - k, room))
+				{
+					x += j;
+					y -= k;
+
+					brk = true;
+					break;
+				}
+			}
+
+			if (brk) break;
+		}
+	}
+
+	pushOutOfSolids(room);
 
 	// Jump, Throw, Roll, and Invicibility Timers
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= .2) midJump = false;
 	else if (midThrow && throwTimer.getElapsedTime().asSeconds() >= throwTime) midThrow = false;
 	if (rolling && rollTimer.getElapsedTime().asSeconds() >= .22) rolling = false;
 	if (invincible && invincibleTimer.getElapsedTime().asSeconds() >= 2.) invincible = false;
-	if (fadeout && fadeTimer.getElapsedTime().asSeconds() >= .4)
-	{
-		fadeout = false;
-		transforming = false;
-		fixTexture();
-	}
 
 	// Invincibility
 	if (invincible && flashTimer.getElapsedTime().asMilliseconds() >= 50)
@@ -530,28 +537,6 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 
 	// Animation
 	if (dead) setAnimation("die");
-	else if (transforming)
-	{
-		switch (armour)
-		{
-			case PlayerArmour::SILVER:
-				setAnimation("transform1");
-				break;
-
-			case PlayerArmour::GOLD:
-				switch (armourLast)
-				{
-					case PlayerArmour::NAKED:
-						setAnimation("transform2-1");
-						break;
-
-					case PlayerArmour::SILVER:
-						setAnimation("transform2-2");
-						break;
-				}
-				break;
-		}
-	}
 	else if (hit) setAnimation("hit");
 	else if (rolling) setAnimation("roll");
 	else if (crouching)
@@ -619,19 +604,9 @@ void Player::updateAnimation(sf::Time deltaTime)
 	if (frames > 1)
 	{
 		float speed = 11.5384615385f;
-		if (transforming) speed = 12.5f;
 
 		frame += deltaTime.asSeconds() * speed;
 		if (animation == "die" && frame > (float)(frames - 1)) frame = (float)(frames - 1);
-		else if (transforming && frame > (float)(frames - 1))
-		{
-			frame = (float)(frames - 1);
-			if (!fadeout)
-			{
-				fadeTimer.restart();
-				fadeout = true;
-			}
-		}
 		else frame = fmodf(frame, (float)frames); // Loop animation if it plays past "frames"
 	}
 

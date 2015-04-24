@@ -1,10 +1,11 @@
+#include <cassert>
+#include <algorithm>
+#include <cmath>
 #include "room.h"
 #include "globals.h"
 #include "object.h"
 #include "player.h"
-#include <cassert>
-#include <algorithm>
-#include <cmath>
+#include "animations/modal_animation.h"
 
 Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t&)
 	: State(stm), soundManager(som),
@@ -213,8 +214,13 @@ void Room::updateView(sf::RenderWindow &window)
 	}
 }
 
-bool Room::shouldUpdate(Object const*) const { return true; }
-bool Room::shouldDraw(Object const*) const { return true; }
+bool Room::shouldDraw(Object const *obj) const
+{
+	if (isAnimationInProgress())
+		return animation->shouldDraw(obj);
+	else
+		return true;
+}
 
 void Room::drawBackground(sf::RenderWindow &window)
 {
@@ -240,6 +246,8 @@ void Room::draw(sf::RenderWindow &window)
 	drawBackground(window);
 	drawSprites(window);
 	drawForeground(window);
+	if (isAnimationInProgress())
+		animation->draw(window);
 }
 
 void Room::drawTree(int x, int y, sf::RenderWindow &window)
@@ -286,30 +294,50 @@ void Room::drawDecor(int x, int y, int type, sf::RenderWindow &window)
 	window.draw(bg03);
 }
 
+void Room::playModalAnimation(std::unique_ptr<ModalAnimation> animation, settings_t const &settings)
+{
+	this->animation = std::move(animation);
+	this->animation->update(sf::Time::Zero, *this, settings);
+}
+
+bool Room::isAnimationInProgress() const
+{
+	return animation != nullptr;
+}
+
 void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandler&, const settings_t &settings)
 {
 	deltaTime = restartClock();
 
-	std::copy(spawnQueue.begin(), spawnQueue.end(), std::back_inserter(objects));
-	spawnQueue.clear();
-
-	// Update objects and player
-	auto iter = objects.begin();
-	auto end = objects.end();
-	while (iter != end)
+	if (isAnimationInProgress())
 	{
-		Object *obj = *iter;
-		if (!obj->shouldDelete() && shouldUpdate(obj)) obj->update(deltaTime, *this, settings);
+		animation->update(deltaTime, *this, settings);
+		if (animation->finished()) animation.reset();
+	}
 
-		if (obj->shouldDelete())
+	if (!isAnimationInProgress())
+	{
+		std::copy(spawnQueue.begin(), spawnQueue.end(), std::back_inserter(objects));
+		spawnQueue.clear();
+
+		// Update objects and player
+		auto iter = objects.begin();
+		auto end = objects.end();
+		while (iter != end)
 		{
-			delete obj;
-			iter = objects.erase(iter);
-			end = objects.end();
-			continue;
-		}
+			Object *obj = *iter;
+			if (!obj->shouldDelete()) obj->update(deltaTime, *this, settings);
 
-		iter++;
+			if (obj->shouldDelete())
+			{
+				delete obj;
+				iter = objects.erase(iter);
+				end = objects.end();
+				continue;
+			}
+
+			iter++;
+		}
 	}
 
 #ifdef _DEBUG
