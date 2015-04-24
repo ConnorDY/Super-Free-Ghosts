@@ -19,6 +19,12 @@
     <Filter Include="Header Files\Animations">
       <UniqueIdentifier>{608a4e9b-e2e1-43dd-93b5-bdead5fb7733}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Weapons">
+      <UniqueIdentifier>{adf1cc52-34f3-4f0c-bc09-3a4f579c5153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Weapons">
+      <UniqueIdentifier>{c33fe824-19e7-41e2-bc7d-80a4b32a40df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -78,15 +84,6 @@
     <ClCompile Include="dialogue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="flame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="torch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="weapon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="particle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,25 +99,7 @@
     <ClCompile Include="level_state.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hammer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="spear.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="sprite_util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="super_hammer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="super_spear.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="trident.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="super_trident.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="handeye.cpp">
@@ -146,6 +125,33 @@
     </ClCompile>
     <ClCompile Include="animations\sprite_animation.cpp">
       <Filter>Source Files\Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="hammer.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="flame.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="spear.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="torch.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="super_trident.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="super_spear.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="super_hammer.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="trident.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapon.cpp">
+      <Filter>Source Files\Weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,15 +215,6 @@
     <ClInclude Include="dialogue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="flame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="torch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="weapon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -233,25 +230,7 @@
     <ClInclude Include="level_state.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hammer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="spear.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="sprite_util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="super_hammer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="super_spear.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="trident.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="super_trident.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="handeye.h">
@@ -277,6 +256,33 @@
     </ClInclude>
     <ClInclude Include="animations\sprite_animation.h">
       <Filter>Header Files\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="weapon.h">
+      <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="super_hammer.h">
+      <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="super_spear.h">
+      <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="super_trident.h">
+      <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="flame.h">
+      <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="spear.h">
+      <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="torch.h">
+      <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="trident.h">
+      <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="hammer.h">
+      <Filter>Header Files\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
