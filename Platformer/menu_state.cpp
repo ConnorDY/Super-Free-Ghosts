@@ -5,8 +5,8 @@
 #include "level_editor_state.h"
 #include "options_state.h"
 
-Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager)
-	: State(sM)
+Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager, settings_t &settings)
+	: State(sM), textureManager(textureManager), settings(settings)
 {
 	// Set up logo sprite
 	sprLogo.setTexture(textureManager.getRef("logo"));
@@ -67,7 +67,7 @@ void Menu_State::draw(sf::RenderWindow &window)
 	}
 }
 
-void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
+void Menu_State::update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler)
 {
 	restartClock();
 
@@ -124,7 +124,7 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 
 				// Options Menu
 				case 1:
-					getStateManager().setState(std::make_unique<Options_State>(getStateManager(), settings));
+					getStateManager().setState(std::make_unique<Options_State>(getStateManager(), textureManager, settings));
 					return;
 #else
 				// Load Level01 State
@@ -139,7 +139,7 @@ void Menu_State::update(sf::RenderWindow &window, TextureManager &textureManager
 
 				// Options Menu
 				case 2:
-					getStateManager().setState(std::make_unique<Options_State>(getStateManager(), settings));
+					getStateManager().setState(std::make_unique<Options_State>(getStateManager(), textureManager, settings));
 					return;
 #endif
 			}

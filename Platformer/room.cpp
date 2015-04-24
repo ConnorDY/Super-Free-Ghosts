@@ -7,10 +7,10 @@
 #include "player.h"
 #include "animations/modal_animation.h"
 
-Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t&)
-	: State(stm), soundManager(som),
+Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, settings_t &settings)
+	: State(stm),
 	  width(2048), height(VIEW_HEIGHT),
-	  textureManager(tm)
+	  settings(settings), soundManager(som), textureManager(tm)
 {
 	setView(sf::View(sf::Vector2f(VIEW_WIDTH / 2.0, VIEW_HEIGHT / 2.0), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT)));
 	dirtSprite.setTexture(tm.getRef("tiles"));
@@ -153,10 +153,7 @@ bool Room::exceedsHorizontalBounds(sf::FloatRect const &rect) const
 	return rect.left < 0 || rect.left + rect.width >= width;
 }
 
-SoundManager& Room::getSoundManager() const
-{
-	return soundManager;
-}
+settings_t const& Room::getSettings() const { return settings; }
 
 std::vector<Object*> const Room::getObjects() const
 {
@@ -177,10 +174,10 @@ void Room::end()
 	spawnQueue.clear();
 }
 
-void Room::reset(TextureManager &textureManager, const settings_t &settings)
+void Room::reset()
 {
 	end();
-	start(textureManager, settings);
+	start();
 }
 
 void Room::updateView(sf::RenderWindow &window)
@@ -294,10 +291,10 @@ void Room::drawDecor(int x, int y, int type, sf::RenderWindow &window)
 	window.draw(bg03);
 }
 
-void Room::playModalAnimation(std::unique_ptr<ModalAnimation> animation, settings_t const &settings)
+void Room::playModalAnimation(std::unique_ptr<ModalAnimation> animation)
 {
 	this->animation = std::move(animation);
-	this->animation->update(sf::Time::Zero, *this, settings);
+	this->animation->update(sf::Time::Zero);
 }
 
 bool Room::isAnimationInProgress() const
@@ -305,13 +302,13 @@ bool Room::isAnimationInProgress() const
 	return animation != nullptr;
 }
 
-void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandler&, const settings_t &settings)
+void Room::update(sf::RenderWindow&, SoundManager&, InputHandler&)
 {
 	deltaTime = restartClock();
 
 	if (isAnimationInProgress())
 	{
-		animation->update(deltaTime, *this, settings);
+		animation->update(deltaTime);
 		if (animation->finished()) animation.reset();
 	}
 
@@ -326,7 +323,7 @@ void Room::update(sf::RenderWindow&, TextureManager&, SoundManager&, InputHandle
 		while (iter != end)
 		{
 			Object *obj = *iter;
-			if (!obj->shouldDelete()) obj->update(deltaTime, *this, settings);
+			if (!obj->shouldDelete()) obj->update(deltaTime);
 
 			if (obj->shouldDelete())
 			{

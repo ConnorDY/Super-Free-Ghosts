@@ -4,8 +4,8 @@
 #include "chest.h"
 #include "room.h"
 
-Weapon::Weapon(float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage, TextureManager &textureManager)
-	: Object(x, y, width, height, dx, dy, false, gravity, maxFallSpeed),
+Weapon::Weapon(Room &room, float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage)
+	: Object(room, x, y, width, height, dx, dy, false, gravity, maxFallSpeed),
 	  rectangle(sf::Vector2f(width, height)), dmg(damage), animationFrame(0),
 	  animationSpeed(6), destroyedOnHit(true)
 {
@@ -16,7 +16,7 @@ Weapon::Weapon(float x, float y, float width, float height, float dx, float dy, 
 
 Weapon::~Weapon() {}
 
-bool Weapon::isOutsideView(Room const &room, float leeway) const
+bool Weapon::isOutsideView(float leeway) const
 {
 	auto view = room.getView();
 	auto view_center = view.getCenter();
@@ -31,7 +31,7 @@ bool Weapon::isOutsideView(Room const &room, float leeway) const
 		|| y < view_top  - leeway || y > view_bottom + leeway;
 }
 
-void Weapon::move(sf::Time deltaTime, Room&, settings_t const&)
+void Weapon::move(sf::Time deltaTime)
 {
 	float mstime = deltaTime.asMicroseconds() / 1000.0f;
 
@@ -41,31 +41,31 @@ void Weapon::move(sf::Time deltaTime, Room&, settings_t const&)
 	x += dx * mstime;
 }
 
-void Weapon::update(sf::Time deltaTime, Room &room, settings_t const &settings)
+void Weapon::update(sf::Time deltaTime)
 {
-	move(deltaTime, room, settings);
+	move(deltaTime);
 	if (del) return; // Don't do anything if our move killed us
 
-	for (Object* col : allCollisions(x, y, room))
+	for (Object* col : allCollisions(x, y))
 	{
 		// Destroy weapon if it hits an enemy and destroy the enemy
 		if (dynamic_cast<Zombie*>(col) != nullptr)
 		{
-			if (!((Zombie*)col)->getInCasket()) ((Zombie*)col)->damage(dmg, room, settings);
+			if (!((Zombie*)col)->getInCasket()) ((Zombie*)col)->damage(dmg);
 			if (destroyedOnHit)
-				kill(room, settings);
+				kill();
 		}
 		// Destroy weapon if it hits a chest and damage the chest
 		else if (dynamic_cast<Chest*>(col) != nullptr)
 		{
-			((Chest*)col)->damage(dmg, room, settings);
+			((Chest*)col)->damage(dmg);
 			if (destroyedOnHit)
-				kill(room, settings);
+				kill();
 		}
 	}
 
 	// Destroy weapon if it hits a solid object or leaves the room
-	if (!placeFree(x, y, room) || isOutsideView(room)) kill(room, settings);
+	if (!placeFree(x, y) || isOutsideView()) kill();
 
 	animationFrame = fmod(animationFrame + deltaTime.asSeconds() * animationSpeed, animationFrames.size());
 }
@@ -88,7 +88,7 @@ void Weapon::draw(sf::RenderWindow &window)
 	}
 }
 
-void Weapon::onDeath(Room &room, const settings_t &settings)
+void Weapon::onDeath()
 {
-	if (!isOutsideView(room) && settings.sound_on) room.getSoundManager().playSound("hit");
+	if (!isOutsideView()) room.soundManager.playSound("hit");
 }

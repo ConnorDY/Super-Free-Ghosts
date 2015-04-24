@@ -9,20 +9,20 @@ namespace
 	int const TRAIL_LENGTH = 40;
 }
 
-Trident::Trident(float x, float y, int dir, TextureManager &textureManager)
-	: Trident(x, y, BBOX.width, BBOX.height, dir, textureManager)
+Trident::Trident(Room &room, float x, float y, int dir)
+	: Trident(room, x, y, BBOX.width, BBOX.height, dir)
 {
 	animationFrames.emplace_back(0, 0, SPRITE_WIDTH, SPRITE_HEIGHT);
 	SpriteUtil::setOriginAndScale(sprite, sf::Vector2f(static_cast<float>(dir), 1.0f), BBOX);
 }
 
-Trident::Trident(float x, float y, int width, int height, int dir, TextureManager &textureManager)
-	: Weapon(x, y, width, height, 0.3f * dir, 0, 0, 0, 5, textureManager),
+Trident::Trident(Room &room, float x, float y, int width, int height, int dir)
+	: Weapon(room, x, y, width, height, 0.3f * dir, 0, 0, 0, 5),
 	  trailX(x)
 {
 	destroyedOnHit = false;
 	setDepth(-4);
-	sprite.setTexture(textureManager.getRef("trident"));
+	sprite.setTexture(room.textureManager.getRef("trident"));
 }
 
 Trident::~Trident()
@@ -62,10 +62,10 @@ void Trident::draw(sf::RenderWindow &window)
 	Weapon::draw(window);
 }
 
-Trident* Trident::spawnAdjusted(float x, float y, int dir, TextureManager &textureManager)
+Trident* Trident::spawnAdjusted(Room &room, float x, float y, int dir)
 {
 	if (dir < 0) x -= BBOX.width;
-	return new Trident(x, y, dir, textureManager);
+	return new Trident(room, x, y, dir);
 }
 
 bool Trident::canThrow(Room const &room)

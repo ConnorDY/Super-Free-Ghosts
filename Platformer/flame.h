@@ -10,11 +10,11 @@ class Flame : public Weapon
 		int lifetime;
 		int dir;
 	public:
-		Flame(float x, float y, int dir, int remaining, TextureManager &textureManager);
+		Flame(Room &room, float x, float y, int dir, int remaining);
 		virtual ~Flame();
 
-		virtual void move(sf::Time deltaTime, Room &room, settings_t const &settings);
-		virtual void onDeath(Room &room, settings_t const&);
+		virtual void move(sf::Time deltaTime);
+		virtual void onDeath();
 };
 
 #endif

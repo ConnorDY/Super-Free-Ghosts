@@ -19,14 +19,14 @@ class Level_Editor_State : public Room
 
 		Player *player;
 	public:
-		Level_Editor_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings);
+		Level_Editor_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings);
 		virtual ~Level_Editor_State();
 
 		// Actions
-		void start(TextureManager &textureManager, const settings_t &settings);
+		void start();
 		virtual void drawForeground(sf::RenderWindow &window);
 		virtual void updateView(sf::RenderWindow &window);
-		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings);
+		virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler);
 };
 
 #endif

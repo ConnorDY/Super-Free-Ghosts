@@ -15,6 +15,7 @@ class DamageableObject : public Object
 {
 	public:
 		explicit DamageableObject(
+			Room &room,
 			float x = 0, float y = 0,
 			float width = 0, float height = 0,
 			float dx = 0, float dy = 0,
@@ -31,7 +32,7 @@ class DamageableObject : public Object
 		void setHealth(int h);
 
 		// Actions
-		virtual void damage(int dmg, Room &room, const settings_t &settings);
+		virtual void damage(int dmg);
 	private:
 		int health;
 		Team::Alignment team;

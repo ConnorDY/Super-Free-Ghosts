@@ -7,10 +7,10 @@
 #include "obelisk.h"
 #include "block.h"
 
-Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings)
+Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings)
 	: LevelState(sM, som, textureManager, settings)
 {
-	start(textureManager, settings);
+	start();
 	bg01.setTexture(textureManager.getRef("bg01"));
 }
 
@@ -20,7 +20,7 @@ Level01_State::~Level01_State()
 
 
 // Actions
-void Level01_State::start(TextureManager &textureManager, const settings_t &settings)
+void Level01_State::start()
 {
 	// Ready Music
 	if (settings.music_on && music.openFromFile("res/01.ogg"))
@@ -46,28 +46,28 @@ void Level01_State::start(TextureManager &textureManager, const settings_t &sett
 
 
 	// Create Objects
-	objects.push_back(new Zombie(textureManager, 240.0f, 250.0f));
-	objects.push_back(new Zombie(textureManager, 405.0f, 32.0f));
-	objects.push_back(new Zombie(textureManager, 625.0f, 32.0f));
-	objects.push_back(new Zombie(textureManager, 675.0f, 32.0f));
-	objects.push_back(new Zombie(textureManager, 725.0f, 32.0f));
-	objects.push_back(new Zombie(textureManager, 775.0f, 32.0f));
-	objects.push_back(new Zombie(textureManager, 1275.0f, 32.0f));
-	objects.push_back(new Zombie(textureManager, 1300.0f, 32.0f));
-	objects.push_back(new Zombie(textureManager, 1325.0f, 32.0f));
-	objects.push_back(new Zombie(textureManager, 1350.0f, 32.0f));
-	objects.push_back(new Zombie(textureManager, 1475.0f, 32.0f));
+	objects.push_back(new Zombie(*this, 240.0f, 250.0f));
+	objects.push_back(new Zombie(*this, 405.0f, 32.0f));
+	objects.push_back(new Zombie(*this, 625.0f, 32.0f));
+	objects.push_back(new Zombie(*this, 675.0f, 32.0f));
+	objects.push_back(new Zombie(*this, 725.0f, 32.0f));
+	objects.push_back(new Zombie(*this, 775.0f, 32.0f));
+	objects.push_back(new Zombie(*this, 1275.0f, 32.0f));
+	objects.push_back(new Zombie(*this, 1300.0f, 32.0f));
+	objects.push_back(new Zombie(*this, 1325.0f, 32.0f));
+	objects.push_back(new Zombie(*this, 1350.0f, 32.0f));
+	objects.push_back(new Zombie(*this, 1475.0f, 32.0f));
 
-	objects.push_back(new HandEye(textureManager, 320.0f, 32.0f));
+	objects.push_back(new HandEye(*this, 320.0f, 32.0f));
 
-	objects.push_back(new Chest(textureManager, 5.0f, 234.0f));
-	objects.push_back(new Obelisk(textureManager, 287.0f, 280.0f, 54.0f));
-	objects.push_back(new Obelisk(textureManager, 660.0f, 280.0f, 50.0f));
-	objects.push_back(new Obelisk(textureManager, 840.0f, 280.0f, 50.0f));
-	objects.push_back(new Obelisk(textureManager, 1500.0f, 280.0f, 60.0f));
+	objects.push_back(new Chest(*this, 5.0f, 234.0f));
+	objects.push_back(new Obelisk(*this, 287.0f, 280.0f, 54.0f));
+	objects.push_back(new Obelisk(*this, 660.0f, 280.0f, 50.0f));
+	objects.push_back(new Obelisk(*this, 840.0f, 280.0f, 50.0f));
+	objects.push_back(new Obelisk(*this, 1500.0f, 280.0f, 60.0f));
 
 	// Create player
-	player = new Player(textureManager, 45.0f, 234.0f);
+	player = new Player(*this, 45.0f, 234.0f);
 	objects.push_back(player); // player will be destroyed when objects is
 	view_follow = player;
 }

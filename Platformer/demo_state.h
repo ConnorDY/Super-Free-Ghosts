@@ -17,11 +17,11 @@ class Demo_State : public LevelState
 	protected:
 		virtual bool shouldSpawnMoreZombies() const;
 	public:
-		Demo_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings);
+		Demo_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings);
 		virtual ~Demo_State();
 
 		// Actions
-		void start(TextureManager &textureManager, const settings_t &settings);
+		void start();
 		virtual void drawBackground(sf::RenderWindow &window);
 };
 

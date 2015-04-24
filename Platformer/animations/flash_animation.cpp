@@ -1,8 +1,8 @@
 #include "flash_animation.h"
 #include "room.h"
 
-FlashAnimation::FlashAnimation(std::vector<int> flashes, float speed, sf::Color colour)
-	: ModalAnimation(), flashes(flashes),
+FlashAnimation::FlashAnimation(Room const &room, std::vector<int> flashes, float speed, sf::Color colour)
+	: ModalAnimation(room), flashes(flashes),
 	  overlayRect(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT))
 {
 	overlayRect.setFillColor(colour);
@@ -20,9 +20,9 @@ void FlashAnimation::draw(sf::RenderWindow &window)
 	}
 }
 
-void FlashAnimation::update(sf::Time deltaTime, Room &room, settings_t const &settings)
+void FlashAnimation::update(sf::Time deltaTime)
 {
-	ModalAnimation::update(deltaTime, room, settings);
+	ModalAnimation::update(deltaTime);
 	if (flashes.empty())
 	{
 		m_finished = true;

@@ -29,7 +29,6 @@ namespace PlayerArmour { enum Enum {
 class Player : public DamageableObject
 {
 	private:
-		TextureManager &textureManager;
 		sf::Sprite sprite;
 		sf::RectangleShape rectangle;
 		std::map<std::string, std::vector<sf::IntRect> > animations;
@@ -45,21 +44,21 @@ class Player : public DamageableObject
 
 		// Actions
 		void updateAnimation(sf::Time deltaTime);
-		void changeTexture(TextureManager &textureManager, std::string tex);
+		void changeTexture(std::string tex);
 		void fixTexture();
-		void checkDoubleJumpedObjects(Room &room);
+		void checkDoubleJumpedObjects();
 		std::pair<int, int> getJumpPoints() const;
 		Weapon* createWeaponAt(float x, float y);
-		bool canThrowWeapon(Room const &room) const;
+		bool canThrowWeapon() const;
 		std::unique_ptr<ModalAnimation> makeUpgradeAnimation(float xoff, float yoff, bool hasFlash, sf::Texture const &animTexture, std::vector<sf::IntRect> const &animFrames) const;
 		float fixAdjXForDirection(float adjx) const;
 	public:
-		Player(TextureManager &textureManager, float x, float y);
+		Player(Room &room, float x, float y);
 
 		// Mutators
 		void setCrouching(bool c);
 		void damage(int otherX);
-		void upgrade(PlayerArmour::Enum a, Room &room, settings_t const &settings);
+		void upgrade(PlayerArmour::Enum a);
 		void setWeapon(PlayerWeapon::Enum a);
 		
 		// Accesors
@@ -73,10 +72,10 @@ class Player : public DamageableObject
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
-		void jump(int dir, SoundManager &soundManager, const settings_t &settings);
-		void throwWeapon(Room &room, int dir, SoundManager &soundManager, const settings_t &settings);
+		void jump(int dir);
+		void throwWeapon(int dir);
 		void move(int dir);
-		void update(sf::Time deltaTime, Room &room, const settings_t &settings);
+		void update(sf::Time deltaTime);
 		void setAnimation(std::string name);
 };
 

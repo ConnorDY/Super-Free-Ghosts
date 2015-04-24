@@ -10,12 +10,12 @@ class WeaponDrop : public Object
 		sf::RectangleShape rect;
 		PlayerWeapon::Enum type;
 	public:
-		WeaponDrop(TextureManager &textureManager, float x, float y);
+		WeaponDrop(Room &room, TextureManager &textureManager, float x, float y);
 		~WeaponDrop();
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
+		virtual void update(sf::Time deltaTime);
 };
 
 #endif

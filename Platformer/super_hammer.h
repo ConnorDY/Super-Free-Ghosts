@@ -8,12 +8,12 @@ class SuperHammer : public Hammer
 	private:
 		int remainingBounces;
 	public:
-		SuperHammer(float x, float y, int dir, TextureManager &textureManager);
-		SuperHammer(float x, float y, int dir, int remainingBounces, TextureManager &textureManager);
+		SuperHammer(Room &room, float x, float y, int dir);
+		SuperHammer(Room &room, float x, float y, int dir, int remainingBounces);
 		virtual ~SuperHammer();
-		virtual void move(sf::Time deltaTime, Room &room, settings_t const &settings);
-		virtual void onDeath(Room &room, settings_t const &settings);
-		static SuperHammer* spawnAdjusted(float x, float y, int dir, TextureManager &textureManager);
+		virtual void move(sf::Time deltaTime);
+		virtual void onDeath();
+		static SuperHammer* spawnAdjusted(Room &room, float x, float y, int dir);
 };
 
 #endif

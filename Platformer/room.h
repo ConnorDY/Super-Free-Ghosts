@@ -7,7 +7,6 @@ class ModalAnimation;
 
 class Room : public State {
 	private:
-		SoundManager &soundManager;                 // Sound manager for use by objects in this room
 		std::unique_ptr<ModalAnimation> animation;  // Currently-playing modal animation (or else wrapped nullptr)
 
 		bool shouldDraw(Object const* object) const;
@@ -20,6 +19,7 @@ class Room : public State {
 		std::vector<int> heightmap;                 // Height map. Index = x-value, value = y-value (from 0 = bottom)
 		                                            // However, 0 will be non-colliding for simplicity's sake
 		std::vector<Object*> spawnQueue;            // Queue of objects to be spawned next tick
+		settings_t &settings;
 
 		void ensureHeightmapWidth(size_t width);
 		void fillHeightMap(size_t xleft, size_t width, int height);
@@ -30,32 +30,33 @@ class Room : public State {
 		void drawTree(int x, int y, sf::RenderWindow &window);
 		void drawDecor(int x, int y, int type, sf::RenderWindow &window);
 	public:
+		SoundManager &soundManager;                 // Sound manager for use by objects in this room
 		TextureManager &textureManager;
 
-		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm, const settings_t &settings);
+		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm, settings_t &settings);
 		virtual ~Room();
 
 		bool heightmapIntersects(sf::FloatRect const &rect) const;
 		int getMinTerrainYBetween(int left, int right) const;
 		bool exceedsHorizontalBounds(sf::FloatRect const &rect) const;
 
-		SoundManager& getSoundManager() const;
+		settings_t const& getSettings() const;
 		std::vector<Object*> const getObjects() const;
 		bool isAnimationInProgress() const;
 
 		void spawn(Object *obj);
-		void playModalAnimation(std::unique_ptr<ModalAnimation> animation, settings_t const &settings);
+		void playModalAnimation(std::unique_ptr<ModalAnimation> animation);
 
-		virtual void start(TextureManager &textureManager, const settings_t &settings) = 0;
+		virtual void start() = 0;
 		virtual void end();
-		void reset(TextureManager &textureManager, const settings_t &settings);
+		void reset();
 
 		virtual void updateView(sf::RenderWindow &window);
 		virtual void drawBackground(sf::RenderWindow &window);
 		virtual void drawSprites(sf::RenderWindow &window);
 		virtual void drawForeground(sf::RenderWindow &window);
 		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, const settings_t &settings);
+		virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler);
 };
 
 #endif

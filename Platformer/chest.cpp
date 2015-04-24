@@ -5,24 +5,22 @@
 #include "weapondrop.h"
 #include "room.h"
 
-Chest::Chest(TextureManager &tM, float x, float y)
+Chest::Chest(Room &room, float x, float y)
 	: DamageableObject(
-		x, y, 31, 19,
+		room, x, y, 31, 19,
 		0, 0, false
 	),
-	  textureManager(tM),
 	  animation(3), slideUpFraction(0),
 	  frame(0), leaveTimer(0),
 	  slidingUp(false), leaving(false)
 {
-	(void)textureManager; // textureManager is unused but will be used in future
 	rect.setSize(sf::Vector2f(width, height));
 	rect.setFillColor(sf::Color(255, 0, 255, 128));
 	setHealth(3);
 	setDepth(-2);
 
 	// Sprite
-	spr.setTexture(textureManager.getRef("chest1"));
+	spr.setTexture(room.textureManager.getRef("chest1"));
 	setDepth(1);
 
 	// Frames
@@ -41,7 +39,7 @@ sf::FloatRect Chest::getRect() const
 	return sf::FloatRect(x, y + yAdjustment, width, height);
 }
 
-void Chest::damage(int, Room&, const settings_t&)
+void Chest::damage(int)
 {
 	int hp = getHealth() - 1;
 	if (hp < 0) hp = 0;
@@ -74,15 +72,15 @@ void Chest::draw(sf::RenderWindow &window)
 	}
 }
 
-void Chest::update(sf::Time deltaTime, Room &room, const settings_t &settings)
+void Chest::update(sf::Time deltaTime)
 {
 	if (slidingUp)
 	{
 		// Our Y value matters now, so check it:
-		pushOutOfHeightmap(room);
+		pushOutOfHeightmap();
 		// Check for collisions and jump to the top of them
 		auto mybbox = getRect();
-		for (auto obj : allCollisions(x, y - 1, room))
+		for (auto obj : allCollisions(x, y - 1))
 			if (obj->isSolid())
 			{
 				auto objbbox = obj->getRect();
@@ -94,22 +92,22 @@ void Chest::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 		if (slideUpFraction == 1) slidingUp = false;
 	}
 	// XXX The usual updates are a waste of time for us atm
-	//Object::update(deltaTime, room, settings);
+	//Object::update(deltaTime);
 
 	if (leaving)
 	{
 		if (leaveTimer > 750.0)
 		{
 			leaveTimer = 750.0;
-			kill(room, settings);
+			kill();
 		}
 		else leaveTimer += deltaTime.asMilliseconds();
 	}
 
-	updateAnimation(deltaTime, room);
+	updateAnimation(deltaTime);
 }
 
-void Chest::onDoubleJumpedOver(Room &)
+void Chest::onDoubleJumpedOver()
 {
 	slidingUp = true;
 }
@@ -123,7 +121,7 @@ void Chest::setAnimation(int a)
 	}
 }
 
-void Chest::updateAnimation(sf::Time deltaTime, Room &room)
+void Chest::updateAnimation(sf::Time deltaTime)
 {
 	// Get current animation
 	std::vector<sf::IntRect> &anim = animations.at(animation);
@@ -143,7 +141,7 @@ void Chest::updateAnimation(sf::Time deltaTime, Room &room)
 
 			if (!leaving && getHealth() <= 0)
 			{
-				room.spawn(new Crystal(textureManager, x + 7, y - 5));
+				room.spawn(new Crystal(room, x + 7, y - 5));
 				leaving = true;
 			}
 		}

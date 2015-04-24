@@ -1,9 +1,9 @@
 #include "block.h"
 #include "globals.h"
 
-Block::Block(float x, float y, float width, float height)
+Block::Block(Room &room, float x, float y, float width, float height)
 	: Object(
-			x, y, width, height
+			room, x, y, width, height
 	  ),
 	  rectangle(sf::Vector2f(width, height))
 {

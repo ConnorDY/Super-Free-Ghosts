@@ -1,7 +1,7 @@
 #include "modal_animation.h"
 
-ModalAnimation::ModalAnimation()
-	: m_finished(false), currentFrame(0), animationSpeed(2)
+ModalAnimation::ModalAnimation(Room const &room)
+	: m_finished(false), currentFrame(0), animationSpeed(2), room(room)
 {}
 
 ModalAnimation::~ModalAnimation() {}
@@ -9,7 +9,7 @@ ModalAnimation::~ModalAnimation() {}
 bool ModalAnimation::finished() { return m_finished; }
 bool ModalAnimation::shouldDraw(Object const*) { return true; }
 
-void ModalAnimation::update(sf::Time deltaTime, Room &, settings_t const &)
+void ModalAnimation::update(sf::Time deltaTime)
 {
 	currentFrame += animationSpeed * deltaTime.asSeconds();
 }

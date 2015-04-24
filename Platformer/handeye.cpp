@@ -4,9 +4,9 @@
 #include "player.h"
 #include "obelisk.h"
 
-HandEye::HandEye(TextureManager &textureManager, float x, float y)
+HandEye::HandEye(Room &room, float x, float y)
 	: DamageableObject(
-		x, y, 53, 40,
+		room, x, y, 53, 40,
 		0.0f, 0.0f, false,
 		0.00185f / 2.0f, 0.25f
 	),
@@ -18,7 +18,7 @@ HandEye::HandEye(TextureManager &textureManager, float x, float y)
 	for (unsigned int i = 7; i < 17; i++) animations["pulling"].emplace_back(0, i * 56, 55, 56);
 	for (unsigned int i = 0; i < 20; i++) animations["awake"].emplace_back(55, i * 40, 53, 40);
 
-	sprite.setTexture(textureManager.getRef("handeye"));
+	sprite.setTexture(room.textureManager.getRef("handeye"));
 	setDepth(-2);
 	setHealth(8);
 }
@@ -57,9 +57,9 @@ void HandEye::draw(sf::RenderWindow &window)
 	window.draw(sprite);
 }
 
-void HandEye::update(sf::Time deltaTime, Room &room, const settings_t &settings)
+void HandEye::update(sf::Time deltaTime)
 {
-	Object::update(deltaTime, room, settings);
+	Object::update(deltaTime);
 
 	if (!awake && !waking) // TODO: Add check for the distance to the player
 	{
@@ -116,7 +116,7 @@ void HandEye::updateAnimation(sf::Time deltaTime)
 	sprite.setTextureRect(anim[(int)frame]);
 }
 
-void HandEye::onDeath(Room &room, const settings_t &settings)
+void HandEye::onDeath()
 {
-	if (settings.sound_on) room.getSoundManager().playSound("enemy_die");
+	room.soundManager.playSound("enemy_die");
 }

@@ -14,11 +14,11 @@ class Level01_State : public LevelState
 		sf::Music music;
 		sf::Sprite bg01;
 	public:
-		Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings);
+		Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings);
 		virtual ~Level01_State();
 
 		// Actions
-		virtual void start(TextureManager &textureManager, const settings_t &settings);
+		virtual void start();
 		virtual void drawBackground(sf::RenderWindow &window);
 		virtual void drawForeground(sf::RenderWindow &window);
 };

@@ -8,10 +8,10 @@ class SuperTrident : public Trident
 	private:
 		sf::Sprite tridentOverlay;
 	public:
-		SuperTrident(float x, float y, int dir, TextureManager &textureManager);
+		SuperTrident(Room &room, float x, float y, int dir);
 		virtual ~SuperTrident();
 		virtual void draw(sf::RenderWindow &window);
-		static SuperTrident* spawnAdjusted(float x, float y, int dir, TextureManager &textureManager);
+		static SuperTrident* spawnAdjusted(Room &room, float x, float y, int dir);
 };
 
 #endif

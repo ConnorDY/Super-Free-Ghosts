@@ -8,7 +8,7 @@ namespace
 			std::unique_ptr<ModalAnimation> one, two;
 		public:
 			LongestLifetimeAnimation(std::unique_ptr<ModalAnimation> one, std::unique_ptr<ModalAnimation> two)
-				: one(std::move(one)), two(std::move(two))
+				: ModalAnimation(one->room), one(std::move(one)), two(std::move(two))
 			{}
 			~LongestLifetimeAnimation() {}
 
@@ -20,10 +20,10 @@ namespace
 				one->draw(window);
 				two->draw(window);
 			}
-			virtual void update(sf::Time deltaTime, Room &room, settings_t const &settings)
+			virtual void update(sf::Time deltaTime)
 			{
-				one->update(deltaTime, room, settings);
-				two->update(deltaTime, room, settings);
+				one->update(deltaTime);
+				two->update(deltaTime);
 			}
 	};
 
@@ -33,7 +33,7 @@ namespace
 			std::vector<std::unique_ptr<ModalAnimation>> animations;
 		public:
 			SequentialAnimation(std::vector<std::unique_ptr<ModalAnimation>> animations)
-				: animations(std::move(animations))
+				: ModalAnimation(animations[0]->room), animations(std::move(animations))
 			{}
 			~SequentialAnimation() {}
 
@@ -48,11 +48,11 @@ namespace
 			{
 				if (!animations.empty()) animations[0]->draw(window);
 			}
-			virtual void update(sf::Time deltaTime, Room &room, settings_t const &settings)
+			virtual void update(sf::Time deltaTime)
 			{
 				while (!animations.empty())
 				{
-					animations[0]->update(deltaTime, room, settings);
+					animations[0]->update(deltaTime);
 					if (animations[0]->finished())
 					{
 						animations.erase(animations.begin());

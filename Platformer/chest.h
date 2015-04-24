@@ -21,17 +21,17 @@ class Chest : public DamageableObject
 		double leaveTimer;
 		bool slidingUp, leaving;
 	public:
-		explicit Chest(TextureManager &textureManager, float x = -128, float y = -128);
+		explicit Chest(Room &room, float x = -128, float y = -128);
 
 		virtual sf::FloatRect getRect() const;
 
 		// Actions
-		virtual void damage(int dmg, Room &room, const settings_t &settings);
-		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
+		virtual void damage(int dmg);
+		virtual void update(sf::Time deltaTime);
 		virtual void draw(sf::RenderWindow &window);
-		virtual void onDoubleJumpedOver(Room &room);
+		virtual void onDoubleJumpedOver();
 		void setAnimation(int a);
-		void updateAnimation(sf::Time deltaTime, Room &room);
+		void updateAnimation(sf::Time deltaTime);
 };
 
 #endif

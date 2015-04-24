@@ -9,7 +9,7 @@ class SpriteAnimation : public ModalAnimation
 		std::vector<sf::IntRect> animationFrames;
 		Object const *replacedObject;
 	public:
-		SpriteAnimation(float x, float y, int dir, sf::Texture const &texture, std::vector<sf::IntRect> animationFrames, float speed, Object const *replacedObject);
+		SpriteAnimation(Room const &room, float x, float y, int dir, sf::Texture const &texture, std::vector<sf::IntRect> animationFrames, float speed, Object const *replacedObject);
 		virtual ~SpriteAnimation();
 
 		virtual bool shouldDraw(Object const* obj);

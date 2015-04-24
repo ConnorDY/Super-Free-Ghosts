@@ -11,6 +11,7 @@ class Object
 {
 	public:
 		explicit Object(
+				Room &room,
 				float x = 0, float y = 0,
 				float width = 0, float height = 0,
 				float dx = 0, float dy = 0,
@@ -27,8 +28,8 @@ class Object
 		virtual bool canCollideWith(const Object* obj) const;
 
 		virtual sf::FloatRect getRect() const;
-		bool placeFree(float xx, float yy, Room const &room) const;
-		std::vector<Object*> allCollisions(float xx, float yy, Room const &room) const;
+		bool placeFree(float xx, float yy) const;
+		std::vector<Object*> allCollisions(float xx, float yy) const;
 
 		// Mutators
 		void setX(float xx);
@@ -37,13 +38,14 @@ class Object
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window) = 0;
-		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
-		virtual void kill(Room &room, const settings_t &settings);
-		virtual void onDeath(Room &room, const settings_t &settings);
-		virtual void onDoubleJumpedOver(Room &room);
-		void pushOutOfHeightmap(Room const &room);
-		void pushOutOfSolids(Room const &room);
+		virtual void update(sf::Time deltaTime);
+		virtual void kill();
+		virtual void onDeath();
+		virtual void onDoubleJumpedOver();
+		void pushOutOfHeightmap();
+		void pushOutOfSolids();
 	protected:
+		Room &room;
 		sf::Sprite sprite;
 		float x, y, dx, dy, width, height, gravity, maxFallSpeed, type;
 		int depth;

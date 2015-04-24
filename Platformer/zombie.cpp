@@ -6,9 +6,9 @@
 
 #define ZOMBIE_WIDTH  24
 #define ZOMBIE_HEIGHT 40
-Zombie::Zombie(TextureManager &textureManager, float x, float y)
+Zombie::Zombie(Room &room, float x, float y)
 	: DamageableObject(
-		x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
+		room, x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
 		0.0f, 0.0f,     // dx, dy
 		false,           // solid
 		0.00185f / 2.0f,       // Gravity
@@ -20,7 +20,7 @@ Zombie::Zombie(TextureManager &textureManager, float x, float y)
 	inCasket(true), opening(false), turning(false), spawned(false), under(false), visible(true)
 {
 	// Sprite
-	sprite.setTexture(textureManager.getRef("zombie"));
+	sprite.setTexture(room.textureManager.getRef("zombie"));
 	sprite.setOrigin(11.0f, 40.0f);
 
 	// Animations
@@ -91,9 +91,9 @@ void Zombie::draw(sf::RenderWindow &window)
 	window.draw(sprite);
 }
 
-void Zombie::update(sf::Time deltaTime, Room &room, const settings_t &settings)
+void Zombie::update(sf::Time deltaTime)
 {
-	if (inCasket && !spawned && (room.heightmapIntersects(sf::FloatRect(x, y, width, height)) || !placeFree(x, y + 10, room)))
+	if (inCasket && !spawned && (room.heightmapIntersects(sf::FloatRect(x, y, width, height)) || !placeFree(x, y + 10)))
 	{
 		y -= deltaTime.asSeconds() * 50;
 		spawnY = y;
@@ -108,9 +108,9 @@ void Zombie::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 	{
 		double mstime = deltaTime.asMicroseconds() / 1000.0;
 		if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.25;
-		if (!placeFree(x, y + 1, room) && dx == 0) dx = -moveSpeed; // Hit the ground
+		if (!placeFree(x, y + 1) && dx == 0) dx = -moveSpeed; // Hit the ground
 
-		Object::update(deltaTime, room, settings);
+		Object::update(deltaTime);
 
 		float adj = ZOMBIE_WIDTH;
 		if (dx < 0) adj *= -1;
@@ -119,10 +119,10 @@ void Zombie::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 
 		for (int i = -4; i < 4; i++)
 		{
-			if (placeFree((float)(x + dx * mstime), y + i, room)) turn = false;
+			if (placeFree((float)(x + dx * mstime), y + i)) turn = false;
 		}
 
-		if (!inCasket && !placeFree(x, y + 3, room) && (turn || (x <= 0.0f && dx < 0) || floor(((double)rand() / RAND_MAX) * (8000. / mstime)) == 1 || (placeFree(x + adj, y + 17, room) && !placeFree(x, y + 1, room))))
+		if (!inCasket && !placeFree(x, y + 3) && (turn || (x <= 0.0f && dx < 0) || floor(((double)rand() / RAND_MAX) * (8000. / mstime)) == 1 || (placeFree(x + adj, y + 17) && !placeFree(x, y + 1))))
 		{
 			// Turn around
 			dx = -dx;
@@ -158,7 +158,7 @@ void Zombie::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 		// Hit Player
 		if (!inCasket)
 		{
-			for (auto col : allCollisions(x, y, room))
+			for (auto col : allCollisions(x, y))
 			{
 				Player* player = dynamic_cast<Player*>(col);
 				if (player != nullptr && !player->getInvincible()) player->damage((int)x);
@@ -177,7 +177,7 @@ void Zombie::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 	// Animations
 	if (opening) setAnimation("casket");
 	else if (inCasket) setAnimation("appear");
-	else if (placeFree(x, y + 1, room) && dx == 0.0f) setAnimation("fall");
+	else if (placeFree(x, y + 1) && dx == 0.0f) setAnimation("fall");
 	else if (turning) setAnimation("turn");
 	else setAnimation("walk");
 
@@ -212,7 +212,7 @@ void Zombie::updateAnimation(sf::Time deltaTime)
 	sprite.setTextureRect(anim[(int)frame]);
 }
 
-void Zombie::onDeath(Room &room, const settings_t &settings)
+void Zombie::onDeath()
 {
-	if (settings.sound_on) room.getSoundManager().playSound("enemy_die");
+	room.soundManager.playSound("enemy_die");
 }

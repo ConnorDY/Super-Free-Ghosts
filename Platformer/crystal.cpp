@@ -1,8 +1,8 @@
 #include "crystal.h"
 
-Crystal::Crystal(TextureManager &, float x, float y)
+Crystal::Crystal(Room &room, float x, float y)
 	: Object(
-		x, y, 15, 15,
+		room, x, y, 15, 15,
 		0.0f, 0.0f, false
 	)
 {
@@ -23,15 +23,16 @@ void Crystal::draw(sf::RenderWindow &window)
 	window.draw(rect);
 }
 
-void Crystal::update(sf::Time, Room &room, const settings_t &settings)
+void Crystal::update(sf::Time)
 {
-	for (auto col : allCollisions(x, y, room))
+	for (auto col : allCollisions(x, y))
 	{
 		Player* player = dynamic_cast<Player*>(col);
 		if (player != nullptr)
 		{
-			player->upgrade(type, room, settings);
-			kill(room, settings);
+			player->upgrade(type);
+			kill();
+			break;
 		}
 	}
 }

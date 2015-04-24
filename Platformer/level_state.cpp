@@ -5,7 +5,7 @@
 #include "zombie.h"
 #include "menu_state.h"
 
-LevelState::LevelState(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings)
+LevelState::LevelState(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings)
 	: Room(sM, som, textureManager, settings),
 	  restart(false)
 {
@@ -36,12 +36,12 @@ bool LevelState::shouldSpawnMoreZombies() const
 	return countZombies() < 10;
 }
 
-void LevelState::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
+void LevelState::update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler)
 {
 	/* Restart Level if Player is Outside of the Room */
 	if (player->getRect().top > VIEW_HEIGHT)
 	{
-		reset(textureManager, settings);
+		reset();
 		return;
 	}
 
@@ -54,11 +54,11 @@ void LevelState::update(sf::RenderWindow &window, TextureManager &textureManager
 	else if (restart && restartTimer.getElapsedTime().asSeconds() >= 5)
 	{
 		restart = false;
-		reset(textureManager, settings);
+		reset();
 		return;
 	}
 
-	if (shouldSpawnMoreZombies()) objects.push_back(new Zombie(textureManager, (float)((double)rand() / (RAND_MAX)) * 1248, 250));
+	if (shouldSpawnMoreZombies()) objects.push_back(new Zombie(*this, (float)((double)rand() / (RAND_MAX)) * 1248, 250));
 
 	int moveH = inputHandler.checkInput(InputHandler::Input::Right) - inputHandler.checkInput(InputHandler::Input::Left); // Horizontal Movement
 	bool crouching = inputHandler.checkInput(InputHandler::Input::Down); // Crouching
@@ -78,14 +78,14 @@ void LevelState::update(sf::RenderWindow &window, TextureManager &textureManager
 
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
-			getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager));
+			getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager, settings));
 			return;
 		}
 
 		if (inputHandler.checkInput(InputHandler::Input::Up, event))
-			player->jump(moveH, soundManager, settings); // Jumping
+			player->jump(moveH); // Jumping
 		if (inputHandler.checkInput(InputHandler::Input::Action, event))
-			player->throwWeapon(*this, player->getDir(), soundManager, settings); // Throw Weapon
+			player->throwWeapon(player->getDir()); // Throw Weapon
 	}
 
 	player->move(moveH);
@@ -98,5 +98,5 @@ void LevelState::update(sf::RenderWindow &window, TextureManager &textureManager
 			dialogue.reset();
 	}
 
-	Room::update(window, textureManager, soundManager, inputHandler, settings);
+	Room::update(window, soundManager, inputHandler);
 }

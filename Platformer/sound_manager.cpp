@@ -1,9 +1,9 @@
 #include "sound_manager.h"
 #include "globals.h"
 
-SoundManager::SoundManager()
+SoundManager::SoundManager(settings_t const &settings)
+	: settings(settings)
 {
-
 }
 
 SoundManager::~SoundManager()
@@ -40,7 +40,8 @@ void SoundManager::loadSound(const std::string &name, const std::string &filenam
 	this->sounds[name] = snd;
 }
 
-void SoundManager::playSound(const std::string &sound)
+void SoundManager::playSound(const std::string &sound) const
 {
+	if (!settings.sound_on) return;
 	if (sounds.find(sound) != sounds.end()) this->sounds.at(sound)->play();
 }

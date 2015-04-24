@@ -1,7 +1,7 @@
 #include "weapondrop.h"
 
-WeaponDrop::WeaponDrop(TextureManager &, float x, float y)
-	: Object(
+WeaponDrop::WeaponDrop(Room &room, TextureManager &, float x, float y)
+	: Object(room,
 		x, y, 15, 15,
 		0.0f, 0.0f, false
 	)
@@ -24,15 +24,15 @@ void WeaponDrop::draw(sf::RenderWindow &window)
 	window.draw(rect);
 }
 
-void WeaponDrop::update(sf::Time, Room &room, const settings_t &settings)
+void WeaponDrop::update(sf::Time)
 {
-	for (auto col : allCollisions(x, y, room))
+	for (auto col : allCollisions(x, y))
 	{
 		Player* player = dynamic_cast<Player*>(col);
 		if (player != nullptr)
 		{
 			player->setWeapon(type);
-			kill(room, settings);
+			kill();
 		}
 	}
 }

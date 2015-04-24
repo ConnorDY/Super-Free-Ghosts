@@ -1,7 +1,7 @@
 #include "sprite_animation.h"
 
-SpriteAnimation::SpriteAnimation(float x, float y, int dir, sf::Texture const &texture, std::vector<sf::IntRect> animationFrames, float speed, Object const *replacedObject)
-	: ModalAnimation(), sprite(texture), animationFrames(animationFrames),
+SpriteAnimation::SpriteAnimation(Room const &room, float x, float y, int dir, sf::Texture const &texture, std::vector<sf::IntRect> animationFrames, float speed, Object const *replacedObject)
+	: ModalAnimation(room), sprite(texture), animationFrames(animationFrames),
 	  replacedObject(replacedObject)
 {
 	sprite.setScale(dir, 1);

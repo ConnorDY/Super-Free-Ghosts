@@ -1,5 +1,6 @@
 #include <vector>
 #include "super_trident.h"
+#include "room.h"
 #include "sprite_util.h"
 
 namespace
@@ -9,15 +10,15 @@ namespace
 	int const WATER_SPRITE_TOP = 2 * SPRITE_HEIGHT, TRIDENT_SPRITE_TOP = SPRITE_HEIGHT;
 }
 
-SuperTrident::SuperTrident(float x, float y, int dir, TextureManager &textureManager)
-	: Trident(x, y, BBOX.width, BBOX.height, dir, textureManager)
+SuperTrident::SuperTrident(Room &room, float x, float y, int dir)
+	: Trident(room, x, y, BBOX.width, BBOX.height, dir)
 {
 	for (int i = 0; i < 6; i++)
 		animationFrames.emplace_back(i * SPRITE_WIDTH, WATER_SPRITE_TOP, SPRITE_WIDTH, SPRITE_HEIGHT);
 	sf::Vector2f scaleVec(static_cast<float>(dir), 1.0f);
 	SpriteUtil::setOriginAndScale(sprite, scaleVec, BBOX);
 
-	tridentOverlay.setTexture(textureManager.getRef("trident"));
+	tridentOverlay.setTexture(room.textureManager.getRef("trident"));
 	tridentOverlay.setTextureRect(sf::IntRect(0, TRIDENT_SPRITE_TOP, SPRITE_WIDTH, SPRITE_HEIGHT));
 	tridentOverlay.setColor(sf::Color(255, 255, 255, 128));
 	SpriteUtil::setOriginAndScale(tridentOverlay, scaleVec, BBOX);
@@ -37,8 +38,8 @@ void SuperTrident::draw(sf::RenderWindow &window)
 	window.draw(tridentOverlay);
 }
 
-SuperTrident* SuperTrident::spawnAdjusted(float x, float y, int dir, TextureManager &textureManager)
+SuperTrident* SuperTrident::spawnAdjusted(Room &room, float x, float y, int dir)
 {
 	if (dir < 0) x -= BBOX.width;
-	return new SuperTrident(x, y, dir, textureManager);
+	return new SuperTrident(room, x, y, dir);
 }

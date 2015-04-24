@@ -9,11 +9,11 @@ class DimAnimation : public ModalAnimation
 		sf::Color colour;
 		sf::RectangleShape overlayRect;
 	public:
-		DimAnimation(float fadeInTime, sf::Color colour);
+		DimAnimation(Room const &room, float fadeInTime, sf::Color colour);
 		virtual ~DimAnimation();
 
 		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime, Room &room, settings_t const &settings);
+		virtual void update(sf::Time deltaTime);
 };
 
 #endif

@@ -11,6 +11,7 @@ class Particle : public Object
 		bool active;
 	public:
 		explicit Particle(
+			Room &room,
 			float x = 0, float y = 0,
 			float width = 0, float height = 0,
 			float dx = 0, float dy = 0,
@@ -23,8 +24,7 @@ class Particle : public Object
 		bool isActive() const;
 		void deactivate();
 
-		virtual void draw(sf::RenderWindow &window) = 0;
-		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
+		virtual void update(sf::Time deltaTime);
 };
 
 #endif

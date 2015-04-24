@@ -61,7 +61,7 @@ int main()
 
 	// Load Textures and Sounds and Shaders
 	TextureManager textureManager;
-	SoundManager soundManager;
+	SoundManager soundManager(settings);
 	loadRes(textureManager, soundManager);
 
 	// Create State Manager

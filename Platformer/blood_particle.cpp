@@ -1,8 +1,8 @@
 #include "blood_particle.h"
 
-BloodParticle::BloodParticle(float x, float y, int dir)
+BloodParticle::BloodParticle(Room &room, float x, float y, int dir)
 	: Particle(
-		x, y, 1, 1,
+		room, x, y, 1, 1,
 		dir * 0.2f, 0,
 		0.0014f / 2.0f, 0.2f
 	)
@@ -21,14 +21,14 @@ void BloodParticle::draw(sf::RenderWindow &window)
 	window.draw(rect);
 }
 
-void BloodParticle::update(sf::Time deltaTime, Room &room, const settings_t &settings)
+void BloodParticle::update(sf::Time deltaTime)
 {
-	Particle::update(deltaTime, room, settings);
+	Particle::update(deltaTime);
 
-	if (!placeFree(x, y + 1.0f, room)) deactivate();
+	if (!placeFree(x, y + 1.0f)) deactivate();
 }
 
-void BloodParticle::onDeath(Room &, const settings_t &)
+void BloodParticle::onDeath()
 {
 	std::cout << "lel" << std::endl;
 }

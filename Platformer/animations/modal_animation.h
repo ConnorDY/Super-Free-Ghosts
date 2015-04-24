@@ -12,14 +12,16 @@ class ModalAnimation
 		bool m_finished;
 		float currentFrame, animationSpeed;
 	public:
-		ModalAnimation();
+		Room const &room;
+
+		ModalAnimation(Room const &room);
 		virtual ~ModalAnimation();
 
 		virtual bool finished();
 		virtual bool shouldDraw(Object const* obj);
 
 		virtual void draw(sf::RenderWindow &window) = 0;
-		virtual void update(sf::Time deltaTime, Room &room, settings_t const &settings);
+		virtual void update(sf::Time deltaTime);
 };
 
 #endif

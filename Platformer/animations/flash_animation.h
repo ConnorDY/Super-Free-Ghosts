@@ -11,11 +11,11 @@ class FlashAnimation : public ModalAnimation
 		std::vector<int> flashes;
 		sf::RectangleShape overlayRect;
 	public:
-		FlashAnimation(std::vector<int> flashes, float speed, sf::Color colour);
+		FlashAnimation(Room const &room, std::vector<int> flashes, float speed, sf::Color colour);
 		virtual ~FlashAnimation();
 
 		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime, Room &room, settings_t const &settings);
+		virtual void update(sf::Time deltaTime);
 };
 
 #endif

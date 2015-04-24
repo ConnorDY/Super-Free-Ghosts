@@ -6,9 +6,9 @@
 class SuperSpear : public Spear
 {
 	public:
-		SuperSpear(float x, float y, int dir, TextureManager &textureManager);
+		SuperSpear(Room &room, float x, float y, int dir);
 		virtual ~SuperSpear();
-		static SuperSpear* spawnAdjusted(float x, float y, int dir, TextureManager &textureManager);
+		static SuperSpear* spawnAdjusted(Room &room, float x, float y, int dir);
 };
 
 #endif

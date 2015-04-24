@@ -10,12 +10,12 @@ class Crystal : public Object
 		sf::RectangleShape rect;
 		PlayerArmour::Enum type;
 	public:
-		Crystal(TextureManager &textureManager, float x, float y);
+		Crystal(Room &room, float x, float y);
 		~Crystal();
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
+		virtual void update(sf::Time deltaTime);
 };
 
 #endif

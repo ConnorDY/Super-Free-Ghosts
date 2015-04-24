@@ -21,15 +21,14 @@
 #define PLAYER_WIDTH  17
 #define PLAYER_HEIGHT 35
 
-Player::Player(TextureManager &tm, float x, float y)
+Player::Player(Room &room, float x, float y)
 	: DamageableObject(
-			x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
+			room, x, y, PLAYER_WIDTH, PLAYER_HEIGHT, // x, y, w, h
 			0.0f, 0.0f,     // dx, dy
 			false,          // solid
 			0.0014f / 2.0f, // Gravity
 			0.2f            // Fall speed
 	  ),
-	  textureManager(tm),
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
 	  animation("still"), texture("player2"),
 	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
@@ -38,7 +37,7 @@ Player::Player(TextureManager &tm, float x, float y)
 	  chosenWeapon(PlayerWeapon::SPEAR)
 {
 	// Sprite
-	sprite.setTexture(textureManager.getRef(texture));
+	sprite.setTexture(room.textureManager.getRef(texture));
 
 	// Animations
 	animations["still"].emplace_back(0, 0, 50, 50);
@@ -169,7 +168,7 @@ std::unique_ptr<ModalAnimation> Player::makeUpgradeAnimation(float xoff, float y
 
 	auto lastFrame = std::vector<sf::IntRect>(animFrames.end() - 1, animFrames.end());
 
-	std::unique_ptr<ModalAnimation> spriteAnimation = std::make_unique<SpriteAnimation>(x + xoff, y + yoff, getDir(), animTexture, animFrames, anim_speed, this);
+	std::unique_ptr<ModalAnimation> spriteAnimation = std::make_unique<SpriteAnimation>(room, x + xoff, y + yoff, getDir(), animTexture, animFrames, anim_speed, this);
 	if (hasFlash)
 	{
 		std::vector<int> flashes1 { 7, 13, 19, 25, 31 };
@@ -179,8 +178,8 @@ std::unique_ptr<ModalAnimation> Player::makeUpgradeAnimation(float xoff, float y
 
 		spriteAnimation = CombinedAnimations::keepUntilBothFinish(
 			CombinedAnimations::keepUntilBothFinish(
-				std::make_unique<FlashAnimation>(flashes1, anim_speed, flashColour1),
-				std::make_unique<FlashAnimation>(flashes2, anim_speed, flashColour2)
+				std::make_unique<FlashAnimation>(room, flashes1, anim_speed, flashColour1),
+				std::make_unique<FlashAnimation>(room, flashes2, anim_speed, flashColour2)
 			),
 			std::move(spriteAnimation)
 		);
@@ -188,12 +187,12 @@ std::unique_ptr<ModalAnimation> Player::makeUpgradeAnimation(float xoff, float y
 
 	return CombinedAnimations::inSequence(
 		CombinedAnimations::keepUntilBothFinish(
-			std::make_unique<DimAnimation>(0.2f, sf::Color(0, 0, 0, 100)),
+			std::make_unique<DimAnimation>(room, 0.2f, sf::Color(0, 0, 0, 100)),
 			std::move(spriteAnimation)
 		),
 		CombinedAnimations::keepUntilBothFinish(
-			std::make_unique<FadeInAnimation>(0.2f, sf::Color(0, 0, 0, 100)),
-			std::make_unique<SpriteAnimation>(x + xoff, y + yoff, getDir(), animTexture, lastFrame, anim_speed, this)
+			std::make_unique<FadeInAnimation>(room, 0.2f, sf::Color(0, 0, 0, 100)),
+			std::make_unique<SpriteAnimation>(room, x + xoff, y + yoff, getDir(), animTexture, lastFrame, anim_speed, this)
 		)
 	);
 }
@@ -204,7 +203,7 @@ float Player::fixAdjXForDirection(float adjx) const
 	return adjx;
 }
 
-void Player::upgrade(PlayerArmour::Enum a, Room &room, settings_t const &settings)
+void Player::upgrade(PlayerArmour::Enum a)
 {
 	invincible = true;
 	auto armourLast = armour;
@@ -214,7 +213,7 @@ void Player::upgrade(PlayerArmour::Enum a, Room &room, settings_t const &setting
 	switch (armour)
 	{
 		case PlayerArmour::SILVER:
-			animation = makeUpgradeAnimation(fixAdjXForDirection(-76.0f), -100.0f, false, textureManager.getRef("transform1"), animations["transform1"]);
+			animation = makeUpgradeAnimation(fixAdjXForDirection(-76.0f), -100.0f, false, room.textureManager.getRef("transform1"), animations["transform1"]);
 			break;
 		case PlayerArmour::GOLD:
 			{
@@ -233,13 +232,13 @@ void Player::upgrade(PlayerArmour::Enum a, Room &room, settings_t const &setting
 					default:
 						throw std::domain_error("Tried to upgrade to gold from an armour with no animation");
 				}
-				animation = makeUpgradeAnimation(fixAdjXForDirection(-40.0f), -415.0f, true, textureManager.getRef("transform2"), animFrames);
+				animation = makeUpgradeAnimation(fixAdjXForDirection(-40.0f), -415.0f, true, room.textureManager.getRef("transform2"), animFrames);
 			}
 			break;
 		default:
 			throw std::domain_error("Tried to upgrade to an armour with no animation");
 	}
-	room.playModalAnimation(std::move(animation), settings);
+	room.playModalAnimation(std::move(animation));
 	fixTexture();
 }
 
@@ -316,7 +315,7 @@ void Player::move(int dir)
 	if (dir != 0) sprite.setScale(sf::Vector2f((float)dir, 1.0f));
 }
 
-void Player::jump(int dir, SoundManager &soundManager, const settings_t &settings)
+void Player::jump(int dir)
 {
 	if (dead) return;
 
@@ -340,11 +339,11 @@ void Player::jump(int dir, SoundManager &soundManager, const settings_t &setting
 		jumped = true;
 		jumps++;
 
-		if (settings.sound_on) soundManager.playSound("jump");
+		room.soundManager.playSound("jump");
 	}
 }
 
-std::function<Weapon*(float, float, int, TextureManager&)> getWeaponSpawnFunc(PlayerWeapon::Enum weapon, bool super)
+std::function<Weapon*(Room&, float, float, int)> getWeaponSpawnFunc(PlayerWeapon::Enum weapon, bool super)
 {
 	using namespace PlayerWeapon;
 	switch (weapon)
@@ -370,19 +369,19 @@ Weapon* Player::createWeaponAt(float x, float y)
 {
 	// oh shit I think this is too many levels of abstraction for a c++ program :P
 	// I did this because argument spam everywhere adds more noise than signal to the code
-	return getWeaponSpawnFunc(chosenWeapon, armour == PlayerArmour::GOLD)(x, y, getDir(), textureManager);
+	return getWeaponSpawnFunc(chosenWeapon, armour == PlayerArmour::GOLD)(room, x, y, getDir());
 }
 
-bool Player::canThrowWeapon(Room const &room) const
+bool Player::canThrowWeapon() const
 {
 	if (dead || hit || midThrow) return false;
 	if (chosenWeapon == PlayerWeapon::TRIDENT && !Trident::canThrow(room)) return false;
 	return true;
 }
 
-void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const settings_t &settings)
+void Player::throwWeapon(int dir)
 {
-	if (!canThrowWeapon(room)) return;
+	if (!canThrowWeapon()) return;
 
 	midThrow = true;
 	throwTimer.restart();
@@ -404,7 +403,7 @@ void Player::throwWeapon(Room &room, int dir, SoundManager &soundManager, const 
 	if (dir < 0) adjx = getRect().width - adjx;
 	room.spawn(createWeaponAt(x + adjx, y + adjy));
 
-	if (settings.sound_on) soundManager.playSound("throw");
+	room.soundManager.playSound("throw");
 }
 
 std::pair<int, int> Player::getJumpPoints() const
@@ -414,7 +413,7 @@ std::pair<int, int> Player::getJumpPoints() const
 	return {xJumpedFrom, x};
 }
 
-void Player::checkDoubleJumpedObjects(Room &room)
+void Player::checkDoubleJumpedObjects()
 {
 	// Must have double-jumped
 	if (jumps < 2) return;
@@ -428,11 +427,11 @@ void Player::checkDoubleJumpedObjects(Room &room)
 	{
 		auto objbb = obj->getRect();
 		if (objbb.left + objbb.width > jumpLR.first && objbb.left < jumpLR.second)
-			obj->onDoubleJumpedOver(room);
+			obj->onDoubleJumpedOver();
 	}
 }
 
-void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
+void Player::update(sf::Time deltaTime)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 
@@ -442,14 +441,14 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 		printf("Total Time: %4.3f\n", (float)total_time);
 	}
 
-	auto& soundManager = room.getSoundManager();
+	auto& soundManager = room.soundManager;
 
 	// Gravity
-	if (placeFree(x, y + 1, room))
+	if (placeFree(x, y + 1))
 	{
 		dy += gravity * (float)mstime;
 
-		if (!rolling && armour == PlayerArmour::NAKED && jumps == 2 && dx != 0 && dy > 0 && placeFree(x, y + 1, room) && !placeFree(x, y + 6, room))
+		if (!rolling && armour == PlayerArmour::NAKED && jumps == 2 && dx != 0 && dy > 0 && placeFree(x, y + 1) && !placeFree(x, y + 6))
 		{
 			rolling = true;
 			rollTimer.restart();
@@ -473,9 +472,9 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 		}
 
 		if (dead) dx = 0;
-		else if (settings.sound_on) soundManager.playSound("land");
+		else soundManager.playSound("land");
 	}
-	else if (dy < 0 && !placeFree(x, y - 1, room))
+	else if (dy < 0 && !placeFree(x, y - 1))
 	{
 		dy = 0; // Hitting head on the ceiling
 		// TODO play sound?
@@ -485,7 +484,7 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
 	{
 		float j = copysign(i, dy);
-		if (placeFree(x, y + j, room))
+		if (placeFree(x, y + j))
 		{
 			y += j;
 			break;
@@ -511,7 +510,7 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 
 			for (float k = ks; k <= ke; k++)
 			{
-				if (placeFree(x + j, y - k, room))
+				if (placeFree(x + j, y - k))
 				{
 					x += j;
 					y -= k;
@@ -525,7 +524,7 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 		}
 	}
 
-	pushOutOfSolids(room);
+	pushOutOfSolids();
 
 	// Jump, Throw, Roll, and Invicibility Timers
 	if (midJump && jumpTimer.getElapsedTime().asSeconds() >= .2) midJump = false;
@@ -541,7 +540,7 @@ void Player::update(sf::Time deltaTime, Room &room, const settings_t &settings)
 	}
 	else if (!invincible) visible = true;
 
-	checkDoubleJumpedObjects(room);
+	checkDoubleJumpedObjects();
 
 	// Animation
 	if (dead) setAnimation("die");
@@ -622,10 +621,10 @@ void Player::updateAnimation(sf::Time deltaTime)
 	sprite.setTextureRect(anim[(int)frame]);
 }
 
-void Player::changeTexture(TextureManager &textureManager, std::string tex)
+void Player::changeTexture(std::string tex)
 {
 	texture = tex;
-	sprite.setTexture(textureManager.getRef(texture));
+	sprite.setTexture(room.textureManager.getRef(texture));
 }
 
 void Player::fixTexture()
@@ -633,22 +632,22 @@ void Player::fixTexture()
 	using namespace PlayerArmour;
 	if (dead)
 	{
-		changeTexture(textureManager, "player0");
+		changeTexture("player0");
 		return;
 	}
 
 	switch (armour)
 	{
 		case NAKED:
-			changeTexture(textureManager, "player1");
+			changeTexture("player1");
 			break;
 
 		case SILVER:
-			changeTexture(textureManager, "player2");
+			changeTexture("player2");
 			break;
 
 		case GOLD:
-			changeTexture(textureManager, "player3");
+			changeTexture("player3");
 			break;
 
 		default:

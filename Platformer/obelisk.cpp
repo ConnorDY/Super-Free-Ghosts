@@ -1,11 +1,12 @@
 #include "obelisk.h"
+#include "room.h"
 
-Obelisk::Obelisk(TextureManager &textureManager, float x, float y, float height)
+Obelisk::Obelisk(Room &room, float x, float y, float height)
 	: Object(
-	x, y, 30, height
+		room, x, y, 30, height
 	)
 {
-	spr.setTexture(textureManager.getRef("obelisk"));
+	spr.setTexture(room.textureManager.getRef("obelisk"));
 	
 	flames.push_back(sf::IntRect(30, 30, 1, 1));
 	flames.push_back(sf::IntRect(30, 8, 7, 8));
@@ -15,9 +16,9 @@ Obelisk::Obelisk(TextureManager &textureManager, float x, float y, float height)
 
 
 /* Actions */
-void Obelisk::update(sf::Time deltaTime, Room &room, const settings_t &settings)
+void Obelisk::update(sf::Time deltaTime)
 {
-	Object::update(deltaTime, room, settings);
+	Object::update(deltaTime);
 
 	// Flame Animation
 	frame += dir * deltaTime.asSeconds() * 5;

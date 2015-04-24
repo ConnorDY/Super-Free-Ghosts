@@ -7,7 +7,7 @@
 
 #define GRID_SCALE 8
 
-Level_Editor_State::Level_Editor_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings)
+Level_Editor_State::Level_Editor_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings)
 	: Room(sM, som, textureManager, settings)
 {
 	cursor = sf::Vector2i(-1, -1);
@@ -24,7 +24,7 @@ Level_Editor_State::Level_Editor_State(StateManager &sM, SoundManager &som, Text
 	shapeGrid.setOutlineThickness(1);
 
 	// Create player
-	player = new Player(textureManager, -50.0f, 500.0f);
+	player = new Player(*this, -50.0f, 500.0f);
 	objects.push_back(player);
 }
 
@@ -32,7 +32,7 @@ Level_Editor_State::~Level_Editor_State()
 {
 }
 
-void Level_Editor_State::start(TextureManager&, settings_t const&)
+void Level_Editor_State::start()
 {
 
 }
@@ -107,7 +107,7 @@ static LineEndpoints getLineFromPoints(sf::Vector2i const &point1, sf::Vector2i 
 	return LineEndpoints( leftpoint, rightpoint);
 }
 
-void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings)
+void Level_Editor_State::update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler)
 {
 	// Get Input
 	sf::Event event;
@@ -154,12 +154,12 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
-			getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager));
+			getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager, settings));
 			return;
 		}
 		
-		if (inputHandler.checkInput(InputHandler::Input::Up, event)) player->jump(moveH, soundManager, settings); // Jumping
-		if (inputHandler.checkInput(InputHandler::Input::Action, event)) player->throwWeapon(*this, player->getDir(), soundManager, settings); // Throw Weapon
+		if (inputHandler.checkInput(InputHandler::Input::Up, event)) player->jump(moveH); // Jumping
+		if (inputHandler.checkInput(InputHandler::Input::Action, event)) player->throwWeapon(player->getDir()); // Throw Weapon
 	}
 
 	player->move(moveH);
@@ -170,5 +170,5 @@ void Level_Editor_State::update(sf::RenderWindow &window, TextureManager &textur
 	cursor = sf::Vector2i((int)floor(m.x / (float)settings.window_scale) + getViewX(), (int)floor(m.y / (float)settings.window_scale) + getViewY());
 	gridCursor = sf::Vector2i((int)floor(cursor.x / GRID_SCALE), (int)floor(cursor.y / GRID_SCALE));
 
-	Room::update(window, textureManager, soundManager, inputHandler, settings);
+	Room::update(window, soundManager, inputHandler);
 }

@@ -23,15 +23,15 @@ class HandEye : public DamageableObject
 		void setAnimation(std::string name);
 		void updateAnimation(sf::Time deltaTime);
 	public:
-		HandEye(TextureManager &textureManager, float x, float y);
+		HandEye(Room &room, float x, float y);
 
 		// Accesors
 		virtual bool canCollideWith(const Object* obj) const;
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
-		virtual void onDeath(Room &room, const settings_t &settings);
+		virtual void update(sf::Time deltaTime);
+		virtual void onDeath();
 };
 
 #endif

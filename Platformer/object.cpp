@@ -2,8 +2,8 @@
 #include "globals.h"
 #include "room.h"
 
-Object::Object(float x, float y, float width, float height, float dx, float dy, bool solid, float gravity, float maxFallSpeed)
-	: x(x), y(y),
+Object::Object(Room &room, float x, float y, float width, float height, float dx, float dy, bool solid, float gravity, float maxFallSpeed)
+	: room(room), x(x), y(y),
 	  dx(dx), dy(dy),
 	  width(width), height(height),
 	  gravity(gravity),
@@ -30,7 +30,7 @@ sf::FloatRect Object::getRect() const
 	return sf::FloatRect(x, y, width, height);
 }
 
-bool Object::placeFree(float xx, float yy, Room const &room) const
+bool Object::placeFree(float xx, float yy) const
 {
 	sf::FloatRect temp_rect(xx, yy, width, height);
 
@@ -44,7 +44,7 @@ bool Object::placeFree(float xx, float yy, Room const &room) const
 	});
 }
 
-std::vector<Object*> Object::allCollisions(float xx, float yy, Room const &room) const
+std::vector<Object*> Object::allCollisions(float xx, float yy) const
 {
 	std::vector<Object*> result;
 	sf::FloatRect temp_rect(xx, yy, width, height);
@@ -81,12 +81,12 @@ void Object::setDepth(int d)
 
 
 /* Actions */
-void Object::update(sf::Time deltaTime, Room &room, const settings_t&)
+void Object::update(sf::Time deltaTime)
 {
 	double mstime = deltaTime.asMicroseconds() / 1000.0;
 
 	// Gravity
-	if (placeFree(x, y + 1, room)) dy += gravity * (float)mstime;
+	if (placeFree(x, y + 1)) dy += gravity * (float)mstime;
 	else if (dy > 0.0f) dy = 0.0f;
 
 	if (dy > maxFallSpeed) dy = maxFallSpeed;
@@ -95,7 +95,7 @@ void Object::update(sf::Time deltaTime, Room &room, const settings_t&)
 	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
 	{
 		float j = copysign(i, dy);
-		if (placeFree(x, y + j, room))
+		if (placeFree(x, y + j))
 		{
 			y += j;
 			break;
@@ -119,7 +119,7 @@ void Object::update(sf::Time deltaTime, Room &room, const settings_t&)
 
 		for (float k = ks; k <= ke; k++)
 		{
-			if (placeFree(x + j, y - k, room))
+			if (placeFree(x + j, y - k))
 			{
 				x += j;
 				y -= k;
@@ -132,21 +132,21 @@ void Object::update(sf::Time deltaTime, Room &room, const settings_t&)
 		if (brk) break;
 	}
 
-	pushOutOfHeightmap(room);
+	pushOutOfHeightmap();
 }
 
-void Object::pushOutOfHeightmap(Room const &room)
+void Object::pushOutOfHeightmap()
 {
 	if (room.heightmapIntersects(sf::FloatRect(x, y, width, height)))
 		y = room.getMinTerrainYBetween(x, x + width) - height;
 }
 
-void Object::pushOutOfSolids(Room const &room)
+void Object::pushOutOfSolids()
 {
-	pushOutOfHeightmap(room);
+	pushOutOfHeightmap();
 
 	// Move out of any solid objects
-	for (auto obj : allCollisions(x, y, room))
+	for (auto obj : allCollisions(x, y))
 		if (obj->isSolid())
 		{
 			auto objbbox = obj->getRect();
@@ -154,17 +154,17 @@ void Object::pushOutOfSolids(Room const &room)
 		}
 }
 
-void Object::kill(Room &room, const settings_t &settings)
+void Object::kill()
 {
 	if (del) return;
-	onDeath(room, settings);
+	onDeath();
 	del = true;
 }
 
-void Object::onDeath(Room&, const settings_t&)
+void Object::onDeath()
 {
 }
 
-void Object::onDoubleJumpedOver(Room&)
+void Object::onDoubleJumpedOver()
 {
 }

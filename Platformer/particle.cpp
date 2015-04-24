@@ -1,8 +1,8 @@
 #include "particle.h"
 
-Particle::Particle(float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, double l)
+Particle::Particle(Room &room, float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, double l)
 	: Object(
-		x, y, width, height,
+		room, x, y, width, height,
 		dx, dy, false,
 		gravity, maxFallSpeed
 	),
@@ -26,9 +26,9 @@ void Particle::deactivate()
 	timer.restart();
 }
 
-void Particle::update(sf::Time deltaTime, Room &room, const settings_t &settings)
+void Particle::update(sf::Time deltaTime)
 {
-	Object::update(deltaTime, room, settings);
+	Object::update(deltaTime);
 
-	if (!active && timer.getElapsedTime().asMilliseconds() >= lifetime)	kill(room, settings);
+	if (!active && timer.getElapsedTime().asMilliseconds() >= lifetime)	kill();
 }

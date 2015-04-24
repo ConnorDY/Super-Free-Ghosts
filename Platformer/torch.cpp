@@ -8,12 +8,12 @@ namespace
 	int const SPRITE_WIDTH = 0, SPRITE_HEIGHT = 0;
 }
 
-Torch::Torch(float x, float y, int dir, TextureManager &textureManager)
+Torch::Torch(Room &room, float x, float y, int dir)
 	: Weapon(
-			x, y, BBOX.width, BBOX.height, // x, y, w, h
+			room, x, y, BBOX.width, BBOX.height, // x, y, w, h
 			0.12f * dir, -0.18f,           // dx, dy
 			0.0007f, 0.2f,                 // gravity, terminal velocity
-			12, textureManager
+			12
 	)
 {
 	// TODO: Set sprite and such
@@ -21,17 +21,17 @@ Torch::Torch(float x, float y, int dir, TextureManager &textureManager)
 
 Torch::~Torch() {}
 
-void Torch::onDeath(Room &room, settings_t const&)
+void Torch::onDeath()
 {
-	if (!placeFree(x, y, room)) {
+	if (!placeFree(x, y)) {
 		// If we hit something (ground, obelisk), try spawning a flame
 		// it will put itself out if it's not in a sensible place.
-		room.spawn(new Flame(x, y, dx > 0 ? 1 : -1, 4, room.textureManager));
+		room.spawn(new Flame(room, x, y, dx > 0 ? 1 : -1, 4));
 	}
 }
 
-Torch* Torch::spawnAdjusted(float x, float y, int dir, TextureManager &textureManager)
+Torch* Torch::spawnAdjusted(Room &room, float x, float y, int dir)
 {
 	if (dir < 0) x -= BBOX.width;
-	return new Torch(x, y, dir, textureManager);
+	return new Torch(room, x, y, dir);
 }

@@ -21,14 +21,14 @@ class LevelState : public Room
 		Player *player;
 		virtual bool shouldSpawnMoreZombies() const;
 	public:
-		LevelState(StateManager &sM, SoundManager &som, TextureManager &textureManager, const settings_t &settings);
+		LevelState(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings);
 		virtual ~LevelState();
 
 		int countZombies() const;
 
 		// Actions
 		virtual void drawForeground(sf::RenderWindow &window);
-		virtual void update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager &soundManager, InputHandler &inputHandler, settings_t &settings);
+		virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler);
 };
 
 #endif

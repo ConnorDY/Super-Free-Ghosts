@@ -8,12 +8,12 @@ class BloodParticle : public Particle
 	private:
 		sf::RectangleShape rect;
 	public:
-		BloodParticle(float x, float y, int dir);
+		BloodParticle(Room &room, float x, float y, int dir);
 		~BloodParticle();
 
 		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
-		virtual void onDeath(Room &room, const settings_t &settings);
+		virtual void update(sf::Time deltaTime);
+		virtual void onDeath();
 };
 
 #endif

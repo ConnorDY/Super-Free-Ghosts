@@ -25,7 +25,7 @@ class Zombie : public DamageableObject
 		void setAnimation(std::string name);
 		void updateAnimation(sf::Time deltaTime);
 	public:
-		Zombie(TextureManager &textureManager, float x, float y);
+		Zombie(Room &room, float x, float y);
 
 		// Accesors
 		int getDir() const;
@@ -34,8 +34,8 @@ class Zombie : public DamageableObject
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window);
-		virtual void update(sf::Time deltaTime, Room &room, const settings_t &settings);
-		virtual void onDeath(Room &room, const settings_t &settings);
+		virtual void update(sf::Time deltaTime);
+		virtual void onDeath();
 };
 
 #endif

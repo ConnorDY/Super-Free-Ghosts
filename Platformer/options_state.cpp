@@ -2,8 +2,8 @@
 #include "globals.h"
 #include "menu_state.h"
 
-Options_State::Options_State(StateManager &sM, const settings_t &settings)
-	: State(sM)
+Options_State::Options_State(StateManager &sM, TextureManager &tm, settings_t &settings)
+	: State(sM), textureManager(tm), settings(settings)
 {
 	// Load Font
 	if (!fnt.loadFromFile("res/Tewi-normal-11.bdf")) std::cout << "Failed to load menu font!" << std::endl;
@@ -32,7 +32,7 @@ Options_State::Options_State(StateManager &sM, const settings_t &settings)
 	currentValue[0] = settings.window_scale - 1;
 	if (settings.vsync_on) currentValue[1] = 1; else currentValue[1] = 0;
 	if (settings.music_on) currentValue[2] = 1; else currentValue[2] = 0;
-	if (settings.sound_on) currentValue[3] = 1; else currentValue[3] = 0;	
+	if (settings.sound_on) currentValue[3] = 1; else currentValue[3] = 0;
 }
 
 Options_State::~Options_State()
@@ -98,7 +98,7 @@ void Options_State::draw(sf::RenderWindow &window)
 	}
 }
 
-void Options_State::toggleVsync(settings_t &settings, sf::RenderWindow &window)
+void Options_State::toggleVsync(sf::RenderWindow &window)
 {
 	settings.vsync_on = !settings.vsync_on;
 	if (currentValue[1] == 0) currentValue[1] = 1; else currentValue[1] = 0;
@@ -106,19 +106,19 @@ void Options_State::toggleVsync(settings_t &settings, sf::RenderWindow &window)
 	window.setVerticalSyncEnabled(settings.vsync_on);
 }
 
-void Options_State::toggleMusic(settings_t &settings)
+void Options_State::toggleMusic()
 {
 	settings.music_on = !settings.music_on;
 	if (currentValue[2] == 0) currentValue[2] = 1; else currentValue[2] = 0;
 }
 
-void Options_State::toggleSound(settings_t &settings)
+void Options_State::toggleSound()
 {
 	settings.sound_on = !settings.sound_on;
 	if (currentValue[3] == 0) currentValue[3] = 1; else currentValue[3] = 0;
 }
 
-void Options_State::update(sf::RenderWindow &window, TextureManager &textureManager, SoundManager&, InputHandler &inputHandler, settings_t &settings)
+void Options_State::update(sf::RenderWindow &window, SoundManager&, InputHandler &inputHandler)
 {
 	restartClock();
 
@@ -140,7 +140,7 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 		// Escape
 		if (inputHandler.checkInput(InputHandler::Input::Exit, event))
 		{
-			getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager));
+			getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager, settings));
 			return;
 		}
 
@@ -168,7 +168,7 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 				// Back
 				case 4:
-					getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager));
+					getStateManager().setState(std::make_unique<Menu_State>(getStateManager(), textureManager, settings));
 					break;
 			}
 		}
@@ -193,17 +193,17 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 				// Vsync
 				case 1:
-					toggleVsync(settings, window);
+					toggleVsync(window);
 					break;
 
 				// Music
 				case 2:
-					toggleMusic(settings);
+					toggleMusic();
 					break;
 
 				// Sound
 				case 3:
-					toggleSound(settings);
+					toggleSound();
 					break;
 			}
 		}
@@ -228,17 +228,17 @@ void Options_State::update(sf::RenderWindow &window, TextureManager &textureMana
 
 				// Vsync
 				case 1:
-					toggleVsync(settings, window);
+					toggleVsync(window);
 					break;
 
 				// Music
 				case 2:
-					toggleMusic(settings);
+					toggleMusic();
 					break;
 
 				// Sound
 				case 3:
-					toggleSound(settings);
+					toggleSound();
 					break;
 			}
 		}
