@@ -10,8 +10,6 @@ Weapon::Weapon(Room &room, float x, float y, float width, float height, float dx
 	  animationSpeed(6), destroyedOnHit(true)
 {
 	rectangle.setFillColor(sf::Color(255, 0, 0, 128));
-	sprite.setTexture(textureManager.getRef("weapons"));
-	sprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
 }
 
 Weapon::~Weapon() {}
