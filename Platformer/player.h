@@ -52,6 +52,7 @@ class Player : public DamageableObject
 		Weapon* createWeaponAt(float x, float y);
 		bool canThrowWeapon(Room const &room) const;
 		std::unique_ptr<ModalAnimation> makeUpgradeAnimation(float xoff, float yoff, bool hasFlash, sf::Texture const &animTexture, std::vector<sf::IntRect> const &animFrames) const;
+		float fixAdjXForDirection(float adjx) const;
 	public:
 		Player(TextureManager &textureManager, float x, float y);
 
