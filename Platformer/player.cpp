@@ -164,10 +164,12 @@ void Player::damage(int otherX)
 
 std::unique_ptr<ModalAnimation> Player::makeUpgradeAnimation(float xoff, float yoff, bool hasFlash, sf::Texture const &animTexture, std::vector<sf::IntRect> const &animFrames) const
 {
-	static float const ANIM_SPEED = 12.5f;
+	float anim_speed = 12.5f;
+	if (armour == PlayerArmour::GOLD) anim_speed = 16.5f;
+
 	auto lastFrame = std::vector<sf::IntRect>(animFrames.end() - 1, animFrames.end());
 
-	std::unique_ptr<ModalAnimation> spriteAnimation = std::make_unique<SpriteAnimation>(x + xoff, y + yoff, getDir(), animTexture, animFrames, ANIM_SPEED, this);
+	std::unique_ptr<ModalAnimation> spriteAnimation = std::make_unique<SpriteAnimation>(x + xoff, y + yoff, getDir(), animTexture, animFrames, anim_speed, this);
 	if (hasFlash)
 	{
 		std::vector<int> flashes1 { 7, 13, 19, 25, 31 };
@@ -177,8 +179,8 @@ std::unique_ptr<ModalAnimation> Player::makeUpgradeAnimation(float xoff, float y
 
 		spriteAnimation = CombinedAnimations::keepUntilBothFinish(
 			CombinedAnimations::keepUntilBothFinish(
-				std::make_unique<FlashAnimation>(flashes1, ANIM_SPEED, flashColour1),
-				std::make_unique<FlashAnimation>(flashes2, ANIM_SPEED, flashColour2)
+				std::make_unique<FlashAnimation>(flashes1, anim_speed, flashColour1),
+				std::make_unique<FlashAnimation>(flashes2, anim_speed, flashColour2)
 			),
 			std::move(spriteAnimation)
 		);
@@ -191,7 +193,7 @@ std::unique_ptr<ModalAnimation> Player::makeUpgradeAnimation(float xoff, float y
 		),
 		CombinedAnimations::keepUntilBothFinish(
 			std::make_unique<FadeInAnimation>(0.2f, sf::Color(0, 0, 0, 100)),
-			std::make_unique<SpriteAnimation>(x + xoff, y + yoff, getDir(), animTexture, lastFrame, ANIM_SPEED, this)
+			std::make_unique<SpriteAnimation>(x + xoff, y + yoff, getDir(), animTexture, lastFrame, anim_speed, this)
 		)
 	);
 }
