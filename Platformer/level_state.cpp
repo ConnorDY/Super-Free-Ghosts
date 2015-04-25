@@ -36,6 +36,11 @@ bool LevelState::shouldSpawnMoreZombies() const
 	return countZombies() < 10;
 }
 
+Player* LevelState::getPlayer() const
+{
+	return player;
+}
+
 void LevelState::update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler)
 {
 	/* Restart Level if Player is Outside of the Room */

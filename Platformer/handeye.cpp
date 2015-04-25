@@ -1,27 +1,21 @@
 #include "handeye.h"
 #include "globals.h"
-#include "room.h"
+#include "level_state.h"
 #include "obelisk.h"
 
-HandEye::HandEye(Room &room, float x, float y)
+HandEye::HandEye(LevelState &room, float x, float y)
 	: DamageableObject(
 		room, x, y, 53, 40,
 		0.0f, 0.0f, false,
 		0.00185f / 2.0f, 0.25f
 	),
-	animation("awake"), plyr(NULL),
+	animation("awake"),
 	pulling(false), awake(false), waking(false),
 	frame(0)
 {
 	for (unsigned int i = 0; i < 7; i++) animations["pull"].emplace_back(0, i * 56, 55, 56);
 	for (unsigned int i = 7; i < 17; i++) animations["pulling"].emplace_back(0, i * 56, 55, 56);
 	for (unsigned int i = 0; i < 20; i++) animations["awake"].emplace_back(55, i * 40, 53, 40);
-
-	std::vector<Object*> objects = room.getObjects();
-	for (Object* obj : objects)
-	{
-		if (dynamic_cast<Player*>(obj) != nullptr) plyr = (Player*)obj;
-	}
 
 	sprite.setTexture(room.textureManager.getRef("handeye"));
 	setDepth(-2);
@@ -66,7 +60,8 @@ void HandEye::update(sf::Time deltaTime)
 {
 	Object::update(deltaTime);
 
-	if (!awake && !waking && plyr != NULL && abs(x - plyr->getPos().x) <= 100) waking = true;
+	auto plyr = static_cast<LevelState&>(room).getPlayer();
+	if (!awake && !waking && plyr != nullptr && abs(x - plyr->getPos().x) <= 100) waking = true;
 
 	if (pulling) setAnimation("pulling");
 	else if (awake) setAnimation("pull");

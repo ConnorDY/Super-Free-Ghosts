@@ -9,6 +9,7 @@
 
 #include "damageable_object.h"
 #include "player.h"
+#include "level_state.h"
 
 class HandEye : public DamageableObject
 {
@@ -17,7 +18,6 @@ class HandEye : public DamageableObject
 		sf::RectangleShape rectangle;
 		std::map<std::string, std::vector<sf::IntRect> > animations;
 		std::string animation;
-		Player* plyr;
 		bool pulling, awake, waking;
 		double frame;
 
@@ -25,7 +25,7 @@ class HandEye : public DamageableObject
 		void setAnimation(std::string name);
 		void updateAnimation(sf::Time deltaTime);
 	public:
-		HandEye(Room &room, float x, float y);
+		HandEye(LevelState &room, float x, float y);
 
 		// Accesors
 		virtual bool canCollideWith(const Object* obj) const override;
