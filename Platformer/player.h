@@ -68,6 +68,7 @@ class Player : public DamageableObject
 		bool getInvincible() const;
 		bool isTransforming() const;
 		bool isFadingOut() const;
+		sf::Vector2f getPos() const;
 		virtual sf::FloatRect getRect() const override;
 
 		// Actions

@@ -8,6 +8,7 @@
 #include <map>
 
 #include "damageable_object.h"
+#include "player.h"
 
 class HandEye : public DamageableObject
 {
@@ -16,6 +17,7 @@ class HandEye : public DamageableObject
 		sf::RectangleShape rectangle;
 		std::map<std::string, std::vector<sf::IntRect> > animations;
 		std::string animation;
+		Player* plyr;
 		bool pulling, awake, waking;
 		double frame;
 

@@ -25,6 +25,12 @@
     <Filter Include="Header Files\Weapons">
       <UniqueIdentifier>{c33fe824-19e7-41e2-bc7d-80a4b32a40df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Enemies">
+      <UniqueIdentifier>{59a1802f-2e48-4bbf-ad74-ff8811e48b5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Enemies">
+      <UniqueIdentifier>{f46cca70-1f59-495c-b5d2-641fdce216ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -58,9 +64,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="state_manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zombie.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="room.cpp">
@@ -100,9 +103,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sprite_util.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="handeye.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="weapondrop.cpp">
@@ -153,6 +153,12 @@
     <ClCompile Include="weapon.cpp">
       <Filter>Source Files\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="zombie.cpp">
+      <Filter>Source Files\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="handeye.cpp">
+      <Filter>Source Files\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h">
@@ -186,9 +192,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="state_manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zombie.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="room.h">
@@ -231,9 +234,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sprite_util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="handeye.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="weapondrop.h">
@@ -283,6 +283,12 @@
     </ClInclude>
     <ClInclude Include="hammer.h">
       <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="handeye.h">
+      <Filter>Header Files\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="zombie.h">
+      <Filter>Header Files\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
