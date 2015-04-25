@@ -3,7 +3,7 @@ LIBS=-lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system
 LDFLAGS=-Wall -Wextra -pedantic
 CPPFLAGS=-Wall -Wextra -pedantic -I.
 CXXFLAGS=-std=c++14 -g3
-DIRECTORIES=./ animations/
+DIRECTORIES=./ animations/ weapons/
 SRCS=$(wildcard $(addsuffix *.cpp,$(DIRECTORIES)))
 OBJS=$(SRCS:.cpp=.o)
 OUTPUT=platformer
