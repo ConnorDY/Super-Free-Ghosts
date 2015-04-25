@@ -1,4 +1,5 @@
 #include "weapondrop.h"
+#include "player.h"
 
 WeaponDrop::WeaponDrop(Room &room, TextureManager &, float x, float y)
 	: Object(room,

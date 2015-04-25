@@ -10,21 +10,11 @@
 #include <memory>
 #include <map>
 
-#include "settings.h"
-#include "texture_manager.h"
-#include "sound_manager.h"
-#include "damageable_object.h"
-#include "weapon.h"
-
 class ModalAnimation;
+class Weapon;
+#include "damageable_object.h"
+#include "player_enums.h"
 
-namespace PlayerWeapon { enum Enum {
-	SPEAR, BOMB, TORCH, TRIDENT, HAMMER
-};}
-
-namespace PlayerArmour { enum Enum {
-	NAKED, SILVER, GOLD
-};}
 
 class Player : public DamageableObject
 {

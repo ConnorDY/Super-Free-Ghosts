@@ -3,9 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "texture_manager.h"
-#include "settings.h"
+
 class Room;
+class TextureManager;
 
 class Object
 {

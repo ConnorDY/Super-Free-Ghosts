@@ -1,3 +1,4 @@
+#include <iostream>
 #include "blood_particle.h"
 
 BloodParticle::BloodParticle(Room &room, float x, float y, int dir)
