@@ -10,6 +10,7 @@
 #include "weapons/super_hammer.h"
 #include "weapons/trident.h"
 #include "weapons/super_trident.h"
+#include "weapons/sword.h"
 #include "blood_particle.h"
 #include "animations/combined_animations.h"
 #include "animations/dim_animation.h"
@@ -381,6 +382,8 @@ std::function<Weapon*(Room&, float, float, int)> Player::getWeaponSpawnFunc(Play
 		case TRIDENT:
 			if (super) return &SuperTrident::spawnAdjusted;
 			else return &Trident::spawnAdjusted;
+		case SWORD:
+			return [=](Room &room, float, float, int dir) { return new Sword(room, *this, dir); };
 		default:
 			throw std::domain_error("Tried to fire a nonexistent weapon");
 	}
