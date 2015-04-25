@@ -23,6 +23,7 @@ class Chest : public DamageableObject
 		explicit Chest(Room &room, float x = -128, float y = -128);
 
 		virtual sf::FloatRect getRect() const override;
+		bool isLeaving() const;
 
 		// Actions
 		virtual void damage(int dmg) override;

@@ -39,6 +39,11 @@ sf::FloatRect Chest::getRect() const
 	return sf::FloatRect(x, y + yAdjustment, width, height);
 }
 
+bool Chest::isLeaving() const
+{
+	return leaving;
+}
+
 void Chest::damage(int)
 {
 	int hp = getHealth() - 1;

@@ -46,17 +46,20 @@ void Weapon::update(sf::Time deltaTime)
 
 	for (Object* col : allCollisions(x, y))
 	{
+		auto z = dynamic_cast<Zombie*>(col);
+		auto c = dynamic_cast<Chest*>(col);
+
 		// Destroy weapon if it hits an enemy and destroy the enemy
-		if (dynamic_cast<Zombie*>(col) != nullptr)
+		if (z != nullptr)
 		{
-			if (!((Zombie*)col)->getInCasket()) ((Zombie*)col)->damage(dmg);
+			if (!z->getInCasket()) z->damage(dmg);
 			if (destroyedOnHit)
 				kill();
 		}
 		// Destroy weapon if it hits a chest and damage the chest
-		else if (dynamic_cast<Chest*>(col) != nullptr)
+		else if (c != nullptr && !c->isLeaving())
 		{
-			((Chest*)col)->damage(dmg);
+			c->damage(dmg);
 			if (destroyedOnHit)
 				kill();
 		}
