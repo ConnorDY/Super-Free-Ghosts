@@ -14,10 +14,9 @@ class Chest : public DamageableObject
 		sf::Sprite spr;
 		std::vector<std::vector<sf::IntRect> > animations;
 		std::vector<sf::IntRect> frames;
-		TextureManager textureManager;
 		int animation;
 		float slideUpFraction, // How far it is in its slide between underground and visible
-			  frame;
+		      frame;
 		double leaveTimer;
 		bool slidingUp, leaving;
 	public:
