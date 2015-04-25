@@ -47,7 +47,8 @@ bool Object::placeFree(float xx, float yy) const
 std::vector<Object*> Object::allCollisions(float xx, float yy) const
 {
 	std::vector<Object*> result;
-	sf::FloatRect temp_rect(xx, yy, width, height);
+	auto myRect = getRect();
+	sf::FloatRect temp_rect(xx + myRect.left - x, yy + myRect.top - y, myRect.width, myRect.height);
 
 	auto const &objects = room.getObjects();
 	std::copy_if(objects.begin(), objects.end(), std::back_inserter(result), [&](Object* const &elem)
