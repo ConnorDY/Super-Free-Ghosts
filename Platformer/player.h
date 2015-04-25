@@ -42,6 +42,8 @@ class Player : public DamageableObject
 		bool canThrowWeapon() const;
 		std::unique_ptr<ModalAnimation> makeUpgradeAnimation(float xoff, float yoff, bool hasFlash, sf::Texture const &animTexture, std::vector<sf::IntRect> const &animFrames) const;
 		float fixAdjXForDirection(float adjx) const;
+		std::function<Weapon*(Room&, float, float, int)> getWeaponSpawnFunc(PlayerWeapon::Enum weapon, bool super);
+
 	public:
 		Player(Room &room, float x, float y);
 
@@ -54,11 +56,14 @@ class Player : public DamageableObject
 		// Accesors
 		int getDir() const;
 		int isAlive() const;
+		bool isCrouching() const;
 		double getFadeTime() const;
 		bool getInvincible() const;
 		bool isTransforming() const;
 		bool isFadingOut() const;
 		sf::Vector2f getPos() const;
+		sf::Vector2f getSpriteTopLeft() const;
+		float getAnimationSpeed() const;
 		virtual sf::FloatRect getRect() const override;
 
 		// Actions

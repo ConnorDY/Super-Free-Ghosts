@@ -17,8 +17,10 @@
 #include "animations/flash_animation.h"
 #include "animations/sprite_animation.h"
 
-#define PLAYER_WIDTH  17
-#define PLAYER_HEIGHT 35
+namespace {
+	int const PLAYER_WIDTH = 17, PLAYER_HEIGHT = 35;
+	float const ANIMATION_SPEED = 11.5384615385f;
+}
 
 Player::Player(Room &room, float x, float y)
 	: DamageableObject(
@@ -257,6 +259,11 @@ int Player::getDir() const
 	return dir;
 }
 
+bool Player::isCrouching() const
+{
+	return crouching;
+}
+
 int Player::isAlive() const
 {
 	return !dead;
@@ -265,6 +272,11 @@ int Player::isAlive() const
 bool Player::getInvincible() const
 {
 	return invincible;
+}
+
+float Player::getAnimationSpeed() const
+{
+	return ANIMATION_SPEED;
 }
 
 sf::Vector2f Player::getPos() const
@@ -283,6 +295,18 @@ sf::FloatRect Player::getRect() const
 	return sf::FloatRect(x, y + 2.0f, width - 2.0f, height - 2.0f);
 }
 
+sf::Vector2f Player::getSpriteTopLeft() const
+{
+	float adjx = -15.0f, adjy = -15.0f;
+
+	if (!crouching) adjx -= 2;
+	if (rolling) adjy += 7;
+
+	adjx = fixAdjXForDirection(adjx);
+
+	return {x + adjx, y + adjy};
+}
+
 
 /* Actions */
 void Player::draw(sf::RenderWindow &window)
@@ -297,15 +321,9 @@ void Player::draw(sf::RenderWindow &window)
 		rectangle.setSize(sf::Vector2f(boundingRect.width, boundingRect.height));
 		rectangle.setPosition(boundingRect.left, boundingRect.top);
 	}
-	
-	float adjx = -15.0f, adjy = -15.0f;
 
-	if (!crouching) adjx -= 2;
-	if (rolling) adjy += 7;
-
-	adjx = fixAdjXForDirection(adjx);
-
-	sprite.setPosition(x + adjx, y + adjy);
+	auto spritePos = getSpriteTopLeft();
+	sprite.setPosition(spritePos.x,spritePos.y);
 
 	if (DEBUG_MODE) window.draw(rectangle);
 	window.draw(sprite);
@@ -347,7 +365,7 @@ void Player::jump(int dir)
 	}
 }
 
-std::function<Weapon*(Room&, float, float, int)> getWeaponSpawnFunc(PlayerWeapon::Enum weapon, bool super)
+std::function<Weapon*(Room&, float, float, int)> Player::getWeaponSpawnFunc(PlayerWeapon::Enum weapon, bool super)
 {
 	using namespace PlayerWeapon;
 	switch (weapon)
@@ -613,9 +631,7 @@ void Player::updateAnimation(sf::Time deltaTime)
 	// Adjust frame
 	if (frames > 1)
 	{
-		float speed = 11.5384615385f;
-
-		frame += deltaTime.asSeconds() * speed;
+		frame += deltaTime.asSeconds() * ANIMATION_SPEED;
 		if (animation == "die" && frame > (float)(frames - 1)) frame = (float)(frames - 1);
 		else frame = fmodf(frame, (float)frames); // Loop animation if it plays past "frames"
 	}
