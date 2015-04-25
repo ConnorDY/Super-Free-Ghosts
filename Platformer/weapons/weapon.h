@@ -8,6 +8,7 @@ class Weapon : public Object {
 		sf::RectangleShape rectangle;
 		bool isOutsideView(float leeway = 30) const;
 		int dmg;
+		int animationCycle;
 		float animationFrame, animationSpeed;
 		std::vector<sf::IntRect> animationFrames;
 		bool destroyedOnHit; // whether this dies when it hits an enemy. Nothing to do with solids
