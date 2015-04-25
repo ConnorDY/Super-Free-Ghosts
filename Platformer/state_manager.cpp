@@ -19,10 +19,14 @@ void StateManager::draw(sf::RenderWindow &window)
 
 void StateManager::update(sf::RenderWindow &window)
 {
-	currentState->update(window, soundManager, inputHandler);
+	do {
+		stateChanged = false;
+		currentState->update(window, soundManager, inputHandler);
+	} while (stateChanged);
 }
 
 void StateManager::setState(std::unique_ptr<State> state)
 {
 	currentState = std::move(state);
+	stateChanged = true;
 }

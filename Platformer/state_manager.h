@@ -21,6 +21,7 @@ class StateManager
 		InputHandler inputHandler;
 		settings_t &settings;
 		std::unique_ptr<State> currentState;
+		bool stateChanged;
 	public:
 		StateManager(TextureManager &tM, SoundManager &sM, settings_t &settings);
 		~StateManager();
