@@ -1,4 +1,3 @@
-#include <assert.h>
 #include <functional>
 #include <stdexcept>
 #include "player.h"
@@ -365,8 +364,7 @@ std::function<Weapon*(Room&, float, float, int)> getWeaponSpawnFunc(PlayerWeapon
 			if (super) return &SuperTrident::spawnAdjusted;
 			else return &Trident::spawnAdjusted;
 		default:
-			assert(false);
-			abort(); // If you have NDEBUG...
+			throw std::domain_error("Tried to fire a nonexistent weapon");
 	}
 }
 
@@ -656,7 +654,7 @@ void Player::fixTexture()
 			break;
 
 		default:
-			assert(false);
+			throw std::domain_error("Tried to set texture for non-existent armour");
 			break;
 	}
 }
