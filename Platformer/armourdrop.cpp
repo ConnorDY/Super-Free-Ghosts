@@ -1,6 +1,6 @@
-#include "crystal.h"
+#include "armourdrop.h"
 
-Crystal::Crystal(Room &room, float x, float y)
+ArmourDrop::ArmourDrop(Room &room, float x, float y)
 	: Object(
 		room, x, y, 15, 15,
 		0.0f, 0.0f, false
@@ -13,17 +13,17 @@ Crystal::Crystal(Room &room, float x, float y)
 	type = PlayerArmour::GOLD;
 }
 
-Crystal::~Crystal()
+ArmourDrop::~ArmourDrop()
 {
 }
 
-void Crystal::draw(sf::RenderWindow &window)
+void ArmourDrop::draw(sf::RenderWindow &window)
 {
 	rect.setPosition(x, y);
 	window.draw(rect);
 }
 
-void Crystal::update(sf::Time)
+void ArmourDrop::update(sf::Time)
 {
 	for (auto col : allCollisions(x, y))
 	{

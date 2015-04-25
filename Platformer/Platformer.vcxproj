@@ -120,7 +120,7 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="blood_particle.cpp" />
     <ClCompile Include="chest.cpp" />
-    <ClCompile Include="crystal.cpp" />
+    <ClCompile Include="armourdrop.cpp" />
     <ClCompile Include="damageable_object.cpp" />
     <ClCompile Include="demo_state.cpp" />
     <ClCompile Include="dialogue.cpp" />
@@ -164,7 +164,7 @@
     <ClInclude Include="block.h" />
     <ClInclude Include="blood_particle.h" />
     <ClInclude Include="chest.h" />
-    <ClInclude Include="crystal.h" />
+    <ClInclude Include="armourdrop.h" />
     <ClInclude Include="damageable_object.h" />
     <ClInclude Include="demo_state.h" />
     <ClInclude Include="dialogue.h" />
