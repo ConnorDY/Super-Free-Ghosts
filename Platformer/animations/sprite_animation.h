@@ -14,6 +14,7 @@ class SpriteAnimation : public ModalAnimation
 
 		virtual bool shouldDraw(Object const* obj) override;
 
+		virtual void update(sf::Time deltaTime) override;
 		virtual void draw(sf::RenderWindow &window) override;
 };
 

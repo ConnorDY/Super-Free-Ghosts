@@ -16,15 +16,21 @@ bool SpriteAnimation::shouldDraw(Object const *obj)
 	return obj != replacedObject;
 }
 
-void SpriteAnimation::draw(sf::RenderWindow &window)
+void SpriteAnimation::update(sf::Time deltaTime)
 {
+	ModalAnimation::update(deltaTime);
+
 	auto frame = static_cast<size_t>(floor(currentFrame));
 	if (frame >= animationFrames.size())
 	{
 		m_finished = true;
 		currentFrame = fmod(currentFrame, animationFrames.size());
-		frame = static_cast<size_t>(floor(currentFrame));
 	}
+}
+
+void SpriteAnimation::draw(sf::RenderWindow &window)
+{
+	auto frame = static_cast<size_t>(floor(currentFrame));
 	sprite.setTextureRect(animationFrames[frame]);
 	window.draw(sprite);
 }
