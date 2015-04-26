@@ -40,6 +40,7 @@ void Demo_State::start()
 
 	// Enemies
 	objects.push_back(new HandEye(*this, 650, 200));
+	objects.push_back(new HandEye(*this, 800, 200));
 
 	// Create player
 	player = new Player(*this, 45.0f, 234.0f);
