@@ -32,7 +32,7 @@ Trident::~Trident()
 void Trident::draw(sf::RenderWindow &window)
 {
 	auto rect = getRect();
-	float trailAdj;
+	/*float trailAdj;
 	// Update trails
 	if (x < trailX)
 	{
@@ -57,7 +57,7 @@ void Trident::draw(sf::RenderWindow &window)
 	trail.setPosition(trailPoints.first + trailAdj, trailTop + 1);
 	trail.setSize(sf::Vector2f(trailPoints.second - trailPoints.first, 1));
 	trail.setFillColor(sf::Color(255, 255, 255, 128));
-	window.draw(trail);
+	window.draw(trail);*/
 	// Draw sprite
 	Weapon::draw(window);
 }
