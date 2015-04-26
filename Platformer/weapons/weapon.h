@@ -18,6 +18,8 @@ class Weapon : public Object {
 		std::set<Object*> alreadyAttacked;
 
 		virtual bool canDamage();
+		virtual void onHit();
+		virtual void onHitSolid();
 	public:
 		Weapon(Room &room, float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage);
 		virtual ~Weapon();
@@ -26,7 +28,6 @@ class Weapon : public Object {
 		virtual void move(sf::Time deltaTime);
 		virtual void draw(sf::RenderWindow &window) override;
 		virtual void update(sf::Time deltaTime) override;
-		virtual void onDeath() override;
 };
 
 #endif

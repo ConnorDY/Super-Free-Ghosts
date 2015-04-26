@@ -49,17 +49,29 @@ void Weapon::collisionCheck()
 	{
 		auto damageable = dynamic_cast<DamageableObject*>(col);
 
-		// Destroy weapon if it hits an enemy and destroy the enemy
-		if (damageable != nullptr)
-		{
-			auto haveNotAttacked = alreadyAttacked.insert(damageable).second;
-			if (haveNotAttacked)
-			{
-				damageable->damage(this, dmg);
-				if (destroyedOnHit)
-					kill();
-			}
-		}
+		// Check that what we collided with is damageable and not yet attacked
+		if (damageable == nullptr) continue;
+		if (!alreadyAttacked.insert(damageable).second) continue;
+
+		// Destroy weapon if it hits an enemy and damage the enemy
+		damageable->damage(this, dmg);
+		onHit();
+	}
+}
+
+void Weapon::onHit()
+{
+	room.soundManager.playSound("hit");
+	if (destroyedOnHit)
+		kill();
+}
+
+void Weapon::onHitSolid()
+{
+	if (destroyedOnSolidCollision)
+	{
+		room.soundManager.playSound("hit");
+		kill();
 	}
 }
 
@@ -78,7 +90,7 @@ void Weapon::update(sf::Time deltaTime)
 		collisionCheck();
 	}
 
-	if (destroyedOnSolidCollision && !placeFree(x, y)) kill();
+	if (!placeFree(x, y)) onHitSolid();
 	if (destroyedOnExitView && isOutsideView()) kill();
 
 	animationFrame += deltaTime.asSeconds() * animationSpeed;
@@ -107,9 +119,4 @@ void Weapon::draw(sf::RenderWindow &window)
 			rectangle.setFillColor(sf::Color(128, 0, 255, 64));
 		window.draw(rectangle);
 	}
-}
-
-void Weapon::onDeath()
-{
-	if (!isOutsideView()) room.soundManager.playSound("hit");
 }
