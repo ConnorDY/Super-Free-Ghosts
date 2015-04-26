@@ -29,7 +29,7 @@ void ArmourDrop::update(sf::Time)
 	for (auto col : allCollisions(x, y))
 	{
 		Player* player = dynamic_cast<Player*>(col);
-		if (player != nullptr)
+		if (player != nullptr && player->canUpgradeRightNow())
 		{
 			player->upgrade(type);
 			kill();

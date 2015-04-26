@@ -68,6 +68,7 @@ class Player : public DamageableObject
 		sf::Vector2f getSpriteTopLeft() const;
 		float getAnimationSpeed() const;
 		virtual sf::FloatRect getRect() const override;
+		bool canUpgradeRightNow() const;
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window) override;

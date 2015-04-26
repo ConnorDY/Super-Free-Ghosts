@@ -217,8 +217,14 @@ float Player::fixAdjXForDirection(float adjx) const
 	return adjx;
 }
 
+bool Player::canUpgradeRightNow() const
+{
+	return !hit && !dead;
+}
+
 void Player::upgrade(PlayerArmour::Enum a)
 {
+	if (dead) return;
 	invincible = true;
 	auto armourLast = armour;
 	armour = a;
