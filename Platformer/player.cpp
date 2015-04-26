@@ -336,7 +336,7 @@ void Player::draw(sf::RenderWindow &window)
 
 void Player::move(int dir)
 {
-	if (dead || hit) return;
+	if (dead || hit || midThrow) return;
 
 	if (dy == 0 && !jumped) dx = dir * moveSpeed;
 	if (dir != 0) sprite.setScale(sf::Vector2f((float)dir, 1.0f));
