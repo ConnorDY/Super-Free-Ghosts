@@ -328,7 +328,7 @@ void Player::draw(sf::RenderWindow &window)
 	}
 
 	auto spritePos = getSpriteTopLeft();
-	sprite.setPosition(spritePos.x,spritePos.y);
+	sprite.setPosition(spritePos.x, spritePos.y);
 
 	if (DEBUG_MODE) window.draw(rectangle);
 	window.draw(sprite);
