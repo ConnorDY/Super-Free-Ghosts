@@ -32,7 +32,7 @@ class DamageableObject : public Object
 		void setHealth(int h);
 
 		// Actions
-		virtual void damage(int dmg);
+		virtual void damage(Object *attacker, int dmg);
 	private:
 		int health;
 		Team::Alignment team;

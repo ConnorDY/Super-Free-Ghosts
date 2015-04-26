@@ -51,7 +51,7 @@ class Player : public DamageableObject
 
 		// Mutators
 		void setCrouching(bool c);
-		void damage(int otherX);
+		void damage(Object *other, int damage) override;
 		void upgrade(PlayerArmour::Enum a);
 		void setWeapon(PlayerWeapon::Enum a);
 		

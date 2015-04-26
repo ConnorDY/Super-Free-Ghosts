@@ -59,7 +59,7 @@ void Weapon::update(sf::Time deltaTime)
 			auto haveNotAttacked = alreadyAttacked.insert(damageable).second;
 			if (haveNotAttacked)
 			{
-				damageable->damage(dmg);
+				damageable->damage(this, dmg);
 				if (destroyedOnHit)
 					kill();
 			}

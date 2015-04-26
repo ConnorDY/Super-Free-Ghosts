@@ -26,7 +26,7 @@ class Chest : public DamageableObject
 		bool isLeaving() const;
 
 		// Actions
-		virtual void damage(int dmg) override;
+		virtual void damage(Object *other, int dmg) override;
 		virtual void update(sf::Time deltaTime) override;
 		virtual void draw(sf::RenderWindow &window) override;
 		virtual void onDoubleJumpedOver() override;

@@ -44,7 +44,7 @@ bool Chest::isLeaving() const
 	return leaving;
 }
 
-void Chest::damage(int)
+void Chest::damage(Object*, int)
 {
 	int hp = getHealth() - 1;
 	if (hp < 0) hp = 0;

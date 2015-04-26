@@ -127,28 +127,34 @@ void Player::setCrouching(bool c)
 	if (dy != 0.0f || jumped) crouching = false;
 }
 
-void Player::damage(int otherX)
+void Player::damage(Object *other, int damage)
 {
 	if (invincible || dead) return;
 
-	// Direction to knock back
-	int dir = -1;
-	if (x > otherX) dir = 1;
-	
-	// Decrease armour
-	if (armour != PlayerArmour::NAKED)
+	if (damage != 0)
 	{
-		armour = PlayerArmour::NAKED;
-		invincible = true;
-		invincibleTimer.restart();
-	}
-	else
-	{
-		setDepth(-1);
-		dead = true;
+		// Decrease armour
+		if (armour != PlayerArmour::NAKED)
+		{
+			armour = PlayerArmour::NAKED;
+			invincible = true;
+			invincibleTimer.restart();
+		}
+		else
+		{
+			setDepth(-1);
+			dead = true;
+		}
+
+		fixTexture();
 	}
 
-	fixTexture();
+	// Direction to knock back
+	int dir = -1;
+	auto otherRect = other->getRect();
+	auto myRect = getRect();
+	if (myRect.left + myRect.width / 2 > otherRect.left + otherRect.width / 2)
+		dir = 1;
 
 	// Knock player back
 	dx = dir * .1f;

@@ -24,7 +24,7 @@ void DamageableObject::setHealth(int h)
 	health = h;
 }
 
-void DamageableObject::damage(int dmg)
+void DamageableObject::damage(Object*, int dmg)
 {
 	health -= dmg;
 	if (health <= 0) kill();

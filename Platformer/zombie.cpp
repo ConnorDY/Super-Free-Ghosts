@@ -161,7 +161,7 @@ void Zombie::update(sf::Time deltaTime)
 			for (auto col : allCollisions(x, y))
 			{
 				Player* player = dynamic_cast<Player*>(col);
-				if (player != nullptr && !player->getInvincible()) player->damage((int)x);
+				if (player != nullptr && !player->getInvincible()) player->damage(this, 1);
 			}
 		}
 	}
@@ -217,7 +217,7 @@ void Zombie::onDeath()
 	room.soundManager.playSound("enemy_die");
 }
 
-void Zombie::damage(int dmg)
+void Zombie::damage(Object *other, int dmg)
 {
-	if (!inCasket) DamageableObject::damage(dmg);
+	if (!inCasket) DamageableObject::damage(other, dmg);
 }
