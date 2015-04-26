@@ -91,7 +91,7 @@ void HandEye::update(sf::Time deltaTime)
 	for (auto col : allCollisions(x, y))
 	{
 		Player* player = dynamic_cast<Player*>(col);
-		if (player != nullptr && !player->getInvincible()) player->damage(this, 1);
+		if (player != nullptr) player->damage(this, 1);
 	}
 
 	if (pulling) setAnimation("pulling");
