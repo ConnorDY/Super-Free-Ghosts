@@ -18,6 +18,11 @@
 #include "animations/flash_animation.h"
 #include "animations/sprite_animation.h"
 
+/*
+	So I don't forget:
+	Our main character's name is Alexander
+*/
+
 namespace {
 	int const PLAYER_WIDTH = 17, PLAYER_HEIGHT = 35;
 	float const ANIMATION_SPEED = 11.5384615385f;
