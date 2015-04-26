@@ -9,7 +9,6 @@ Weapon::Weapon(Room &room, float x, float y, float width, float height, float dx
 	  animationFrame(0), animationSpeed(6), destroyedOnHit(true),
 	  destroyedOnSolidCollision(true), destroyedOnExitView(true)
 {
-	rectangle.setFillColor(sf::Color(255, 0, 0, 128));
 }
 
 Weapon::~Weapon() {}
@@ -44,11 +43,8 @@ void Weapon::move(sf::Time deltaTime)
 	x += dx * mstime;
 }
 
-void Weapon::update(sf::Time deltaTime)
+void Weapon::collisionCheck()
 {
-	move(deltaTime);
-	if (del) return; // Don't do anything if our move killed us
-
 	for (Object* col : allCollisions(x, y))
 	{
 		auto damageable = dynamic_cast<DamageableObject*>(col);
@@ -64,6 +60,22 @@ void Weapon::update(sf::Time deltaTime)
 					kill();
 			}
 		}
+	}
+}
+
+bool Weapon::canDamage()
+{
+	return true;
+}
+
+void Weapon::update(sf::Time deltaTime)
+{
+	move(deltaTime);
+	if (del) return; // Don't do anything if our move killed us
+
+	if (canDamage())
+	{
+		collisionCheck();
 	}
 
 	if (destroyedOnSolidCollision && !placeFree(x, y)) kill();
@@ -89,6 +101,10 @@ void Weapon::draw(sf::RenderWindow &window)
 		auto rect = getRect();
 		rectangle.setPosition(rect.left, rect.top);
 		rectangle.setSize(sf::Vector2f(rect.width, rect.height));
+		if (canDamage())
+			rectangle.setFillColor(sf::Color(255, 0, 0, 128));
+		else
+			rectangle.setFillColor(sf::Color(128, 0, 255, 64));
 		window.draw(rectangle);
 	}
 }

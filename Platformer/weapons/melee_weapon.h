@@ -12,6 +12,8 @@ class MeleeWeapon : public Weapon
 		Player const &player;
 		sf::IntRect boundingBox;
 		int dir;
+	protected:
+		virtual bool canDamage() override;
 	public:
 		MeleeWeapon(Room &room, Player const &player, sf::IntRect boundingBox, int dir, int damage);
 		virtual ~MeleeWeapon();

@@ -5,6 +5,8 @@
 #include "object.h"
 
 class Weapon : public Object {
+	private:
+		void collisionCheck();
 	protected:
 		sf::RectangleShape rectangle;
 		bool isOutsideView(float leeway = 30) const;
@@ -14,6 +16,8 @@ class Weapon : public Object {
 		std::vector<sf::IntRect> animationFrames;
 		bool destroyedOnHit, destroyedOnSolidCollision, destroyedOnExitView;
 		std::set<Object*> alreadyAttacked;
+
+		virtual bool canDamage();
 	public:
 		Weapon(Room &room, float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage);
 		virtual ~Weapon();
