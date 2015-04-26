@@ -2,6 +2,7 @@
 #include "globals.h"
 #include "level_state.h"
 #include "obelisk.h"
+#include "enemy_explosion.h"
 
 HandEye::HandEye(LevelState &room, float x, float y)
 	: DamageableObject(
@@ -142,4 +143,5 @@ void HandEye::updateAnimation(sf::Time deltaTime)
 void HandEye::onDeath()
 {
 	room.soundManager.playSound("enemy_die");
+	room.spawn(new EnemyExplosion(room, x + 2, y + 2));
 }

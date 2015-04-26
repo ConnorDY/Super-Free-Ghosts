@@ -165,6 +165,9 @@
     <ClCompile Include="weapons\sword.cpp">
       <Filter>Source Files\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="enemy_explosion.cpp">
+      <Filter>Source Files\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h">
@@ -304,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="weapons\sword.h">
       <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy_explosion.h">
+      <Filter>Header Files\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
