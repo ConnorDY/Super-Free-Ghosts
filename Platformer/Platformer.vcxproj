@@ -142,6 +142,7 @@
     <ClCompile Include="room.cpp" />
     <ClCompile Include="sound_manager.cpp" />
     <ClCompile Include="weapons\melee_weapon.cpp" />
+    <ClCompile Include="weapons\player_weapon.cpp" />
     <ClCompile Include="weapons\spear.cpp" />
     <ClCompile Include="sprite_util.cpp" />
     <ClCompile Include="state.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="demo_state.h" />
     <ClInclude Include="dialogue.h" />
     <ClInclude Include="enemy_explosion.h" />
+    <ClInclude Include="player_armour.h" />
     <ClInclude Include="weapons\flame.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="weapons\hammer.h" />
@@ -191,6 +193,7 @@
     <ClInclude Include="settings.h" />
     <ClInclude Include="sound_manager.h" />
     <ClInclude Include="weapons\melee_weapon.h" />
+    <ClInclude Include="weapons\player_weapon.h" />
     <ClInclude Include="weapons\spear.h" />
     <ClInclude Include="sprite_util.h" />
     <ClInclude Include="state.h" />
