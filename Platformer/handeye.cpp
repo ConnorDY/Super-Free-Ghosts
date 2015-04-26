@@ -56,7 +56,7 @@ void HandEye::draw(sf::RenderWindow &window)
 		adjy = -10.0f;
 	}
 
-	if (sprite.getScale().x < 0.0f) adjx = 53 - adjx;
+	if (sprite.getScale().x < 0.0f) adjx = width - adjx;
 
 	sprite.setPosition(x + adjx, y + adjy);
 	window.draw(sprite);
