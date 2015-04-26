@@ -2,7 +2,7 @@
 #define ARMOURDROP_H
 
 #include "object.h"
-#include "player.h"
+#include "player_armour.h"
 
 class ArmourDrop : public Object
 {

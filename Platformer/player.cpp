@@ -3,15 +3,8 @@
 #include "player.h"
 #include "globals.h"
 #include "room.h"
-#include "weapons/torch.h"
-#include "weapons/spear.h"
-#include "weapons/super_spear.h"
-#include "weapons/hammer.h"
-#include "weapons/super_hammer.h"
-#include "weapons/trident.h"
-#include "weapons/super_trident.h"
-#include "weapons/sword.h"
 #include "blood_particle.h"
+#include "weapons/weapon.h"
 #include "animations/combined_animations.h"
 #include "animations/dim_animation.h"
 #include "animations/fade_in_animation.h"
@@ -371,40 +364,10 @@ void Player::jump(int dir)
 	}
 }
 
-std::function<Weapon*(Room&, float, float, int)> Player::getWeaponSpawnFunc(PlayerWeapon::Enum weapon, bool super)
-{
-	using namespace PlayerWeapon;
-	switch (weapon)
-	{
-		case SPEAR:
-			if (super) return &SuperSpear::spawnAdjusted;
-			else return &Spear::spawnAdjusted;
-		case TORCH:
-			return &Torch::spawnAdjusted;
-		case HAMMER:
-			if (super) return &SuperHammer::spawnAdjusted;
-			else return &Hammer::spawnAdjusted;
-		case TRIDENT:
-			if (super) return &SuperTrident::spawnAdjusted;
-			else return &Trident::spawnAdjusted;
-		case SWORD:
-			return [=](Room &room, float, float, int dir) { return new Sword(room, *this, dir); };
-		default:
-			throw std::domain_error("Tried to fire a nonexistent weapon");
-	}
-}
-
-Weapon* Player::createWeaponAt(float x, float y)
-{
-	// oh shit I think this is too many levels of abstraction for a c++ program :P
-	// I did this because argument spam everywhere adds more noise than signal to the code
-	return getWeaponSpawnFunc(chosenWeapon, armour == PlayerArmour::GOLD)(room, x, y, getDir());
-}
-
 bool Player::canThrowWeapon() const
 {
 	if (dead || hit || midThrow) return false;
-	if (chosenWeapon == PlayerWeapon::TRIDENT && !Trident::canThrow(room)) return false;
+	if (!PlayerWeapon::canThrow(room, chosenWeapon)) return false;
 	return true;
 }
 
@@ -431,7 +394,8 @@ void Player::throwWeapon(int dir)
 	}
 	if (dir < 0) adjx = getRect().width - adjx;
 
-	auto weapon = createWeaponAt(x + adjx, y + adjy);
+	bool isSuper = armour == PlayerArmour::GOLD;
+	auto weapon = PlayerWeapon::spawnWeapon(room, this, chosenWeapon, isSuper, x + adjx, y + adjy, getDir());
 	weapon->doNotDamage(this);
 	room.spawn(weapon);
 

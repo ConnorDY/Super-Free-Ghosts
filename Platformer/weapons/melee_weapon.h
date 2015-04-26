@@ -11,8 +11,9 @@ class MeleeWeapon : public Weapon
 	private:
 		Player const &player;
 		sf::IntRect boundingBox;
+		int dir;
 	public:
-		MeleeWeapon(Room &room, Player const &player, sf::IntRect boundingBox, int damage);
+		MeleeWeapon(Room &room, Player const &player, sf::IntRect boundingBox, int dir, int damage);
 		virtual ~MeleeWeapon();
 
 		virtual sf::FloatRect getRect() const override;

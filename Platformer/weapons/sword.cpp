@@ -8,7 +8,7 @@ namespace {
 }
 
 Sword::Sword(Room &room, Player const &player, int dir)
-	: MeleeWeapon(room, player, BBOX, 10)
+	: MeleeWeapon(room, player, BBOX, dir, 10)
 {
 	auto anim_top = player.isCrouching() ? 75 : 0;
 	for (int i = 0; i < 3; i++)

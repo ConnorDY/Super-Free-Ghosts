@@ -1,9 +1,8 @@
 #ifndef WEAPONDROP_H
 #define WEAPONDROP_H
 
-class Player;
 #include "object.h"
-#include "player_enums.h"
+#include "weapons/player_weapon.h"
 
 class WeaponDrop : public Object
 {

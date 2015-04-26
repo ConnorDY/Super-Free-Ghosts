@@ -14,7 +14,8 @@
 class ModalAnimation;
 class Weapon;
 #include "damageable_object.h"
-#include "player_enums.h"
+#include "player_armour.h"
+#include "weapons/player_weapon.h"
 
 
 class Player : public DamageableObject
