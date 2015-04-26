@@ -15,6 +15,11 @@ Weapon::Weapon(Room &room, float x, float y, float width, float height, float dx
 
 Weapon::~Weapon() {}
 
+void Weapon::doNotDamage(Object *what)
+{
+	alreadyAttacked.insert(what);
+}
+
 bool Weapon::isOutsideView(float leeway) const
 {
 	auto view = room.getView();
@@ -47,29 +52,18 @@ void Weapon::update(sf::Time deltaTime)
 
 	for (Object* col : allCollisions(x, y))
 	{
-		auto z = dynamic_cast<Zombie*>(col);
-		auto h = dynamic_cast<HandEye*>(col);
-		auto c = dynamic_cast<Chest*>(col);
+		auto damageable = dynamic_cast<DamageableObject*>(col);
 
 		// Destroy weapon if it hits an enemy and destroy the enemy
-		if (h != nullptr)
+		if (damageable != nullptr)
 		{
-			h->damage(dmg);
-			if (destroyedOnHit)
-				kill();
-		}
-		else if (z != nullptr)
-		{
-			if (!z->getInCasket()) z->damage(dmg);
-			if (destroyedOnHit)
-				kill();
-		}
-		// Destroy weapon if it hits a chest and damage the chest
-		else if (c != nullptr && !c->isLeaving())
-		{
-			c->damage(dmg);
-			if (destroyedOnHit)
-				kill();
+			auto haveNotAttacked = alreadyAttacked.insert(damageable).second;
+			if (haveNotAttacked)
+			{
+				damageable->damage(dmg);
+				if (destroyedOnHit)
+					kill();
+			}
 		}
 	}
 

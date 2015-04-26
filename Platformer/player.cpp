@@ -425,7 +425,10 @@ void Player::throwWeapon(int dir)
 		adjy += 9.0f;
 	}
 	if (dir < 0) adjx = getRect().width - adjx;
-	room.spawn(createWeaponAt(x + adjx, y + adjy));
+
+	auto weapon = createWeaponAt(x + adjx, y + adjy);
+	weapon->doNotDamage(this);
+	room.spawn(weapon);
 
 	room.soundManager.playSound("throw");
 }

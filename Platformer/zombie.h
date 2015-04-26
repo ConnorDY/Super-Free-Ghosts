@@ -36,6 +36,7 @@ class Zombie : public DamageableObject
 		virtual void draw(sf::RenderWindow &window) override;
 		virtual void update(sf::Time deltaTime) override;
 		virtual void onDeath() override;
+		virtual void damage(int dmg) override;
 };
 
 #endif

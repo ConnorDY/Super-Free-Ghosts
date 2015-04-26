@@ -216,3 +216,8 @@ void Zombie::onDeath()
 {
 	room.soundManager.playSound("enemy_die");
 }
+
+void Zombie::damage(int dmg)
+{
+	if (!inCasket) DamageableObject::damage(dmg);
+}
