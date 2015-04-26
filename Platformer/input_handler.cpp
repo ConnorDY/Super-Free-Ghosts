@@ -25,7 +25,7 @@ void InputHandler::setKey(Input id, sf::Keyboard::Key keyCode)
 /* Actions */
 bool InputHandler::checkInput(Input i, sf::Event e)
 {
-	auto input = inputs[i];
+	auto &input = inputs[i];
 	// Mouse event
 	if (input.inputType == MouseInput &&
 		input.eventType == e.type &&
@@ -39,7 +39,7 @@ bool InputHandler::checkInput(Input i, sf::Event e)
 
 bool InputHandler::checkInput(Input i)
 {
-	auto input = inputs[i];
+	auto &input = inputs[i];
 	// KeyHeld event
 	if (input.inputType == Key &&
 		sf::Keyboard::isKeyPressed(input.keyCode)) return true;
