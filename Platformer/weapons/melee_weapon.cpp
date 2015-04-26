@@ -26,7 +26,10 @@ void MeleeWeapon::move(sf::Time)
 
 sf::FloatRect MeleeWeapon::getRect() const
 {
-	return sf::FloatRect(x + boundingBox.left, y + boundingBox.top, width, height);
+	float xAdjust;
+	if (dir < 0) xAdjust = -boundingBox.width - boundingBox.left;
+	else xAdjust = boundingBox.left;
+	return sf::FloatRect(x + xAdjust, y + boundingBox.top, width, height);
 }
 
 void MeleeWeapon::update(sf::Time time)
