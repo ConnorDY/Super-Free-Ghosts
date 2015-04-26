@@ -351,6 +351,7 @@ void Player::jump(int dir)
 		if (jumps == 0)
 		{
 			if (dy != 0.0f) return;
+			if (midThrow && lastAttackWasMelee) return;
 			xJumpedFrom = x;
 		}
 		else if (jumps == 1)
@@ -383,8 +384,10 @@ void Player::throwWeapon(int dir)
 
 	midThrow = true;
 	throwTimer.restart();
+	lastAttackWasMelee = PlayerWeapon::isMeleeWeapon(chosenWeapon);
 
-	if (jumps == 0) throwTime = 0.14f;
+	if (lastAttackWasMelee) throwTime = 3.0f / getAnimationSpeed();
+	else if (jumps == 0) throwTime = 0.14f;
 	else if (jumps == 1 || armour == PlayerArmour::NAKED || flipped) throwTime = 0.13f;
 	else
 	{
