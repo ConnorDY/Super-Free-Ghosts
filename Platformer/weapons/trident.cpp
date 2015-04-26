@@ -31,8 +31,8 @@ Trident::~Trident()
 
 void Trident::draw(sf::RenderWindow &window)
 {
-	auto rect = getRect();
 	/*float trailAdj;
+	auto rect = getRect();
 	// Update trails
 	if (x < trailX)
 	{
