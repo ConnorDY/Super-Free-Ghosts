@@ -6,7 +6,8 @@
 Weapon::Weapon(Room &room, float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage)
 	: Object(room, x, y, width, height, dx, dy, false, gravity, maxFallSpeed),
 	  rectangle(sf::Vector2f(width, height)), dmg(damage), animationCycle(0),
-	  animationFrame(0), animationSpeed(6), destroyedOnHit(true)
+	  animationFrame(0), animationSpeed(6), destroyedOnHit(true),
+	  destroyedOnSolidCollision(true), destroyedOnExitView(true)
 {
 	rectangle.setFillColor(sf::Color(255, 0, 0, 128));
 }
@@ -65,8 +66,8 @@ void Weapon::update(sf::Time deltaTime)
 		}
 	}
 
-	// Destroy weapon if it hits a solid object or leaves the room
-	if (!placeFree(x, y) || isOutsideView()) kill();
+	if (destroyedOnSolidCollision && !placeFree(x, y)) kill();
+	if (destroyedOnExitView && isOutsideView()) kill();
 
 	animationFrame += deltaTime.asSeconds() * animationSpeed;
 	auto frames = animationFrames.size();

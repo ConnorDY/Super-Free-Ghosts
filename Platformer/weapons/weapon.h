@@ -12,7 +12,7 @@ class Weapon : public Object {
 		int animationCycle;
 		float animationFrame, animationSpeed;
 		std::vector<sf::IntRect> animationFrames;
-		bool destroyedOnHit; // whether this dies when it hits an enemy. Nothing to do with solids
+		bool destroyedOnHit, destroyedOnSolidCollision, destroyedOnExitView;
 		std::set<Object*> alreadyAttacked;
 	public:
 		Weapon(Room &room, float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage);

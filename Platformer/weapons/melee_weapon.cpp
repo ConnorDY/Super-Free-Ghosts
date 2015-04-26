@@ -10,6 +10,8 @@ MeleeWeapon::MeleeWeapon(Room &room, Player const &player, sf::IntRect boundingB
 	sprite.setTexture(room.textureManager.getRef("melee"));
 	animationSpeed = player.getAnimationSpeed();
 	destroyedOnHit = false;
+	destroyedOnSolidCollision = false;
+	destroyedOnExitView = false;
 }
 
 MeleeWeapon::~MeleeWeapon() {}
