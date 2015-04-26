@@ -29,6 +29,7 @@ class HandEye : public DamageableObject
 
 		// Accesors
 		virtual bool canCollideWith(const Object* obj) const override;
+		virtual sf::FloatRect getRect() const override;
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window) override;

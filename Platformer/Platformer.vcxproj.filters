@@ -159,6 +159,12 @@
     <ClCompile Include="armourdrop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="weapons\melee_weapon.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\sword.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h">
@@ -292,6 +298,12 @@
     </ClInclude>
     <ClInclude Include="armourdrop.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="weapons\melee_weapon.h">
+      <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="weapons\sword.h">
+      <Filter>Header Files\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

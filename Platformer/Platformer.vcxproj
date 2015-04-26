@@ -140,6 +140,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="room.cpp" />
     <ClCompile Include="sound_manager.cpp" />
+    <ClCompile Include="weapons\melee_weapon.cpp" />
     <ClCompile Include="weapons\spear.cpp" />
     <ClCompile Include="sprite_util.cpp" />
     <ClCompile Include="state.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="weapons\super_spear.cpp" />
     <ClCompile Include="weapons\super_trident.cpp" />
     <ClCompile Include="texture_manager.cpp" />
+    <ClCompile Include="weapons\sword.cpp" />
     <ClCompile Include="weapons\torch.cpp" />
     <ClCompile Include="weapons\trident.cpp" />
     <ClCompile Include="weapons\weapon.cpp" />
@@ -186,6 +188,7 @@
     <ClInclude Include="room.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="sound_manager.h" />
+    <ClInclude Include="weapons\melee_weapon.h" />
     <ClInclude Include="weapons\spear.h" />
     <ClInclude Include="sprite_util.h" />
     <ClInclude Include="state.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="weapons\super_spear.h" />
     <ClInclude Include="weapons\super_trident.h" />
     <ClInclude Include="texture_manager.h" />
+    <ClInclude Include="weapons\sword.h" />
     <ClInclude Include="weapons\torch.h" />
     <ClInclude Include="weapons\trident.h" />
     <ClInclude Include="weapons\weapon.h" />

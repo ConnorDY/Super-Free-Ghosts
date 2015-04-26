@@ -29,6 +29,11 @@ bool HandEye::canCollideWith(const Object* obj) const
 	return dynamic_cast<const Obelisk*>(obj) == nullptr;
 }
 
+sf::FloatRect HandEye::getRect() const
+{
+	return sf::FloatRect(x + 11, y + 2, width - 22, height - 2);
+}
+
 
 /* Actions */
 void HandEye::draw(sf::RenderWindow &window)
@@ -61,7 +66,28 @@ void HandEye::update(sf::Time deltaTime)
 	Object::update(deltaTime);
 
 	auto plyr = static_cast<LevelState&>(room).getPlayer();
-	if (!awake && !waking && plyr != nullptr && abs(x - plyr->getPos().x) <= 100) waking = true;
+	if (plyr != nullptr)
+	{
+		sf::Vector2f ppos = plyr->getPos();
+		float dist = x + 26 - ppos.x;
+
+		if (!awake && !waking && abs(dist) <= 100) waking = true;
+
+		if (pulling)
+		{
+			float maxPull = deltaTime.asMilliseconds() / 16.2;
+			float vel = (1.5 / dist) * deltaTime.asMilliseconds();
+
+			if (abs(vel) > maxPull) vel = 0;
+			if (plyr->placeFree(ppos.x + vel, ppos.y)) plyr->setX(ppos.x + vel);
+		}
+	}
+
+	for (auto col : allCollisions(x, y))
+	{
+		Player* player = dynamic_cast<Player*>(col);
+		if (player != nullptr && !player->getInvincible()) player->damage((int)x);
+	}
 
 	if (pulling) setAnimation("pulling");
 	else if (awake) setAnimation("pull");

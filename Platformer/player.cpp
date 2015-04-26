@@ -36,7 +36,7 @@ Player::Player(Room &room, float x, float y)
 	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(PlayerArmour::SILVER),
 	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true),
-	  chosenWeapon(PlayerWeapon::SWORD)
+	  chosenWeapon(PlayerWeapon::HAMMER)
 {
 	// Sprite
 	sprite.setTexture(room.textureManager.getRef(texture));
@@ -160,7 +160,7 @@ void Player::damage(int otherX)
 	jumps = 3;
 
 	// Flip Player
-	sprite.setScale(sf::Vector2f(sprite.getScale().x * -1, 1.0f));
+	sprite.setScale(sf::Vector2f(dir, 1.0f));
 }
 
 std::unique_ptr<ModalAnimation> Player::makeUpgradeAnimation(float xoff, float yoff, bool hasFlash, sf::Texture const &animTexture, std::vector<sf::IntRect> const &animFrames) const
