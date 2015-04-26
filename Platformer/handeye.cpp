@@ -143,5 +143,5 @@ void HandEye::updateAnimation(sf::Time deltaTime)
 void HandEye::onDeath()
 {
 	room.soundManager.playSound("enemy_die");
-	room.spawn(new EnemyExplosion(room, x + 2, y + 2));
+	room.spawn(new EnemyExplosion(room, x + 4, y + 4));
 }

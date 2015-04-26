@@ -5,9 +5,10 @@ EnemyExplosion::EnemyExplosion(Room &room, float x, float y)
 	: Object(
 		room, x, y, width, height
 	),
-	frame(0)
+	animation("1"), frame(0)
 {
-	for (unsigned int i = 0; i < 11; i++) animation.emplace_back(i * 33, 33, 33, 33);
+	for (unsigned int i = 0; i < 8; i++) animations["1"].emplace_back(i * 33, 0, 33, 33);
+	for (unsigned int i = 0; i < 11; i++) animations["2"].emplace_back(i * 33, 33, 33, 33);
 
 	sprite.setTexture(room.textureManager.getRef("enemydie"));
 	setDepth(-3);
@@ -22,7 +23,8 @@ void EnemyExplosion::draw(sf::RenderWindow &window)
 
 void EnemyExplosion::update(sf::Time deltaTime)
 {
-	int frames = animation.size();
+	auto anim = animations.at(animation);
+	int frames = anim.size();
 	frame += deltaTime.asSeconds() * 12.;
 
 	if (frame >= frames)
@@ -31,5 +33,5 @@ void EnemyExplosion::update(sf::Time deltaTime)
 		kill();
 	}
 
-	sprite.setTextureRect(animation[(int)frame]);
+	sprite.setTextureRect(anim[(int)frame]);
 }

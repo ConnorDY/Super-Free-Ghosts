@@ -7,7 +7,8 @@ class EnemyExplosion : public Object
 {
 	private:
 		sf::Sprite sprite;
-		std::vector<sf::IntRect> animation;
+		std::map<std::string, std::vector<sf::IntRect> > animations;
+		std::string animation;
 		double frame;
 	public:
 		EnemyExplosion(Room &room, float x, float y);
