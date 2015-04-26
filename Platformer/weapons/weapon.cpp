@@ -1,8 +1,6 @@
 #include "weapon.h"
+#include "damageable_object.h"
 #include "globals.h"
-#include "zombie.h"
-#include "handeye.h"
-#include "chest.h"
 #include "room.h"
 
 Weapon::Weapon(Room &room, float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage)
