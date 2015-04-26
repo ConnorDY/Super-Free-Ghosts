@@ -435,7 +435,7 @@ std::pair<int, int> Player::getJumpPoints() const
 void Player::checkDoubleJumpedObjects()
 {
 	// Must have double-jumped
-	if (jumps < 2) return;
+	if (jumps < 2 || hit) return;
 
 	auto mybb = getRect();
 	auto jumpLR = getJumpPoints();
