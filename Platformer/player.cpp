@@ -77,6 +77,14 @@ Player::Player(Room &room, float x, float y)
 	animations["throwc"].emplace_back(50, 150, 50, 50);
 	animations["throwc"].emplace_back(100, 150, 50, 50);
 
+	animations["melee"].emplace_back(200, 100, 50, 50);
+	animations["melee"].emplace_back(250, 100, 50, 50);
+	animations["melee"].emplace_back(250, 100, 50, 50);
+
+	animations["melee-crouch"].emplace_back(200, 150, 50, 50);
+	animations["melee-crouch"].emplace_back(250, 150, 50, 50);
+	animations["melee-crouch"].emplace_back(250, 150, 50, 50);
+
 	animations["hit"].emplace_back(250, 0, 50, 50);
 
 	animations["roll"].emplace_back(150, 250, 50, 50);
@@ -553,12 +561,19 @@ void Player::update(sf::Time deltaTime)
 	else if (rolling) setAnimation("roll");
 	else if (crouching)
 	{
-		if (midThrow) setAnimation("throwc");
+		if (midThrow) {
+			if (lastAttackWasMelee)
+				setAnimation("melee-crouch");
+			else
+				setAnimation("throwc");
+		}
 		else setAnimation("crouch");
 	}
 	else if (midThrow)
 	{
-		if (jumps < 2)
+		if (lastAttackWasMelee)
+			setAnimation("melee");
+		else if (jumps < 2)
 		{
 			if (animation == "throwi") throwTime = 0.13f;
 			setAnimation("throw");
