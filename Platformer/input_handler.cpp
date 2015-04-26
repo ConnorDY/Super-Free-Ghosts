@@ -2,82 +2,46 @@
 
 InputHandler::InputHandler()
 {
-	// Left
-	InputKeys *key = new InputKeys();
-	key->inputType = Key;
-	key->eventType = sf::Event::KeyPressed;
-	key->keyCode = sf::Keyboard::Left;
-	Inputs[Input::Left] = key;
+	setKey(Input::Left, sf::Keyboard::Left);
+	setKey(Input::Right, sf::Keyboard::Right);
+	setKey(Input::Down, sf::Keyboard::Down);
+	setKey(Input::Up, sf::Keyboard::Up);
+	setKey(Input::Action, sf::Keyboard::Z);
+	setKey(Input::Dialogue, sf::Keyboard::X);
+	setKey(Input::Start, sf::Keyboard::Return);
+	setKey(Input::Exit, sf::Keyboard::Escape);
+}
 
-	// Right
-	key = new InputKeys();
-	key->inputType = Key;
-	key->eventType = sf::Event::KeyPressed;
-	key->keyCode = sf::Keyboard::Right;
-	Inputs[Input::Right] = key;
 
-	// Down
-	key = new InputKeys();
-	key->inputType = Key;
-	key->eventType = sf::Event::KeyPressed;
-	key->keyCode = sf::Keyboard::Down;
-	Inputs[Input::Down] = key;
-
-	// Jump/Up
-	key = new InputKeys();
-	key->inputType = Key;
-	key->eventType = sf::Event::KeyPressed;
-	key->keyCode = sf::Keyboard::Up;
-	Inputs[Input::Up] = key;
-
-	// Throw Weapon
-	key = new InputKeys();
-	key->inputType = Key;
-	key->eventType = sf::Event::KeyPressed;
-	key->keyCode = sf::Keyboard::Z;
-	Inputs[Input::Action] = key;
-
-	// Advance Dialogue
-	key = new InputKeys();
-	key->inputType = Key;
-	key->eventType = sf::Event::KeyPressed;
-	key->keyCode = sf::Keyboard::X;
-	Inputs[Input::Dialogue] = key;
-
-	// Start
-	key = new InputKeys();
-	key->inputType = Key;
-	key->eventType = sf::Event::KeyPressed;
-	key->keyCode = sf::Keyboard::Return;
-	Inputs[Input::Start] = key;
-
-	// Exit
-	key = new InputKeys();
-	key->inputType = Key;
-	key->eventType = sf::Event::KeyPressed;
-	key->keyCode = sf::Keyboard::Escape;
-	Inputs[Input::Exit] = key;
+void InputHandler::setKey(Input id, sf::Keyboard::Key keyCode)
+{
+	auto &key = inputs[id];
+	key.inputType = Key;
+	key.eventType = sf::Event::KeyPressed;
+	key.keyCode = keyCode;
 }
 
 
 /* Actions */
 bool InputHandler::checkInput(Input i, sf::Event e)
 {
+	auto input = inputs[i];
 	// Mouse event
-	if (Inputs[i]->inputType == MouseInput &&
-		Inputs[i]->eventType == e.type &&
-		Inputs[i]->mouseButton == e.mouseButton.button) return true;
+	if (input.inputType == MouseInput &&
+		input.eventType == e.type &&
+		input.mouseButton == e.mouseButton.button) return true;
 	// KeyPress event
-	else if (Inputs[i]->inputType == Key &&
-		Inputs[i]->eventType == e.type &&
-		Inputs[i]->keyCode == e.key.code) return true;
+	else if (input.inputType == Key &&
+		input.eventType == e.type &&
+		input.keyCode == e.key.code) return true;
 	else return false;
 }
 
 bool InputHandler::checkInput(Input i)
 {
+	auto input = inputs[i];
 	// KeyHeld event
-	if (Inputs[i]->inputType == Key &&
-		sf::Keyboard::isKeyPressed(Inputs[i]->keyCode)) return true;
+	if (input.inputType == Key &&
+		sf::Keyboard::isKeyPressed(input.keyCode)) return true;
 	else return false;
 }

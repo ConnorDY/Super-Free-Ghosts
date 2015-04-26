@@ -34,7 +34,9 @@ class InputHandler
 			sf::Mouse::Button mouseButton;
 		};
 
-		InputKeys *Inputs[8];
+		InputKeys inputs[8];
+
+		void setKey(Input id, sf::Keyboard::Key keyCode);
 };
 
 #endif
