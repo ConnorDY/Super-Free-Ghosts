@@ -1,4 +1,5 @@
 #include "armourdrop.h"
+#include "player.h"
 
 ArmourDrop::ArmourDrop(Room &room, float x, float y)
 	: Object(
