@@ -1,6 +1,7 @@
 #include "weapon.h"
 #include "globals.h"
 #include "zombie.h"
+#include "handeye.h"
 #include "chest.h"
 #include "room.h"
 
@@ -47,10 +48,17 @@ void Weapon::update(sf::Time deltaTime)
 	for (Object* col : allCollisions(x, y))
 	{
 		auto z = dynamic_cast<Zombie*>(col);
+		auto h = dynamic_cast<HandEye*>(col);
 		auto c = dynamic_cast<Chest*>(col);
 
 		// Destroy weapon if it hits an enemy and destroy the enemy
-		if (z != nullptr)
+		if (h != nullptr)
+		{
+			h->damage(dmg);
+			if (destroyedOnHit)
+				kill();
+		}
+		else if (z != nullptr)
 		{
 			if (!z->getInCasket()) z->damage(dmg);
 			if (destroyedOnHit)

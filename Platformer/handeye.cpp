@@ -19,7 +19,7 @@ HandEye::HandEye(LevelState &room, float x, float y)
 
 	sprite.setTexture(room.textureManager.getRef("handeye"));
 	setDepth(-2);
-	setHealth(8);
+	setHealth(30);
 }
 
 
@@ -71,7 +71,7 @@ void HandEye::update(sf::Time deltaTime)
 		sf::Vector2f ppos = plyr->getPos();
 		float dist = x + 26 - ppos.x;
 
-		if (!awake && !waking && abs(dist) <= 100) waking = true;
+		if (!awake && !waking && abs(dist) <= 200.) waking = true;
 
 		if (pulling)
 		{
@@ -114,7 +114,7 @@ void HandEye::updateAnimation(sf::Time deltaTime)
 	// Adjust frame
 	if (frames > 1)
 	{
-		double speed = 10.;
+		double speed = 12.;
 
 		if (awake || waking) frame += deltaTime.asSeconds() * speed;
 
