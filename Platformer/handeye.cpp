@@ -56,7 +56,7 @@ void HandEye::draw(sf::RenderWindow &window)
 		adjy = -10.0f;
 	}
 
-	if (sprite.getScale().x < 0.0f) adjx = boundingRect.width - adjx;
+	if (sprite.getScale().x < 0.0f) adjx = 53 - adjx;
 
 	sprite.setPosition(x + adjx, y + adjy);
 	window.draw(sprite);
@@ -71,6 +71,10 @@ void HandEye::update(sf::Time deltaTime)
 	{
 		sf::Vector2f ppos = plyr->getPos();
 		float dist = x + 26 - ppos.x;
+
+		int dir = 1;
+		if (dist < 0) dir = -1;
+		sprite.setScale(sf::Vector2f(dir, 1));
 
 		if (!awake && !waking && abs(dist) <= 200.) waking = true;
 
