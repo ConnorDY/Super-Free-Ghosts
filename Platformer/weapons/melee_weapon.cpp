@@ -2,6 +2,12 @@
 #include "player.h"
 #include "room.h"
 
+namespace
+{
+	float const SPRITE_OFFSET_X = -25.0f;
+	float const SPRITE_OFFSET_Y = -25.0f;
+}
+
 MeleeWeapon::MeleeWeapon(Room &room, Player const &player, sf::IntRect boundingBox, int dir, int damage)
 	: Weapon(room, 0, 0, boundingBox.width, boundingBox.height, 0, 0, 0, 0, damage),
 	  player(player), boundingBox(boundingBox), dir(dir)
@@ -20,8 +26,8 @@ MeleeWeapon::~MeleeWeapon() {}
 void MeleeWeapon::move(sf::Time)
 {
 	auto spriteTopLeft = player.getSpriteTopLeft();
-	x = spriteTopLeft.x - 25.0f * dir;
-	y = spriteTopLeft.y - 25.0f;
+	x = spriteTopLeft.x + SPRITE_OFFSET_X * dir;
+	y = spriteTopLeft.y + SPRITE_OFFSET_Y;
 }
 
 sf::FloatRect MeleeWeapon::getRect() const
