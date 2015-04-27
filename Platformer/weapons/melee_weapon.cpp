@@ -40,5 +40,6 @@ bool MeleeWeapon::canDamage()
 void MeleeWeapon::update(sf::Time time)
 {
 	Weapon::update(time);
-	if (animationCycle > 0) kill();
+	if (player.isKnockedBack()) kill(); // Interrupt if player gets hurt
+	if (animationCycle > 0) kill();     // Destroy if animation is complete
 }

@@ -222,6 +222,11 @@ bool Player::canUpgradeRightNow() const
 	return !hit && !dead;
 }
 
+bool Player::isKnockedBack() const
+{
+	return hit;
+}
+
 void Player::upgrade(PlayerArmour::Enum a)
 {
 	if (dead) return;

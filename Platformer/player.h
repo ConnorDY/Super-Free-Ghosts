@@ -69,6 +69,7 @@ class Player : public DamageableObject
 		float getAnimationSpeed() const;
 		virtual sf::FloatRect getRect() const override;
 		bool canUpgradeRightNow() const;
+		bool isKnockedBack() const;
 
 		// Actions
 		virtual void draw(sf::RenderWindow &window) override;
