@@ -303,6 +303,11 @@ float Player::getAnimationSpeed() const
 	return ANIMATION_SPEED;
 }
 
+float Player::getDY() const
+{
+	return dy;
+}
+
 sf::Vector2f Player::getPos() const
 {
 	return sf::Vector2f(x, y);
