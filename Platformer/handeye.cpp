@@ -69,8 +69,10 @@ void HandEye::update(sf::Time deltaTime)
 	auto plyr = static_cast<LevelState&>(room).getPlayer();
 	if (plyr != nullptr)
 	{
-		sf::Vector2f ppos = plyr->getPos();
-		float dist = x + 26 - ppos.x;
+		auto myRect = getRect(), playerRect = plyr->getRect();
+		auto myCentre = myRect.left + myRect.width / 2;
+		auto playerCentre = playerRect.left + playerRect.width / 2;
+		float dist = myCentre - playerCentre;
 
 		int dir = 1;
 		if (dist < 0) dir = -1;
