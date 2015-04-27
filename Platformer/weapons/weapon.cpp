@@ -3,11 +3,20 @@
 #include "globals.h"
 #include "room.h"
 
+namespace
+{
+	// How many pixels it must travel before it is able to do collision checks
+	// This works around the fact that we spawn weapons slightly behind the
+	// player's hitbox.
+	float const MIN_TRAVEL_DISTANCE = 9.0f;
+}
+
 Weapon::Weapon(Room &room, float x, float y, float width, float height, float dx, float dy, float gravity, float maxFallSpeed, int damage)
 	: Object(room, x, y, width, height, dx, dy, false, gravity, maxFallSpeed),
 	  rectangle(sf::Vector2f(width, height)), dmg(damage), animationCycle(0),
 	  animationFrame(0), animationSpeed(6), destroyedOnHit(true),
-	  destroyedOnSolidCollision(true), destroyedOnExitView(true)
+	  destroyedOnSolidCollision(true), destroyedOnExitView(true),
+	  initialX(x)
 {
 }
 
@@ -75,9 +84,10 @@ void Weapon::onHitSolid()
 	}
 }
 
-bool Weapon::canDamage()
+bool Weapon::isCollidable()
 {
-	return true;
+	// See comment above MIN_TRAVEL_DISTANCE
+	return fabs(x - initialX) >= MIN_TRAVEL_DISTANCE;
 }
 
 void Weapon::update(sf::Time deltaTime)
@@ -85,13 +95,13 @@ void Weapon::update(sf::Time deltaTime)
 	move(deltaTime);
 	if (del) return; // Don't do anything if our move killed us
 
-	if (canDamage())
+	if (isCollidable())
 	{
 		collisionCheck();
-	}
 
-	if (!placeFree(x, y)) onHitSolid();
-	if (destroyedOnExitView && isOutsideView()) kill();
+		if (!placeFree(x, y)) onHitSolid();
+		if (destroyedOnExitView && isOutsideView()) kill();
+	}
 
 	animationFrame += deltaTime.asSeconds() * animationSpeed;
 	auto frames = animationFrames.size();
@@ -113,7 +123,7 @@ void Weapon::draw(sf::RenderWindow &window)
 		auto rect = getRect();
 		rectangle.setPosition(rect.left, rect.top);
 		rectangle.setSize(sf::Vector2f(rect.width, rect.height));
-		if (canDamage())
+		if (isCollidable())
 			rectangle.setFillColor(sf::Color(255, 0, 0, 128));
 		else
 			rectangle.setFillColor(sf::Color(128, 0, 255, 64));

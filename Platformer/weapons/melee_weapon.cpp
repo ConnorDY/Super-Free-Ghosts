@@ -38,7 +38,7 @@ sf::FloatRect MeleeWeapon::getRect() const
 	return sf::FloatRect(x + xAdjust, y + boundingBox.top, width, height);
 }
 
-bool MeleeWeapon::canDamage()
+bool MeleeWeapon::isCollidable()
 {
 	return floor(animationFrame) == 1.0f;
 }

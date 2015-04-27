@@ -16,8 +16,9 @@ class Weapon : public Object {
 		std::vector<sf::IntRect> animationFrames;
 		bool destroyedOnHit, destroyedOnSolidCollision, destroyedOnExitView;
 		std::set<Object*> alreadyAttacked;
+		float initialX;
 
-		virtual bool canDamage();
+		virtual bool isCollidable();
 		virtual void onHit();
 		virtual void onHitSolid();
 	public:
