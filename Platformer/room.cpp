@@ -33,7 +33,7 @@ void Room::ensureHeightmapWidth(size_t width)
 {
 	size_t oldsize = heightmap.size();
 	if (oldsize < width)
-		heightmap.insert(heightmap.end(), width - oldsize, 0);
+		heightmap.resize(width);
 }
 
 void Room::fillHeightMap(size_t xleft, size_t width, int height)
