@@ -42,6 +42,8 @@ class Object
 		virtual void kill();
 		virtual void onDeath();
 		virtual void onDoubleJumpedOver();
+		void applyGravityOnce(sf::Time deltaTime);
+		void applyVelocityOnce(sf::Time deltaTime, float velX, float velY);
 		void pushOutOfHeightmap();
 		void pushOutOfSolids();
 	protected:

@@ -84,18 +84,29 @@ void Object::setDepth(int d)
 /* Actions */
 void Object::update(sf::Time deltaTime)
 {
-	double mstime = deltaTime.asMicroseconds() / 1000.0;
+	applyGravityOnce(deltaTime);
+	applyVelocityOnce(deltaTime, dx, dy);
+	pushOutOfHeightmap();
+}
 
-	// Gravity
-	if (placeFree(x, y + 1)) dy += gravity * (float)mstime;
+void Object::applyGravityOnce(sf::Time deltaTime)
+{
+	float mstime = deltaTime.asMicroseconds() / 1000.0f;
+
+	if (placeFree(x, y + 1)) dy += gravity * mstime;
 	else if (dy > 0.0f) dy = 0.0f;
 
 	if (dy > maxFallSpeed) dy = maxFallSpeed;
+}
+
+void Object::applyVelocityOnce(sf::Time deltaTime, float velX, float velY)
+{
+	float mstime = deltaTime.asMicroseconds() / 1000.0f;
 
 	// Update Y
-	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
+	for (float i = fabs(velY) * mstime; i > 0; i--)
 	{
-		float j = copysign(i, dy);
+		float j = copysign(i, velY);
 		if (placeFree(x, y + j))
 		{
 			y += j;
@@ -103,37 +114,34 @@ void Object::update(sf::Time deltaTime)
 		}
 	}
 
+	bool shouldSlopeWalk = velY == 0 && !placeFree(x, y + 1);
 	// Update X
-	for (float i = fabs(dx) * (float)mstime; i > 0; i--)
+	for (float i = fabs(velX) * mstime; i > 0; i--)
 	{
-		float j = copysign(i, dx);
-		bool brk = false;
+		float xAdjust = copysign(i, velX);
 
-		float ks = 0;
-		float ke = 0;
+		// We search for a y-adjustment, these are our bounds
+		float yAdjustStart = 0;
+		float yAdjustEnd = 0;
 
-		if (dy == 0 && maxFallSpeed > 0)
+		if (shouldSlopeWalk)
 		{
-			ks = -4;
-			ke = 4;
+			yAdjustStart = round(maxFallSpeed * mstime);
+			yAdjustEnd = -4;
 		}
 
-		for (float k = ks; k <= ke; k++)
+		// Find an appropriate y-adjustment for slope walking
+		for (float yAdjust = yAdjustStart; yAdjust >= yAdjustEnd; yAdjust--)
 		{
-			if (placeFree(x + j, y - k))
+			if (placeFree(x + xAdjust, y + yAdjust))
 			{
-				x += j;
-				y -= k;
+				x += xAdjust;
+				y += yAdjust;
 
-				brk = true;
-				break;
+				return;
 			}
 		}
-
-		if (brk) break;
 	}
-
-	pushOutOfHeightmap();
 }
 
 void Object::pushOutOfHeightmap()

@@ -80,41 +80,11 @@ void HandEye::update(sf::Time deltaTime)
 
 		if (pulling)
 		{
-			float maxPull = deltaTime.asMilliseconds() / 16.2;
-			float vel = (1.5 / dist) * deltaTime.asMilliseconds();
+			float maxPull = 1 / 16.2;
+			float vel = 1.5 / dist;
 
-			float pdy = plyr->getDY();
-
-			if (std::abs(vel) > maxPull) vel = 0;
-
-			for (float i = fabs(vel); i > 0; i--)
-			{
-				float j = copysign(i, vel);
-				bool brk = false;
-
-				float ks = 0;
-				float ke = 0;
-
-				if (pdy == 0)
-				{
-					ks = -4;
-					ke = 4;
-				}
-
-				for (float k = ks; k <= ke; k++)
-				{
-					if (plyr->placeFree(ppos.x + j, ppos.y - k))
-					{
-						plyr->setX(ppos.x + j);
-						plyr->setY(ppos.y - k);
-
-						brk = true;
-						break;
-					}
-				}
-
-				if (brk) break;
-			}
+			if (std::abs(vel) < maxPull)
+				plyr->applyVelocityOnce(deltaTime, vel, 0);
 		}
 	}
 

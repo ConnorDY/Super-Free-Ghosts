@@ -462,31 +462,19 @@ void Player::checkDoubleJumpedObjects()
 
 void Player::update(sf::Time deltaTime)
 {
-	double mstime = deltaTime.asMicroseconds() / 1000.0;
-
 	if (DEBUG_MODE)
 	{
-		total_time += mstime;
+		total_time += deltaTime.asSeconds();
 		printf("Total Time: %4.3f\n", (float)total_time);
 	}
 
 	auto& soundManager = room.soundManager;
 
-	// Gravity
-	if (placeFree(x, y + 1))
+	auto oldDy = dy;
+	applyGravityOnce(deltaTime);
+	if (dy == 0 && oldDy > 0)
 	{
-		dy += gravity * (float)mstime;
-
-		if (!rolling && armour == PlayerArmour::NAKED && jumps == 2 && dx != 0 && dy > 0 && placeFree(x, y + 1) && !placeFree(x, y + 6))
-		{
-			rolling = true;
-			rollTimer.restart();
-		}
-	}
-	else if (dy > 0.0f)
-	{
-		dy = 0;
-
+		// Landed on the ground
 		if (jumped)
 		{
 			if (hit)
@@ -503,56 +491,26 @@ void Player::update(sf::Time deltaTime)
 		if (dead) dx = 0;
 		else soundManager.playSound("land");
 	}
-	else if (dy < 0 && !placeFree(x, y - 1))
+	else
 	{
-		dy = 0; // Hitting head on the ceiling
-		// TODO play sound?
-	}
-
-	// Update Y
-	for (float i = fabs(dy) * (float)mstime; i > 0; i--)
-	{
-		float j = copysign(i, dy);
-		if (placeFree(x, y + j))
+		if (!rolling && armour == PlayerArmour::NAKED && jumps == 2 && dx != 0 && dy > 0 && placeFree(x, y + 1) && !placeFree(x, y + 6))
 		{
-			y += j;
-			break;
+			rolling = true;
+			rollTimer.restart();
+		}
+
+		if (dy < 0 && !placeFree(x, y - 1))
+		{
+			dy = 0; // Hitting head on the ceiling
+			// TODO play sound?
 		}
 	}
 
-	// Update X
-	if ((dy == 0.0f && !midThrow && !crouching) || jumped)
-	{
-		for (float i = fabs(dx) * (float)mstime; i > 0; i--)
-		{
-			float j = copysign(i, dx);
-			bool brk = false;
+	auto actual_dx = dx;
+	if (!jumped && (dy != 0.0f || midThrow || crouching))
+		actual_dx = 0.0f; // Disallow manual x movement if crouching/throwing/falling
 
-			float ks = 0;
-			float ke = 0;
-
-			if (dy == 0)
-			{
-				ks = -4;
-				ke = 4;
-			}
-
-			for (float k = ks; k <= ke; k++)
-			{
-				if (placeFree(x + j, y - k))
-				{
-					x += j;
-					y -= k;
-
-					brk = true;
-					break;
-				}
-			}
-
-			if (brk) break;
-		}
-	}
-
+	applyVelocityOnce(deltaTime, actual_dx, dy);
 	pushOutOfSolids();
 
 	// Jump, Throw, Roll, and Invicibility Timers
