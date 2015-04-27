@@ -76,7 +76,7 @@ void HandEye::update(sf::Time deltaTime)
 		if (dist < 0) dir = -1;
 		sprite.setScale(sf::Vector2f(dir, 1));
 
-		if (!awake && !waking && abs(dist) <= 200.) waking = true;
+		if (!awake && !waking && std::abs(dist) <= 200.) waking = true;
 
 		if (pulling)
 		{
@@ -85,7 +85,7 @@ void HandEye::update(sf::Time deltaTime)
 
 			float pdy = plyr->getDY();
 
-			if (abs(vel) > maxPull) vel = 0;
+			if (std::abs(vel) > maxPull) vel = 0;
 
 			for (float i = fabs(vel); i > 0; i--)
 			{
