@@ -64,10 +64,8 @@ class Player : public DamageableObject
 		bool getInvincible() const;
 		bool isTransforming() const;
 		bool isFadingOut() const;
-		sf::Vector2f getPos() const;
 		sf::Vector2f getSpriteTopLeft() const;
 		float getAnimationSpeed() const;
-		float getDY() const;
 		virtual sf::FloatRect getRect() const override;
 		bool canUpgradeRightNow() const;
 		bool isKnockedBack() const;

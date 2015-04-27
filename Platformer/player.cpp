@@ -303,16 +303,6 @@ float Player::getAnimationSpeed() const
 	return ANIMATION_SPEED;
 }
 
-float Player::getDY() const
-{
-	return dy;
-}
-
-sf::Vector2f Player::getPos() const
-{
-	return sf::Vector2f(x, y);
-}
-
 sf::FloatRect Player::getRect() const
 {
 	if (crouching) return sf::FloatRect(x, y + 15.0f, width, height - 15.0f);
