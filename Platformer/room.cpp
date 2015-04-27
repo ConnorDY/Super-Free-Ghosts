@@ -49,7 +49,8 @@ void Room::createSlope(size_t xleft, size_t width, int heightS, int heightE)
 {
 	assert(width > 0 && width < 0x1000000);
 	ensureHeightmapWidth(xleft + width);
-	double sin_phase = 0, height = abs(heightE - heightS), adjust = 0;
+	double sin_phase = 0;
+	int height = abs(heightE - heightS), adjust = 0;
 
 	if (heightS > heightE)
 	{
@@ -59,7 +60,7 @@ void Room::createSlope(size_t xleft, size_t width, int heightS, int heightE)
 
 	for (size_t i = 0; i < width; i++)
 	{
-		heightmap[xleft + i] = heightS + (int)(height * sin(sin_phase + ((double)i / (double)width) * (M_PI / 2.))) - (int)adjust;
+		heightmap[xleft + i] = heightS + (int)(height * sin(sin_phase + ((double)i / (double)width) * (M_PI / 2.))) - adjust;
 	}
 }
 
