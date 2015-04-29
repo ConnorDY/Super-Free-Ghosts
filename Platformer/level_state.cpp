@@ -87,14 +87,22 @@ void LevelState::update(sf::RenderWindow &window, SoundManager &soundManager, In
 			return;
 		}
 
-		if (inputHandler.checkInput(InputHandler::Input::Up, event))
-			player->jump(moveH); // Jumping
-		if (inputHandler.checkInput(InputHandler::Input::Action, event))
-			player->throwWeapon(player->getDir()); // Throw Weapon
+		// Only allow player-related input if we do not have an animation playing
+		if (!isAnimationInProgress())
+		{
+			if (inputHandler.checkInput(InputHandler::Input::Up, event))
+				player->jump(moveH); // Jumping
+			if (inputHandler.checkInput(InputHandler::Input::Action, event))
+				player->throwWeapon(player->getDir()); // Throw Weapon
+		}
 	}
 
-	player->move(moveH);
-	player->setCrouching(crouching);
+	// As above, do not let the player do things if an animation is in progress
+	if (!isAnimationInProgress())
+	{
+		player->move(moveH);
+		player->setCrouching(crouching);
+	}
 
 	if (dialogue != nullptr)
 	{
