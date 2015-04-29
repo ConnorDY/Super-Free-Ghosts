@@ -108,27 +108,32 @@ void Zombie::update(sf::Time deltaTime)
 	{
 		double mstime = deltaTime.asMicroseconds() / 1000.0;
 		if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.25;
-		if (!placeFree(x, y + 1) && dx == 0) dx = -moveSpeed; // Hit the ground
+		if (dx == 0 && !placeFree(x, y + 1)) dx = -moveSpeed; // Hit the ground
 
 		Object::update(deltaTime);
 
-		float adj = ZOMBIE_WIDTH;
-		if (dx < 0) adj *= -1;
-
-		bool turn = true;
-
-		for (int i = -4; i < 4; i++)
+		if (dx != 0)
 		{
-			if (placeFree((float)(x + dx * mstime), y + i)) turn = false;
-		}
+			if (std::copysign(dx, getDir()) != dx) throw std::logic_error("Zombie direction is wrong");
+			if (inCasket) throw std::logic_error("Zombie in casket has an x velocity");
+			float adj = ZOMBIE_WIDTH;
+			if (dx < 0) adj *= -1;
 
-		if (!inCasket && !placeFree(x, y + 3) && (turn || (x <= 0.0f && dx < 0) || floor(((double)rand() / RAND_MAX) * (8000. / mstime)) == 1 || (placeFree(x + adj, y + 17) && !placeFree(x, y + 1))))
-		{
-			// Turn around
-			dx = -dx;
-			sprite.setScale(sf::Vector2f(1.0f * getDir(), 1.0f));
-			turning = true;
-			turnTimer.restart();
+			bool turn = true;
+
+			for (int i = -4; i < 4; i++)
+			{
+				if (placeFree((float)(x + dx * mstime), y + i)) turn = false;
+			}
+
+			if ((turn || (x <= 0.0f && dx < 0) || floor(((double)rand() / RAND_MAX) * (8000. / mstime)) == 1 || (placeFree(x + adj, y + 17) && !placeFree(x, y + 1))) && !placeFree(x, y + 3))
+			{
+				// Turn around
+				dx = -dx;
+				sprite.setScale(sf::Vector2f(1.0f * getDir(), 1.0f));
+				turning = true;
+				turnTimer.restart();
+			}
 		}
 
 		// Rotating
