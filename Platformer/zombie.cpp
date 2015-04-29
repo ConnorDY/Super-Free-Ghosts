@@ -4,41 +4,42 @@
 #include "player.h"
 #include "obelisk.h"
 
+namespace
+{
+	int const ZOMBIE_WIDTH = 24;
+	int const ZOMBIE_HEIGHT = 40;
+
+	std::vector<sf::IntRect> const ANIM_FALL {
+		sf::IntRect(0, 50, 27, 40),
+	};
+	std::vector<sf::IntRect> const ANIM_TURN {
+		sf::IntRect(28, 50, 27, 40),
+	};
+	std::vector<sf::IntRect> const ANIM_WALK {
+		sf::IntRect(56, 50, 28, 40),
+		sf::IntRect(84, 50, 28, 40),
+		sf::IntRect(28, 50, 27, 40),
+		sf::IntRect(112, 50, 28, 40),
+	};
+}
 #define ZOMBIE_WIDTH  24
 #define ZOMBIE_HEIGHT 40
 Zombie::Zombie(Room &room, float x, float y)
 	: DamageableObject(
 		room, x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, // x, y, w, h
-		0.0f, 0.0f,     // dx, dy
+		0.0f, 0.0f,      // dx, dy
 		false,           // solid
-		0.00185f / 2.0f,       // Gravity
+		0.00185f / 2.0f, // Gravity
 		0.25f            // Fall speed
 	),
 	rectangle(sf::Vector2f(ZOMBIE_WIDTH, ZOMBIE_HEIGHT)),
-	animation("appear"),
-	moveSpeed(0.075f / 2.0f), frame(0.0f), spawnX(x), spawnY(y), angle(0),
-	inCasket(true), opening(false), turning(false), spawned(false), under(false), visible(true)
+	animation(&ANIM_FALL),
+	moveSpeed(0.075f / 2.0f), frame(0.0f),
+	turning(false)
 {
 	// Sprite
 	sprite.setTexture(room.textureManager.getRef("zombie"));
 	sprite.setOrigin(11.0f, 40.0f);
-
-	// Animations
-	animations["appear"].emplace_back(0, 0, 35, 48);
-
-	animations["casket"].emplace_back(35, 0, 35, 48);
-	animations["casket"].emplace_back(70, 0, 35, 48);
-	animations["casket"].emplace_back(105, 0, 35, 48);
-	animations["casket"].emplace_back(140, 0, 35, 48);
-	animations["casket"].emplace_back(175, 0, 35, 48);
-
-	animations["fall"].emplace_back(0, 50, 27, 40);
-	animations["turn"].emplace_back(28, 50, 27, 40);
-
-	animations["walk"].emplace_back(56, 50, 28, 40);
-	animations["walk"].emplace_back(84, 50, 28, 40);
-	animations["walk"].push_back(animations.at("walk")[0]);
-	animations["walk"].emplace_back(112, 50, 28, 40);
 
 	// Depth
 	setDepth(-2);
@@ -59,11 +60,6 @@ int Zombie::getDir() const
 	return dir;
 }
 
-bool Zombie::getInCasket() const
-{
-	return inCasket;
-}
-
 bool Zombie::canCollideWith(const Object* obj) const
 {
 	return dynamic_cast<const Obelisk*>(obj) == nullptr;
@@ -73,8 +69,7 @@ bool Zombie::canCollideWith(const Object* obj) const
 /* Actions */
 void Zombie::draw(sf::RenderWindow &window)
 {
-	if (!visible) sprite.setColor(sf::Color(255, 255, 255, 125));
-	else sprite.setColor(sf::Color(255, 255, 255, 255));
+	sprite.setColor(sf::Color(255, 255, 255, 255));
 
 	if (DEBUG_MODE)
 	{
@@ -87,113 +82,63 @@ void Zombie::draw(sf::RenderWindow &window)
 
 	if (sign_scalex == -1) adjx += 2;
 
-	sprite.setPosition(sf::Vector2f(x + sprite.getOrigin().x - (6.0f * inCasket) + adjx, y + sprite.getOrigin().y + inCasket + 1));
+	sprite.setPosition(sf::Vector2f(x + sprite.getOrigin().x + adjx, y + sprite.getOrigin().y + 1));
 	window.draw(sprite);
 }
 
 void Zombie::update(sf::Time deltaTime)
 {
-	if (inCasket && !spawned && (room.heightmapIntersects(sf::FloatRect(x, y, width, height)) || !placeFree(x, y + 10)))
+	double mstime = deltaTime.asMicroseconds() / 1000.0;
+	if (dx == 0 && !placeFree(x, y + 1)) dx = -moveSpeed; // Hit the ground
+
+	Object::update(deltaTime);
+
+	if (dx != 0)
 	{
-		y -= deltaTime.asSeconds() * 50;
-		spawnY = y;
-		under = true;
-	}
-	else if (!spawned)
-	{
-		spawned = true;
-		casketTimer.restart();
-	}
-	else
-	{
-		double mstime = deltaTime.asMicroseconds() / 1000.0;
-		if (inCasket) maxFallSpeed = 0; else maxFallSpeed = 0.25;
-		if (dx == 0 && !placeFree(x, y + 1)) dx = -moveSpeed; // Hit the ground
+		if (std::copysign(dx, getDir()) != dx) throw std::logic_error("Zombie direction is wrong");
+		float adj = ZOMBIE_WIDTH;
+		if (dx < 0) adj *= -1;
 
-		Object::update(deltaTime);
+		bool turn = true;
 
-		if (dx != 0)
+		for (int i = -4; i < 4; i++)
 		{
-			if (std::copysign(dx, getDir()) != dx) throw std::logic_error("Zombie direction is wrong");
-			if (inCasket) throw std::logic_error("Zombie in casket has an x velocity");
-			float adj = ZOMBIE_WIDTH;
-			if (dx < 0) adj *= -1;
-
-			bool turn = true;
-
-			for (int i = -4; i < 4; i++)
-			{
-				if (placeFree((float)(x + dx * mstime), y + i)) turn = false;
-			}
-
-			if ((turn || (x <= 0.0f && dx < 0) || floor(((double)rand() / RAND_MAX) * (8000. / mstime)) == 1 || (placeFree(x + adj, y + 17) && !placeFree(x, y + 1))) && !placeFree(x, y + 3))
-			{
-				// Turn around
-				dx = -dx;
-				sprite.setScale(sf::Vector2f(1.0f * getDir(), 1.0f));
-				turning = true;
-				turnTimer.restart();
-			}
+			if (placeFree((float)(x + dx * mstime), y + i)) turn = false;
 		}
 
-		// Rotating
-		if (inCasket && !under)
+		if ((turn || (x <= 0.0f && dx < 0) || floor(((double)rand() / RAND_MAX) * (8000. / mstime)) == 1 || (placeFree(x + adj, y + 17) && !placeFree(x, y + 1))) && !placeFree(x, y + 3))
 		{
-			setX(spawnX + (6.0f * cos(angle)));
-			setY(spawnY + (6.0f * sin(angle)));
-
-			angle += deltaTime.asMicroseconds() / 220000.0f;
-		}
-
-		// Timers
-		if (turning && turnTimer.getElapsedTime().asSeconds() >= 0.1) turning = false;
-
-		if (inCasket && !opening && (casketTimer.getElapsedTime().asSeconds() >= 3 || (under && casketTimer.getElapsedTime().asSeconds() >= .9)))
-		{
-			openTimer.restart();
-			opening = true;
-		}
-
-		if (opening && openTimer.getElapsedTime().asSeconds() >= 0.7)
-		{
-			inCasket = false;
-			opening = false;
-		}
-
-		// Hit Player
-		if (!inCasket)
-		{
-			for (auto col : allCollisions(x, y))
-			{
-				Player* player = dynamic_cast<Player*>(col);
-				if (player != nullptr) player->damage(this, 1);
-			}
+			// Turn around
+			dx = -dx;
+			sprite.setScale(sf::Vector2f(1.0f * getDir(), 1.0f));
+			turning = true;
+			turnTimer.restart();
 		}
 	}
 
-	// Invincibility
-	if (under && inCasket && !opening && flashTimer.getElapsedTime().asSeconds() >= .1)
+	// Timers
+	if (turning && turnTimer.getElapsedTime().asSeconds() >= 0.1) turning = false;
+
+	// Hit Player
+	for (auto col : allCollisions(x, y))
 	{
-		flashTimer.restart();
-		visible = !visible;
+		Player* player = dynamic_cast<Player*>(col);
+		if (player != nullptr) player->damage(this, 1);
 	}
-	else if (!under || !inCasket || opening) visible = true;
 
 	// Animations
-	if (opening) setAnimation("casket");
-	else if (inCasket) setAnimation("appear");
-	else if (placeFree(x, y + 1) && dx == 0.0f) setAnimation("fall");
-	else if (turning) setAnimation("turn");
-	else setAnimation("walk");
+	if (placeFree(x, y + 1) && dx == 0.0f) setAnimation(&ANIM_FALL);
+	else if (turning) setAnimation(&ANIM_TURN);
+	else setAnimation(&ANIM_WALK);
 
 	updateAnimation(deltaTime);
 }
 
-void Zombie::setAnimation(std::string name)
+void Zombie::setAnimation(std::vector<sf::IntRect> const *anim)
 {
-	if (animation != name)
+	if (animation != anim)
 	{
-		animation = name;
+		animation = anim;
 		frame = 0.0f;
 	}
 }
@@ -201,28 +146,19 @@ void Zombie::setAnimation(std::string name)
 void Zombie::updateAnimation(sf::Time deltaTime)
 {
 	// Get current animation
-	std::vector<sf::IntRect> &anim = animations.at(animation);
-	int frames = anim.size();
+	int frames = animation->size();
 
 	// Adjust frame
-	if (frames > 1)
-	{
-		float speed = 6.0f;
+	float speed = 6.0f;
 
-		frame += deltaTime.asSeconds() * speed;
-		frame = fmodf(frame, (float)frames);
-	}
+	frame += deltaTime.asSeconds() * speed;
+	frame = fmodf(frame, (float)frames);
 
 	// Set TextureRect
-	sprite.setTextureRect(anim[(int)frame]);
+	sprite.setTextureRect((*animation)[(int)frame]);
 }
 
 void Zombie::onDeath()
 {
 	room.soundManager.playSound("enemy_die");
-}
-
-void Zombie::damage(Object *other, int dmg)
-{
-	if (!inCasket) DamageableObject::damage(other, dmg);
 }

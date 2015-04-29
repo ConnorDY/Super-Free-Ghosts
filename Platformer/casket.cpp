@@ -8,11 +8,11 @@ namespace {
 	int const CASKET_WIDTH = 24;
 	int const CASKET_HEIGHT = 40;
 
-	std::vector<sf::IntRect> const ANIM_APPEARING = {
+	std::vector<sf::IntRect> const ANIM_APPEARING {
 		sf::IntRect(0, 0, 35, 48),
 	};
 
-	std::vector<sf::IntRect> const ANIM_CASKET = {
+	std::vector<sf::IntRect> const ANIM_CASKET {
 		sf::IntRect(35, 0, 35, 48),
 		sf::IntRect(70, 0, 35, 48),
 		sf::IntRect(105, 0, 35, 48),
@@ -29,7 +29,8 @@ Casket::Casket(Room &room, float x, float y)
 	rectangle(sf::Vector2f(CASKET_WIDTH, CASKET_HEIGHT)),
 	animation(&ANIM_APPEARING),
 	frame(0.0f), spawnX(x), spawnY(y), angle(0),
-	opening(false), turning(false), spawned(false), under(false), visible(true)
+	opening(false), spawned(false), under(false), visible(true),
+	finished(false)
 {
 	// Sprite
 	sprite.setTexture(room.textureManager.getRef("zombie"));
@@ -59,7 +60,7 @@ void Casket::draw(sf::RenderWindow &window)
 
 void Casket::update(sf::Time deltaTime)
 {
-	if (finished) kill(); // We need to delay this 1 frame because the spawned zombie will not immediately draw
+	if (finished) { kill(); return; } // We need to delay this 1 frame because the spawned zombie will not immediately draw
 	if (!spawned && (room.heightmapIntersects(sf::FloatRect(x, y, width, height)) || !placeFree(x, y + 10)))
 	{
 		y -= deltaTime.asSeconds() * 50;
@@ -80,9 +81,6 @@ void Casket::update(sf::Time deltaTime)
 
 			angle += deltaTime.asMicroseconds() / 220000.0f;
 		}
-
-		// Timers
-		if (turning && turnTimer.getElapsedTime().asSeconds() >= 0.1) turning = false;
 
 		if (!opening && (casketTimer.getElapsedTime().asSeconds() >= 3 || (under && casketTimer.getElapsedTime().asSeconds() >= .9)))
 		{

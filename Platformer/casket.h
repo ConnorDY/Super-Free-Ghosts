@@ -16,8 +16,8 @@ class Casket : public Object
 		sf::RectangleShape rectangle;
 		std::vector<sf::IntRect> const *animation;
 		float frame, spawnX, spawnY, angle;
-		bool opening, turning, spawned, under, visible, finished;
-		sf::Clock casketTimer, turnTimer, openTimer, flashTimer;
+		bool opening, spawned, under, visible, finished;
+		sf::Clock casketTimer, openTimer, flashTimer;
 
 		// Actions
 		void setAnimation(std::vector<sf::IntRect> const *anim);
