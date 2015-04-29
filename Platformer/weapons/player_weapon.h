@@ -7,7 +7,7 @@ class Room;
 namespace PlayerWeapon
 {
 	enum Enum {
-		SPEAR, BOMB, TORCH, TRIDENT, HAMMER, SWORD
+		SPEAR, BOMB, TORCH, TRIDENT, HAMMER, SWORD, BOOMERANG, AXE, MACE, WAR_HAMMER
 	};
 
 	Weapon *spawnWeapon(Room &room, Player *player, Enum weapon, bool super, float x, float y, int dir);
