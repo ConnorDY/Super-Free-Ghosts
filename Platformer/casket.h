@@ -25,6 +25,8 @@ class Casket : public Object
 	public:
 		Casket(Room &room, float x, float y);
 
+		virtual bool canCollideWith(const Object *obj) const override;
+
 		// Actions
 		virtual void draw(sf::RenderWindow &window) override;
 		virtual void update(sf::Time deltaTime) override;

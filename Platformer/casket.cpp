@@ -2,7 +2,7 @@
 #include "zombie.h"
 #include "globals.h"
 #include "room.h"
-#include "player.h"
+#include "obelisk.h"
 
 namespace {
 	int const CASKET_WIDTH = 24;
@@ -40,6 +40,10 @@ Casket::Casket(Room &room, float x, float y)
 	setDepth(-2);
 }
 
+bool Casket::canCollideWith(const Object* obj) const
+{
+	return dynamic_cast<const Obelisk*>(obj) == nullptr;
+}
 
 
 /* Actions */
