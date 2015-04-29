@@ -306,6 +306,8 @@ bool Room::isAnimationInProgress() const
 void Room::update(sf::RenderWindow&, SoundManager&, InputHandler&)
 {
 	deltaTime = restartClock();
+	if (DEBUG_MODE)
+		printf("FPS estimate: %4.3f\n", 1 / deltaTime.asSeconds());
 
 	// If the framerate is too low, slow down the game anyway (instead of having shit jumping everywhere)
 	auto maxTime = sf::seconds(0.1f);
