@@ -18,6 +18,7 @@ Level01_State::~Level01_State()
 {
 }
 
+#include "weapondrop.h" // TODO temporary
 
 // Actions
 void Level01_State::start()
@@ -65,6 +66,8 @@ void Level01_State::start()
 	objects.push_back(new Obelisk(*this, 660.0f, 280.0f, 50.0f));
 	objects.push_back(new Obelisk(*this, 840.0f, 280.0f, 50.0f));
 	objects.push_back(new Obelisk(*this, 1500.0f, 280.0f, 60.0f));
+
+	objects.push_back(new WeaponDrop(*this, 200.0f, 180.0f, PlayerWeapon::SPEAR));
 
 	// Create player
 	player = new Player(*this, 45.0f, 234.0f);
