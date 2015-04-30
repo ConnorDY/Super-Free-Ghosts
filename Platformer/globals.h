@@ -1,7 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#define DEBUG_MODE true
+#define DEBUG_MODE 0
 #if DEBUG_MODE
 #define DEBUG(x) x
 #else
