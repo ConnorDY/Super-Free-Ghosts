@@ -1,7 +1,7 @@
 #include "level01_state.h"
 #include "player.h"
 #include "globals.h"
-#include "zombie.h"
+#include "casket.h"
 #include "handeye.h"
 #include "chest.h"
 #include "obelisk.h"
@@ -47,17 +47,17 @@ void Level01_State::start()
 
 
 	// Create Objects
-	objects.push_back(new Zombie(*this, 240.0f, 250.0f));
-	objects.push_back(new Zombie(*this, 405.0f, 32.0f));
-	objects.push_back(new Zombie(*this, 625.0f, 32.0f));
-	objects.push_back(new Zombie(*this, 675.0f, 32.0f));
-	objects.push_back(new Zombie(*this, 725.0f, 32.0f));
-	objects.push_back(new Zombie(*this, 775.0f, 32.0f));
-	objects.push_back(new Zombie(*this, 1275.0f, 32.0f));
-	objects.push_back(new Zombie(*this, 1300.0f, 32.0f));
-	objects.push_back(new Zombie(*this, 1325.0f, 32.0f));
-	objects.push_back(new Zombie(*this, 1350.0f, 32.0f));
-	objects.push_back(new Zombie(*this, 1475.0f, 32.0f));
+	objects.push_back(new Casket(*this, 240.0f, 250.0f));
+	objects.push_back(new Casket(*this, 405.0f, 32.0f));
+	objects.push_back(new Casket(*this, 625.0f, 32.0f));
+	objects.push_back(new Casket(*this, 675.0f, 32.0f));
+	objects.push_back(new Casket(*this, 725.0f, 32.0f));
+	objects.push_back(new Casket(*this, 775.0f, 32.0f));
+	objects.push_back(new Casket(*this, 1275.0f, 32.0f));
+	objects.push_back(new Casket(*this, 1300.0f, 32.0f));
+	objects.push_back(new Casket(*this, 1325.0f, 32.0f));
+	objects.push_back(new Casket(*this, 1350.0f, 32.0f));
+	objects.push_back(new Casket(*this, 1475.0f, 32.0f));
 
 	objects.push_back(new HandEye(*this, 320.0f, 32.0f));
 

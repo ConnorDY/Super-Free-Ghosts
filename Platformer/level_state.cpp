@@ -3,6 +3,7 @@
 #include "dialogue.h"
 #include "globals.h"
 #include "zombie.h"
+#include "casket.h"
 #include "menu_state.h"
 
 LevelState::LevelState(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings)
@@ -27,7 +28,7 @@ int LevelState::countZombies() const
 {
 	return count_if(objects.begin(), objects.end(), [&](Object* const &elem)
 	{
-		return dynamic_cast<Zombie*>(elem) != nullptr;
+		return dynamic_cast<Zombie*>(elem) != nullptr || dynamic_cast<Casket*>(elem) != nullptr;
 	});
 }
 
@@ -63,7 +64,7 @@ void LevelState::update(sf::RenderWindow &window, SoundManager &soundManager, In
 		return;
 	}
 
-	if (shouldSpawnMoreZombies()) objects.push_back(new Zombie(*this, (float)((double)rand() / (RAND_MAX)) * 1248, 250));
+	if (shouldSpawnMoreZombies()) objects.push_back(new Casket(*this, (float)((double)rand() / (RAND_MAX)) * 1248, 250));
 
 	int moveH = inputHandler.checkInput(InputHandler::Input::Right) - inputHandler.checkInput(InputHandler::Input::Left); // Horizontal Movement
 	bool crouching = inputHandler.checkInput(InputHandler::Input::Down); // Crouching
