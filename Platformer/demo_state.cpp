@@ -12,7 +12,7 @@
 #include "static_resource.h"
 #endif
 
-Demo_State::Demo_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings)
+Demo_State::Demo_State(StateManager &sM, SoundManager &som, TextureManager const &textureManager, settings_t &settings)
 	: LevelState(sM, som, textureManager, settings)
 {
 	start();

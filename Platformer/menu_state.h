@@ -10,14 +10,14 @@
 class Menu_State : public State
 {
 	private:
-		TextureManager &textureManager;
+		TextureManager const &textureManager;
 		settings_t &settings;
 		std::vector<std::string> menuOptions;
 		sf::Sprite sprLogo;
 		sf::Font fnt;
 		unsigned int currentOption = 0;
 	public:
-		Menu_State(StateManager &sM, TextureManager &textureManager, settings_t &settings);
+		Menu_State(StateManager &sM, TextureManager const &textureManager, settings_t &settings);
 		virtual ~Menu_State();
 
 		// Actions

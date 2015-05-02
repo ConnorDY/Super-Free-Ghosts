@@ -7,7 +7,7 @@
 #include "player.h"
 #include "animations/modal_animation.h"
 
-Room::Room(StateManager &stm, SoundManager &som, TextureManager &tm, settings_t &settings)
+Room::Room(StateManager &stm, SoundManager &som, TextureManager const &tm, settings_t &settings)
 	: State(stm),
 	  width(2048), height(VIEW_HEIGHT),
 	  settings(settings), soundManager(som), textureManager(tm)

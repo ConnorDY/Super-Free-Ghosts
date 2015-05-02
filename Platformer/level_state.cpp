@@ -6,7 +6,7 @@
 #include "casket.h"
 #include "menu_state.h"
 
-LevelState::LevelState(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings)
+LevelState::LevelState(StateManager &sM, SoundManager &som, TextureManager const &textureManager, settings_t &settings)
 	: Room(sM, som, textureManager, settings),
 	  restart(false)
 {

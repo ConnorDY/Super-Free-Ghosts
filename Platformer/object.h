@@ -5,7 +5,6 @@
 #include <vector>
 
 class Room;
-class TextureManager;
 
 class Object
 {

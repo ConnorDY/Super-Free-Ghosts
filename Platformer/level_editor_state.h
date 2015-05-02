@@ -19,7 +19,7 @@ class Level_Editor_State : public Room
 
 		Player *player;
 	public:
-		Level_Editor_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings);
+		Level_Editor_State(StateManager &sM, SoundManager &som, TextureManager const &textureManager, settings_t &settings);
 		virtual ~Level_Editor_State();
 
 		// Actions

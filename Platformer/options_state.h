@@ -10,7 +10,7 @@
 class Options_State : public State
 {
 private:
-	TextureManager &textureManager;
+	TextureManager const &textureManager;
 	settings_t &settings;
 	std::vector<std::string> menuOptions;
 	std::vector<std::vector<std::string>> optionChoices;
@@ -22,7 +22,7 @@ private:
 	void toggleMusic();
 	void toggleSound();
 public:
-	Options_State(StateManager &sM, TextureManager &tm, settings_t &settings);
+	Options_State(StateManager &sM, TextureManager const &tm, settings_t &settings);
 	virtual ~Options_State();
 
 	// Actions

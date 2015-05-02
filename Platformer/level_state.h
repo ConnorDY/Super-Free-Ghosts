@@ -21,7 +21,7 @@ class LevelState : public Room
 		Player *player;
 		virtual bool shouldSpawnMoreZombies() const;
 	public:
-		LevelState(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings);
+		LevelState(StateManager &sM, SoundManager &som, TextureManager const &textureManager, settings_t &settings);
 		virtual ~LevelState();
 
 		int countZombies() const;

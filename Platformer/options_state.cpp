@@ -7,7 +7,7 @@
 #include "static_resource.h"
 #endif
 
-Options_State::Options_State(StateManager &sM, TextureManager &tm, settings_t &settings)
+Options_State::Options_State(StateManager &sM, TextureManager const &tm, settings_t &settings)
 	: State(sM), textureManager(tm), settings(settings)
 {
 	// Load Font

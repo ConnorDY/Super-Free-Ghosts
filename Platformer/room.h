@@ -31,9 +31,9 @@ class Room : public State {
 		void drawDecor(int x, int y, int type, sf::RenderWindow &window);
 	public:
 		SoundManager &soundManager;                 // Sound manager for use by objects in this room
-		TextureManager &textureManager;
+		TextureManager const &textureManager;
 
-		explicit Room(StateManager &stm, SoundManager &som, TextureManager &tm, settings_t &settings);
+		explicit Room(StateManager &stm, SoundManager &som, TextureManager const &tm, settings_t &settings);
 		virtual ~Room();
 
 		bool heightmapIntersects(sf::FloatRect const &rect) const;

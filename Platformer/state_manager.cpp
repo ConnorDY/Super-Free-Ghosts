@@ -1,7 +1,7 @@
 #include "state_manager.h"
 #include "menu_state.h"
 
-StateManager::StateManager(TextureManager &tM, SoundManager &sM, settings_t &stg)
+StateManager::StateManager(TextureManager const &tM, SoundManager &sM, settings_t &stg)
 	: textureManager(tM), soundManager(sM), settings(stg), currentState(new Menu_State(*this, tM, settings))
 {
 }

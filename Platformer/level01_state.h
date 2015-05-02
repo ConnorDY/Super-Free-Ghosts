@@ -14,7 +14,7 @@ class Level01_State : public LevelState
 		sf::Music music;
 		sf::Sprite bg01;
 	public:
-		Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings);
+		Level01_State(StateManager &sM, SoundManager &som, TextureManager const &textureManager, settings_t &settings);
 		virtual ~Level01_State();
 
 		// Actions

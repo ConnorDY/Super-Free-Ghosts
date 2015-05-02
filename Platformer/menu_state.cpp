@@ -10,7 +10,7 @@
 #include "static_resource.h"
 #endif
 
-Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager, settings_t &settings)
+Menu_State::Menu_State(StateManager &sM, TextureManager const &textureManager, settings_t &settings)
 	: State(sM), textureManager(textureManager), settings(settings)
 {
 	// Set up logo sprite

@@ -7,7 +7,7 @@
 
 #define GRID_SCALE 8
 
-Level_Editor_State::Level_Editor_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings)
+Level_Editor_State::Level_Editor_State(StateManager &sM, SoundManager &som, TextureManager const &textureManager, settings_t &settings)
 	: Room(sM, som, textureManager, settings)
 {
 	cursor = sf::Vector2i(-1, -1);
