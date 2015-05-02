@@ -30,10 +30,11 @@ void TextureManager::loadTextureFromMemory(const std::string &name, unsigned cha
 #endif
 }
 
-sf::Texture const& TextureManager::getRef(const std::string &texture)
+sf::Texture const& TextureManager::getRef(const std::string &texture) const
 {
 	static sf::Texture const placeholder;
 
-	if (textures.find(texture) != textures.end()) return this->textures.at(texture);
+	auto texture_iter = textures.find(texture);
+	if (texture_iter != textures.end()) return texture_iter->second;
 	else return placeholder;
 }
