@@ -18,7 +18,7 @@ namespace
 	std::vector<sf::IntRect> const ANIM_WALK {
 		sf::IntRect(56, 50, 28, 40),
 		sf::IntRect(84, 50, 28, 40),
-		sf::IntRect(28, 50, 27, 40),
+		sf::IntRect(56, 50, 28, 40),
 		sf::IntRect(112, 50, 28, 40),
 	};
 }
