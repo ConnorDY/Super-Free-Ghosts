@@ -13,12 +13,12 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 {
 	auto textures = std::vector<std::pair<std::string, std::string>>
 	{
-		{ "player0", "res/plyr/plyr_dead.png" },
-		{ "player1", "res/plyr/plyr_naked.png" },
-		{ "player2", "res/plyr/plyr_silver.png" },
-		{ "player3", "res/plyr/plyr_gold.png" },
-		{ "transform1", "res/plyr/transform_silver.png" },
-		{ "transform2", "res/plyr/transform_gold.png" },
+		{ "player-dead", "res/plyr/plyr_dead.png" },
+		{ "player-naked", "res/plyr/plyr_naked.png" },
+		{ "player-silver", "res/plyr/plyr_silver.png" },
+		{ "player-gold", "res/plyr/plyr_gold.png" },
+		{ "transform-silver", "res/plyr/transform_silver.png" },
+		{ "transform-gold", "res/plyr/transform_gold.png" },
 		{ "chest1", "res/chest/01.png" },
 		{ "zombie", "res/zombie.png" },
 		{ "tiles", "res/tiles.png" },

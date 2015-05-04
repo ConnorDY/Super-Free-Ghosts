@@ -19,6 +19,101 @@
 namespace {
 	int const PLAYER_WIDTH = 17, PLAYER_HEIGHT = 35;
 	float const ANIMATION_SPEED = 11.5384615385f;
+
+	struct Animations
+	{
+		std::vector<sf::IntRect>
+			STILL, CROUCH, FIRST_JUMP_UP, SECOND_JUMP_UP,
+			FIRST_JUMP_DOWN, SECOND_JUMP_DOWN, DIE, MELEE,
+			FIRST_JUMP_SIDEWAYS, SECOND_JUMP_SIDEWAYS_NAKED,
+			SECOND_JUMP_SIDEWAYS_ARMOURED, DOUBLE_JUMP_BEGIN,
+			RUN, THROW, THROW_DOUBLE_JUMPING, ROLL, HURT,
+			THROW_CROUCHING, MELEE_CROUCHING, TRANSFORM_SILVER,
+			TRANSFORM_NAKED_GOLD, TRANSFORM_SILVER_GOLD;
+
+		Animations()
+		{
+			STILL.emplace_back(0, 0, 50, 50);
+
+			CROUCH.emplace_back(0, 150, 50, 50);
+
+			FIRST_JUMP_UP.emplace_back(0, 200, 50, 50);
+			SECOND_JUMP_UP.emplace_back(50, 200, 50, 50);
+			FIRST_JUMP_DOWN.emplace_back(100, 200, 50, 50);
+			SECOND_JUMP_DOWN.emplace_back(150, 200, 50, 50);
+
+			FIRST_JUMP_SIDEWAYS.emplace_back(0, 250, 50, 50);
+			SECOND_JUMP_SIDEWAYS_ARMOURED.emplace_back(50, 250, 50, 50);
+			SECOND_JUMP_SIDEWAYS_NAKED.emplace_back(100, 250, 50, 50);
+
+			DOUBLE_JUMP_BEGIN.emplace_back(0, 300, 50, 50);
+
+			RUN.emplace_back(0, 50, 50, 50);
+			RUN.emplace_back(50, 50, 50, 50);
+			RUN.emplace_back(100, 50, 50, 50);
+			RUN.emplace_back(150, 50, 50, 50);
+			RUN.emplace_back(200, 50, 50, 50);
+			RUN.emplace_back(250, 50, 50, 50);
+
+			THROW.emplace_back(0, 100, 50, 50);
+			THROW.emplace_back(50, 100, 50, 50);
+
+			THROW_DOUBLE_JUMPING.push_back(THROW[0]);
+			THROW_DOUBLE_JUMPING.push_back(THROW[1]);
+			THROW_DOUBLE_JUMPING.push_back(DOUBLE_JUMP_BEGIN[0]);
+			THROW_DOUBLE_JUMPING.push_back(DOUBLE_JUMP_BEGIN[0]);
+			THROW_DOUBLE_JUMPING.emplace_back(50, 300, 50, 50);
+			THROW_DOUBLE_JUMPING.emplace_back(50, 300, 50, 50);
+			THROW_DOUBLE_JUMPING.emplace_back(100, 300, 50, 50);
+			THROW_DOUBLE_JUMPING.emplace_back(100, 300, 50, 50);
+
+			THROW_CROUCHING.emplace_back(50, 150, 50, 50);
+			THROW_CROUCHING.emplace_back(100, 150, 50, 50);
+
+			MELEE.emplace_back(200, 100, 50, 50);
+			MELEE.emplace_back(250, 100, 50, 50);
+			MELEE.emplace_back(250, 100, 50, 50);
+
+			MELEE_CROUCHING.emplace_back(200, 150, 50, 50);
+			MELEE_CROUCHING.emplace_back(250, 150, 50, 50);
+			MELEE_CROUCHING.emplace_back(250, 150, 50, 50);
+
+			HURT.emplace_back(250, 0, 50, 50);
+
+			ROLL.emplace_back(150, 250, 50, 50);
+			ROLL.emplace_back(200, 250, 50, 50);
+			ROLL.emplace_back(250, 250, 50, 50);
+
+			DIE.emplace_back(0, 0, 50, 50);
+			DIE.push_back(DIE[0]);
+			DIE.push_back(DIE[0]);
+			DIE.push_back(DIE[0]);
+			DIE.emplace_back(50, 0, 50, 50);
+			DIE.emplace_back(100, 0, 50, 50);
+			DIE.emplace_back(150, 0, 50, 50);
+			DIE.emplace_back(200, 0, 50, 50);
+			DIE.emplace_back(250, 0, 50, 50);
+			DIE.emplace_back(0, 50, 50, 50);
+			DIE.emplace_back(50, 50, 50, 50);
+			DIE.emplace_back(100, 50, 50, 50);
+
+			// Transformation animations
+			for (unsigned int i = 0; i < 2; i++)
+			{
+				for (unsigned int j = 0; j < 16; j++)
+				{
+					TRANSFORM_SILVER.emplace_back(i * 182, j * 136, 182, 136);
+				}
+			}
+
+			for (unsigned int i = 0; i < 37; i++)
+			{
+				TRANSFORM_NAKED_GOLD.emplace_back(i * 92, 0, 92, 450);
+				TRANSFORM_SILVER_GOLD.emplace_back(i * 92, 450, 92, 450);
+			}
+		}
+	};
+	Animations ANIM;
 }
 
 Player::Player(Room &room, float x, float y)
@@ -30,94 +125,13 @@ Player::Player(Room &room, float x, float y)
 			0.2f            // Fall speed
 	  ),
 	  rectangle(sf::Vector2f(PLAYER_WIDTH, PLAYER_HEIGHT)),
-	  animation("still"), texture("player2"),
+	  animation(&ANIM.STILL),
 	  moveSpeed(0.16f / 2.0f), jumpSpeed(0.5f / 2.0f), frame(0.0f), throwTime(0.0f),
 	  jumps(0), armour(PlayerArmour::SILVER),
 	  jumped(false), midJump(false), midThrow(false), rolling(false), flipped(false), crouching(false), invincible(false), hit(false), dead(false), visible(true),
 	  chosenWeapon(PlayerWeapon::TRIDENT)
 {
-	// Sprite
-	sprite.setTexture(room.textureManager.getRef(texture));
-
-	// Animations
-	animations["still"].emplace_back(0, 0, 50, 50);
-
-	animations["crouch"].emplace_back(0, 150, 50, 50);
-
-	animations["jumpu"].emplace_back(0, 200, 50, 50);
-	animations["jumpu2"].emplace_back(50, 200, 50, 50);
-	animations["jumpud"].emplace_back(100, 200, 50, 50);
-	animations["jumpu2d"].emplace_back(150, 200, 50, 50);
-
-	animations["jumps"].emplace_back(0, 250, 50, 50);
-	animations["jumps2"].emplace_back(50, 250, 50, 50);
-	animations["jumps3"].emplace_back(100, 250, 50, 50);
-
-	animations["jumpi"].emplace_back(0, 300, 50, 50);
-	
-	animations["run"].emplace_back(0, 50, 50, 50);
-	animations["run"].emplace_back(50, 50, 50, 50);
-	animations["run"].emplace_back(100, 50, 50, 50);
-	animations["run"].emplace_back(150, 50, 50, 50);
-	animations["run"].emplace_back(200, 50, 50, 50);
-	animations["run"].emplace_back(250, 50, 50, 50);
-
-	animations["throw"].emplace_back(0, 100, 50, 50);
-	animations["throw"].emplace_back(50, 100, 50, 50);
-
-	animations["throwi"].push_back(animations.at("throw")[0]);
-	animations["throwi"].push_back(animations.at("throw")[1]);
-	animations["throwi"].push_back(animations.at("jumpi")[0]);
-	animations["throwi"].push_back(animations.at("jumpi")[0]);
-	animations["throwi"].emplace_back(50, 300, 50, 50);
-	animations["throwi"].emplace_back(50, 300, 50, 50);
-	animations["throwi"].emplace_back(100, 300, 50, 50);
-	animations["throwi"].emplace_back(100, 300, 50, 50);
-
-	animations["throwc"].emplace_back(50, 150, 50, 50);
-	animations["throwc"].emplace_back(100, 150, 50, 50);
-
-	animations["melee"].emplace_back(200, 100, 50, 50);
-	animations["melee"].emplace_back(250, 100, 50, 50);
-	animations["melee"].emplace_back(250, 100, 50, 50);
-
-	animations["melee-crouch"].emplace_back(200, 150, 50, 50);
-	animations["melee-crouch"].emplace_back(250, 150, 50, 50);
-	animations["melee-crouch"].emplace_back(250, 150, 50, 50);
-
-	animations["hit"].emplace_back(250, 0, 50, 50);
-
-	animations["roll"].emplace_back(150, 250, 50, 50);
-	animations["roll"].emplace_back(200, 250, 50, 50);
-	animations["roll"].emplace_back(250, 250, 50, 50);
-
-	animations["die"].emplace_back(0, 0, 50, 50);
-	animations["die"].push_back(animations.at("die")[0]);
-	animations["die"].push_back(animations.at("die")[0]);
-	animations["die"].push_back(animations.at("die")[0]);
-	animations["die"].emplace_back(50, 0, 50, 50);
-	animations["die"].emplace_back(100, 0, 50, 50);
-	animations["die"].emplace_back(150, 0, 50, 50);
-	animations["die"].emplace_back(200, 0, 50, 50);
-	animations["die"].emplace_back(250, 0, 50, 50);
-	animations["die"].emplace_back(0, 50, 50, 50);
-	animations["die"].emplace_back(50, 50, 50, 50);
-	animations["die"].emplace_back(100, 50, 50, 50);
-
-	// Transformation animations
-	for (unsigned int i = 0; i < 2; i++)
-	{
-		for (unsigned int j = 0; j < 16; j++)
-		{
-			animations["transform1"].emplace_back(i * 182, j * 136, 182, 136);
-		}
-	}
-
-	for (unsigned int i = 0; i < 37; i++)
-	{
-		animations["transform2-1"].emplace_back(i * 92, 0, 92, 450);
-		animations["transform2-2"].emplace_back(i * 92, 450, 92, 450);
-	}
+	fixTexture();
 	
 	// Depth and Health
 	setDepth(-4);
@@ -238,7 +252,7 @@ void Player::upgrade(PlayerArmour::Enum a)
 	switch (armour)
 	{
 		case PlayerArmour::SILVER:
-			animation = makeUpgradeAnimation(fixAdjXForDirection(-76.0f), -100.0f, false, room.textureManager.getRef("transform1"), animations["transform1"]);
+			animation = makeUpgradeAnimation(fixAdjXForDirection(-76.0f), -100.0f, false, room.textureManager.getRef("transform-silver"), ANIM.TRANSFORM_SILVER);
 			break;
 		case PlayerArmour::GOLD:
 			{
@@ -247,17 +261,17 @@ void Player::upgrade(PlayerArmour::Enum a)
 				switch (armourLast)
 				{
 					case PlayerArmour::NAKED:
-						animFrames = animations["transform2-1"];
+						animFrames = ANIM.TRANSFORM_NAKED_GOLD;
 						break;
 
 					case PlayerArmour::SILVER:
-						animFrames = animations["transform2-2"];
+						animFrames = ANIM.TRANSFORM_SILVER_GOLD;
 						break;
 
 					default:
 						throw std::domain_error("Tried to upgrade to gold from an armour with no animation");
 				}
-				animation = makeUpgradeAnimation(fixAdjXForDirection(-40.0f), -415.0f, true, room.textureManager.getRef("transform2"), animFrames);
+				animation = makeUpgradeAnimation(fixAdjXForDirection(-40.0f), -415.0f, true, room.textureManager.getRef("transform-gold"), animFrames);
 			}
 			break;
 		default:
@@ -370,7 +384,7 @@ void Player::jump(int dir)
 		}
 		else if (jumps == 1)
 		{
-			setAnimation("jumpi");
+			setAnimation(ANIM.DOUBLE_JUMP_BEGIN);
 			midJump = true;
 			jumpTimer.restart();
 		}
@@ -520,40 +534,39 @@ void Player::update(sf::Time deltaTime)
 	checkDoubleJumpedObjects();
 
 	// Animation
-	if (dead) setAnimation("die");
-	else if (hit) setAnimation("hit");
-	else if (rolling) setAnimation("roll");
+	if (dead) setAnimation(ANIM.DIE);
+	else if (hit) setAnimation(ANIM.HURT);
+	else if (rolling) setAnimation(ANIM.ROLL);
 	else if (crouching)
 	{
 		if (midThrow) {
 			if (lastAttackWasMelee)
-				setAnimation("melee-crouch");
+				setAnimation(ANIM.MELEE_CROUCHING);
 			else
-				setAnimation("throwc");
+				setAnimation(ANIM.THROW_CROUCHING);
 		}
-		else setAnimation("crouch");
+		else setAnimation(ANIM.CROUCH);
 	}
 	else if (midThrow)
 	{
 		if (lastAttackWasMelee)
-			setAnimation("melee");
+			setAnimation(ANIM.MELEE);
 		else if (jumps < 2)
 		{
-			if (animation == "throwi") throwTime = 0.13f;
-			setAnimation("throw");
+			setAnimation(ANIM.THROW);
 		}
-		else setAnimation("throwi");
+		else setAnimation(ANIM.THROW_DOUBLE_JUMPING);
 	}
-	else if (dy > 0.0f && !jumped) setAnimation("still"); // Falling
+	else if (dy > 0.0f && !jumped) setAnimation(ANIM.STILL); // Falling
 	else if (dx != 0.0f)
 	{
 		if (jumped)
 		{
-			if (jumps == 1) setAnimation("jumps");
-			else if (armour != PlayerArmour::NAKED) setAnimation("jumps2");
-			else setAnimation("jumps3");
+			if (jumps == 1) setAnimation(ANIM.FIRST_JUMP_SIDEWAYS);
+			else if (armour == PlayerArmour::NAKED) setAnimation(ANIM.SECOND_JUMP_SIDEWAYS_NAKED);
+			else setAnimation(ANIM.SECOND_JUMP_SIDEWAYS_ARMOURED);
 		}
-		else setAnimation("run");
+		else setAnimation(ANIM.RUN);
 	}
 	else
 	{
@@ -561,52 +574,51 @@ void Player::update(sf::Time deltaTime)
 		{
 			if (jumps == 1)
 			{
-				if (armour == PlayerArmour::GOLD && dy > 0) setAnimation("jumpud");
-				else setAnimation("jumpu");
+				if (armour == PlayerArmour::GOLD && dy > 0)
+					setAnimation(ANIM.FIRST_JUMP_DOWN);
+				else setAnimation(ANIM.FIRST_JUMP_UP);
 			}
 			else
 			{
-				if (armour == PlayerArmour::GOLD && dy > 0) setAnimation("jumpu2d");
-				else setAnimation("jumpu2");
+				if (armour == PlayerArmour::GOLD && dy > 0)
+					setAnimation(ANIM.SECOND_JUMP_DOWN);
+				else setAnimation(ANIM.SECOND_JUMP_UP);
 			}
 		}
-		else setAnimation("still");
+		else setAnimation(ANIM.STILL);
 	}
 
 	updateAnimation(deltaTime);
 }
 
-void Player::setAnimation(std::string name)
+void Player::setAnimation(std::vector<sf::IntRect> const &newAnim)
 {
-	if (!midJump && animation != name)
+	if (!midJump && animation != &newAnim)
 	{
 		frame = 0.0f;
-		animation = name;
+		animation = &newAnim;
 	}
 }
 
 void Player::updateAnimation(sf::Time deltaTime)
 {
-	// Get current animation
-	std::vector<sf::IntRect> &anim = animations.at(animation);
-	int frames = anim.size();
+	int frames = animation->size();
 
 	// Adjust frame
 	if (frames > 1)
 	{
 		frame += deltaTime.asSeconds() * ANIMATION_SPEED;
-		if (animation == "die" && frame > (float)(frames - 1)) frame = (float)(frames - 1);
+		if (animation == &ANIM.DIE && frame > (float)(frames - 1)) frame = (float)(frames - 1);
 		else frame = fmodf(frame, (float)frames); // Loop animation if it plays past "frames"
 	}
 
 	// Set TextureRect
-	sprite.setTextureRect(anim[(int)frame]);
+	sprite.setTextureRect((*animation)[(int)frame]);
 }
 
 void Player::changeTexture(std::string tex)
 {
-	texture = tex;
-	sprite.setTexture(room.textureManager.getRef(texture));
+	sprite.setTexture(room.textureManager.getRef(tex));
 }
 
 void Player::fixTexture()
@@ -614,22 +626,22 @@ void Player::fixTexture()
 	using namespace PlayerArmour;
 	if (dead)
 	{
-		changeTexture("player0");
+		changeTexture("player-dead");
 		return;
 	}
 
 	switch (armour)
 	{
 		case NAKED:
-			changeTexture("player1");
+			changeTexture("player-naked");
 			break;
 
 		case SILVER:
-			changeTexture("player2");
+			changeTexture("player-silver");
 			break;
 
 		case GOLD:
-			changeTexture("player3");
+			changeTexture("player-gold");
 			break;
 
 		default:

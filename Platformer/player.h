@@ -23,8 +23,8 @@ class Player : public DamageableObject
 	private:
 		sf::Sprite sprite;
 		sf::RectangleShape rectangle;
-		std::map<std::string, std::vector<sf::IntRect> > animations;
-		std::string animation, texture;
+		std::vector<sf::IntRect> const *animation;
+		std::string texture;
 		float moveSpeed, jumpSpeed, frame, throwTime;
 		int jumps;
 		PlayerArmour::Enum armour;
@@ -46,6 +46,7 @@ class Player : public DamageableObject
 		std::unique_ptr<ModalAnimation> makeUpgradeAnimation(float xoff, float yoff, bool hasFlash, sf::Texture const &animTexture, std::vector<sf::IntRect> const &animFrames) const;
 		float fixAdjXForDirection(float adjx) const;
 		std::function<Weapon*(Room&, float, float, int)> getWeaponSpawnFunc(PlayerWeapon::Enum weapon, bool super);
+		void setAnimation(std::vector<sf::IntRect> const &animation);
 
 	public:
 		Player(Room &room, float x, float y);
@@ -76,7 +77,6 @@ class Player : public DamageableObject
 		void throwWeapon(int dir);
 		void move(int dir);
 		void update(sf::Time deltaTime) override;
-		void setAnimation(std::string name);
 };
 
 #endif
