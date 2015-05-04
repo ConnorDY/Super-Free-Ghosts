@@ -119,6 +119,7 @@
     <ClCompile Include="animations\sprite_animation.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="blood_particle.cpp" />
+    <ClCompile Include="casket.cpp" />
     <ClCompile Include="chest.cpp" />
     <ClCompile Include="armourdrop.cpp" />
     <ClCompile Include="damageable_object.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="animations\sprite_animation.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="blood_particle.h" />
+    <ClInclude Include="casket.h" />
     <ClInclude Include="chest.h" />
     <ClInclude Include="armourdrop.h" />
     <ClInclude Include="damageable_object.h" />
