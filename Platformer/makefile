@@ -1,5 +1,6 @@
-STATIC_RESOURCES=true
-STATIC_RESOURCES_FAST=false  # Fast, but produces larger binaries containing unused resources
+STATIC_RESOURCES=false
+# Fast, but produces larger binaries containing unused resources
+STATIC_RESOURCES_FAST=false
 
 CC=gcc
 CXX=g++
