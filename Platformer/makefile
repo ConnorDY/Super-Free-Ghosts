@@ -15,6 +15,8 @@ CFLAGS=-std=c11 -g3 -pipe
 TOOL_CFLAGS=-std=c11 -Ofast -march=native -pipe
 TOOL_LDFLAGS=-s
 TOOL_CPPFLAGS=-Wall -Wextra -pedantic
+TOOL_OBJS=../tools/make_res.o
+TOOL_FILES=$(TOOL_OBJS) $(TOOL_OBJS:.o=.d) ../tools/make_res
 
 DIRECTORIES=./ animations/ weapons/
 SRCS=$(wildcard $(addsuffix *.cpp,$(DIRECTORIES)))
@@ -48,7 +50,7 @@ $(OUTPUT): $(OBJS)
 %.o: %.cpp
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) -o $@ $< -MMD -MQ $@
 
-static_resource.c static_resource.s: static_resource.h
+$(TOOL_BUILDS): static_resource.h
 static_resource.h: ../tools/make_res res
 	../tools/make_res res
 
@@ -58,6 +60,6 @@ static_resource.h: ../tools/make_res res
 	$(CC) -c $(TOOL_CPPFLAGS) $(TOOL_CFLAGS) -o $@ $< -MMD -MQ $@
 
 clean:
-	rm -f $(OBJS) $(OUTPUT) $(OBJS:.o=.d) static_resource.[hsc]
+	rm -f $(OBJS) $(OUTPUT) $(OBJS:.o=.d) $(TOOL_FILES) static_resource.[hsc]
 
 -include $(addsuffix *.d,$(DIRECTORIES))
