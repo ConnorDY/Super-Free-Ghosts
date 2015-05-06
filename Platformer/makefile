@@ -19,8 +19,9 @@ OBJS=$(SRCS:.cpp=.o)
 OUTPUT=platformer
 
 ifeq ($(STATIC_RESOURCES), true)
-	OBJS += static_resource.o
-	CPPFLAGS += -DSTATIC_RESOURCES
+# Put static_resource at the start because it takes some time to compile the tools and generate it.
+OBJS := static_resource.o $(OBJS)
+CPPFLAGS += -DSTATIC_RESOURCES
 endif
 
 all: $(OUTPUT)
@@ -44,6 +45,6 @@ static_resource.h static_resource.s: ../tools/make_res res
 	$(CC) -c $(TOOL_CPPFLAGS) $(TOOL_CFLAGS) -o $@ $< -MMD -MQ $@
 
 clean:
-	rm -f $(OBJS) $(OUTPUT) $(OBJS:.o=.d)
+	rm -f $(OBJS) $(OUTPUT) $(OBJS:.o=.d) static_resource.[hsc]
 
 -include $(addsuffix *.d,$(DIRECTORIES))

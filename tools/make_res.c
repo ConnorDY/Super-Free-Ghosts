@@ -33,11 +33,6 @@ void mangle_path(char *restrict path)
 
 void f_s_dump(FILE *file, unsigned char *data, size_t data_length)
 {
-    /*
-    while (data_length--) {
-        fprintf(file, "	.byte %d\n", *data++);
-    }
-    */
     size_t i = 0;
     while (i < data_length) {
         fputs("	.byte ", file);
