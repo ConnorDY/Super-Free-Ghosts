@@ -26,11 +26,11 @@ ifeq ($(STATIC_RESOURCES), true)
 	CPPFLAGS += -DSTATIC_RESOURCES
 
 	ifeq ($(STATIC_RESOURCES_FAST), true)
-		TOOL_CPPFLAGS += -DBUILD_C_FILE
-		TOOL_BUILDS = static_resource.c
-	else
 		TOOL_CPPFLAGS += -DBUILD_S_FILE
 		TOOL_BUILDS = static_resource.s
+	else
+		TOOL_CPPFLAGS += -DBUILD_C_FILE
+		TOOL_BUILDS = static_resource.c
 	endif
 endif
 
