@@ -14,17 +14,20 @@ TextureManager::~TextureManager()
 void TextureManager::loadTexture(const std::string &name, const std::string &filename)
 {
 	/* Load the texture */
-	sf::Texture tex;
-	tex.loadFromFile(filename);
+	this->textures[name].loadFromFile(filename);
 
 #ifdef _DEBUG
 	std::cout << "Loaded texture \"" << name << "\" from " << filename << std::endl;
 #endif
 
-	/* Add it to the list of textures */
-	this->textures[name] = tex;
+}
 
-	return;
+void TextureManager::loadTextureFromMemory(const std::string &name, unsigned char const *memory, size_t size)
+{
+	this->textures[name].loadFromMemory(memory, size);
+#ifdef _DEBUG
+	std::cout << "Loaded texture \"" << name << "\"" << std::endl;
+#endif
 }
 
 sf::Texture const& TextureManager::getRef(const std::string &texture)

@@ -1,0 +1,23 @@
+Compilation
+===========
+
+Linux, or Windows with msys:
+
+- `cd Platformer`
+- `vim makefile` -- edit STATIC_RESOURCES if need be, rice CFLAGS (-flto!), etc
+- `time make -j8` -- or just `make` if you're boring
+- It should just work
+
+Windows with MSVC++:
+
+- If you want to build with static resources:
+    - CD Platformer
+    - ..\tools\make_res.py res
+    - Open the project
+    - Make sure the "static_resource.c" file is added to the project
+    - Make sure STATIC_RESOURCES is defined (no value) for the C preprocessor
+    - Build it
+    - Edit this readme when you make a profile for it
+- If you want to be able to build normally
+    - Open the project
+    - Build it

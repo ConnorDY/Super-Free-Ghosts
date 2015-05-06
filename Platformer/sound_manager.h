@@ -12,7 +12,7 @@ class SoundManager
 {
 	private:
 		settings_t const &settings;
-		std::map<std::string, std::unique_ptr<sf::SoundBuffer>> buffers;
+		std::map<std::string, sf::SoundBuffer> buffers;
 		std::map<std::string, std::unique_ptr<sf::Sound>> sounds;
 	public:
 		SoundManager(settings_t const &settings);
@@ -21,6 +21,7 @@ class SoundManager
 
 		// Actions
 		void loadSound(const std::string &name, const std::string &filename);
+		void loadSoundFromMemory(const std::string &name, unsigned char const *memory, size_t size);
 		void playSound(const std::string &sound) const;
 };
 

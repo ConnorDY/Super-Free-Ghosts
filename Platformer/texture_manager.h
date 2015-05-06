@@ -16,6 +16,7 @@ class TextureManager
 
 		// Actions
 		void loadTexture(const std::string &name, const std::string &filename);
+		void loadTextureFromMemory(const std::string &name, unsigned char const *memory, size_t size);
 		sf::Texture const& getRef(const std::string &texture);
 };
 

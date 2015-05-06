@@ -5,6 +5,11 @@
 #include "level_editor_state.h"
 #include "options_state.h"
 
+// TODO move this
+#ifdef STATIC_RESOURCES
+#include "static_resource.h"
+#endif
+
 Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager, settings_t &settings)
 	: State(sM), textureManager(textureManager), settings(settings)
 {
@@ -13,7 +18,11 @@ Menu_State::Menu_State(StateManager &sM, TextureManager &textureManager, setting
 	sprLogo.setOrigin(sf::Vector2f(102.f, 0.0f));
 
 	// Load Font
+#ifdef STATIC_RESOURCES
+	if (!fnt.loadFromMemory(ARRAY_WITH_LENGTH(res_Tewi_normal_11_bdf))) std::cout << "Failed to load menu font!" << std::endl;
+#else
 	if (!fnt.loadFromFile("res/Tewi-normal-11.bdf")) std::cout << "Failed to load menu font!" << std::endl;
+#endif
 	const_cast<sf::Texture&>(fnt.getTexture(11)).setSmooth(false);
 
 	// Menu Options

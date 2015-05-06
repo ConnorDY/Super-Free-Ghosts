@@ -7,6 +7,11 @@
 #include "obelisk.h"
 #include "block.h"
 
+// TODO move this
+#ifdef STATIC_RESOURCES
+#include "static_resource.h"
+#endif
+
 Level01_State::Level01_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings)
 	: LevelState(sM, som, textureManager, settings)
 {
@@ -24,7 +29,11 @@ Level01_State::~Level01_State()
 void Level01_State::start()
 {
 	// Ready Music
+#ifdef STATIC_RESOURCES
+	if (settings.music_on && music.openFromMemory(ARRAY_WITH_LENGTH(res_01_ogg)))
+#else
 	if (settings.music_on && music.openFromFile("res/01.ogg"))
+#endif
 	{
 		music.play();
 		music.setLoop(true);

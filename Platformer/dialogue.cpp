@@ -1,6 +1,11 @@
 #include "dialogue.h"
 #include "globals.h"
 
+// TODO move this
+#ifdef STATIC_RESOURCES
+#include "static_resource.h"
+#endif
+
 Dialogue::Dialogue(const std::vector<std::string> lines)
 {
 	textLines = lines;
@@ -9,7 +14,12 @@ Dialogue::Dialogue(const std::vector<std::string> lines)
 	index = 0;
 	line = 0;
 
+#ifdef STATIC_RESOURCES
+	if (!fnt.loadFromMemory(ARRAY_WITH_LENGTH(res_Tewi_normal_11_bdf))) std::cout << "Failed to load dialogue font!" << std::endl;
+#else
 	if (!fnt.loadFromFile("res/Tewi-normal-11.bdf")) std::cout << "Failed to load dialogue font!" << std::endl;
+#endif
+
 	const_cast<sf::Texture&>(fnt.getTexture(11)).setSmooth(false);
 
 	txt.setFont(fnt);

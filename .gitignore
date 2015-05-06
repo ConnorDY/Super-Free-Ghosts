@@ -30,6 +30,10 @@
 *.out
 *.app
 Platformer/platformer
+tools/make_res
+
+# Generated sources
+Platformer/static_resource.*
 
 # Directories
 Debug/
