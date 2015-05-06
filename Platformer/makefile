@@ -1,5 +1,6 @@
 STATIC_RESOURCES=false
-# Fast, but produces larger binaries containing unused resources
+# Fast, but potentially produces larger binaries containing unused resources
+# because it bypasses LTO for the resource definitions
 STATIC_RESOURCES_FAST=false
 
 CC=gcc
