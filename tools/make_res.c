@@ -17,6 +17,10 @@
 #define RESOURCES_FILE "static_resource"
 #define ALIGN_TO "64"
 
+#if !defined(BUILD_C_FILE) && !defined(BUILD_S_FILE)
+#warn "You should probably define BUILD_C_FILE or BUILD_S_FILE"
+#endif
+
 void mangle_path(char *restrict path)
 {
     // Replace all non-alphanumeric chars with an underscore
@@ -41,6 +45,18 @@ void f_s_dump(FILE *file, unsigned char *data, size_t data_length)
         for (size_t j = 0; j < 512 && i < data_length; i++, j++) {
             if (j) fputc(',', file);
             fprintf(file, "%d", data[i]);
+        }
+        fputc('\n', file);
+    }
+}
+
+void f_c_dump(FILE *file, unsigned char *data, size_t data_length)
+{
+    size_t i = 0;
+    while (i < data_length) {
+        fputs("    ", file);
+        for (size_t j = 0; j < 512 && i < data_length; i++, j++) {
+            fprintf(file, "%d,", data[i]);
         }
         fputc('\n', file);
     }
@@ -184,12 +200,13 @@ skip_file:
         fclose(header);
     }
 
-    // Write .c file
+#ifdef BUILD_S_FILE
+    // Write .s file
     {
         FILE *sfile = fopen(RESOURCES_FILE ".s", "wt");
         fputs(".data\n"
               ".align " ALIGN_TO "\n", sfile);
-        // Write each file's contents into the .c file
+        // Write each file's contents into the .s file
         for (struct file_list_t *curr = head; curr; curr = curr->next) {
             fprintf(sfile,
                     ".globl %s\n"
@@ -201,6 +218,25 @@ skip_file:
         }
         fclose(sfile);
     }
+#endif
+
+#ifdef BUILD_C_FILE
+    // Write .c file
+    {
+        FILE *cfile = fopen(RESOURCES_FILE ".c", "wt");
+        fputs("#include \"" RESOURCES_FILE ".h\"\n", cfile);
+        // Write each file's contents into the .c file
+        for (struct file_list_t *curr = head; curr; curr = curr->next) {
+            fprintf(cfile,
+                    "unsigned char %s[%" PRIu64 "] = {\n",
+                    curr->filename, (uint64_t) curr->filesize);
+            f_c_dump(cfile, curr->data, curr->filesize);
+            fputs("};\n", cfile);
+        }
+        fclose(cfile);
+    }
+#endif
+
     // Don't bother freeing lists and stuff, OS does that for us
     return 0;
 }

@@ -1,4 +1,5 @@
 STATIC_RESOURCES=true
+STATIC_RESOURCES_FAST=false  # Fast, but produces larger binaries containing unused resources
 
 CC=gcc
 CXX=g++
@@ -8,6 +9,7 @@ LIBS=-lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system
 LDFLAGS=-Wall -Wextra -pedantic -fwhole-program
 CPPFLAGS=-Wall -Wextra -pedantic -I.
 CXXFLAGS=-std=c++14 -g3 -pipe
+CFLAGS=-std=c11 -g3 -pipe
 
 TOOL_CFLAGS=-std=c11 -Ofast -march=native -pipe
 TOOL_LDFLAGS=-s
@@ -19,10 +21,19 @@ OBJS=$(SRCS:.cpp=.o)
 OUTPUT=platformer
 
 ifeq ($(STATIC_RESOURCES), true)
-# Put static_resource at the start because it takes some time to compile the tools and generate it.
-OBJS := static_resource.o $(OBJS)
-CPPFLAGS += -DSTATIC_RESOURCES
+	# Put static_resource at the start because it takes some time to compile the tools and generate it.
+	OBJS := static_resource.o $(OBJS)
+	CPPFLAGS += -DSTATIC_RESOURCES
+
+	ifeq ($(STATIC_RESOURCES_FAST), true)
+		TOOL_CPPFLAGS += -DBUILD_C_FILE
+		TOOL_BUILDS = static_resource.c
+	else
+		TOOL_CPPFLAGS += -DBUILD_S_FILE
+		TOOL_BUILDS = static_resource.s
+	endif
 endif
+
 
 all: $(OUTPUT)
 
@@ -36,7 +47,8 @@ $(OUTPUT): $(OBJS)
 %.o: %.cpp
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) -o $@ $< -MMD -MQ $@
 
-static_resource.h static_resource.s: ../tools/make_res res
+static_resource.c static_resource.s: static_resource.h
+static_resource.h: ../tools/make_res res
 	../tools/make_res res
 
 ../tools/make_res: ../tools/make_res.o
