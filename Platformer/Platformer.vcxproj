@@ -98,7 +98,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>D:\Documents\Visual Studio 2013\Projects\Super-Free-Ghosts\Platformer;D:\Libs\SFML-2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DEMO_MODE;SFML_STATIC;_USE_MATH_DEFINES;GLEW_STATIC;UNICODE;WIN32;_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEMO_MODE;STATIC_RESOURCES;SFML_STATIC;_USE_MATH_DEFINES;GLEW_STATIC;UNICODE;WIN32;_WINDOWS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -126,6 +126,7 @@
     <ClCompile Include="demo_state.cpp" />
     <ClCompile Include="dialogue.cpp" />
     <ClCompile Include="enemy_explosion.cpp" />
+    <ClCompile Include="static_resource.c" />
     <ClCompile Include="weapons\flame.cpp" />
     <ClCompile Include="weapons\hammer.cpp" />
     <ClCompile Include="handeye.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="dialogue.h" />
     <ClInclude Include="enemy_explosion.h" />
     <ClInclude Include="player_armour.h" />
+    <ClInclude Include="static_resource.h" />
     <ClInclude Include="weapons\flame.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="weapons\hammer.h" />
