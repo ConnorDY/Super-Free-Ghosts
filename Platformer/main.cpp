@@ -22,37 +22,37 @@ void loadRes(TextureManager &textureManager, SoundManager &soundManager)
 #ifdef STATIC_RESOURCES
 	auto textures = std::vector<std::tuple<std::string, unsigned char const*, size_t>>
 	{
-		std::make_tuple<std::string, unsigned char const*, size_t>("player-dead", ARRAY_WITH_LENGTH(res_plyr_plyr_dead_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("player-naked", ARRAY_WITH_LENGTH(res_plyr_plyr_naked_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("player-silver", ARRAY_WITH_LENGTH(res_plyr_plyr_silver_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("player-gold", ARRAY_WITH_LENGTH(res_plyr_plyr_gold_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("transform-silver", ARRAY_WITH_LENGTH(res_plyr_transform_silver_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("transform-gold", ARRAY_WITH_LENGTH(res_plyr_transform_gold_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("chest1", ARRAY_WITH_LENGTH(res_chest_01_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("zombie", ARRAY_WITH_LENGTH(res_zombie_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("tiles", ARRAY_WITH_LENGTH(res_tiles_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("obelisk", ARRAY_WITH_LENGTH(res_obelisk_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("bg01", ARRAY_WITH_LENGTH(res_bg01_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("bg02", ARRAY_WITH_LENGTH(res_bg02_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("bg03", ARRAY_WITH_LENGTH(res_bg03_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("under01", ARRAY_WITH_LENGTH(res_under01_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("logo", ARRAY_WITH_LENGTH(res_logo_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("spear", ARRAY_WITH_LENGTH(res_weapons_spear_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("hammer", ARRAY_WITH_LENGTH(res_weapons_hammer_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("trident", ARRAY_WITH_LENGTH(res_weapons_trident_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("melee", ARRAY_WITH_LENGTH(res_weapons_melee_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("handeye", ARRAY_WITH_LENGTH(res_enemy_handeye_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("enemydie", ARRAY_WITH_LENGTH(res_enemy_explosion_png)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("weapon_drops", ARRAY_WITH_LENGTH(res_weapons_idle_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("player-dead", ARRAY_WITH_LENGTH(res_plyr_plyr_dead_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("player-naked", ARRAY_WITH_LENGTH(res_plyr_plyr_naked_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("player-silver", ARRAY_WITH_LENGTH(res_plyr_plyr_silver_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("player-gold", ARRAY_WITH_LENGTH(res_plyr_plyr_gold_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("transform-silver", ARRAY_WITH_LENGTH(res_plyr_transform_silver_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("transform-gold", ARRAY_WITH_LENGTH(res_plyr_transform_gold_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("chest1", ARRAY_WITH_LENGTH(res_chest_01_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("zombie", ARRAY_WITH_LENGTH(res_zombie_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("tiles", ARRAY_WITH_LENGTH(res_tiles_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("obelisk", ARRAY_WITH_LENGTH(res_obelisk_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("bg01", ARRAY_WITH_LENGTH(res_bg01_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("bg02", ARRAY_WITH_LENGTH(res_bg02_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("bg03", ARRAY_WITH_LENGTH(res_bg03_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("under01", ARRAY_WITH_LENGTH(res_under01_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("logo", ARRAY_WITH_LENGTH(res_logo_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("spear", ARRAY_WITH_LENGTH(res_weapons_spear_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("hammer", ARRAY_WITH_LENGTH(res_weapons_hammer_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("trident", ARRAY_WITH_LENGTH(res_weapons_trident_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("melee", ARRAY_WITH_LENGTH(res_weapons_melee_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("handeye", ARRAY_WITH_LENGTH(res_enemy_handeye_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("enemydie", ARRAY_WITH_LENGTH(res_enemy_explosion_png)),
+		std::tuple<std::string, unsigned char const*, size_t>("weapon_drops", ARRAY_WITH_LENGTH(res_weapons_idle_png)),
 	};
 
 	auto sounds = std::vector<std::tuple<std::string, unsigned char const*, size_t>>
 	{
-		std::make_tuple<std::string, unsigned char const*, size_t>("jump", ARRAY_WITH_LENGTH(res_jump_wav)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("land", ARRAY_WITH_LENGTH(res_land_wav)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("throw", ARRAY_WITH_LENGTH(res_throw_wav)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("hit", ARRAY_WITH_LENGTH(res_hit_wav)),
-		std::make_tuple<std::string, unsigned char const*, size_t>("enemy_die", ARRAY_WITH_LENGTH(res_enemy_die_wav)),
+		std::tuple<std::string, unsigned char const*, size_t>("jump", ARRAY_WITH_LENGTH(res_jump_wav)),
+		std::tuple<std::string, unsigned char const*, size_t>("land", ARRAY_WITH_LENGTH(res_land_wav)),
+		std::tuple<std::string, unsigned char const*, size_t>("throw", ARRAY_WITH_LENGTH(res_throw_wav)),
+		std::tuple<std::string, unsigned char const*, size_t>("hit", ARRAY_WITH_LENGTH(res_hit_wav)),
+		std::tuple<std::string, unsigned char const*, size_t>("enemy_die", ARRAY_WITH_LENGTH(res_enemy_die_wav)),
 	};
 
 	for (auto &texture : textures) textureManager.loadTextureFromMemory(std::get<0>(texture), std::get<1>(texture), std::get<2>(texture));
@@ -118,7 +118,7 @@ int main()
 	StateManager stateManager(textureManager, soundManager, settings);
 	
 	// Create Window
-	sf::RenderWindow window(sf::VideoMode(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale), "Super Free Ghosts", sf::Style::Close | sf::Style::Titlebar);
+	sf::RenderWindow window(sf::VideoMode(VIEW_WIDTH * settings.window_scale, VIEW_HEIGHT * settings.window_scale), "AGDG Demo Day", sf::Style::Close | sf::Style::Titlebar);
 	window.setVerticalSyncEnabled(settings.vsync_on);
 
 	// Game Loop

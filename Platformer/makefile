@@ -8,10 +8,10 @@ CXX=g++
 
 LIBS=-lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system
 
-LDFLAGS=-Wall -Wextra -pedantic -fwhole-program
+LDFLAGS=-Wall -Wextra -pedantic -fwhole-program -s
 CPPFLAGS=-Wall -Wextra -pedantic -I.
-CXXFLAGS=-std=c++14 -g3 -pipe
-CFLAGS=-std=c11 -g3 -pipe
+CXXFLAGS=-std=c++14 -Ofast -flto -pipe
+CFLAGS=-std=c11 -Ofast -flto -pipe
 
 TOOL_CFLAGS=-std=c11 -Ofast -march=native -pipe
 TOOL_LDFLAGS=-s

@@ -7,6 +7,11 @@
 
 #define GRID_SCALE 8
 
+// TODO move this
+#ifdef STATIC_RESOURCES
+#include "static_resource.h"
+#endif
+
 Demo_State::Demo_State(StateManager &sM, SoundManager &som, TextureManager &textureManager, settings_t &settings)
 	: LevelState(sM, som, textureManager, settings)
 {
@@ -25,8 +30,30 @@ void Demo_State::start()
 	shapeGrid.setFillColor(sf::Color(255, 255, 255, 10));
 	shapeGrid.setOutlineThickness(1);
 
-	// Test dialogue
-	dialogue = std::make_unique<Dialogue>(std::vector<std::string>({ "Welcome to our game demo! Press X to continue.", "This is another line of text!" }));
+	// Ready Music
+	if (settings.music_on)
+	{
+#ifdef STATIC_RESOURCES
+		music_s.openFromMemory(ARRAY_WITH_LENGTH(res_01_intro_ogg));
+		music_l.openFromMemory(ARRAY_WITH_LENGTH(res_01_loop_ogg));
+#else
+		music.openFromFile("res/01_intro.ogg");
+		music.openFromFile("res/01_loop.ogg");
+#endif
+		music_l.setLoop(true);
+		music_s.setVolume(50.0f);
+		music_l.setVolume(50.0f);
+
+		music_s.play();
+	}
+
+	// Dialogue
+	dialogue = std::make_unique<Dialogue>(std::vector<std::string>({ 
+		"Welcome to our game demo! Press X to continue.",
+		"Holding X will make this text display faster.",
+		"Use the left and right arrow keys to move Arthur.",
+		"Use the up arrow key to jump and 'z' to use your weapon."
+	}));
 
 	// Blocks
 	objects.push_back(new Block(*this, 0, VIEW_HEIGHT - 32, 256, 32));
@@ -75,4 +102,11 @@ void Demo_State::drawBackground(sf::RenderWindow &window)
 	}
 
 	Room::drawBackground(window);
+}
+
+void Demo_State::update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler)
+{
+	if (music_s.getStatus() != sf::Music::Playing && music_l.getStatus() != sf::Music::Playing) music_l.play();
+
+	LevelState::update(window, soundManager, inputHandler);
 }

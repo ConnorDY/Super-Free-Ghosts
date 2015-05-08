@@ -14,6 +14,7 @@ class Demo_State : public LevelState
 {
 	private:
 		sf::RectangleShape shapeGrid;
+		sf::Music music_s, music_l;
 	protected:
 		virtual bool shouldSpawnMoreZombies() const;
 	public:
@@ -23,6 +24,7 @@ class Demo_State : public LevelState
 		// Actions
 		void start() override;
 		virtual void drawBackground(sf::RenderWindow &window) override;
+		virtual void update(sf::RenderWindow &window, SoundManager &soundManager, InputHandler &inputHandler) override;
 };
 
 #endif

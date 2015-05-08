@@ -378,7 +378,7 @@ void Player::jump(int dir)
 	{
 		if (jumps == 0)
 		{
-			if (dy != 0.0f) return;
+			if (dy != 0.0f) jumps++;
 			if (midThrow && lastAttackWasMelee) return;
 			xJumpedFrom = x;
 		}

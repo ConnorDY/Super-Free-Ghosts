@@ -46,10 +46,10 @@ void Menu_State::draw(sf::RenderWindow &window)
 	sf::View temp = sf::View(sf::Vector2f((float)VIEW_WIDTH / 2.0f, (float)VIEW_HEIGHT / 2.0f), sf::Vector2f((float)VIEW_WIDTH, (float)VIEW_HEIGHT));
 	window.setView(temp);
 
-	sprLogo.setPosition(sf::Vector2f(201.0f, 40.0f));
-	window.draw(sprLogo);
+	//sprLogo.setPosition(sf::Vector2f(201.0f, 40.0f));
+	//window.draw(sprLogo);
 
-	float xx = 200.0f, yy = 180.0f;
+	float xx = 200.0f, yy = 130.0f;
 
 	for (unsigned int i = 0; i < menuOptions.size(); i++)
 	{
