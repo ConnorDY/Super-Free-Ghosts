@@ -29,7 +29,8 @@ namespace {
 			SECOND_JUMP_SIDEWAYS_ARMOURED, DOUBLE_JUMP_BEGIN,
 			RUN, THROW, THROW_DOUBLE_JUMPING, ROLL, HURT,
 			THROW_CROUCHING, MELEE_CROUCHING, TRANSFORM_SILVER,
-			TRANSFORM_NAKED_GOLD, TRANSFORM_SILVER_GOLD;
+			TRANSFORM_NAKED_GOLD, TRANSFORM_SILVER_GOLD,
+			FALL, FALL_GOLD;
 
 		Animations()
 		{
@@ -96,6 +97,9 @@ namespace {
 			DIE.emplace_back(0, 50, 50, 50);
 			DIE.emplace_back(50, 50, 50, 50);
 			DIE.emplace_back(100, 50, 50, 50);
+
+			FALL.emplace_back(0, 200, 50, 50);
+			FALL_GOLD.emplace_back(100, 200, 50, 50);
 
 			// Transformation animations
 			for (unsigned int i = 0; i < 2; i++)
