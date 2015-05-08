@@ -51,7 +51,7 @@ void Demo_State::start()
 	dialogue = std::make_unique<Dialogue>(std::vector<std::string>({ 
 		"Welcome to our game demo! Press X to continue.",
 		"Holding X will make this text display faster.",
-		"Use the left and right arrow keys to move Arthur.",
+		"Use the left and right arrow keys to move Alexander.",
 		"Use the up arrow key to jump and 'z' to use your weapon."
 	}));
 
