@@ -561,7 +561,11 @@ void Player::update(sf::Time deltaTime)
 		}
 		else setAnimation(ANIM.THROW_DOUBLE_JUMPING);
 	}
-	else if (dy > 0.0f && !jumped) setAnimation(ANIM.STILL); // Falling
+	else if (dy > 0.0f && !jumped) // Falling
+	{
+		if (armour == PlayerArmour::GOLD) setAnimation(ANIM.FALL_GOLD);
+		else setAnimation(ANIM.FALL);
+	}
 	else if (dx != 0.0f)
 	{
 		if (jumped)
