@@ -10,6 +10,7 @@
 #include "sword.h"
 #include "war_hammer.h"
 #include "axe.h"
+#include "mace.h"
 #include "torch.h"
 
 namespace PlayerWeapon
@@ -35,6 +36,8 @@ namespace PlayerWeapon
 				return new War_Hammer(room, *player, dir);
 			case AXE:
 				return new Axe(room, *player, dir);
+			case MACE:
+				return new Mace(room, *player, dir);
 			default:
 				throw std::domain_error("Tried to spawn a nonexistent weapon");
 		}
@@ -59,6 +62,7 @@ namespace PlayerWeapon
 			case SWORD:
 			case WAR_HAMMER:
 			case AXE:
+			case MACE:
 				return true;
 
 			default:

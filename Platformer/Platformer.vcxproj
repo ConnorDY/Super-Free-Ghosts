@@ -144,6 +144,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="room.cpp" />
     <ClCompile Include="sound_manager.cpp" />
+    <ClCompile Include="weapons\mace.cpp" />
     <ClCompile Include="weapons\melee_weapon.cpp" />
     <ClCompile Include="weapons\player_weapon.cpp" />
     <ClCompile Include="weapons\spear.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="room.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="sound_manager.h" />
+    <ClInclude Include="weapons\mace.h" />
     <ClInclude Include="weapons\melee_weapon.h" />
     <ClInclude Include="weapons\player_weapon.h" />
     <ClInclude Include="weapons\spear.h" />

@@ -183,6 +183,9 @@
     <ClCompile Include="weapons\war_hammer.cpp">
       <Filter>Source Files\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="weapons\mace.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h">
@@ -339,6 +342,9 @@
       <Filter>Header Files\Weapons</Filter>
     </ClInclude>
     <ClInclude Include="weapons\war_hammer.h">
+      <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="weapons\mace.h">
       <Filter>Header Files\Weapons</Filter>
     </ClInclude>
   </ItemGroup>

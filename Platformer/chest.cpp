@@ -148,7 +148,7 @@ void Chest::updateAnimation(sf::Time deltaTime)
 
 			if (!leaving && getHealth() <= 0)
 			{
-				PlayerWeapon::Enum options[] = { PlayerWeapon::HAMMER, PlayerWeapon::TRIDENT, PlayerWeapon::SWORD, PlayerWeapon::AXE, PlayerWeapon::WAR_HAMMER };
+				PlayerWeapon::Enum options[] = { PlayerWeapon::HAMMER, PlayerWeapon::TRIDENT, PlayerWeapon::SWORD, PlayerWeapon::AXE, PlayerWeapon::WAR_HAMMER, PlayerWeapon::MACE };
 
 				room.spawn(new WeaponDrop(room, x + 7, y - 9, options[rand() % (sizeof(options) / sizeof(*options))]));
 				leaving = true;
