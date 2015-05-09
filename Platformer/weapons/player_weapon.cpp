@@ -8,6 +8,8 @@
 #include "super_hammer.h"
 #include "hammer.h"
 #include "sword.h"
+#include "war_hammer.h"
+#include "axe.h"
 #include "torch.h"
 
 namespace PlayerWeapon
@@ -29,6 +31,10 @@ namespace PlayerWeapon
 				else return Trident::spawnAdjusted(room, x, y, dir);
 			case SWORD:
 				return new Sword(room, *player, dir);
+			case WAR_HAMMER:
+				return new War_Hammer(room, *player, dir);
+			case AXE:
+				return new Axe(room, *player, dir);
 			default:
 				throw std::domain_error("Tried to spawn a nonexistent weapon");
 		}
@@ -49,8 +55,12 @@ namespace PlayerWeapon
 			case HAMMER:
 			case TRIDENT:
 				return false;
+
 			case SWORD:
+			case WAR_HAMMER:
+			case AXE:
 				return true;
+
 			default:
 				throw std::domain_error("Unknown weapon when checking for melee/ranged");
 		}

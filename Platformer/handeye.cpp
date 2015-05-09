@@ -16,6 +16,7 @@ HandEye::HandEye(LevelState &room, float x, float y)
 {
 	for (unsigned int i = 0; i < 7; i++) animations["pull"].emplace_back(0, i * 56, 55, 56);
 	for (unsigned int i = 7; i < 17; i++) animations["pulling"].emplace_back(0, i * 56, 55, 56);
+	for (unsigned int i = 17; i < 19; i++) animations["turn"].emplace_back(0, i * 56, 55, 56);
 	for (unsigned int i = 0; i < 20; i++) animations["awake"].emplace_back(55, i * 40, 53, 40);
 
 	sprite.setTexture(room.textureManager.getRef("handeye"));

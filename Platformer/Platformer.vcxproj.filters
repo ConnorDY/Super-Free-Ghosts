@@ -177,6 +177,12 @@
     <ClCompile Include="static_resource.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="weapons\axe.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="weapons\war_hammer.cpp">
+      <Filter>Source Files\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h">
@@ -305,9 +311,6 @@
     <ClInclude Include="zombie.h">
       <Filter>Header Files\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="player_enums.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="armourdrop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -331,6 +334,12 @@
     </ClInclude>
     <ClInclude Include="static_resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="weapons\axe.h">
+      <Filter>Header Files\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="weapons\war_hammer.h">
+      <Filter>Header Files\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

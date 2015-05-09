@@ -127,6 +127,7 @@
     <ClCompile Include="dialogue.cpp" />
     <ClCompile Include="enemy_explosion.cpp" />
     <ClCompile Include="static_resource.c" />
+    <ClCompile Include="weapons\axe.cpp" />
     <ClCompile Include="weapons\flame.cpp" />
     <ClCompile Include="weapons\hammer.cpp" />
     <ClCompile Include="handeye.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="weapons\sword.cpp" />
     <ClCompile Include="weapons\torch.cpp" />
     <ClCompile Include="weapons\trident.cpp" />
+    <ClCompile Include="weapons\war_hammer.cpp" />
     <ClCompile Include="weapons\weapon.cpp" />
     <ClCompile Include="weapondrop.cpp" />
     <ClCompile Include="zombie.cpp" />
@@ -178,6 +180,7 @@
     <ClInclude Include="enemy_explosion.h" />
     <ClInclude Include="player_armour.h" />
     <ClInclude Include="static_resource.h" />
+    <ClInclude Include="weapons\axe.h" />
     <ClInclude Include="weapons\flame.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="weapons\hammer.h" />
@@ -192,7 +195,6 @@
     <ClInclude Include="options_state.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="player_enums.h" />
     <ClInclude Include="room.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="sound_manager.h" />
@@ -209,6 +211,7 @@
     <ClInclude Include="weapons\sword.h" />
     <ClInclude Include="weapons\torch.h" />
     <ClInclude Include="weapons\trident.h" />
+    <ClInclude Include="weapons\war_hammer.h" />
     <ClInclude Include="weapons\weapon.h" />
     <ClInclude Include="weapondrop.h" />
     <ClInclude Include="zombie.h" />

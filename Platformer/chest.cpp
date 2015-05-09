@@ -1,6 +1,8 @@
+#include <array>
 #include "chest.h"
 #include "globals.h"
 #include "obelisk.h"
+#include "weapons/player_weapon.h"
 #include "armourdrop.h"
 #include "weapondrop.h"
 #include "room.h"
@@ -146,7 +148,9 @@ void Chest::updateAnimation(sf::Time deltaTime)
 
 			if (!leaving && getHealth() <= 0)
 			{
-				room.spawn(new ArmourDrop(room, x + 7, y - 5));
+				PlayerWeapon::Enum options[] = { PlayerWeapon::HAMMER, PlayerWeapon::TRIDENT, PlayerWeapon::SWORD, PlayerWeapon::AXE, PlayerWeapon::WAR_HAMMER };
+
+				room.spawn(new WeaponDrop(room, x + 7, y - 9, options[rand() % (sizeof(options) / sizeof(*options))]));
 				leaving = true;
 			}
 		}

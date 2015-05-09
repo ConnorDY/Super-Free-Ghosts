@@ -60,7 +60,7 @@ void Demo_State::start()
 	objects.push_back(new Block(*this, 256, VIEW_HEIGHT - 64, 64, 64));
 	objects.push_back(new Block(*this, 384, VIEW_HEIGHT - 128, 64, 16));
 	objects.push_back(new Block(*this, 512, VIEW_HEIGHT - 128, 32, 16));
-	objects.push_back(new Block(*this, 576, VIEW_HEIGHT - 48, 256, 48));
+	objects.push_back(new Block(*this, 576, VIEW_HEIGHT - 48, 512, 48));
 
 	// Chests
 	objects.push_back(new Chest(*this, 110.0f, 256));
