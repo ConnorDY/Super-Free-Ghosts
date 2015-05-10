@@ -64,6 +64,7 @@ void Demo_State::start()
 
 	// Chests
 	objects.push_back(new Chest(*this, 110.0f, 256));
+	objects.push_back(new Chest(*this, 920.0f, 256));
 
 	// Enemies
 	objects.push_back(new HandEye(*this, 650, 200));

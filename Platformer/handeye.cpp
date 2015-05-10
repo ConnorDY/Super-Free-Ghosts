@@ -33,7 +33,7 @@ bool HandEye::canCollideWith(const Object* obj) const
 
 sf::FloatRect HandEye::getRect() const
 {
-	return sf::FloatRect(x + 11, y + 2, width - 22, height - 2);
+	return sf::FloatRect(x + 9, y + 2, width - 18, height - 2);
 }
 
 
