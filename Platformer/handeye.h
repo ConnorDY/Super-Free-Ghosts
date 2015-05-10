@@ -18,7 +18,7 @@ class HandEye : public DamageableObject
 		sf::RectangleShape rectangle;
 		std::map<std::string, std::vector<sf::IntRect> > animations;
 		std::string animation;
-		bool pulling, awake, waking;
+		bool pulling, awake, waking, turning;
 		double frame;
 
 		// Actions

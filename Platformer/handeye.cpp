@@ -11,7 +11,7 @@ HandEye::HandEye(LevelState &room, float x, float y)
 		0.00185f / 2.0f, 0.25f
 	),
 	animation("awake"),
-	pulling(false), awake(false), waking(false),
+	pulling(false), awake(false), waking(false), turning(false),
 	frame(0)
 {
 	for (unsigned int i = 0; i < 7; i++) animations["pull"].emplace_back(0, i * 56, 55, 56);
@@ -67,13 +67,15 @@ void HandEye::update(sf::Time deltaTime)
 {
 	Object::update(deltaTime);
 
+	float dist = 0;
+
 	auto plyr = static_cast<LevelState&>(room).getPlayer();
 	if (plyr != nullptr)
 	{
 		auto myRect = getRect(), playerRect = plyr->getRect();
 		auto myCentre = myRect.left + myRect.width / 2;
 		auto playerCentre = playerRect.left + playerRect.width / 2;
-		float dist = myCentre - playerCentre;
+		dist = myCentre - playerCentre;
 
 		int dir = 1;
 		if (dist < 0) dir = -1;
@@ -87,9 +89,14 @@ void HandEye::update(sf::Time deltaTime)
 			float vel = 1.5 / dist;
 
 			if (std::abs(vel) < maxPull)
+			{
 				plyr->applyVelocityOnce(deltaTime, vel, 0);
+				turning = false;
+			}
+			else turning = true;
 		}
 	}
+	else turning = false;
 
 	for (auto col : allCollisions(x, y))
 	{
@@ -97,7 +104,16 @@ void HandEye::update(sf::Time deltaTime)
 		if (player != nullptr) player->damage(this, 1);
 	}
 
-	if (pulling) setAnimation("pulling");
+	if (turning)
+	{
+		setAnimation("turn");
+		if (std::abs(dist) > 15 && std::abs(dist) < 30) frame = 1;
+		else frame = 0;
+
+		if (dist > 0) sprite.setScale(-1.0f, 1.0f);
+		else sprite.setScale(1.0f, 1.0f);
+	}
+	else if (pulling) setAnimation("pulling");
 	else if (awake) setAnimation("pull");
 	else setAnimation("awake");
 
@@ -123,6 +139,7 @@ void HandEye::updateAnimation(sf::Time deltaTime)
 	if (frames > 1)
 	{
 		double speed = 12.;
+		if (turning) speed = 0;
 
 		if (awake || waking) frame += deltaTime.asSeconds() * speed;
 
