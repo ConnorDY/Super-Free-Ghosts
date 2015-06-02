@@ -37,8 +37,8 @@ void Demo_State::start()
 		music_s.openFromMemory(ARRAY_WITH_LENGTH(res_01_intro_ogg));
 		music_l.openFromMemory(ARRAY_WITH_LENGTH(res_01_loop_ogg));
 #else
-		music.openFromFile("res/01_intro.ogg");
-		music.openFromFile("res/01_loop.ogg");
+		music_s.openFromFile("res/01_intro.ogg");
+		music_l.openFromFile("res/01_loop.ogg");
 #endif
 		music_l.setLoop(true);
 		music_s.setVolume(50.0f);
