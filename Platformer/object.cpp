@@ -91,6 +91,8 @@ void Object::update(sf::Time deltaTime)
 
 void Object::applyGravityOnce(sf::Time deltaTime)
 {
+	if (gravity == 0) return;
+
 	float mstime = deltaTime.asMicroseconds() / 1000.0f;
 
 	if (placeFree(x, y + 1)) dy += gravity * mstime;
